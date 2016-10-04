@@ -9,3 +9,5 @@ SuperSmashPolls/bin/*
 *.dll
 
 *.exe
+
+*.cache
