@@ -1,15 +1,8 @@
-SuperSmashPolls/SuperSmashPolls/obj/*
+SuperSmashPolls/obj/*
 
-SuperSmashPolls/SuperSmashPolls/bin/*
-
+SuperSmashPolls/bin/*
 
 .DS_Store
-
-SuperSmashPollsContent/SuperSmashPollsContent.contentproj
-
-SuperSmashPolls/bin/x86/Debug/Content/PlayerOne.xnb
-
-SuperSmashPolls/bin/x86/Debug/Content/PlayerTwo.xnb
 
 *.xnb
 
