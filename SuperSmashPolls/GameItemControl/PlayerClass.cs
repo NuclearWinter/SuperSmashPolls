@@ -18,6 +18,8 @@ namespace SuperSmashPolls.GameItemControl {
         /* The color to draw the character with (to show damage state etc.) */
         private Color playerColor = Color.White;
 
+        /* TODO this needs to hold which character the player has selected */
+
 /*******************************************************************************************************************//** 
  * Constructs the player class.
  * @param startPosition The position to start the character at
