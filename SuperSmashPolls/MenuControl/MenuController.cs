@@ -10,6 +10,15 @@ namespace SuperSmashPolls {
 
 /*******************************************************************************************************************//**
  * Class to handle user interaction with menus.
+ * TODO This class should only be handling instances of the MenuItem class and should not be declaring positions or
+ * values of menu items.
+ * @note This class will work best if menu items can themself contain sub-menus and can take over menu control when
+ * selected. If it is done like this the only thing needed is to control an array of menu items and one 
+ * (the title screen) is loaded by default, but is at its core the same as any sub-menus (with the obvious exception 
+ * that sub-menus can move backward in the array and the main menu can't, which needs to be dealt with).
+ * @note TL;DR This class displays stuff, handles selection of stuff, but should not contain any information of what
+ * that stuff actually is.
+ * @warning Right now this class is not set up this way
  **********************************************************************************************************************/
     class MenuController {
 
