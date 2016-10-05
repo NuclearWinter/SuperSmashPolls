@@ -9,6 +9,7 @@ namespace SuperSmashPolls {
 
 /*******************************************************************************************************************//**
  * Class used to control the position and movment of objects.
+ * @note TODO This needs to be able to store the direction and magnitude that the object is going in.
  **********************************************************************************************************************/
     public class ObjectClass {
 

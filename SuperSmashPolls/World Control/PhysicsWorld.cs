@@ -12,6 +12,7 @@ namespace SuperSmashPolls.World_Control {
  * @note World scaling is going to be done through the WorldUnit class.
  * @note Characters's moves will have an affect on the physics world, this affect should be set through an object of the
  * PhysicsAffect class.
+ * @note This also needs to be able to batch draw the entire world
  **********************************************************************************************************************/
     class PhysicsWorld {
 
