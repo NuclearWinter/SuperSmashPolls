@@ -12,6 +12,7 @@ namespace SuperSmashPolls.Levels {
  * @note It may be best to make this a virtual class.
  **********************************************************************************************************************/
     class Level {
+
     }
 
 }

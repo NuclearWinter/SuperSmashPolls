@@ -14,6 +14,7 @@ namespace SuperSmashPolls.World_Control {
  * @note This class will likley require types to indicate position, force, and direction.
  **********************************************************************************************************************/
     class PhysicsAffect {
+
     }
 
 }
