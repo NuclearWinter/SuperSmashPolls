@@ -71,7 +71,7 @@ namespace SuperSmashPolls { //joe used 16x32
  * @param position The position of the object on the screen.
  * @param drawSize The size to draw the object.
  **********************************************************************************************************************/
-        public void DrawWithUpdate(ref SpriteBatch batch, ref Vector2 position, int drawMultiplier = 4) {
+        public void DrawWithUpdate(ref SpriteBatch batch, ref Vector2 position, int drawMultiplier = 1) {
 
             DateTime now = DateTime.Now;
 
