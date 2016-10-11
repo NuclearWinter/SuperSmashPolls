@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SuperSmashPolls {
+namespace SuperSmashPolls { //joe used 16x32
 
 /*******************************************************************************************************************//**
  * TODO Test this class
@@ -67,32 +67,36 @@ namespace SuperSmashPolls {
 /*******************************************************************************************************************//**
  * TODO Test this method
  * This draws the sprite based on the PlayTime variable
+ * @param batch The SpriteBatch to draw with.
+ * @param position The position of the object on the screen.
+ * @param drawSize The size to draw the object.
  **********************************************************************************************************************/
-        public void DrawWithUpdate(ref SpriteBatch batch, ref Vector2 position, Point drawSize) {
+        public void DrawWithUpdate(ref SpriteBatch batch, ref Vector2 position, int drawMultiplier = 4) {
 
             DateTime now = DateTime.Now;
 
-            if (Math.Abs(now.Millisecond - LastUpdateTime.Millisecond) >= (PlayTime*1000) / SheetSize.X * SheetSize.Y) {
+            if (Math.Abs(now.Millisecond - LastUpdateTime.Millisecond) >= (PlayTime*1000)/(SheetSize.X * SheetSize.Y)) {
 
                 LastUpdateTime = now;
 
-                if (AnimatedPoint.X >= SheetSize.X) {
+                if (AnimatedPoint.Y == SheetSize.Y -1) {
 
-                    AnimatedPoint.X = 0;
+                    AnimatedPoint.Y = 0;
 
-                    AnimatedPoint.Y += 1;
-
-                } else
                     AnimatedPoint.X += 1;
 
-                if (AnimatedPoint.Y >= SheetSize.Y)
+                } else
+                    AnimatedPoint.Y += 1;
+
+                if (AnimatedPoint.X >= SheetSize.X)
                     AnimatedPoint = new Point(0, 0);
 
             }
 
             Rectangle source = new Rectangle(ImageSize.X * AnimatedPoint.X, ImageSize.Y * AnimatedPoint.Y, ImageSize.X, 
                 ImageSize.Y);
-            Rectangle destin = new Rectangle((int) position.X, (int) position.Y, drawSize.X, drawSize.Y);
+            Rectangle destin = new Rectangle((int) position.X, (int) position.Y, 
+                                             ImageSize.X * drawMultiplier, ImageSize.Y * drawMultiplier);
 
             batch.Draw(SpriteSheet, destin, source, DrawColor);
 

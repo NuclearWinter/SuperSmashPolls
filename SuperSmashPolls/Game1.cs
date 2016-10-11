@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using SuperSmashPolls.Characters;
 using SuperSmashPolls.GameItemControl;
 
 namespace SuperSmashPolls {
@@ -17,6 +18,9 @@ namespace SuperSmashPolls {
      * 
      */ 
     public class Game1 : Microsoft.Xna.Framework.Game {
+        /* Donald Trump Character */
+        Character TheDonald = new Character();
+
         /* Manages graphics. */
         GraphicsDeviceManager graphics;
         /* Used to draw multiple 2D textures at one time */
@@ -44,9 +48,7 @@ namespace SuperSmashPolls {
         /** Allows for handling of the menus to be dealbt with differently than gamestates */
         enum MenuState {
 
-            Closed,
-            Main,
-            Score
+            Closed, Main, Score
 
         }
         /** Variable to hold the state of the menu */
@@ -54,11 +56,7 @@ namespace SuperSmashPolls {
 
         enum Difficulty {
 
-            VeryEasy,
-            Easy,
-            Normal,
-            Hard,
-            InHuman
+            VeryEasy, Easy, Normal, Hard, InHuman
 
         }
         /** Variable to hold the current difficulty */
@@ -66,18 +64,12 @@ namespace SuperSmashPolls {
 
         /* The total size of the screen */
         private Vector2 screenSize = new Vector2(1280, 720);
-
-        /* The first player to control */
-        private PlayerClass playerOne = new PlayerClass(new Vector2(200, 200), new Vector2(1, 1), 
-            new Vector2(0.9F, 0.9F));
-
-        /* Character used for testing */
-        private PlayerClass Harambe = new PlayerClass(new Vector2(200, 400), new Vector2(1, 1), 
-            new Vector2(0.9F, 0.9F));
+        /* The first player in the game */
+        private PlayerClass PlayerOne = new PlayerClass(new Vector2(200, 200), 
+                                                        new Vector2(1, 1), 
+                                                        new Vector2(0.9F, 0.9F));
 
         public Game1() {
-
-            Harambe.character = new Point(7, 7); //Sets the character image to Harambe
 
             /* This is the player's screen */
             graphics = new GraphicsDeviceManager(this);
@@ -111,10 +103,13 @@ namespace SuperSmashPolls {
 
             firstFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
 
-            playerOne.SetTexture(Content.Load<Texture2D>("sprite sheet template 32 bit"));
-            Harambe.SetTexture(Content.Load<Texture2D>("sprite sheet template 32 bit"));
-
             menuController.SetMenuFont(Content.Load<SpriteFont>("SpriteFont1"));
+
+            Texture2D test = Content.Load<Texture2D>("TheDonaldWalking");
+
+            TheDonald.AddAnimation(new SpritesheetHandler(1, new Point(16, 32), test, "walking"));
+
+            PlayerOne.SetCharacter(ref TheDonald);
 
         }
 
@@ -176,21 +171,16 @@ namespace SuperSmashPolls {
                 } case GameState.GameLevel: { /* The player is currently playing the game */
 
                         //Moves the player @see ObjectClass.move
-                        playerOne.MoveController(PlayerIndex.One);
+                        PlayerOne.MoveController(PlayerIndex.One);
 
                         //Moves the player down
-                        playerOne.AddGravity();
+                        PlayerOne.AddGravity();
 
                         //Keeps the player on the screen and vibrates the controller if they are hitting the edge
-                        playerOne.KeepPlayerInPlay(screenSize, new Vector2(.5F, .5F), PlayerIndex.One);
+                        PlayerOne.KeepPlayerInPlay(screenSize, new Vector2(.5F, .5F), PlayerIndex.One);
 
                         state = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
                                 GameState.Menu : state;
-
-                        Harambe.AddGravity();
-                        Harambe.KeepInPLay(screenSize);
-
-                        playerOne.ChangeOnIntersect(Harambe.GetRectangle(), Color.Red);
 
                     break;
 
@@ -252,10 +242,7 @@ namespace SuperSmashPolls {
 
                     } case GameState.GameLevel: {
 
-                        //spriteBatch.Draw(playerOne.Texture, playerOne.Position, Color.White);
-                        playerOne.DrawNoAnim(spriteBatch);
-
-                        Harambe.DrawNoAnim(spriteBatch);
+                        PlayerOne.DrawPlayer(ref spriteBatch);
 
                         break;
 

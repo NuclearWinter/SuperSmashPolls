@@ -6,8 +6,9 @@ using System.Text;
 namespace SuperSmashPolls.Characters {
 
 /*******************************************************************************************************************//**
- * TODO Test this class
+ * TODO This class
  * Responsible for providing functions that determine if the user is doing an action.
+ * @note This should be completly based off of user preference
  **********************************************************************************************************************/
     class ActionHandler {
 
@@ -17,7 +18,7 @@ namespace SuperSmashPolls.Characters {
         public ActionHandler() { }
 
 /*******************************************************************************************************************//**
- * Constructor
+ * 
  **********************************************************************************************************************/
 
     }

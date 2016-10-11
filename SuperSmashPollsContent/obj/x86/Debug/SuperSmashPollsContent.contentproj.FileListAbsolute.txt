@@ -1,1 +1,2 @@
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPollsContent\obj\x86\Debug\SuperSmashPollsContent.contentprojResolveAssemblyReference.cache
+C:\Users\william\Documents\SuperSmashPolls\SuperSmashPolls\SuperSmashPollsContent\obj\x86\Debug\SuperSmashPollsContent.contentprojResolveAssemblyReference.cache

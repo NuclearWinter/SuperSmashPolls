@@ -57,6 +57,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Characters\ActionHandler.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="GameItemControl\ObjectClass.cs" />
     <Compile Include="GameItemControl\PlayerClass.cs" />

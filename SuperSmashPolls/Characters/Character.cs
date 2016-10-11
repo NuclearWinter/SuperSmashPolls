@@ -17,14 +17,12 @@ namespace SuperSmashPolls.Characters {
         /** The thumbnail of the character to show on the character selection screen */
         private Texture2D Thumbnail;
         /** The character's face spritesheet @warning Must have items added to it with @see AddAnimation */
-        private List<SpritesheetHandler> CharacterSprite;
+        private List<SpritesheetHandler> CharacterSprite = new List<SpritesheetHandler>();
 
 /*******************************************************************************************************************//**
  * Constructor
  **********************************************************************************************************************/
-         public Character(Texture2D thumbnail) {
-            Thumbnail = thumbnail;
-        }
+         public Character() { }
 
 /*******************************************************************************************************************//**
  * Adds a new action to the CharacterSprite list.
@@ -51,7 +49,7 @@ namespace SuperSmashPolls.Characters {
 
             }
 
-            return CharacterSprite[0]; //Implied else if the function gets here
+            return CharacterSprite[2]; //Implied else if the function gets here
 
         }
 
