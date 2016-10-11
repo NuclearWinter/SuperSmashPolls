@@ -26,7 +26,8 @@ namespace SuperSmashPolls.World_Control {
         private int TimeScale { get; set; } = 1;
         /** The natural force occuring in the world */
         private Vector2 NaturalForce { get; set; } = new Vector2(0, -9.8F);
-        /** The maximum force that can be applied in the game */
+        /** The maximum force that can be applied in the game.
+         * @note This is the equivalent of knocking somehting off the screen 10 times over  */
         private Vector2 GodForce { get; set; } = new Vector2();
 
         /***********************************************************************************************************//**
