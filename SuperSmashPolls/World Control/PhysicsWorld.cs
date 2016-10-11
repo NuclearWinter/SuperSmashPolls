@@ -13,8 +13,11 @@ namespace SuperSmashPolls.World_Control {
  * @note Characters's moves will have an affect on the physics world, this affect should be set through an object of the
  * PhysicsAffect class.
  * @note This also needs to be able to batch draw the entire world
+ * @note This should also do timescale
  **********************************************************************************************************************/
     class PhysicsWorld {
+
+        public int TimeScale = 1;
 
     }
 

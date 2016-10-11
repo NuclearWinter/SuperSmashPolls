@@ -26,20 +26,24 @@ namespace SuperSmashPolls {
         private Texture2D SpriteSheet;
         /* The color to draw the image with, defaults to clear */
         private Color DrawColor { get; set; } = Color.White;
+        /* Used to identify if this animation is the one that should be called */
+        public string Key = "null";
 
 /*******************************************************************************************************************//**
  * Constructor
  * @param playTime The amount of time (in seconds) that it takes to loop through the entire sheet
  * @param imageSize The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)
  * @param spriteSheet The texture of the sheet
+ * @param key The key to identify what this animation is (i.e. walking, jumpinng, etc.)
  * @return A filled SpritesheetHandler class
  **********************************************************************************************************************/
-        public SpritesheetHandler(int playTime, Point imageSize, Texture2D spriteSheet) {
+        public SpritesheetHandler(int playTime, Point imageSize, Texture2D spriteSheet, string key) {
 
             PlayTime = playTime;
             ImageSize = imageSize;
             SheetSize = new Point(spriteSheet.Width / imageSize.X, spriteSheet.Height / imageSize.Y);
             SpriteSheet = spriteSheet;
+            Key = key;
 
         }
 
@@ -49,7 +53,7 @@ namespace SuperSmashPolls {
  * @param batch A reference to the SpriteBatch to draw the textures with.
  * @param image The X and Y coordinate of the image to get.
  * @param position A reference to the position of the character on the screen.
- * @param drawSize The size of the 
+ * @param drawSize How big to draw the base image.
  **********************************************************************************************************************/
         public void DrawImage(ref SpriteBatch batch, Point image, ref Vector2 position, Point drawSize) {
 
