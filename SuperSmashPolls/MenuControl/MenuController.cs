@@ -8,18 +8,18 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SuperSmashPolls {
 
-/*******************************************************************************************************************//**
- * Class to handle user interaction with menus.
- * TODO This class should only be handling instances of the MenuItem class and should not be declaring positions or
- * values of menu items.
- * @note This class will work best if menu items can themself contain sub-menus and can take over menu control when
- * selected. If it is done like this the only thing needed is to control an array of menu items and one 
- * (the title screen) is loaded by default, but is at its core the same as any sub-menus (with the obvious exception 
- * that sub-menus can move backward in the array and the main menu can't, which needs to be dealt with).
- * @note TL;DR This class displays stuff, handles selection of stuff, but should not contain any information of what
- * that stuff actually is.
- * @warning Right now this class is not set up this way
- **********************************************************************************************************************/
+    /***************************************************************************************************************//**
+     * Class to handle user interaction with menus.
+     * TODO This class should only be handling instances of the MenuItem class and should not be declaring positions or
+     * values of menu items.
+     * @note This class will work best if menu items can themself contain sub-menus and can take over menu control when
+     * selected. If it is done like this the only thing needed is to control an array of menu items and one 
+     * (the title screen) is loaded by default, but is at its core the same as any sub-menus (with the obvious exception 
+     * that sub-menus can move backward in the array and the main menu can't, which needs to be dealt with).
+     * @note TL;DR This class displays stuff, handles selection of stuff, but should not contain any information of what
+     * that stuff actually is.
+     * @warning Right now this class is not set up this way
+     ******************************************************************************************************************/
     class MenuController {
 
         /* The font to use on menus */
@@ -58,10 +58,10 @@ namespace SuperSmashPolls {
         private static string highScoreMenuText = "High Scores";
         private static string quitText = "Exit";
 
-/*******************************************************************************************************************//**
- * Constructs the MenuController class.
- * @note Any items to menu lists need to be added here.
- **********************************************************************************************************************/
+        /************************************************************************************************************//**
+         * Constructs the MenuController class.
+         * @note Any items to menu lists need to be added here.
+         **************************************************************************************************************/
         public MenuController(int itemSpacing, int leftMargin, int startHeight, Color backgroundColor, Color fontColor, 
             Color selectedColor) {
             this.itemSpacing = itemSpacing;
@@ -79,20 +79,20 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Sets the selectable texture.
- * Intended to be used to set the texture from within content loading
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Sets the selectable texture.
+         * Intended to be used to set the texture from within content loading
+         **************************************************************************************************************/
         public void SetMenuFont(SpriteFont newFont) {
 
             menuFont = newFont;
 
         }
 
-/*******************************************************************************************************************//**
- * Updates the open menu.
- * @note Tested and working.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Updates the open menu.
+         * @note Tested and working.
+         **************************************************************************************************************/
         private void DrawList(List<SelectableItem> toDraw, SpriteBatch gameSpriteBatch) {
 
             int currentHeight = startHeight;
@@ -107,10 +107,10 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Finds which item is currently selected.
- * @return The index of the currently selected item or -1 if a selected item could not be found.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Finds which item is currently selected.
+         * @return The index of the currently selected item or -1 if a selected item could not be found.
+         **************************************************************************************************************/
         private int FindSelected(List<SelectableItem> workList) {
 
             for (int i = 0; i < workList.Count; ++i) {
@@ -125,9 +125,9 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Updates the menus text color to be the newly selected item.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Updates the menus text color to be the newly selected item.
+         **************************************************************************************************************/
         private void MoveSelectaed(bool up, List<SelectableItem> workList) {
 
             int currentSelected = FindSelected(workList); 
@@ -148,9 +148,9 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Determines if the desired item is currently selected.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Determines if the desired item is currently selected.
+         **************************************************************************************************************/
         private bool IsSelected(List<SelectableItem> workList, string find) {
 
             int currentlySelected = FindSelected(workList);
@@ -159,9 +159,9 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Updates the open menu.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Updates the open menu.
+         **************************************************************************************************************/
         private int lastSecondUpdated = 0;
 
         public void UpdateOpenMenu(PlayerIndex player) {
@@ -179,9 +179,9 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Determines if the game should be switched to single player mode.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Determines if the game should be switched to single player mode.
+         **************************************************************************************************************/
         public bool StartSinglePlayer(PlayerIndex player) {
 
             if (IsSelected(mainMenuItems, singlePlayerOptionText)) {
@@ -194,10 +194,10 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Determines if the game should be quit.
- * TODO make a child class that contains specific functions like these.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Determines if the game should be quit.
+         * TODO make a child class that contains specific functions like these.
+         **************************************************************************************************************/
         public bool QuitGame(PlayerIndex player) {
 
             if (IsSelected(mainMenuItems, quitText)) {
@@ -210,10 +210,10 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Finds if the player has selected to open the high score menu.
- * TODO make a child class that contains specific functions like these.
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Finds if the player has selected to open the high score menu.
+         * TODO make a child class that contains specific functions like these.
+         **************************************************************************************************************/
         public bool OpenHighScore(PlayerIndex player) {
 
             if (IsSelected(mainMenuItems, highScoreMenuText)) {
@@ -226,9 +226,9 @@ namespace SuperSmashPolls {
 
         }
 
-/*******************************************************************************************************************//**
- * Draws the open menu
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Draws the open menu
+         **************************************************************************************************************/
         public void DrawOpenMenu(SpriteBatch gameSpriteBatch) {
 
             switch (currentMenu) {

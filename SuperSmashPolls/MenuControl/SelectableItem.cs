@@ -10,51 +10,24 @@ using Microsoft.Xna.Framework;
 
 namespace SuperSmashPolls {
 
-/*******************************************************************************************************************//**
- * Intended mainly to be used from the @see MenuController.cs class, the purpose of this class is to allow the printing 
- * of text with colors to represent which item is selected.
- * @deprecated This class will soon not be used when the MenuItem class is implimented.
- **********************************************************************************************************************/
+    /***************************************************************************************************************//**
+     * Intended mainly to be used from the @see MenuController.cs class, the purpose of this class is to allow the printing 
+     * of text with colors to represent which item is selected.
+     * @deprecated This class will soon not be used when the MenuItem class is implimented.
+     ******************************************************************************************************************/
     class SelectableItem {
 
-        /** The text held within this item */
-        private string text;
-        /** The color of the text */
-        private Color textColor;
+        /** The Text held within this item */
+        private string Text;
+        /** The color of the Text */
+        public Color TextColor { get; set; }
 
-/*******************************************************************************************************************//**
- * Constructs the SelectableItem class
- **********************************************************************************************************************/
+        /***********************************************************************************************************//**
+         * Constructs the SelectableItem class
+         **************************************************************************************************************/
         public SelectableItem(string text, Color textColor) {
-            this.text = text;
-            this.textColor = textColor;
-        }
-
-
-/*******************************************************************************************************************//**
- * Gets the text from this item
- **********************************************************************************************************************/
-        public string Text {
-
-            get {
-                return text;
-            }
-
-        }
-
-/*******************************************************************************************************************//**
- * Gets and sets the color of the text.
- **********************************************************************************************************************/
-        public Color TextColor {
-
-            get {
-                return textColor;
-            }
-
-            set {
-                textColor = value;
-            }
-
+            this.Text = text;
+            this.TextColor = textColor;
         }
 
     } //END class SelectableItem
