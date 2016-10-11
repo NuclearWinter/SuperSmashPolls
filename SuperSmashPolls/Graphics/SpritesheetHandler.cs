@@ -30,7 +30,7 @@ namespace SuperSmashPolls { //joe used 16x32
         private readonly Texture2D SpriteSheet;
         /* The color to draw the image with, defaults to clear */
         private Color DrawColor { get; set; } = Color.White;
-        /* Used to identify if this animation is the one that should be called */
+        /* Used to identify if this animation is the one that should be called. Public to check keys easily. */
         public string Key = "null";
 
         /***********************************************************************************************************//**

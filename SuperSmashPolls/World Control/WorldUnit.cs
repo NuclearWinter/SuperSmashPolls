@@ -13,10 +13,26 @@ namespace SuperSmashPolls.World_Control {
     /***************************************************************************************************************//**
      * TODO This class
      * This class will account for scaling of the physics system based on the size of the player's screen size.
+     * @note WorldUnit should replace position and force references throughout the rest of the game.
      ******************************************************************************************************************/
     class WorldUnit {
         /* The size of the screen (in pixels) */
         private Vector2 ScreenSize;
+        /* The position used by this WorldUnit class */
+        private Vector2 Position;
+        /* The maximum force that can possibly be applied in the game world */
+        private Vector2 GodForce;
+
+        /***********************************************************************************************************//**
+         * Construct a WorldUnit class.
+         * @param screenSize Reference to the size of the players screen (in pixels)
+         * @note Doing it like this allows for the screensize to be changed without messing up physics.
+         **************************************************************************************************************/
+        public WorldUnit(ref Vector2 screenSize, Vector2 position, ref Vector2 godForce) {
+            ScreenSize = screenSize;
+            Position = position;
+            GodForce = godForce;
+        }
 
         /***********************************************************************************************************//**
          * TODO This method
