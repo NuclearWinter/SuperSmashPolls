@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿/*******************************************************************************************************************//**
+ * @file SpritesheetHandler.cs
+ **********************************************************************************************************************/
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -16,14 +20,14 @@ namespace SuperSmashPolls { //joe used 16x32
         private int PlayTime;
         /* The piece of the sheet to draw based on PlayTime @see DrawWithUpdate */
         private Point AnimatedPoint;
-        /* The last time that the character's animation was changed */
+        /* The last time that AnimatedPoint was updated */
         private DateTime LastUpdateTime;
         /* The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32) */
         private Point ImageSize;
         /* The amount of images on the X and Y axis, calculated in the constructor */
         private Point SheetSize;
         /* The spritesheet to take a value from (can be just one image) */
-        private Texture2D SpriteSheet;
+        private readonly Texture2D SpriteSheet;
         /* The color to draw the image with, defaults to clear */
         private Color DrawColor { get; set; } = Color.White;
         /* Used to identify if this animation is the one that should be called */
@@ -73,11 +77,11 @@ namespace SuperSmashPolls { //joe used 16x32
          **************************************************************************************************************/
         public void DrawWithUpdate(ref SpriteBatch batch, ref Vector2 position, int drawMultiplier = 1) {
 
-            DateTime now = DateTime.Now;
+            DateTime Now = DateTime.Now;
 
-            if (Math.Abs(now.Millisecond - LastUpdateTime.Millisecond) >= (PlayTime*1000)/(SheetSize.X * SheetSize.Y)) {
+            if (Math.Abs(Now.Millisecond - LastUpdateTime.Millisecond) >= (PlayTime*1000)/(SheetSize.X * SheetSize.Y)) {
 
-                LastUpdateTime = now;
+                LastUpdateTime = Now;
 
                 if (AnimatedPoint.Y == SheetSize.Y -1) {
 

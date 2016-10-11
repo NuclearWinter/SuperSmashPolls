@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿/*******************************************************************************************************************//**
+ * @file WorldUnit.cs
+ **********************************************************************************************************************/
+
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
