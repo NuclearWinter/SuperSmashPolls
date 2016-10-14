@@ -18,32 +18,63 @@ namespace SuperSmashPolls.MenuControl {
      * to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
      ******************************************************************************************************************/
     class MenuItem {
-
-        /* TODO An object to contain a reference to a void function that handles what to do on selection. */
-        public delegate void SelectMethod();
-        /* The method to run when the item is selected */
-        private SelectMethod OnClick;
-        /* The position on the screen of the item */
+        /** The position on the screen of the item */
         private Point Position;
-        /* The texture to use for this item (not drawn when the menu is selected) */
+        /** The texture to use for the background on this item (not drawn when the menu is selected) */
         private Texture2D Texture;
-        /* The background for this menu item */
-        private Texture2D Background;
-        /* The text for this item */
+        /** The text for this item */
         private string Text;
-        /* The color for this item's text */
+        /** The color for this item's text */
         private Color TextColor { get; set; } = Color.Black;
-        /* The item's to display on this page */
-
+        /** Overlay this item's sub-menu on top of the current menu */
+        private bool SubOverlay { get; set; } = false;
+        /** The background for this menu item (if the item is selected) */
+        private Texture2D Background { get; set; } = null;
+        /** The item's to display on this page */
+        private List<MenuItem> ContainedItems;
 
         /***********************************************************************************************************//**
          * Constructor
          **************************************************************************************************************/
-        public MenuItem(Point position, Texture2D texture, string text, SelectMethod selectMethod) {
+        public MenuItem(Point position, Texture2D texture, string text) {
 
             Position = position;
+            Texture = texture;
             Text = text;
-            OnClick = selectMethod;
+
+        }
+
+        /***********************************************************************************************************//**
+         * Add an item to display when this screen is being drawn.
+         * @param position The position of this item on the screen.
+         * @note Position must be in terms of WorldUnit Ratio.
+         * @param texture The texture of this item (to show behind text)
+         * @param text The text to show on this item
+         **************************************************************************************************************/
+        public void AddItem(Point position, string text = "", Texture2D texture = null) {
+
+            ContainedItems.Add(new MenuItem(position, texture, text));
+
+        }
+
+        /***********************************************************************************************************//**
+         * Display the items in ContainedItems and other menu items.
+         * This is for if this item has a menu that it can display.
+         **************************************************************************************************************/
+        public void DisplayMenu() {
+            
+
+
+        }
+
+
+        /***********************************************************************************************************//**
+         * Display this item.
+         * This is for when this item is displayed (on a different menu).
+         **************************************************************************************************************/
+        public void DisplayItem() {
+            
+
 
         }
 
