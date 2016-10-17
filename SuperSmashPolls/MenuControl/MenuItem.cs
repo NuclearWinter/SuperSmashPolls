@@ -40,6 +40,7 @@ namespace SuperSmashPolls.MenuControl {
         public readonly string Text;
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
+        //TODO give each item a MenuCommand to return if selected
 
         /* Anything below here must be loaded after the constructor */
 
