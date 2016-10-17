@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 namespace SuperSmashPolls {
 
     /***************************************************************************************************************//**
+     * @deprecated Replaced with the more agile MenuItem class
      * Class to handle user interaction with menus.
      * TODO This class should only be handling instances of the MenuItem class and should not be declaring positions or
      * values of menu items.
@@ -39,7 +40,7 @@ namespace SuperSmashPolls {
         /* Color for text */
         private readonly Color fontColor;
         /* Color to use for text when that item is selected */
-        private Color selectedColor;
+        private readonly Color selectedColor;
         /* Holds the items to be placed on screen from the main menu */
         private readonly List<SelectableItem> mainMenuItems = new List<SelectableItem>();
             
@@ -51,7 +52,7 @@ namespace SuperSmashPolls {
             PauseScreen,      //The screen to use when the player pauses the game while playing
             OptionsMenu,      //Shows all the different options to be changed
             MultiplayerMenu,  //The multiplayer interface
-            SinglePlayerMenu //The single player gamemode selection screen
+            SinglePlayerMenu  //The single player gamemode selection screen
 
         }
         /* Dictates which menu to display */
@@ -103,7 +104,7 @@ namespace SuperSmashPolls {
 
             foreach (var item in toDraw) {
                 
-                gameSpriteBatch.DrawString(menuFont, item.Text, new Vector2(leftMargin, currentHeight), item.TextColor);
+                //gameSpriteBatch.DrawString(menuFont, item.Text, new Vector2(leftMargin, currentHeight), item.TextColor);
 
                 currentHeight += itemSpacing;
 
@@ -154,12 +155,13 @@ namespace SuperSmashPolls {
 
         /***********************************************************************************************************//**
          * Determines if the desired item is currently selected.
+         * @warning Totally broken, kept for archival reasons
          **************************************************************************************************************/
         private bool IsSelected(List<SelectableItem> workList, string find) {
 
             int currentlySelected = FindSelected(workList);
 
-            return find == workList[currentlySelected].Text;
+            return (find == "word");
 
         }
 

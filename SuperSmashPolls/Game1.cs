@@ -15,6 +15,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using SuperSmashPolls.Characters;
 using SuperSmashPolls.GameItemControl;
+using SuperSmashPolls.MenuControl;
+using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls {
 
@@ -27,51 +29,28 @@ namespace SuperSmashPolls {
 
         /* Manages graphics. */
         GraphicsDeviceManager Graphics;
+        /* The total size of the screen */
+        private static Vector2 ScreenSize = new Vector2(1280, 720);
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
-        /* A basic font to use */
-        private SpriteFont FirstFont;
-
-        /** Handles the menu interface for the game */
-        private MenuController MenuControl = new MenuController(20, 20, 20, Color.AntiqueWhite, Color.Aquamarine, 
-            Color.BlanchedAlmond);
+        /* A basic font to use for essentially everything in the game */
+        private SpriteFont GameFont;
+        /* Menu system for the game to use */
+        private MenuItem Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true, 
+            new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
+        /* The most basic Functioning WorldUnit */
+        private WorldUnit EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
 
         /** Handles the different states that the game can be in */
         enum GameState {
 
             Menu,           //The menu is open
-            LoadingScreen,  //The screen to use while loading the game
             GameLevel,      //The first level of the game
-            PurchaseScreen, //Screen for players to use when purchasing items
             ScoreScreen
 
         };
         /** Variable to hold the state of the game */
         private GameState state = GameState.Menu;
-
-        /** Allows for handling of the menus to be dealbt with differently than gamestates */
-        enum MenuState {
-
-            Closed, Main, Score
-
-        }
-        /** Variable to hold the state of the menu */
-        private MenuState Menu = MenuState.Main;
-
-        enum Difficulty {
-
-            VeryEasy, Easy, Normal, Hard, InHuman
-
-        }
-        /** Variable to hold the current difficulty */
-        private Difficulty SetDifficulty = Difficulty.Normal;
-
-        /* The total size of the screen */
-        private Vector2 ScreenSize = new Vector2(1280, 720);
-        /* The first player in the game */
-        private PlayerClass PlayerOne = new PlayerClass(new Vector2(200, 200), 
-                                                        new Vector2(1, 1), 
-                                                        new Vector2(0.9F, 0.9F));
 
         /***********************************************************************************************************//** 
          * Constructs the game's class
@@ -105,21 +84,28 @@ namespace SuperSmashPolls {
 
         /***********************************************************************************************************//** 
          * LoadContent will be called once per game and is the place to load all of your content.
+         * @note The menu is created here
          **************************************************************************************************************/
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             Batch = new SpriteBatch(GraphicsDevice);
 
-            FirstFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
-
-            MenuControl.SetMenuFont(Content.Load<SpriteFont>("SpriteFont1"));
+            GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
 
             TheDonald.AddAnimation(new SpritesheetHandler(1, 
                                                           new Point(16, 32), 
                                                           Content.Load<Texture2D>("TheDonaldWalking"), 
                                                           "walking"));
 
-            PlayerOne.SetCharacter(ref TheDonald);
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Single Player", false,
+                EmptyUnit, true));
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Multi Player", false,
+                EmptyUnit, true));
+
+            Menu.SetFontForAll(GameFont);
+
+            //PlayerOne.SetCharacter(ref TheDonald);
 
         }
 
@@ -144,58 +130,26 @@ namespace SuperSmashPolls {
 
                 case GameState.Menu: { /* The player has the menu open */
 
-                    MenuControl.UpdateOpenMenu(PlayerIndex.One);
+                    MenuCommands currentCommand = Menu.UpdateMenu(PlayerIndex.One);
 
-                    switch (Menu) { /* Used to deal with the correct menu */
-
-                        case MenuState.Main: { /* The player is at the main menu */
-
-                            state = (MenuControl.StartSinglePlayer(PlayerIndex.One)) ? GameState.GameLevel : state;
-
-                            Menu = (MenuControl.OpenHighScore(PlayerIndex.One)) ? MenuState.Score : Menu;
-
-                            if (MenuControl.QuitGame(PlayerIndex.One))
-                                this.Exit();
-
-                            break;
-
-                        } case MenuState.Score: { /* The player is on the score screen */
-
-                                if (GamePad.GetState(PlayerIndex.One).Buttons.B == ButtonState.Pressed)
-                                    
-                                    Menu = MenuState.Main;
-
-                            break;
-
-                        }
-
-                    }
-
-                    break;
-
-                } case GameState.LoadingScreen: { /* The character is loading into the game */
-
-                        //TODO create loading screen
+                    if (currentCommand == MenuCommands.StartGame)
+                        state = GameState.GameLevel;
 
                     break;
 
                 } case GameState.GameLevel: { /* The player is currently playing the game */
 
                         //Moves the player @see ObjectClass.move
-                        PlayerOne.MoveController(PlayerIndex.One);
+                        //PlayerOne.MoveController(PlayerIndex.One);
 
                         //Moves the player down
-                        PlayerOne.AddGravity();
+                        //PlayerOne.AddGravity();
 
                         //Keeps the player on the screen and vibrates the controller if they are hitting the edge
-                        PlayerOne.KeepPlayerInPlay(ScreenSize, new Vector2(.5F, .5F), PlayerIndex.One);
+                        //PlayerOne.KeepPlayerInPlay(ScreenSize, new Vector2(.5F, .5F), PlayerIndex.One);
 
                         state = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
                                 GameState.Menu : state;
-
-                    break;
-
-                } case GameState.PurchaseScreen: {
 
                     break;
 
@@ -225,39 +179,15 @@ namespace SuperSmashPolls {
 
                     case GameState.Menu: {
 
-                        MenuControl.DrawOpenMenu(Batch);
-
-                        switch (Menu) {
-
-                            case MenuState.Main: {
-
-                                    //Right now the main menu needs nothing different
-
-                                    break;
-
-                            } case MenuState.Score: {
-
-                                    GraphicsDevice.Clear(Color.Gray);
-
-                                    break;
-
-                            }
-
-                        }
-
-                        break;
-
-                    } case GameState.LoadingScreen: {
+                        Menu.DisplayMenu(Batch);
 
                         break;
 
                     } case GameState.GameLevel: {
 
-                        PlayerOne.DrawPlayer(ref Batch);
+                        GraphicsDevice.Clear(Color.Wheat);
 
-                        break;
-
-                    } case GameState.PurchaseScreen: {
+                        //PlayerOne.DrawPlayer(ref Batch);
 
                         break;
 

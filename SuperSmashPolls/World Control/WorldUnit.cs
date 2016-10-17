@@ -22,9 +22,9 @@ namespace SuperSmashPolls.World_Control {
         /* The maximum force that can possibly be applied in the game world */
         public Vector2 GodForce;
         /* The position used by this WorldUnit class */
-        private Vector2 Position;
+        public Vector2 Position;
         /* The force to be applied by this object (as a percent of GodForce) */
-        private Vector2 Force;
+        public Vector2 Force;
 
         /***********************************************************************************************************//**
          * Construct a WorldUnit class for use with position.
@@ -93,6 +93,24 @@ namespace SuperSmashPolls.World_Control {
         public Vector2 GetScreenPosition (float xRatio, float yRatio) {
             
             return new Vector2(xRatio * ScreenSize.X, yRatio * ScreenSize.Y);
+
+        }
+
+        /***********************************************************************************************************//**
+         * Gets this item's position on the screen
+         **************************************************************************************************************/
+        public Vector2 GetThisPosition() {
+
+            return Position * ScreenSize;
+
+        }
+
+        /***********************************************************************************************************//**
+         * 
+         **************************************************************************************************************/
+        public WorldUnit Add(ref WorldUnit i, WorldUnit j) {
+            
+            return new WorldUnit(ref i.ScreenSize, i.Position + j.Position);
 
         }
 
