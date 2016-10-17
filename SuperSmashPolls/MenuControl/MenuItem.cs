@@ -40,7 +40,8 @@ namespace SuperSmashPolls.MenuControl {
         public readonly string Text;
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
-        //TODO give each item a MenuCommand to return if selected
+        /* The command to use if clicked on */
+        public readonly MenuCommands Command = MenuCommands.Nothing;
 
         /* Anything below here must be loaded after the constructor */
 
@@ -78,12 +79,14 @@ namespace SuperSmashPolls.MenuControl {
          * @param textBuffer An amount to displace the text past the start of the item (to center with backgrounds)
          * @param highlightable Whether or not this item is highlightable
          **************************************************************************************************************/
-        public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable) {
-            Position = position;
-            Text = text;
-            HasSubmenu = hasSubmenu;
-            TextBuffer = textBuffer;
+        public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
+            MenuCommands command = MenuCommands.Nothing) {
+            Position      = position;
+            Text          = text;
+            HasSubmenu    = hasSubmenu;
+            TextBuffer    = textBuffer;
             Highlightable = highlightable;
+            Command       = command;
         }
 
         /***********************************************************************************************************//**
@@ -132,11 +135,15 @@ namespace SuperSmashPolls.MenuControl {
                 ContainedItems[CurrentHighlightedItem].TextColor = Color.Black;
 
                 //Goes down to the next menu
-                if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.A))
-                    if (ContainedItems[CurrentHighlightedItem].HasSubmenu) {
+                if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.A)) {
+
+                    if (ContainedItems[CurrentHighlightedItem].HasSubmenu)
                         DrawDown = CurrentHighlightedItem;
-                    } else
-                        return MenuCommands.StartGame;
+                    else
+                        return ContainedItems[CurrentHighlightedItem].Command;
+
+                }
+
                 //Highlightes one item up
                 if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.DPadDown))
                     for (int i = CurrentHighlightedItem + 1; i < ContainedItems.Count(); ++i) {

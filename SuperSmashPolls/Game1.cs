@@ -97,11 +97,14 @@ namespace SuperSmashPolls {
                                                           Content.Load<Texture2D>("TheDonaldWalking"), 
                                                           "walking"));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Single Player", false,
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.25F)), "Single Player", false,
+                EmptyUnit, true, MenuCommands.StartGame));
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.3F)), "Multi Player", false,
                 EmptyUnit, true));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Multi Player", false,
-                EmptyUnit, true));
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.35F)), "Exit", false,
+                EmptyUnit, true, MenuCommands.ExitGame));
 
             Menu.SetFontForAll(GameFont);
 
@@ -134,6 +137,8 @@ namespace SuperSmashPolls {
 
                     if (currentCommand == MenuCommands.StartGame)
                         state = GameState.GameLevel;
+                    else if (currentCommand == MenuCommands.ExitGame)
+                        this.Exit();
 
                     break;
 
