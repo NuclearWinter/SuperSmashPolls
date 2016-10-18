@@ -108,9 +108,9 @@ namespace SuperSmashPolls.World_Control {
         /***********************************************************************************************************//**
          * 
          **************************************************************************************************************/
-        public WorldUnit Add(ref WorldUnit i, WorldUnit j) {
+        public WorldUnit Add(WorldUnit j) {
             
-            return new WorldUnit(ref i.ScreenSize, i.Position + j.Position);
+            return new WorldUnit(ref ScreenSize, Position + j.Position);
 
         }
 

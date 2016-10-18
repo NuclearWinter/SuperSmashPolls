@@ -30,14 +30,13 @@ namespace SuperSmashPolls {
         /* Manages graphics. */
         GraphicsDeviceManager Graphics;
         /* The total size of the screen */
-        private static Vector2 ScreenSize = new Vector2(1280, 720);
+        private static Vector2 ScreenSize = new Vector2(600, 600);
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
         /* Menu system for the game to use */
-        private MenuItem Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true, 
-            new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
+        private MenuItem Menu;
         /* The most basic Functioning WorldUnit */
         private WorldUnit EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
 
@@ -50,7 +49,7 @@ namespace SuperSmashPolls {
 
         };
         /** Variable to hold the state of the game */
-        private GameState state = GameState.Menu;
+        private GameState State = GameState.Menu;
 
         /***********************************************************************************************************//** 
          * Constructs the game's class
@@ -69,7 +68,6 @@ namespace SuperSmashPolls {
 
         }
 
-
         /***********************************************************************************************************//** 
          * Allows the game to perform any initialization it needs to before starting to run. 
          * This is where it can query for any required services and load any non-graphic related content. Calling 
@@ -77,7 +75,22 @@ namespace SuperSmashPolls {
          **************************************************************************************************************/
         protected override void Initialize() {
             /* Initialize varibales here */
-        
+            Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
+                new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Single Player", false,
+                EmptyUnit, true, true, MenuCommands.StartGame));
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.3F)), "Multi Player", false,
+                EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
+
+                Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), 
+                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Exit", false,
+                EmptyUnit, true, true, MenuCommands.ExitGame));
+
+
             base.Initialize();
 
         }
@@ -96,15 +109,6 @@ namespace SuperSmashPolls {
                                                           new Point(16, 32), 
                                                           Content.Load<Texture2D>("TheDonaldWalking"), 
                                                           "walking"));
-
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.25F)), "Single Player", false,
-                EmptyUnit, true, MenuCommands.StartGame));
-
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.3F)), "Multi Player", false,
-                EmptyUnit, true));
-
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.35F)), "Exit", false,
-                EmptyUnit, true, MenuCommands.ExitGame));
 
             Menu.SetFontForAll(GameFont);
 
@@ -129,16 +133,28 @@ namespace SuperSmashPolls {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            switch (state) {
+            switch (State) {
 
                 case GameState.Menu: { /* The player has the menu open */
 
                     MenuCommands currentCommand = Menu.UpdateMenu(PlayerIndex.One);
 
-                    if (currentCommand == MenuCommands.StartGame)
-                        state = GameState.GameLevel;
-                    else if (currentCommand == MenuCommands.ExitGame)
-                        this.Exit();
+                    switch (currentCommand) {
+                        case MenuCommands.StartGame:
+                            State = GameState.GameLevel;
+                            break;
+                        case MenuCommands.ExitGame:
+                            this.Exit();
+                            break;
+                        case MenuCommands.BackToMainMenu:
+                            Menu.DrawDown = -1;
+                            break;
+                        case MenuCommands.MultiplayerMenu:
+                            Menu.DrawDown = 1;
+                            break;
+                        default:
+                            break;
+                    } 
 
                     break;
 
@@ -153,8 +169,8 @@ namespace SuperSmashPolls {
                         //Keeps the player on the screen and vibrates the controller if they are hitting the edge
                         //PlayerOne.KeepPlayerInPlay(ScreenSize, new Vector2(.5F, .5F), PlayerIndex.One);
 
-                        state = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
-                                GameState.Menu : state;
+                        State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
+                                GameState.Menu : State;
 
                     break;
 
@@ -180,7 +196,7 @@ namespace SuperSmashPolls {
 
             Batch.Begin();
 
-                switch (state) {
+                switch (State) {
 
                     case GameState.Menu: {
 
