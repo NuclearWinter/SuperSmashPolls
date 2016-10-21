@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls {
 
@@ -16,171 +17,96 @@ namespace SuperSmashPolls {
      * @note TODO This needs to be able to store the direction and magnitude that the object is going in.
      ******************************************************************************************************************/
     public class ObjectClass {
-
-        /** Which action the charater is currently doin */
-        enum Action {
-
-            Idle,
-            Walking
-
-        }
-        /** Holds the current state of the character */
-        Action currentAction = Action.Idle;
-
-        /* The objects position on the screen */
-        public Vector2 Position;
-        /* The vector of where the object is going and how fast */
-        private Vector2 objectSpeed = new Vector2(0, 0);
-        /* The texture to use with this object */
-        public Texture2D Texture;
-        /* The max acceleration to use for the object */
-        private Vector2 maxSpeed;
-        /* The current rate of acceleration of the object */
-        private Vector2 acceleration;
-        /* The rate the object will decellerate */
-        private Vector2 decelleration = new Vector2(0.90F, 0.90F);
-        /* The size of the object's drawn texture */
-        protected Vector2 size = new Vector2(64, 64);
-
-        /* The amount of animations in the sheet */
-        Point sheetAnimationDimentions = new Point(1, 0);
-        /* The size of the one character pose */
-        Point frameSize = new Point(32, 32);
-        /* The current character pose that is selected (in dimentions not in pixels) */
-        Point currentFrame = new Point(1, 0);
+        /** The objects position */
+        private WorldUnit DrawPosition;
+        /** The position of this object after forces are applied (without this objects would jump around)
+         * @note The character's fallspeed should be in here */
+        public WorldUnit PhysicsPosition;
+        /** The object's size. @note This must be based off of coming down from (0,0) */
+        private WorldUnit Size;
+        /** The forces to apply to this object */
+        private List<WorldUnit> ApplyForces = new List<WorldUnit>();
+        /** The forces that this object is applying */
+        private List<WorldUnit> ApplyingForces = new List<WorldUnit>();
+        /** The texture for this object */
+        private SpritesheetHandler Texture;
+        /** How much this object weighs (If it is a static object just don't update it) */
+        public int Weight;
+        /** The last time this object was updated */
+        private DateTime LastTimeUpdated = DateTime.Now;
+        /** Whether or not this object's position should be updated */
+        private readonly bool Solid;
 
         /***********************************************************************************************************//**
-         * Constructs the object class.
-         * @param startPosition The position on the screen to start the object at
-         * @param acceleration The maximum delta V that the object can have
-         * @param maxSpeed The maximum speed that the object can travel
+         * Constructor
          **************************************************************************************************************/
-        public ObjectClass(Vector2 startPosition, Vector2 maxSpeed, Vector2 decelleration) {
+        public ObjectClass(WorldUnit drawPosition, int weight, WorldUnit size, bool solid = false) {
+            DrawPosition    = drawPosition;
+            PhysicsPosition = drawPosition;
+            Weight          = weight;
+            Size            = size;
+            Solid = solid;
+        }
 
-            this.Position      = startPosition;
-            this.maxSpeed      = maxSpeed;
-            this.decelleration = decelleration;
+        /***********************************************************************************************************//**
+         * Give this object a SpriteSheetHandler
+         **************************************************************************************************************/
+        public void AssignSpriteSheet(SpritesheetHandler spritesheet) {
+
+            Texture = spritesheet;
 
         }
 
         /***********************************************************************************************************//**
-         * Allows the object's texture to be set during content loading.
-         * @param newTexture The texture to set the object to.
-         * @note Finished and tested.
+         * Update this object
          **************************************************************************************************************/
-        public void SetTexture(Texture2D newTexture) {
+        public void Update() {
 
-            this.Texture = newTexture;
+            if (LastTimeUpdated.Subtract(DateTime.Now).TotalSeconds < 1 || Solid) return;
 
-        }
+            LastTimeUpdated = DateTime.Now;
 
-        /***********************************************************************************************************//**
-         * Animates the character.
-         * The sheet im using is 32-bit
-         * @note Not near being done
-         **************************************************************************************************************/
-        public void AnimateCharacter() {
+            foreach (var i in ApplyForces) {
 
-            switch (currentAction) {
+                PhysicsPosition = PhysicsPosition.Add(i.Scale(Weight));
 
-                case Action.Idle:
-                    break;
-                case Action.Walking: {
-
-
-
-                    break;
-
-                }
+                if (i.Duration == 0)
+                    ApplyForces.Remove(i);
+                else
+                    i.Duration -= 1;
 
             }
 
-        }
-
-        /***********************************************************************************************************//**
-         * This is used to move the object based on the left joystick.
-         * @param speedRatio The percentage (in decimal) of how fast the object should go relative to its max speed
-         * @note Finished and tested.
-         **************************************************************************************************************/
-        public void Move(Vector2 speedRatio) {
-
-            if (speedRatio != new Vector2(0, 0)) {
-
-                acceleration = maxSpeed * speedRatio;
-
-                objectSpeed += acceleration;
-
-            } else if (objectSpeed != new Vector2(0, 0))
-                objectSpeed *= decelleration;
-
-            Position += objectSpeed;
+            DrawPosition.Position = Vector2.Lerp(DrawPosition.Position, PhysicsPosition.Position, 0.25F);
 
         }
 
         /***********************************************************************************************************//**
-         * Offers an intersect function equivalent for objects with 2D Vectors.
-         * @param position The position of the other object.
-         * @param texture The texture of the other object.
-         * @return Whether or not the object and the other object intersect.
+         * Draw this object
          **************************************************************************************************************/
-        public bool Overlap(Vector2 position, Texture2D texture) {
-
-            return new Rectangle((int)this.Position.X, (int)this.Position.Y, this.Texture.Width, this.Texture.Height)
-                .Intersects(new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height));
+        public void Draw(ref SpriteBatch batch) {
+            
+            Texture.DrawWithUpdate(ref batch, DrawPosition.GetThisPosition(), ref Size);
 
         }
 
         /***********************************************************************************************************//**
-         * Restrict the object from entering the designated area.
-         *  @param minimum The coordinates of the first corner of the rectangle.
-         *  @param maximum The coordinates of the second corner of the rectangle.
-         *  @note WIP
+         * Apply force to object
+         * @param force The force to apply to this object
          **************************************************************************************************************/
-        public void Boundobject(Vector2 position, Texture2D texture) {
-
-            //finish me
+        public void AddForce(WorldUnit force) {
+            
+            ApplyForces.Add(force);
 
         }
 
         /***********************************************************************************************************//**
-         * Limits the object to sataying inside the designated area.
-         * It is assumed that the other (top) corner is (0, 0).
-         * @param bottomCorner The right-most bottom corner
-         * @return Whether or not the object is hitting on the X or Y sides
-         * @note Tested and working
+         * Get's the rectangle of this object
          **************************************************************************************************************/
-        public bool KeepInPLay(Vector2 bottomCorner) {
-
-            bool hittingX = true, hittingY = true;
-
-            if (Position.X < 0)
-                Position.X = 0;
-            else if (Position.X + size.X > bottomCorner.X)
-                Position.X = bottomCorner.X - size.X; //This accounts for texture size
-            else
-                hittingX = false; //If neither of the top two were true, it's not hitting the X side
-
-
-            if (Position.Y < 0)
-                Position.Y = 0;
-            else if (Position.Y + size.Y > bottomCorner.Y) { 
-                Position.Y = bottomCorner.Y - size.Y; //This accounts for texture size
-
-                hittingY = false; // gravity will always pull the player down
-
-            } else
-                hittingY = false; //If neither of the top two were true, it's not hitting the Y side
-
-            return (hittingX || hittingY);
-
-        }
-
-        /***********************************************************************************************************//**
-         * Moves the player down with the force of gravity
-         **************************************************************************************************************/
-        public void AddGravity(float gravity = 9.80F) {
-
-            Position.Y += gravity;
+        public Rectangle GetRectangle() {
+            
+            return new Rectangle((int) PhysicsPosition.Position.X, (int) PhysicsPosition.Position.Y, Size.GetXSize(), 
+                Size.GetYSize());
 
         }
 
