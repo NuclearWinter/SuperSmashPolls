@@ -19,8 +19,9 @@ namespace SuperSmashPolls {
     public class ObjectClass {
         /** The objects position */
         private WorldUnit DrawPosition;
-        /** The position of this object after forces are applied (without this objects would jump around) */
-        private WorldUnit PhysicsPosition;
+        /** The position of this object after forces are applied (without this objects would jump around)
+         * @note The character's fallspeed should be in here */
+        public WorldUnit PhysicsPosition;
         /** The object's size. @note This must be based off of coming down from (0,0) */
         private WorldUnit Size;
         /** The forces to apply to this object */
@@ -33,15 +34,18 @@ namespace SuperSmashPolls {
         public int Weight;
         /** The last time this object was updated */
         private DateTime LastTimeUpdated = DateTime.Now;
+        /** Whether or not this object's position should be updated */
+        private readonly bool Solid;
 
         /***********************************************************************************************************//**
          * Constructor
          **************************************************************************************************************/
-        public ObjectClass(WorldUnit drawPosition, int weight, WorldUnit size) {
+        public ObjectClass(WorldUnit drawPosition, int weight, WorldUnit size, bool solid = false) {
             DrawPosition    = drawPosition;
             PhysicsPosition = drawPosition;
             Weight          = weight;
             Size            = size;
+            Solid = solid;
         }
 
         /***********************************************************************************************************//**
@@ -58,7 +62,7 @@ namespace SuperSmashPolls {
          **************************************************************************************************************/
         public void Update() {
 
-            if (LastTimeUpdated.Subtract(DateTime.Now).TotalSeconds < 1) return;
+            if (LastTimeUpdated.Subtract(DateTime.Now).TotalSeconds < 1 || Solid) return;
 
             LastTimeUpdated = DateTime.Now;
 
@@ -93,6 +97,16 @@ namespace SuperSmashPolls {
         public void AddForce(WorldUnit force) {
             
             ApplyForces.Add(force);
+
+        }
+
+        /***********************************************************************************************************//**
+         * Get's the rectangle of this object
+         **************************************************************************************************************/
+        public Rectangle GetRectangle() {
+            
+            return new Rectangle((int) PhysicsPosition.Position.X, (int) PhysicsPosition.Position.Y, Size.GetXSize(), 
+                Size.GetYSize());
 
         }
 
