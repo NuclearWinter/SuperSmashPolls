@@ -18,12 +18,12 @@ namespace SuperSmashPolls.GameItemControl {
      * @note This class should inlcude an instance of the character class, and should not repeat any affects of that 
      * class.
      ******************************************************************************************************************/
-    class PlayerClass : ObjectClass {
+    //class PlayerClass : ObjectClass {
 
         /***********************************************************************************************************//**
          * TODO SetCharacter method
          **************************************************************************************************************/
 
-    }
+   // }
 
 }

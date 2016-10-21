@@ -21,6 +21,7 @@ namespace SuperSmashPolls.MenuControl {
         Nothing,     //The game should do nothing
         StartGame,   //The game should start
         MultiplayerMenu,
+        SingleplayerMenu,
         BackToMainMenu, //Go back to the previous menu
         ExitGame
 
@@ -180,7 +181,7 @@ namespace SuperSmashPolls.MenuControl {
             ContainedItems[CurrentHighlightedItem].TextColor = Color.Red;
 
             } else 
-                ContainedItems[DrawDown].UpdateMenu(controllingPlayer);
+                return ContainedItems[DrawDown].UpdateMenu(controllingPlayer);
 
             return MenuCommands.Nothing;
 

@@ -30,7 +30,7 @@ namespace SuperSmashPolls {
         /* Manages graphics. */
         GraphicsDeviceManager Graphics;
         /* The total size of the screen */
-        private static Vector2 ScreenSize = new Vector2(600, 600);
+        private static Vector2 ScreenSize = new Vector2(1280, 720);
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
@@ -38,14 +38,17 @@ namespace SuperSmashPolls {
         /* Menu system for the game to use */
         private MenuItem Menu;
         /* The most basic Functioning WorldUnit */
-        private WorldUnit EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
+        private readonly WorldUnit EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
+
+        private ObjectClass Floor;
 
         /** Handles the different states that the game can be in */
         enum GameState {
 
             Menu,           //The menu is open
             GameLevel,      //The first level of the game
-            ScoreScreen
+            ScoreScreen,
+            LoadSave
 
         };
         /** Variable to hold the state of the game */
@@ -58,7 +61,7 @@ namespace SuperSmashPolls {
 
             /* This is the player's screen */
             Graphics = new GraphicsDeviceManager(this) {
-                IsFullScreen = false,
+                IsFullScreen = true,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
                 PreferredBackBufferWidth  = (int) ScreenSize.X
             };
@@ -79,9 +82,18 @@ namespace SuperSmashPolls {
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
 
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Single Player", false,
-                EmptyUnit, true, true, MenuCommands.StartGame));
+                EmptyUnit, true, true, MenuCommands.SingleplayerMenu));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.3F)), "Multi Player", false,
+                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), 
+                    "New Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
+
+                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
+                    "Load Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
+
+                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)),
+                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
                 EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
 
                 Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), 
@@ -90,6 +102,8 @@ namespace SuperSmashPolls {
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
 
+            Floor = new ObjectClass(new WorldUnit(new Vector2(0.0F, 0.90F), EmptyUnit), 999999, 
+                                    new WorldUnit(new Vector2(1.0F, 0.05F), EmptyUnit));
 
             base.Initialize();
 
@@ -111,6 +125,9 @@ namespace SuperSmashPolls {
                                                           "walking"));
 
             Menu.SetFontForAll(GameFont);
+
+            Floor.AssignSpriteSheet(new SpritesheetHandler(1, new Point(10, 10), 
+                                    Content.Load<Texture2D>("Black Floor"), "Floor"));
 
             //PlayerOne.SetCharacter(ref TheDonald);
 
@@ -151,6 +168,9 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.MultiplayerMenu:
                             Menu.DrawDown = 1;
+                            break;
+                        case MenuCommands.SingleplayerMenu:
+                            Menu.DrawDown = 0;
                             break;
                         default:
                             break;
@@ -207,6 +227,8 @@ namespace SuperSmashPolls {
                     } case GameState.GameLevel: {
 
                         GraphicsDevice.Clear(Color.Wheat);
+
+                        Floor.Draw(ref Batch);
 
                         //PlayerOne.DrawPlayer(ref Batch);
 
