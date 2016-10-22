@@ -20,15 +20,8 @@ namespace SuperSmashPolls.World_Control {
     public class WorldUnit {
         /* The size of the screen (in pixels) */
         public Vector2 ScreenSize;
-        /* The maximum force that can possibly be applied in the game world */
-        public Vector2 GodForce;
         /* The position used by this WorldUnit class @note This can be used as a size too */
         public Vector2 Position;
-        /* The force to be applied by this object (as a percent of GodForce)
-         * @note For characters and objects this is the fallspeed */
-        public Vector2 Force;
-        /* The duration of this force on other objects */
-        public int Duration;
 
         /***********************************************************************************************************//**
          * Construct a WorldUnit class for use as a position.
@@ -39,35 +32,6 @@ namespace SuperSmashPolls.World_Control {
         public WorldUnit(ref Vector2 screenSize, Vector2 position) {
             ScreenSize = screenSize;
             Position   = position;
-        }
-
-        /***********************************************************************************************************//**
-         * Construct a WorldUnit class for use as a force.
-         * @param screenSize The size of the player's screen
-         * @param godForce The force needed for an object with no other forces acting on it to be knocked off the screen
-         * ten times over.
-         * @param force The forces to be acting on the objects
-         * @param duration The duration of this force on other objects (1 = only applied once)
-         **************************************************************************************************************/
-        public WorldUnit(ref Vector2 screenSize, ref Vector2 godForce, Vector2 force, int duration = 1) {
-            ScreenSize = screenSize;
-            GodForce   = godForce;
-            Force      = force;
-            Duration   = duration;
-        }
-
-        /***********************************************************************************************************//**
-         * Construct a WorldUnit class based off the same scales as another WorldUnit for use as a force.
-         * @param baseScaleUnit The scale to base this new WorldUnit off of.
-         * @param force The force for this WorldUnit.
-         * @param duration The duration of this force on other objects (1 = only applied once)
-         * @return A new WorldUnit Object.
-         **************************************************************************************************************/
-        public WorldUnit(WorldUnit baseScaleUnit, Vector2 force, int duration = 1) {
-            ScreenSize = baseScaleUnit.ScreenSize;
-            GodForce   = baseScaleUnit.GodForce;
-            Force      = force;
-            Duration   = duration;
         }
 
         /***********************************************************************************************************//**
@@ -99,12 +63,12 @@ namespace SuperSmashPolls.World_Control {
         }
 
         /***********************************************************************************************************//**
-         * Scales a WorldUnit
-         * @param scalar The amount to divide Force by
+         * Gets the size of this object
+         * @note This is identical to GetThisPosition(), but it is easier to understand like this.
          **************************************************************************************************************/
-        public WorldUnit Scale(float scalar) {
-            
-            return new WorldUnit(this, Force/scalar, Duration);
+        public Vector2 GetSize() {
+
+            return ScreenSize*Position;
 
         }
 

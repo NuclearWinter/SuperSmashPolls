@@ -1,11 +1,16 @@
 /*******************************************************************************************************************//**
  * @file Game1.cs
+ * @note This game is now using Farseer Physics Engine
  **********************************************************************************************************************/ 
 
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
+using FarseerPhysics;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Collision;
+using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -24,13 +29,27 @@ namespace SuperSmashPolls {
      * This is the main type of the game.
      ******************************************************************************************************************/ 
     public class Game1 : Microsoft.Xna.Framework.Game {
-        /* Donald Trump Character */
-        private Character TheDonald = new Character();
 
         /* Manages graphics. */
         GraphicsDeviceManager Graphics;
+        /* Yarr, dis here be da world */
+        World world = new World(new Vector2(0f, 9.82f));
+
         /* The total size of the screen */
-        private static Vector2 ScreenSize = new Vector2(1280, 720);
+        private static Vector2 ScreenSize = new Vector2(600, 720);
+
+        private Vector2 ScreenCenter;
+
+        private Body PlayerTestBody;
+        private SpritesheetHandler PlayerTestTexture;
+        private Vector2 PlayerDisplaySize = new Vector2(32, 16);
+        private Vector2 PlayerOrigin;
+
+        private Body Floor;
+        private SpritesheetHandler FloorTexture;
+        private readonly Vector2 FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
+        private Vector2 FloorOrigin;
+
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
@@ -39,8 +58,6 @@ namespace SuperSmashPolls {
         private MenuItem Menu;
         /* The most basic Functioning WorldUnit */
         private readonly WorldUnit EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
-
-        private ObjectClass Floor;
 
         /** Handles the different states that the game can be in */
         enum GameState {
@@ -61,7 +78,7 @@ namespace SuperSmashPolls {
 
             /* This is the player's screen */
             Graphics = new GraphicsDeviceManager(this) {
-                IsFullScreen = true,
+                IsFullScreen = false,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
                 PreferredBackBufferWidth  = (int) ScreenSize.X
             };
@@ -77,7 +94,9 @@ namespace SuperSmashPolls {
          * base.Initialize will enumerate through any components and initialize them as well.
          **************************************************************************************************************/
         protected override void Initialize() {
-            /* Initialize varibales here */
+
+            /************************************* Initialization for Menu things *************************************/
+
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
 
@@ -102,8 +121,33 @@ namespace SuperSmashPolls {
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
 
-            Floor = new ObjectClass(new WorldUnit(new Vector2(0.0F, 0.90F), EmptyUnit), 999999, 
-                                    new WorldUnit(new Vector2(1.0F, 0.05F), EmptyUnit));
+            /*********************************** Initialization for Physics things ************************************/
+
+            // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
+            // 1 meters equals 64 pixels here
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
+
+            ScreenCenter = ScreenSize/2F;
+
+            PlayerTestBody = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(PlayerDisplaySize.X),
+                ConvertUnits.ToSimUnits(PlayerDisplaySize.Y), 1F, new Vector2(0F, 0F));
+            PlayerTestBody.BodyType    = BodyType.Dynamic;
+            PlayerTestBody.Restitution = 0.3F;
+            PlayerTestBody.Friction    = 0.05F;
+
+            PlayerOrigin = new Vector2(PlayerDisplaySize.Y/2F, PlayerDisplaySize.X/2F);
+
+            Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
+
+            //Creates the Floor within world with a width of the entire screen, a height of 5% of the screen, a density 
+            //of 1, and a position at the equivilent of WorldUnit (0.0F, 0.90F)
+            Floor = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(FloorDisplaySize.Y), 
+                ConvertUnits.ToSimUnits(FloorDisplaySize.X), 1F, FloorPosition);
+            Floor.IsStatic    = true; //The floor does not move
+            Floor.Restitution = 0.3F;
+            Floor.Friction    = 0.1F;
+
+            FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X/2F);
 
             base.Initialize();
 
@@ -119,17 +163,12 @@ namespace SuperSmashPolls {
 
             GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
 
-            TheDonald.AddAnimation(new SpritesheetHandler(1, 
-                                                          new Point(16, 32), 
-                                                          Content.Load<Texture2D>("TheDonaldWalking"), 
-                                                          "walking"));
+            PlayerTestTexture = new SpritesheetHandler(2, new Point(16, 32), 
+                Content.Load<Texture2D>("TheDonaldWalking"), "walk"); //TODO replace these keys with an enumerator
+
+            FloorTexture = new SpritesheetHandler(1, new Point(10, 10), Content.Load<Texture2D>("Black Floor"), "f");
 
             Menu.SetFontForAll(GameFont);
-
-            Floor.AssignSpriteSheet(new SpritesheetHandler(1, new Point(10, 10), 
-                                    Content.Load<Texture2D>("Black Floor"), "Floor"));
-
-            //PlayerOne.SetCharacter(ref TheDonald);
 
         }
 
@@ -180,19 +219,15 @@ namespace SuperSmashPolls {
 
                 } case GameState.GameLevel: { /* The player is currently playing the game */
 
-                        //Moves the player @see ObjectClass.move
-                        //PlayerOne.MoveController(PlayerIndex.One);
-
-                        //Moves the player down
-                        //PlayerOne.AddGravity();
-
-                        //Keeps the player on the screen and vibrates the controller if they are hitting the edge
-                        //PlayerOne.KeepPlayerInPlay(ScreenSize, new Vector2(.5F, .5F), PlayerIndex.One);
-
                         State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
                                 GameState.Menu : State;
 
-                    break;
+
+                        PlayerTestBody.ApplyForce(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left);
+
+                        world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+
+                        break;
 
                 } default: {
 
@@ -226,11 +261,13 @@ namespace SuperSmashPolls {
 
                     } case GameState.GameLevel: {
 
+                        PlayerTestTexture.DrawWithUpdate(ref Batch,
+                            ConvertUnits.ToDisplayUnits(PlayerTestBody.Position) - PlayerOrigin, PlayerDisplaySize);
+
+                        FloorTexture.DrawWithUpdate(ref Batch, ConvertUnits.ToDisplayUnits(Floor.Position) - FloorOrigin,
+                            FloorDisplaySize);
+
                         GraphicsDevice.Clear(Color.Wheat);
-
-                        Floor.Draw(ref Batch);
-
-                        //PlayerOne.DrawPlayer(ref Batch);
 
                         break;
 

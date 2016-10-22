@@ -18,18 +18,8 @@ namespace SuperSmashPolls.Characters {
      * @note Character position is not determined by this class.
      * @note Actual characters need to be declared as constants in an instance of this class.
      ******************************************************************************************************************/ 
-    class Character : ObjectClass {
-        /** The thumbnail of the character to show on the character selection screen */
-        private Texture2D Thumbnail;
-        /** The movement speed of this character */
-        public WorldUnit MovementSpeed;
-
-        /***********************************************************************************************************//**
-         * Constructor
-         **************************************************************************************************************/
-        public Character(WorldUnit drawPosition, int weight, WorldUnit size, bool solid = false) 
-            : base(drawPosition, weight, size, solid) {
-        }
+    class Character {
+        
 
 
     }

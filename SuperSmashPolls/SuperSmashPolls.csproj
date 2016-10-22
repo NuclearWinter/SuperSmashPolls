@@ -59,15 +59,12 @@
   <ItemGroup>
     <Compile Include="Characters\ActionHandler.cs" />
     <Compile Include="Characters\Character.cs" />
-    <Compile Include="GameItemControl\ObjectClass.cs" />
     <Compile Include="GameItemControl\PlayerClass.cs" />
     <Compile Include="Levels\Level.cs" />
-    <Compile Include="MenuControl\MenuController.cs" />
     <Compile Include="MenuControl\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="MenuControl\SelectableItem.cs" />
     <Compile Include="Graphics\SpritesheetHandler.cs" />
     <Compile Include="World Control\PhysicsAffect.cs" />
     <Compile Include="World Control\PhysicsWorld.cs" />
@@ -80,6 +77,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Farseer Physics Engine 3.5\Farseer Physics XNA.csproj">
+      <Project>{0A850700-1ABB-4288-A391-6726B90EBEB9}</Project>
+      <Name>Farseer Physics XNA</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SuperSmashPollsContent\SuperSmashPollsContent.contentproj">
       <Name>SuperSmashPollsContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>

@@ -28,7 +28,7 @@ namespace SuperSmashPolls { //joe used 16x32
         /* The amount of images on the X and Y axis, calculated in the constructor */
         private Point SheetSize;
         /* The spritesheet to take a value from (can be just one image) */
-        private readonly Texture2D SpriteSheet;
+        public readonly Texture2D SpriteSheet;
         /* The color to draw the image with, defaults to clear */
         private Color DrawColor { get; set; } = Color.White;
         /* Used to identify if this animation is the one that should be called. Public to check keys easily. */
@@ -74,7 +74,7 @@ namespace SuperSmashPolls { //joe used 16x32
          * @param position The position of the object on the screen.
          * @param drawSize The size to draw the object.
          **************************************************************************************************************/
-        public void DrawWithUpdate(ref SpriteBatch batch, Vector2 position, ref WorldUnit drawSize) {
+        public void DrawWithUpdate(ref SpriteBatch batch, Vector2 position, Vector2 drawSize) {
 
             DateTime Now = DateTime.Now;
 
@@ -98,8 +98,7 @@ namespace SuperSmashPolls { //joe used 16x32
 
             Rectangle source = new Rectangle(ImageSize.X * AnimatedPoint.X, ImageSize.Y * AnimatedPoint.Y, ImageSize.X, 
                 ImageSize.Y);
-            Rectangle destin = new Rectangle((int) position.X, (int) position.Y, drawSize.GetXSize(), 
-                drawSize.GetYSize());
+            Rectangle destin = new Rectangle((int) position.X, (int) position.Y, (int) drawSize.Y, (int) drawSize.X);
 
             batch.Draw(SpriteSheet, destin, source, DrawColor);
 
