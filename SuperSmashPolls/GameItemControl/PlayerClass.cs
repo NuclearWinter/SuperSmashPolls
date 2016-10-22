@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SuperSmashPolls.Characters;
+using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls.GameItemControl {
 
@@ -22,6 +23,17 @@ namespace SuperSmashPolls.GameItemControl {
 
         /***********************************************************************************************************//**
          * TODO SetCharacter method
+         **************************************************************************************************************/
+
+        /***********************************************************************************************************//**
+         * Constructor
+         **************************************************************************************************************/
+        public PlayerClass(WorldUnit drawPosition, int weight, WorldUnit size, bool solid = false) 
+            : base(drawPosition, weight, size, solid) {
+        }
+
+        /***********************************************************************************************************//**
+         * Updates the character
          **************************************************************************************************************/
 
     }

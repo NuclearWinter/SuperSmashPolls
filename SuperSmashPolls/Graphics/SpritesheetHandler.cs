@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls { //joe used 16x32
 
@@ -15,9 +16,9 @@ namespace SuperSmashPolls { //joe used 16x32
      * TODO Test this class
      * This class handles spritesheets.
      ******************************************************************************************************************/
-    class SpritesheetHandler {
+    public class SpritesheetHandler {
         /* The amount of time (in seconds) that it takes to cycle through the sheet */
-        private int PlayTime;
+        private readonly int PlayTime;
         /* The piece of the sheet to draw based on PlayTime @see DrawWithUpdate */
         private Point AnimatedPoint;
         /* The last time that AnimatedPoint was updated */
@@ -52,7 +53,6 @@ namespace SuperSmashPolls { //joe used 16x32
         }
 
         /***********************************************************************************************************//**
-         * TODO Test this class
          * Gives the user the desired image from the sheet.
          * @param batch A reference to the SpriteBatch to draw the textures with.
          * @param image The X and Y coordinate of the image to get.
@@ -69,13 +69,12 @@ namespace SuperSmashPolls { //joe used 16x32
         }
 
         /***********************************************************************************************************//**
-         * TODO Test this method
          * This draws the sprite based on the PlayTime variable
          * @param batch The SpriteBatch to draw with.
          * @param position The position of the object on the screen.
          * @param drawSize The size to draw the object.
          **************************************************************************************************************/
-        public void DrawWithUpdate(ref SpriteBatch batch, ref Vector2 position, int drawMultiplier = 1) {
+        public void DrawWithUpdate(ref SpriteBatch batch, Vector2 position, ref WorldUnit drawSize) {
 
             DateTime Now = DateTime.Now;
 
@@ -99,8 +98,8 @@ namespace SuperSmashPolls { //joe used 16x32
 
             Rectangle source = new Rectangle(ImageSize.X * AnimatedPoint.X, ImageSize.Y * AnimatedPoint.Y, ImageSize.X, 
                 ImageSize.Y);
-            Rectangle destin = new Rectangle((int) position.X, (int) position.Y, 
-                                             ImageSize.X * drawMultiplier, ImageSize.Y * drawMultiplier);
+            Rectangle destin = new Rectangle((int) position.X, (int) position.Y, drawSize.GetXSize(), 
+                drawSize.GetYSize());
 
             batch.Draw(SpriteSheet, destin, source, DrawColor);
 

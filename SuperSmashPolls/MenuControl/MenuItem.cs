@@ -18,8 +18,11 @@ namespace SuperSmashPolls.MenuControl {
      ******************************************************************************************************************/
     enum MenuCommands {
         
-        Nothing,  //The game should do nothing
-        StartGame, //The game should start
+        Nothing,     //The game should do nothing
+        StartGame,   //The game should start
+        MultiplayerMenu,
+        SingleplayerMenu,
+        BackToMainMenu, //Go back to the previous menu
         ExitGame
 
     }
@@ -40,8 +43,10 @@ namespace SuperSmashPolls.MenuControl {
         public readonly string Text;
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
+        /** Whether or not to center the text */
+        public readonly bool CenterText;
         /* The command to use if clicked on */
-        public readonly MenuCommands Command = MenuCommands.Nothing;
+        public readonly MenuCommands Command;
 
         /* Anything below here must be loaded after the constructor */
 
@@ -64,7 +69,7 @@ namespace SuperSmashPolls.MenuControl {
         /** Overlay this item's sub-menu on top of the current menu */
         private bool SubOverlay { get; set; } = false;
         /* The item within ContainedItems to draw instead of this one (-1 means draw this one) */
-        private int DrawDown = -1;
+        public int DrawDown = -1;
 
         /* The item on screen that is currently highlighted */
         private int CurrentHighlightedItem = 0;
@@ -77,15 +82,18 @@ namespace SuperSmashPolls.MenuControl {
          * @param text The text of this item.
          * @param hasSubmenu Whether or not this item has a menu below it to navigate to.
          * @param textBuffer An amount to displace the text past the start of the item (to center with backgrounds)
+         * @param centerText Whether or not to center the text (if there is no texture it will center on the point, 
+         * otherwise it will center on the texture).
          * @param highlightable Whether or not this item is highlightable
          **************************************************************************************************************/
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
-            MenuCommands command = MenuCommands.Nothing) {
+            bool centerText = false, MenuCommands command = MenuCommands.Nothing) {
             Position      = position;
             Text          = text;
             HasSubmenu    = hasSubmenu;
             TextBuffer    = textBuffer;
             Highlightable = highlightable;
+            CenterText = centerText;
             Command       = command;
         }
 
@@ -110,8 +118,10 @@ namespace SuperSmashPolls.MenuControl {
 
             Font = font;
 
-            foreach (MenuItem i in ContainedItems)
+            foreach (MenuItem i in ContainedItems) {
+                i.SetFontForAll(font);
                 i.Font = font;
+            }
 
         }
 
@@ -148,32 +158,30 @@ namespace SuperSmashPolls.MenuControl {
                 if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.DPadDown))
                     for (int i = CurrentHighlightedItem + 1; i < ContainedItems.Count(); ++i) {
 
-                        if (ContainedItems[i].Highlightable) {
+                        if (!ContainedItems[i].Highlightable) continue;
 
-                            CurrentHighlightedItem = i;
-                            break;
+                        CurrentHighlightedItem = i;
 
-                        }
+                        break;
 
-                }
+                    }
                         
                 //Highlights one item down
                 if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.DPadUp))
                     for (int i = CurrentHighlightedItem - 1; i >= 0; --i) {
 
-                        if (ContainedItems[i].Highlightable) {
+                        if (!ContainedItems[i].Highlightable) continue;
 
-                            CurrentHighlightedItem = i;
-                            break;
+                        CurrentHighlightedItem = i;
 
-                        }
+                        break;
 
-                }
+                    }
 
             ContainedItems[CurrentHighlightedItem].TextColor = Color.Red;
 
             } else 
-                ContainedItems[DrawDown].UpdateMenu(controllingPlayer);
+                return ContainedItems[DrawDown].UpdateMenu(controllingPlayer);
 
             return MenuCommands.Nothing;
 
@@ -208,6 +216,7 @@ namespace SuperSmashPolls.MenuControl {
         /***********************************************************************************************************//**
          * Display this item.
          * This is for when this item is displayed (on a different menu).
+         * @param batch The SpriteBatch to draw with
          * @warning This method assumes that the spritebatch has already been started.
          **************************************************************************************************************/
         public void DisplayItem(SpriteBatch batch) {
@@ -215,7 +224,11 @@ namespace SuperSmashPolls.MenuControl {
             if (Texture != null)
                 batch.Draw(Texture, Position.GetThisPosition(), Color.White);
 
-            batch.DrawString(Font, Text, Position.Add(ref Position, TextBuffer).GetThisPosition(), TextColor);
+            if (CenterText)
+                batch.DrawString(Font, Text, 
+                    Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text)/2, TextColor);
+            else 
+                batch.DrawString(Font, Text, Position.Add(TextBuffer).GetThisPosition(), TextColor);
 
         }
 
