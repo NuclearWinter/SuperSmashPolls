@@ -198,6 +198,8 @@ namespace SuperSmashPolls {
                     switch (currentCommand) {
                         case MenuCommands.StartGame:
                             State = GameState.GameLevel;
+                            Menu.ContainedItems[0].ContainedItems[0].Text = "Continue"; //Changes New Game
+                            Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
                             break;
                         case MenuCommands.ExitGame:
                             this.Exit();

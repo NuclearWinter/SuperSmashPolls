@@ -40,7 +40,7 @@ namespace SuperSmashPolls.MenuControl {
         /** Buffer to move text over from Position */
         private readonly WorldUnit TextBuffer;
         /** Text for this item (drawn on top of the screen if displaying the item's menu */
-        public readonly string Text;
+        public string Text;
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
         /** Whether or not to center the text */
