@@ -38,13 +38,13 @@ namespace SuperSmashPolls.MenuControl {
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
         /** Whether or not to center the text */
-        public readonly bool CenterText;
+        public readonly bool CenterItem;
         /* The command to use if clicked on */
         public readonly MenuCommands Command;
         /** Buffer to move text over from Position */
         private readonly WorldUnit TextBuffer;
         /** Position of this item on the screen */
-        private WorldUnit Position;
+        private readonly WorldUnit Position;
         /** Text for this item (drawn on top of the screen if displaying the item's menu */
         public string Text;
 
@@ -56,6 +56,8 @@ namespace SuperSmashPolls.MenuControl {
         private SpriteFont Font { get; set; }      = null;
         /** Texture to use as the background for this item (not drawn if displaying the item's menu) */
         private Texture2D Texture { get; set; }    = null;
+        /** The size of this item (as a ratio of the picture's size) */
+        private Vector2 TextureSize;
         /** Background for this menu item (if the item is selected). @note This will cover the entire screen
          * @warning This must be set during load content */
         private Texture2D Background { get; set; } = null;
@@ -82,18 +84,17 @@ namespace SuperSmashPolls.MenuControl {
          * @param text The text of this item.
          * @param hasSubmenu Whether or not this item has a menu below it to navigate to.
          * @param textBuffer An amount to displace the text past the start of the item (to center with backgrounds)
-         * @param centerText Whether or not to center the text (if there is no texture it will center on the point, 
-         * otherwise it will center on the texture).
+         * @param centerItem Whether or not to center the item around the position.
          * @param highlightable Whether or not this item is highlightable
          **************************************************************************************************************/
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
-            bool centerText = false, MenuCommands command = MenuCommands.Nothing) {
+            bool centerItem = false, MenuCommands command = MenuCommands.Nothing) {
             Position      = position;
             Text          = text;
             HasSubmenu    = hasSubmenu;
             TextBuffer    = textBuffer;
             Highlightable = highlightable;
-            CenterText    = centerText;
+            CenterItem    = centerItem;
             Command       = command;
 
             ContainedItems = new List<MenuItem>();
@@ -104,7 +105,6 @@ namespace SuperSmashPolls.MenuControl {
          * Add an item to display when this screen is being drawn.
          * @param position The position of this item on the screen.
          * @param hasSubmenu Whether or not this item has a submenu
-         * @param texture The texture of this item (to show behind text)
          * @param text The text to show on this item
          **************************************************************************************************************/
         public void AddItem(MenuItem addItem) {
@@ -125,6 +125,18 @@ namespace SuperSmashPolls.MenuControl {
                 i.SetFontForAll(font);
                 i.Font = font;
             }
+
+        }
+
+        /***********************************************************************************************************//**
+         * Add's a texture to the item
+         * @param texture The texture of this item
+         * @param size The size of this item (in pixels)
+         **************************************************************************************************************/
+        public void SetTexture(Texture2D texture , Vector2 size) {
+
+            Texture     = texture;
+            TextureSize = new Vector2(size.X/Texture.Width, size.Y/Texture.Height);
 
         }
 
@@ -194,7 +206,7 @@ namespace SuperSmashPolls.MenuControl {
          * Display the items in ContainedItems and other menu items.
          * This is for if this item has a menu that it can display.
          **************************************************************************************************************/
-        public void DisplayMenu(SpriteBatch batch) {
+        public void DisplayMenu(ref SpriteBatch batch) {
 
             //Will draw this menu alone or with another menu on top of it
             if (DrawDown == -1 || ContainedItems[DrawDown].SubOverlay) {
@@ -203,13 +215,13 @@ namespace SuperSmashPolls.MenuControl {
                     batch.Draw(Background, new Vector2(0, 0), Color.White);
 
                 foreach (MenuItem i in ContainedItems)
-                    i.DisplayItem(batch);
+                    i.DisplayItem(ref batch);
 
             }
 
             if (DrawDown != -1) {
                 
-                ContainedItems[DrawDown].DisplayMenu(batch);
+                ContainedItems[DrawDown].DisplayMenu(ref batch);
 
             }
 
@@ -222,12 +234,21 @@ namespace SuperSmashPolls.MenuControl {
          * @param batch The SpriteBatch to draw with
          * @warning This method assumes that the spritebatch has already been started.
          **************************************************************************************************************/
-        public void DisplayItem(SpriteBatch batch) {
-            
-            if (Texture != null)
-                batch.Draw(Texture, Position.GetThisPosition(), Color.White);
+        public void DisplayItem(ref SpriteBatch batch) {
 
-            if (CenterText)
+            if (Texture != null) {
+
+                if (CenterItem)
+                    batch.Draw(Texture, Position.GetThisPosition(), null, Color.White, 0, Vector2.Zero, TextureSize,
+                        SpriteEffects.None, 0);
+                else
+                    batch.Draw(Texture, Position.GetThisPosition() - new Vector2(Texture.Width/2F, Texture.Height/2F),
+                        null, Color.White, 0, Vector2.Zero, TextureSize, SpriteEffects.None, 0);
+
+            }
+
+
+            if (CenterItem)
                 batch.DrawString(Font, Text, 
                     Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text)/2, TextColor);
             else 

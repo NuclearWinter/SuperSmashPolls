@@ -279,7 +279,7 @@ namespace SuperSmashPolls {
 
                     case GameState.Menu: {
 
-                        Menu.DisplayMenu(Batch);
+                        Menu.DisplayMenu(ref Batch);
 
                         break;
 
