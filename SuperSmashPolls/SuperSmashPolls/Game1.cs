@@ -244,13 +244,10 @@ namespace SuperSmashPolls {
                             State = GameState.GameLevel;
                             Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
                             Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
-
-                                
                             PlayerOne.SetCharacter(TheDonald); //debugging
                             PlayerTwo.SetCharacter(TheDonald);
                             PlayerThree.SetCharacter(TheDonald);
                             PlayerFour.SetCharacter(TheDonald);
-
                             break;
                         case MenuCommands.ExitGame:
                             this.Exit();
