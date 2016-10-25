@@ -20,8 +20,8 @@ namespace SuperSmashPolls.GameItemControl {
      * class.
      ******************************************************************************************************************/
     class PlayerClass {
-        /* The player's character */
-
+        /** The player's character */
+        private Character PlayerCharacter;
 
         /***********************************************************************************************************//**
          * TODO SetCharacter method

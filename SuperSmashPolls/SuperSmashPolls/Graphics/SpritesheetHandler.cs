@@ -12,23 +12,9 @@ using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls { //joe used 16x32
 
-    public enum CharacterActions {
-        
-        Idle,
-        Jump,        //A
-        Move,        //Right stick
-        Attack,      //X
-        BAttack,     //B
-        UpBAttack,   //Left stick up + B
-        SideBAttack, //Left stick to the sides + B
-        DownBAttack, //Left stick down + B
-        AirAttack    //In the air + X
-
-    }
-
     /***************************************************************************************************************//**
-     * TODO Test this class
      * This class handles spritesheets.
+     * @deprecated This class has been replaced by CharacterActions
      ******************************************************************************************************************/
     public class SpritesheetHandler {
         /* The amount of time (in seconds) that it takes to cycle through the sheet */

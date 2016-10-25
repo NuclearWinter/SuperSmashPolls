@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using SuperSmashPolls.Characters;
 using SuperSmashPolls.GameItemControl;
+using SuperSmashPolls.Graphics;
 using SuperSmashPolls.MenuControl;
 using SuperSmashPolls.World_Control;
 
@@ -30,37 +31,32 @@ namespace SuperSmashPolls {
      ******************************************************************************************************************/ 
     public class Game1 : Microsoft.Xna.Framework.Game {
 
-        /* Manages graphics. */
-        GraphicsDeviceManager Graphics;
-        /* Yarr, dis here be da world */
-        World world = new World(new Vector2(0f, 9.82f));
-
-        /** This is the world that is actually used in the game. TODO This needs to be set from the menu */
-        private World MasterWorld;
-
         /* The total size of the screen */
-        private static Vector2 ScreenSize = new Vector2(600, 720);
-
+        private static Vector2 ScreenSize;
+        /* The most basic Functioning WorldUnit */
+        private readonly WorldUnit EmptyUnit;
+        /* The display size for the floor */
+        private readonly Vector2 FloorDisplaySize;
+        /** The one, the only, the Donald */
+        private Character TheDonald;
+        /* Manages graphics. */
+        private GraphicsDeviceManager Graphics;
+        /* Yarr, dis here be da world */
+        private World world;
+        /* The center of the screen */
         private Vector2 ScreenCenter;
-
-        private Body PlayerTestBody;
-        private SpritesheetHandler PlayerTestTexture;
-        private Vector2 PlayerDisplaySize = new Vector2(32, 16);
-        private Vector2 PlayerOrigin;
-
+        /* The body of the floor */
         private Body Floor;
+        /* The handling of the texture for the floor @deprecated Using old class */
         private SpritesheetHandler FloorTexture;
-        private readonly Vector2 FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
+        /* The origin of the floor */
         private Vector2 FloorOrigin;
-
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
         /* Menu system for the game to use */
         private MenuItem Menu;
-        /* The most basic Functioning WorldUnit */
-        private readonly WorldUnit EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
 
         /** Handles the different states that the game can be in */
         enum GameState {
@@ -79,6 +75,8 @@ namespace SuperSmashPolls {
          **************************************************************************************************************/ 
         public Game1() {
 
+            ScreenSize = new Vector2(600, 720);
+
             /* This is the player's screen */
             Graphics = new GraphicsDeviceManager(this) {
                 IsFullScreen = false,
@@ -88,6 +86,12 @@ namespace SuperSmashPolls {
 
             /* This is to import pictures and sounds and stuff */
             Content.RootDirectory = "Content";
+
+            EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
+
+            FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
+
+            world = new World(new Vector2(0f, 9.82f));
 
         }
 
@@ -124,21 +128,22 @@ namespace SuperSmashPolls {
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
 
+            /************************************* Initialization for Characters **************************************/
+
+            //!@note Values used for TheDonald are just for debugging           | These are the fun ones |
+            TheDonald = new Character(ref ScreenSize, new Vector2(0.10F, 0.05F), 35F, 0.1F, 0.2F, 30F, 1F, 0F, 0F);
+
+            TheDonald.CreateBody(ref world, new Vector2(4, 4)); //TODO do this with the real map
+
             /*********************************** Initialization for Physics things ************************************/
 
+            /* As a standard, all maps should be a total of 100m across */
+
             // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
-            // 1 meters equals 64 pixels here
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(64f);
+            // 1 meters equals 1% of the player's screen size pixels here
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(64);
 
             ScreenCenter = ScreenSize/2F;
-
-            PlayerTestBody = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(PlayerDisplaySize.X),
-                ConvertUnits.ToSimUnits(PlayerDisplaySize.Y), 1F, new Vector2(0F, 0F));
-            PlayerTestBody.BodyType    = BodyType.Dynamic;
-            PlayerTestBody.Restitution = 0.3F;
-            PlayerTestBody.Friction    = 0.05F;
-
-            PlayerOrigin = new Vector2(PlayerDisplaySize.Y/2F, PlayerDisplaySize.X/2F);
 
             Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
 
@@ -148,7 +153,7 @@ namespace SuperSmashPolls {
                 ConvertUnits.ToSimUnits(FloorDisplaySize.X), 1F, FloorPosition);
             Floor.IsStatic    = true; //The floor does not move
             Floor.Restitution = 0.3F;
-            Floor.Friction    = 0.1F;
+            Floor.Friction    = 0.05F;
 
             FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X/2F);
 
@@ -166,8 +171,16 @@ namespace SuperSmashPolls {
 
             GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
 
-            PlayerTestTexture = new SpritesheetHandler(2, new Point(16, 32), 
-                Content.Load<Texture2D>("TheDonaldWalking"), "walk"); //TODO replace these keys with an enumerator
+            TheDonald.AddCharacterActions(
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
+            //TODO finish animations for TheDonald
 
             FloorTexture = new SpritesheetHandler(1, new Point(10, 10), Content.Load<Texture2D>("Black Floor"), "f");
 
@@ -203,6 +216,7 @@ namespace SuperSmashPolls {
                             State = GameState.GameLevel;
                             Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
                             Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
+
                             break;
                         case MenuCommands.ExitGame:
                             this.Exit();
@@ -229,8 +243,7 @@ namespace SuperSmashPolls {
                         State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
                                 GameState.Menu : State;
 
-
-                        PlayerTestBody.ApplyForce(GamePad.GetState(PlayerIndex.One).ThumbSticks.Left);
+                        TheDonald.UpdateCharacter(GamePad.GetState(PlayerIndex.One));
 
                         world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
@@ -272,11 +285,10 @@ namespace SuperSmashPolls {
 
                     } case GameState.GameLevel: {
 
-                        PlayerTestTexture.DrawWithUpdate(ref Batch,
-                            ConvertUnits.ToDisplayUnits(PlayerTestBody.Position) - PlayerOrigin, PlayerDisplaySize);
-
                         FloorTexture.DrawWithUpdate(ref Batch, ConvertUnits.ToDisplayUnits(Floor.Position) - FloorOrigin,
                             FloorDisplaySize);
+
+                        TheDonald.DrawCharacter(ref Batch);
 
                         GraphicsDevice.Clear(Color.Wheat);
 
