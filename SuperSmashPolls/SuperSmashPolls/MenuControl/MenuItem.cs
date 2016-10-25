@@ -53,9 +53,9 @@ namespace SuperSmashPolls.MenuControl {
         /** Color for this item's text */
         private Color TextColor { get; set; } = Color.Black;
         /** Font to use for this item */
-        private SpriteFont Font { get; set; }      = null;
+        private SpriteFont Font;
         /** Texture to use as the background for this item (not drawn if displaying the item's menu) */
-        private Texture2D Texture { get; set; }    = null;
+        private Texture2D Texture;
         /** The size of this item (as a ratio of the picture's size) */
         private Vector2 TextureSize;
         /** Background for this menu item (if the item is selected). @note This will cover the entire screen
@@ -64,10 +64,10 @@ namespace SuperSmashPolls.MenuControl {
 
         /* Anything below here is for if this item can be selected to display another menu */
 
-        /** Holds if the item has it's own menu that it can display */
-        private readonly bool HasSubmenu;
         /** The item's to display on this page */
         public List<MenuItem> ContainedItems;
+        /** Holds if the item has it's own menu that it can display */
+        private readonly bool HasSubmenu;
         /** Overlay this item's sub-menu on top of the current menu */
         private bool SubOverlay { get; set; } = false;
         /* The item within ContainedItems to draw instead of this one (-1 means draw this one) */
@@ -96,6 +96,7 @@ namespace SuperSmashPolls.MenuControl {
             Highlightable = highlightable;
             CenterItem    = centerItem;
             Command       = command;
+            Texture       = null;
 
             ContainedItems = new List<MenuItem>();
             DrawDown       = -1;

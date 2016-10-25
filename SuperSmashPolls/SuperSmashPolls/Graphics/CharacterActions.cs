@@ -75,7 +75,7 @@ namespace SuperSmashPolls.Graphics {
 
             }
 
-            Source = new Rectangle(ImageSize.X * AnimatedPoint.X, ImageSize.Y * AnimatedPoint.Y, ImageSize.X,
+            Source      = new Rectangle(ImageSize.X * AnimatedPoint.X, ImageSize.Y * AnimatedPoint.Y, ImageSize.X,
                 ImageSize.Y);
             Destination = new Rectangle((int)position.X, (int)position.Y, (int)drawSize.Y, (int)drawSize.X);
 
