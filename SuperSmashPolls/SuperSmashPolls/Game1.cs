@@ -131,7 +131,7 @@ namespace SuperSmashPolls {
             /************************************* Initialization for Characters **************************************/
 
             //!@note Values used for TheDonald are just for debugging           | These are the fun ones |
-            TheDonald = new Character(ref ScreenSize, new Vector2(0.10F, 0.05F), 35F, 0.1F, 0.2F, 30F, 1F, 0F, 0F);
+            TheDonald = new Character(ref ScreenSize, new Vector2(0.10F, 0.05F), 35F, 0.02F, 0.2F, 45F, 25F, 0.5F, 1F);
 
             TheDonald.CreateBody(ref world, new Vector2(4, 4)); //TODO do this with the real map
 
