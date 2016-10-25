@@ -35,46 +35,46 @@ namespace SuperSmashPolls.MenuControl {
      * @note To create multi-leveled menus you must construct items from bottom to top.
      ******************************************************************************************************************/
     class MenuItem {
-        /** Position of this item on the screen */
-        private WorldUnit Position;
-        /** Buffer to move text over from Position */
-        private readonly WorldUnit TextBuffer;
-        /** Text for this item (drawn on top of the screen if displaying the item's menu */
-        public string Text;
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
         /** Whether or not to center the text */
         public readonly bool CenterText;
         /* The command to use if clicked on */
         public readonly MenuCommands Command;
+        /** Buffer to move text over from Position */
+        private readonly WorldUnit TextBuffer;
+        /** Position of this item on the screen */
+        private WorldUnit Position;
+        /** Text for this item (drawn on top of the screen if displaying the item's menu */
+        public string Text;
 
         /* Anything below here must be loaded after the constructor */
 
         /** Color for this item's text */
         private Color TextColor { get; set; } = Color.Black;
         /** Font to use for this item */
-        private SpriteFont Font { get; set; } = null;
+        private SpriteFont Font { get; set; }      = null;
         /** Texture to use as the background for this item (not drawn if displaying the item's menu) */
-        private Texture2D Texture { get; set; } = null;
+        private Texture2D Texture { get; set; }    = null;
         /** Background for this menu item (if the item is selected). @note This will cover the entire screen
          * @warning This must be set during load content */
         private Texture2D Background { get; set; } = null;
 
         /* Anything below here is for if this item can be selected to display another menu */
 
-        /** The item's to display on this page */
-        public List<MenuItem> ContainedItems = new List<MenuItem>();
         /** Holds if the item has it's own menu that it can display */
         private readonly bool HasSubmenu;
+        /** The item's to display on this page */
+        public List<MenuItem> ContainedItems;
         /** Overlay this item's sub-menu on top of the current menu */
         private bool SubOverlay { get; set; } = false;
         /* The item within ContainedItems to draw instead of this one (-1 means draw this one) */
-        public int DrawDown = -1;
+        public int DrawDown;
 
         /* The item on screen that is currently highlighted */
-        private int CurrentHighlightedItem = 0;
+        private int CurrentHighlightedItem;
         /* Holds the last time the menu was updates */
-        private int LastTimeUpdated = 0;
+        private int LastTimeUpdated;
 
         /***********************************************************************************************************//**
          * Constructor
@@ -93,8 +93,11 @@ namespace SuperSmashPolls.MenuControl {
             HasSubmenu    = hasSubmenu;
             TextBuffer    = textBuffer;
             Highlightable = highlightable;
-            CenterText = centerText;
+            CenterText    = centerText;
             Command       = command;
+
+            ContainedItems = new List<MenuItem>();
+            DrawDown       = -1;
         }
 
         /***********************************************************************************************************//**
