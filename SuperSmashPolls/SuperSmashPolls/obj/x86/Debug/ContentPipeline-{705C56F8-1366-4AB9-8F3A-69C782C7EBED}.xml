@@ -55,6 +55,33 @@
       <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Black Floor.xnb</Output>
       <Time>2016-10-21T16:13:26-05:00</Time>
     </Item>
+    <Item>
+      <Source>Donald\donald64-jump.png</Source>
+      <Name>Donald\donald64-jump</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-jump.xnb</Output>
+      <Time>2016-10-25T14:50:17-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Donald\donald64-stand.png</Source>
+      <Name>Donald\donald64-stand</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-stand.xnb</Output>
+      <Time>2016-10-25T14:50:30-05:00</Time>
+    </Item>
+    <Item>
+      <Source>Donald\donald64-walk.png</Source>
+      <Name>Donald\donald64-walk</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-walk.xnb</Output>
+      <Time>2016-10-25T14:50:43-05:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{705C56F8-1366-4AB9-8F3A-69C782C7EBED}</ContentProjectGUID>

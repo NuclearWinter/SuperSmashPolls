@@ -1,5 +1,6 @@
 ﻿/*******************************************************************************************************************//**
  * @file SpritesheetHandler.cs
+ * @author Joe Brooooooooksbnake
  **********************************************************************************************************************/
 
 using Microsoft.Xna.Framework;
@@ -10,7 +11,7 @@ using System.Linq;
 using System.Text;
 using SuperSmashPolls.World_Control;
 
-namespace SuperSmashPolls { //joe used 16x32
+namespace SuperSmashPolls { //I used 16x32
 
     /***************************************************************************************************************//**
      * This class handles spritesheets.

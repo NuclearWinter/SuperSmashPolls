@@ -1,7 +1,9 @@
 /*******************************************************************************************************************//**
  * @file Game1.cs
- * @note This game is now using Farseer Physics Engine
- **********************************************************************************************************************/ 
+ * @note This game is now dependent on the Farseer Physics Engine.
+ * For information see http://farseerphysics.codeplex.com/
+ * @author (For all textures) Joe Brooksbank
+ **********************************************************************************************************************/
 
 using System;
 using System.Diagnostics;
@@ -60,7 +62,7 @@ namespace SuperSmashPolls {
 
         /** The player's in this game */
         private PlayerClass PlayerOne, PlayerTwo, PlayerThree, PlayerFour;
-        /*  */
+        /* The number of players in the game */
         private int NumPlayers;
 
         /** Handles the different states that the game can be in */
@@ -80,7 +82,7 @@ namespace SuperSmashPolls {
          **************************************************************************************************************/ 
         public Game1() {
 
-            ScreenSize = new Vector2(600, 720);
+            ScreenSize = new Vector2(640, 360);
 
             /* This is the player's screen */
             Graphics = new GraphicsDeviceManager(this) {
@@ -96,8 +98,6 @@ namespace SuperSmashPolls {
 
             FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
 
-            world = new World(new Vector2(0f, 9.82f));
-
         }
 
         /***********************************************************************************************************//** 
@@ -107,19 +107,43 @@ namespace SuperSmashPolls {
          **************************************************************************************************************/
         protected override void Initialize() {
 
+            /*********************************** Initialization for Physics things ************************************/
+
+            // This sets the width of the screen equal to 25m in the physics engine
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(ScreenSize.X / 25);
+
+            world = new World(new Vector2(0f, 9.82f)); //Creates the world with 9.82m/s^2 as a downward acceleration
+
+            ScreenCenter = ScreenSize / 2F;
+
+            Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
+
+            //This creates the body in Farseer's world
+            Floor = BodyFactory.CreateRectangle(world, //The world to put the floor in
+                                                ConvertUnits.ToSimUnits(FloorDisplaySize.Y), //The floor size is
+                                                ConvertUnits.ToSimUnits(FloorDisplaySize.X), //converted to meters
+                                                1F,             //Density
+                                                FloorPosition); //This is the position of the floor
+            Floor.IsStatic    = true;  //The floor does not move
+            Floor.Restitution = 0.3F;  //This is how bouncy the object is
+            Floor.Friction    = 0.09F; //This is how frictiony the floor is (
+
+            //To draw the floor properly with XNA we need to center is position about the origin
+            FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X / 2F);
+
             /************************************* Initialization for Menu things *************************************/
 
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Local Game", false,
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), "Local Game", false,
                 EmptyUnit, true, true, MenuCommands.SingleplayerMenu));
 
-                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), 
+                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
                     "New Game", true, EmptyUnit, true, true, MenuCommands.StartGame));
 
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
-                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "One Player", false, 
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "One Player", false, 
                                      EmptyUnit, true, true, MenuCommands.OnePlayer));
 
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
@@ -127,26 +151,26 @@ namespace SuperSmashPolls {
                                      EmptyUnit, true, true, MenuCommands.TwoPlayer));
 
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
-                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Three Player", false, 
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                                      EmptyUnit, true, true, MenuCommands.ThreePlayer));
 
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
-                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Four Player", false, 
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
                                      EmptyUnit, true, true, MenuCommands.FourPlayer));
 
                 Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
                     "Load Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
 
-                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)),
+                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
                 EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
 
-                Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), 
+                Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Exit", false,
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
 
             /************************************** Initialization for Players ****************************************/
@@ -158,32 +182,11 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Characters **************************************/
 
-            //!@note Values used for TheDonald are just for debugging           | These are the fun ones |
-            TheDonald = new Character(ref ScreenSize, new Vector2(0.10F, 0.05F), 35F, 0.02F, 0.2F, 45F, 25F, 0.5F, 1F);
+            //!@note These values are based off of the real Donald
+            TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
+                0.01F, 500F, 25F, 0.5F, 1F);
 
-            TheDonald.CreateBody(ref world, new Vector2(4, 4)); //TODO do this with the real map
-
-            /*********************************** Initialization for Physics things ************************************/
-
-            /* As a standard, all maps should be a total of 100m across */
-
-            // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
-            // 1 meters equals 1% of the player's screen size pixels here
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(64);
-
-            ScreenCenter = ScreenSize/2F;
-
-            Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
-
-            //Creates the Floor within world with a width of the entire screen, a height of 5% of the screen, a density 
-            //of 1, and a position at the equivilent of WorldUnit (0.0F, 0.90F)
-            Floor = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(FloorDisplaySize.Y), 
-                ConvertUnits.ToSimUnits(FloorDisplaySize.X), 1F, FloorPosition);
-            Floor.IsStatic    = true; //The floor does not move
-            Floor.Restitution = 0.3F;
-            Floor.Friction    = 0.05F;
-
-            FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X/2F);
+            TheDonald.CreateBody(ref world, new Vector2(4, 0));
 
             base.Initialize();
 
@@ -200,9 +203,9 @@ namespace SuperSmashPolls {
             GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
 
             TheDonald.AddCharacterActions(
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-stand")),
+                new CharacterAction(1, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-jump")),
+                new CharacterAction(1, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-walk")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
@@ -244,8 +247,9 @@ namespace SuperSmashPolls {
                             State = GameState.GameLevel;
                             Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
                             Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
+
                             PlayerOne.SetCharacter(TheDonald); //debugging
-                            PlayerTwo.SetCharacter(TheDonald);
+                            PlayerTwo.SetCharacter(new Character(TheDonald, world, new Vector2(8, 0)));
                             PlayerThree.SetCharacter(TheDonald);
                             PlayerFour.SetCharacter(TheDonald);
                             break;
@@ -266,19 +270,15 @@ namespace SuperSmashPolls {
                         case MenuCommands.OnePlayer:
                             NumPlayers = 1;
                             goto case MenuCommands.StartGame;
-                            break;
                         case MenuCommands.TwoPlayer:
                             NumPlayers = 2;
                             goto case MenuCommands.StartGame;
-                            break;
                         case MenuCommands.ThreePlayer:
                             NumPlayers = 3;
                             goto case MenuCommands.StartGame;
-                            break;
                         case MenuCommands.FourPlayer:
                             NumPlayers = 4;
                             goto case MenuCommands.StartGame;
-                            break;
                         default:
                             break;
                     } 
@@ -300,8 +300,8 @@ namespace SuperSmashPolls {
                             goto case 2;
                         case 2:
                             PlayerTwo.UpdatePlayer();
-                            goto case 1;
-                        case 1:
+                            goto default;
+                        default:
                             PlayerOne.UpdatePlayer();
                             break;
 

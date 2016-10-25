@@ -23,3 +23,6 @@ Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Bla
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.dll
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.pdb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.xml
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-jump.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-stand.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-walk.xnb

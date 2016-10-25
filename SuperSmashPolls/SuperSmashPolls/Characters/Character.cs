@@ -1,8 +1,10 @@
 ﻿/*******************************************************************************************************************//**
  * @file Character.cs
+ * @author William Kluge
  **********************************************************************************************************************/
 
  #define DEBUG
+ #undef DEBUG
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -71,8 +73,7 @@ namespace SuperSmashPolls.Characters {
         /***********************************************************************************************************//**
          * Constructor for the Character class
          * @param screenSize A reference to the size of the screen
-         * @param characterSize Size of the character relative to screenSize (i.e. (0.10F, 0.20F) is 10% of the screen 
-         * by 20% of the screen.
+         * @param characterSize Size of the in display units
          * @param mass The mass of the character in kilograms
          * @param friction The friction of the character
          * @param restitution The restitution of the character
@@ -83,8 +84,8 @@ namespace SuperSmashPolls.Characters {
          **************************************************************************************************************/
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution, 
             float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval) {
-            CharacterSize         = characterSize * screenSize;
-            CharacterOrigin       = new Vector2((characterSize.Y*screenSize.Y)/2F, (characterSize.X * screenSize.X)/2F);
+            CharacterSize         = characterSize;
+            CharacterOrigin       = new Vector2((characterSize.Y)/2F, (characterSize.X)/2F);
             Mass                  = mass;
             Friction              = friction;
             Restitution           = restitution;
@@ -96,6 +97,41 @@ namespace SuperSmashPolls.Characters {
             LastJump              = DateTime.Now;
             LastSpecialAttack     = DateTime.Now;
             Actions               = new List<CharacterAction>();
+        }
+
+        /***********************************************************************************************************//**
+         * Constructor for the Character class from another character
+         **************************************************************************************************************/
+        public Character(Character otherCharacter, World gameWorld, Vector2 position) {
+            CharacterSize         = otherCharacter.CharacterSize;
+            CharacterOrigin       = otherCharacter.CharacterOrigin;
+            Mass                  = otherCharacter.Mass;
+            Friction              = otherCharacter.Friction;
+            Restitution           = otherCharacter.Restitution;
+            MovementMultiplier    = otherCharacter.MovementMultiplier;
+            JumpForceMultiplier   = otherCharacter.JumpForceMultiplier;
+            JumpInterval          = otherCharacter.JumpInterval;
+            SpecialAttackInterval = otherCharacter.SpecialAttackInterval;
+            CurrentActionIndex    = IdleIndex;
+            LastJump              = DateTime.Now;
+            LastSpecialAttack     = DateTime.Now;
+            Actions               = new List<CharacterAction> {
+                otherCharacter.Actions[0],
+                otherCharacter.Actions[1], //attempted to fix the multiplayer action bug
+                otherCharacter.Actions[2],
+                otherCharacter.Actions[3],
+                otherCharacter.Actions[4],
+                otherCharacter.Actions[5],
+                otherCharacter.Actions[6],
+                otherCharacter.Actions[7]
+            };
+
+            CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
+                ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
+            CharacterBody.BodyType    = BodyType.Dynamic;
+            CharacterBody.Friction    = Friction;
+            CharacterBody.Mass        = Mass;
+            CharacterBody.Restitution = Restitution;
         }
 
         /***********************************************************************************************************//**
@@ -154,6 +190,8 @@ namespace SuperSmashPolls.Characters {
             Actions[CurrentActionIndex].DrawColor = Color.Black;
 #endif
 
+            if (Math.Abs(CharacterBody.LinearVelocity.Y) > 0.01F)
+                CurrentActionIndex = JumpIndex;
 
             if (gamePadState.IsButtonDown(Buttons.A) && (Now - LastJump).TotalMilliseconds > JumpInterval * 1000) {
             //The character is jumping
