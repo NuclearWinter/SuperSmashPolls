@@ -58,6 +58,11 @@ namespace SuperSmashPolls {
         /* Menu system for the game to use */
         private MenuItem Menu;
 
+        /** The player's in this game */
+        private PlayerClass PlayerOne, PlayerTwo, PlayerThree, PlayerFour;
+        /*  */
+        private int NumPlayers;
+
         /** Handles the different states that the game can be in */
         enum GameState {
 
@@ -107,11 +112,27 @@ namespace SuperSmashPolls {
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Single Player", false,
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Local Game", false,
                 EmptyUnit, true, true, MenuCommands.SingleplayerMenu));
 
                 Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), 
-                    "New Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
+                    "New Game", true, EmptyUnit, true, true, MenuCommands.StartGame));
+
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "One Player", false, 
+                                     EmptyUnit, true, true, MenuCommands.OnePlayer));
+
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Two Player", false,
+                                     EmptyUnit, true, true, MenuCommands.TwoPlayer));
+
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Three Player", false, 
+                                     EmptyUnit, true, true, MenuCommands.ThreePlayer));
+
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Four Player", false, 
+                                     EmptyUnit, true, true, MenuCommands.FourPlayer));
 
                 Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
                     "Load Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
@@ -127,6 +148,13 @@ namespace SuperSmashPolls {
 
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
+
+            /************************************** Initialization for Players ****************************************/
+
+            PlayerOne   = new PlayerClass(PlayerIndex.One);
+            PlayerTwo   = new PlayerClass(PlayerIndex.Two);
+            PlayerThree = new PlayerClass(PlayerIndex.Three);
+            PlayerFour  = new PlayerClass(PlayerIndex.Four);
 
             /************************************* Initialization for Characters **************************************/
 
@@ -217,6 +245,12 @@ namespace SuperSmashPolls {
                             Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
                             Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
 
+                                
+                            PlayerOne.SetCharacter(TheDonald); //debugging
+                            PlayerTwo.SetCharacter(TheDonald);
+                            PlayerThree.SetCharacter(TheDonald);
+                            PlayerFour.SetCharacter(TheDonald);
+
                             break;
                         case MenuCommands.ExitGame:
                             this.Exit();
@@ -232,6 +266,22 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.Nothing:
                             break;
+                        case MenuCommands.OnePlayer:
+                            NumPlayers = 1;
+                            goto case MenuCommands.StartGame;
+                            break;
+                        case MenuCommands.TwoPlayer:
+                            NumPlayers = 2;
+                            goto case MenuCommands.StartGame;
+                            break;
+                        case MenuCommands.ThreePlayer:
+                            NumPlayers = 3;
+                            goto case MenuCommands.StartGame;
+                            break;
+                        case MenuCommands.FourPlayer:
+                            NumPlayers = 4;
+                            goto case MenuCommands.StartGame;
+                            break;
                         default:
                             break;
                     } 
@@ -240,14 +290,29 @@ namespace SuperSmashPolls {
 
                 } case GameState.GameLevel: { /* The player is currently playing the game */
 
-                        State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
-                                GameState.Menu : State;
+                    State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
+                            GameState.Menu : State;
 
-                        TheDonald.UpdateCharacter(GamePad.GetState(PlayerIndex.One));
+                    switch (NumPlayers) {
 
-                        world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+                        case 4:
+                            PlayerFour.UpdatePlayer();
+                            goto case 3;
+                        case 3:
+                            PlayerThree.UpdatePlayer();
+                            goto case 2;
+                        case 2:
+                            PlayerTwo.UpdatePlayer();
+                            goto case 1;
+                        case 1:
+                            PlayerOne.UpdatePlayer();
+                            break;
 
-                        break;
+                    }
+
+                    world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+
+                    break;
 
                 } case GameState.ScoreScreen:
                     break;
@@ -288,7 +353,22 @@ namespace SuperSmashPolls {
                         FloorTexture.DrawWithUpdate(ref Batch, ConvertUnits.ToDisplayUnits(Floor.Position) - FloorOrigin,
                             FloorDisplaySize);
 
-                        TheDonald.DrawCharacter(ref Batch);
+                        switch (NumPlayers) {
+
+                            case 4:
+                                PlayerFour.DrawPlayer(ref Batch);
+                                goto case 3;
+                            case 3:
+                                PlayerThree.DrawPlayer(ref Batch);
+                                goto case 2;
+                            case 2:
+                                PlayerTwo.DrawPlayer(ref Batch);
+                                goto case 1;
+                            case 1:
+                                PlayerOne.DrawPlayer(ref Batch);
+                                break;
+
+                        }
 
                         GraphicsDevice.Clear(Color.Wheat);
 

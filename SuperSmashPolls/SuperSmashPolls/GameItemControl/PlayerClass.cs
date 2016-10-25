@@ -20,16 +20,45 @@ namespace SuperSmashPolls.GameItemControl {
      * class.
      ******************************************************************************************************************/
     class PlayerClass {
+        /** The ID of the character */
+        private readonly PlayerIndex PlayerID;
         /** The player's character */
         private Character PlayerCharacter;
 
         /***********************************************************************************************************//**
-         * TODO SetCharacter method
+         * Constructor
          **************************************************************************************************************/
+        public PlayerClass(PlayerIndex playerId) {
+            PlayerID = playerId;
+            PlayerCharacter = new Character();
+        }
 
         /***********************************************************************************************************//**
-         * Updates the character
+         * Sets the character
          **************************************************************************************************************/
+        public void SetCharacter(Character playerCharacter) {
+
+            PlayerCharacter = playerCharacter;
+
+        }
+
+        /***********************************************************************************************************//**
+         * Update the player
+         **************************************************************************************************************/
+        public void UpdatePlayer() {
+            
+            PlayerCharacter.UpdateCharacter(GamePad.GetState(PlayerID));
+
+        }
+
+        /***********************************************************************************************************//**
+         * Draw the character
+         **************************************************************************************************************/
+        public void DrawPlayer(ref SpriteBatch batch) {
+            
+            PlayerCharacter.DrawCharacter(ref batch);
+            
+        }
 
     }
 

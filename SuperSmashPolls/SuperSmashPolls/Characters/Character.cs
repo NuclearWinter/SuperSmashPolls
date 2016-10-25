@@ -64,6 +64,11 @@ namespace SuperSmashPolls.Characters {
         private int CurrentActionIndex;
 
         /***********************************************************************************************************//**
+         * Default constructor
+         **************************************************************************************************************/
+         public Character() { }
+
+        /***********************************************************************************************************//**
          * Constructor for the Character class
          * @param screenSize A reference to the size of the screen
          * @param characterSize Size of the character relative to screenSize (i.e. (0.10F, 0.20F) is 10% of the screen 

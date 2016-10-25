@@ -23,7 +23,11 @@ namespace SuperSmashPolls.MenuControl {
         MultiplayerMenu,
         SingleplayerMenu,
         BackToMainMenu, //Go back to the previous menu
-        ExitGame
+        ExitGame,
+        OnePlayer,
+        TwoPlayer,
+        ThreePlayer,
+        FourPlayer
 
     }
 
