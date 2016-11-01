@@ -45,6 +45,8 @@ namespace SuperSmashPolls {
         private GraphicsDeviceManager Graphics;
         /* Yarr, dis here be da world */
         private World world;
+        /* The scale of how many pixels are equal to one meter */
+        private readonly float PixelToMeterScale;
         /* The center of the screen */
         private Vector2 ScreenCenter;
         /* The body of the floor */
@@ -98,6 +100,8 @@ namespace SuperSmashPolls {
 
             FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
 
+            PixelToMeterScale = ScreenSize.X/25;
+
         }
 
         /***********************************************************************************************************//** 
@@ -110,7 +114,7 @@ namespace SuperSmashPolls {
             /*********************************** Initialization for Physics things ************************************/
 
             // This sets the width of the screen equal to 25m in the physics engine
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(ScreenSize.X / 25);
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(PixelToMeterScale);
 
             world = new World(new Vector2(0f, 9.82f)); //Creates the world with 9.82m/s^2 as a downward acceleration
 
