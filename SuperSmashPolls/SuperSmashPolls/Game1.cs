@@ -23,6 +23,7 @@ using Microsoft.Xna.Framework.Media;
 using SuperSmashPolls.Characters;
 using SuperSmashPolls.GameItemControl;
 using SuperSmashPolls.Graphics;
+using SuperSmashPolls.Levels;
 using SuperSmashPolls.MenuControl;
 using SuperSmashPolls.World_Control;
 
@@ -39,14 +40,22 @@ namespace SuperSmashPolls {
         private readonly WorldUnit EmptyUnit;
         /* The display size for the floor */
         private readonly Vector2 FloorDisplaySize;
+        /* The scale of how many pixels are equal to one meter */
+        private readonly float PixelToMeterScale;
+
+        /*   Characters   */
+
         /** The one, the only, the Donald */
         private Character TheDonald;
+
+        /*  Levels  */
+
+        private LevelHandler Temple;
+
         /* Manages graphics. */
         private GraphicsDeviceManager Graphics;
         /* Yarr, dis here be da world */
-        private World world;
-        /* The scale of how many pixels are equal to one meter */
-        private readonly float PixelToMeterScale;
+        private World GameWorld;
         /* The center of the screen */
         private Vector2 ScreenCenter;
         /* The body of the floor */
@@ -81,12 +90,12 @@ namespace SuperSmashPolls {
 
         /***********************************************************************************************************//** 
          * Constructs the game's class
-         **************************************************************************************************************/ 
+         **************************************************************************************************************/
         public Game1() {
-
+            /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360);
 
-            /* This is the player's screen */
+            /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
                 IsFullScreen = false,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
@@ -100,6 +109,7 @@ namespace SuperSmashPolls {
 
             FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
 
+            //This is equal to how many pixels are in one meter
             PixelToMeterScale = ScreenSize.X/25;
 
         }
@@ -116,24 +126,30 @@ namespace SuperSmashPolls {
             // This sets the width of the screen equal to 25m in the physics engine
             ConvertUnits.SetDisplayUnitToSimUnitRatio(PixelToMeterScale);
 
-            world = new World(new Vector2(0f, 9.82f)); //Creates the world with 9.82m/s^2 as a downward acceleration
+            GameWorld = new World(new Vector2(0F, 0F)); //Creates the GameWorld with 9.82m/s^2 as a downward acceleration
 
             ScreenCenter = ScreenSize / 2F;
 
-            Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
+//            Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
+//
+//            //This creates the body in Farseer's world
+//            Floor = BodyFactory.CreateRectangle(GameWorld, //The GameWorld to put the floor in
+//                                                ConvertUnits.ToSimUnits(FloorDisplaySize.Y), //The floor size is
+//                                                ConvertUnits.ToSimUnits(FloorDisplaySize.X), //converted to meters
+//                                                1F,             //Density
+//                                                FloorPosition); //This is the position of the floor
+//            Floor.IsStatic    = true;  //The floor does not move
+//            Floor.Restitution = 0.3F;  //This is how bouncy the object is
+//            Floor.Friction    = 0.09F; //This is how frictiony the floor is (
+//
+//            //To draw the floor properly with XNA we need to center is position about the origin
+//            FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X / 2F);
 
-            //This creates the body in Farseer's world
-            Floor = BodyFactory.CreateRectangle(world, //The world to put the floor in
-                                                ConvertUnits.ToSimUnits(FloorDisplaySize.Y), //The floor size is
-                                                ConvertUnits.ToSimUnits(FloorDisplaySize.X), //converted to meters
-                                                1F,             //Density
-                                                FloorPosition); //This is the position of the floor
-            Floor.IsStatic    = true;  //The floor does not move
-            Floor.Restitution = 0.3F;  //This is how bouncy the object is
-            Floor.Friction    = 0.09F; //This is how frictiony the floor is (
+            /************************************ Initialization for Level things *************************************/
 
-            //To draw the floor properly with XNA we need to center is position about the origin
-            FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X / 2F);
+            Temple = new LevelHandler(Content.Load<Texture2D>("space"), PixelToMeterScale, ref ScreenSize);
+
+            Temple.AssignToWorld(ref GameWorld);
 
             /************************************* Initialization for Menu things *************************************/
 
@@ -162,6 +178,10 @@ namespace SuperSmashPolls {
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
                                      EmptyUnit, true, true, MenuCommands.FourPlayer));
 
+                        
+
+                            //Level select
+
                 Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
                     "Load Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
 
@@ -188,9 +208,9 @@ namespace SuperSmashPolls {
 
             //!@note These values are based off of the real Donald
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
-                0.01F, 500F, 25F, 0.5F, 1F);
+                0.01F, 500F, 25F, 0.1F, 1F);
 
-            TheDonald.CreateBody(ref world, new Vector2(4, 0));
+            TheDonald.CreateBody(ref GameWorld, new Vector2(8, 8));
 
             base.Initialize();
 
@@ -253,7 +273,7 @@ namespace SuperSmashPolls {
                             Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
 
                             PlayerOne.SetCharacter(TheDonald); //debugging
-                            PlayerTwo.SetCharacter(new Character(TheDonald, world, new Vector2(8, 0)));
+                            PlayerTwo.SetCharacter(new Character(TheDonald, GameWorld, new Vector2(8, 0)));
                             PlayerThree.SetCharacter(TheDonald);
                             PlayerFour.SetCharacter(TheDonald);
                             break;
@@ -311,7 +331,7 @@ namespace SuperSmashPolls {
 
                     }
 
-                    world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+                    GameWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
                     break;
 
@@ -351,8 +371,7 @@ namespace SuperSmashPolls {
 
                     } case GameState.GameLevel: {
 
-                        FloorTexture.DrawWithUpdate(ref Batch, ConvertUnits.ToDisplayUnits(Floor.Position) - FloorOrigin,
-                            FloorDisplaySize);
+                        Temple.DrawLevel(Batch);
 
                         switch (NumPlayers) {
 

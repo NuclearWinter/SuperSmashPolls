@@ -7,3 +7,6 @@ Content\Black Floor.xnb
 Content\Donald\donald64-jump.xnb
 Content\Donald\donald64-stand.xnb
 Content\Donald\donald64-walk.xnb
+Content\Temple.xnb
+Content\temple_kinda.xnb
+Content\space.xnb

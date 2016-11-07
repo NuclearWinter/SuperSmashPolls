@@ -261,6 +261,22 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
+        /***********************************************************************************************************//**
+         * Access function for members of DisplayItems
+         * TODO finish this
+         **************************************************************************************************************/
+        public void AccessItem(MenuItem add, params int[] index) {
+
+            MenuItem testthing;
+
+            for (int i = 0; i < index.Length; ++i) {
+                
+                //for the things in index add a new thing each time
+
+            }
+
+        }
+
     }
 
 }
