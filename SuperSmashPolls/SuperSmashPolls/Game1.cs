@@ -107,7 +107,7 @@ namespace SuperSmashPolls {
 
             EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
 
-            FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
+            //FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
 
             //This is equal to how many pixels are in one meter
             PixelToMeterScale = ScreenSize.X/25;
@@ -147,7 +147,7 @@ namespace SuperSmashPolls {
 
             /************************************ Initialization for Level things *************************************/
 
-            Temple = new LevelHandler(Content.Load<Texture2D>("space"), PixelToMeterScale, ref ScreenSize);
+            Temple = new LevelHandler();
 
             Temple.AssignToWorld(ref GameWorld);
 

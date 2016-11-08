@@ -14,26 +14,26 @@ using FarseerPhysics.Factories;
 
 namespace SuperSmashPolls.Levels {
 
+    /***************************************************************************************************************//**
+     * Gets the information needed to later create the world if it is selected.
+     ******************************************************************************************************************/ 
     class LevelHandler {
-        /** The texture to use in this world */
-        private readonly Texture2D WorldTexture;
-        /** The scale used to say how many pixels are how many meters */
-        private readonly float PixelToMeterScale;
-        /* Texture sclae */
-        private readonly Vector2 TextureScale;
-        /*  */
-        private Body LevelBody;
+        /* The bodies of this level */
+        private List<Tuple<Body, Texture2D>> LevelBody;
 
         /***********************************************************************************************************//**
-         * Gets the information needed to later create the world if it is selected.
+         * Constructor
          **************************************************************************************************************/ 
-        public LevelHandler(Texture2D worldTexture, float pixelToMeterScale, ref Vector2 screenSize) {
-            WorldTexture = worldTexture;
-            PixelToMeterScale = pixelToMeterScale;
-            TextureScale = new Vector2(screenSize.X/WorldTexture.Width, screenSize.Y/WorldTexture.Height);
-            //ScreenSize = screenSize;
+        public LevelHandler() {
+
+            LevelBody = new List<Tuple<Body, Texture2D>>();
+
         }
 
+        /***********************************************************************************************************//**
+         * Creates a polygon from a texture
+         * TODO document this
+         **************************************************************************************************************/
         public Body CreatePolygonFromTexture(Texture2D tex, World world, float density, Vector2 position, float scale, TriangulationAlgorithm algorithm = TriangulationAlgorithm.Bayazit) {
             uint[] texData = new uint[tex.Width * tex.Height];
             tex.GetData<uint>(texData);
@@ -54,39 +54,23 @@ namespace SuperSmashPolls.Levels {
 
         /***********************************************************************************************************//**
          * Creates the body and puts it in the world
-         * @ref gameworld The world to put the body into
+         * @param gameworld The world to put the body into
+         * @param items All the items to add to the world
          **************************************************************************************************************/
-        public void AssignToWorld(ref World gameWorld) {
+        public void AssignToWorld(ref World gameWorld, params Tuple<Texture2D, Vector2>[] items) {
 
-//            uint[] TextureData = new uint[WorldTexture.Width * WorldTexture.Height];
-//
-//            WorldTexture.GetData(TextureData);
-//
-//            Vertices TextureVertices = PolygonTools.CreatePolygon(TextureData, WorldTexture.Width, true);
-//
-//            TextureVertices.Scale(new Vector2(ConvertUnits.ToSimUnits(WorldTexture.Width),
-//                ConvertUnits.ToSimUnits(WorldTexture.Height)));
-//
-//            List<Vertices> PolygonList = BayazitDecomposer.ConvexPartition(TextureVertices);
+            foreach (var i in items) {
 
-            //LevelBody = BodyFactory.CreateCompoundPolygon(gameWorld, PolygonList, 1F);
+                Body TempBody = CreatePolygonFromTexture(i.Item1, gameWorld, 1F, i.Item2,
+                    ConvertUnits.ToSimUnits(i.Item1.Width)/i.Item1.Width, TriangulationAlgorithm.Bayazit);
 
-            Vector2 scale = new Vector2(ConvertUnits.ToSimUnits(WorldTexture.Width),
-                ConvertUnits.ToSimUnits(WorldTexture.Height));
+                TempBody.BodyType = BodyType.Static;
 
-            Vector2 position = new Vector2(ConvertUnits.ToSimUnits(WorldTexture.Width / 2),
-                ConvertUnits.ToSimUnits(WorldTexture.Height / 2));
+                TempBody.IsStatic = true;
 
-            LevelBody = CreatePolygonFromTexture(WorldTexture, gameWorld, 1F, position,
-                ConvertUnits.ToSimUnits(WorldTexture.Width)/WorldTexture.Width, TriangulationAlgorithm.Seidel);
+                LevelBody.Add(new Tuple<Body, Texture2D>(TempBody, i.Item1));
 
-            LevelBody.BodyType = BodyType.Static;
-
-        }
-
-        public void MakeTemple(ref World gameWorld) {
-            
-
+            }
 
         }
 
@@ -95,12 +79,11 @@ namespace SuperSmashPolls.Levels {
          **************************************************************************************************************/
         public void DrawLevel(SpriteBatch spriteBatch) {
 
-            Vector2 TextureOrigin = new Vector2(WorldTexture.Width/2, WorldTexture.Height/2);
+            foreach (var i in LevelBody) {
+                
+                spriteBatch.Draw(i.Item2, ConvertUnits.ToDisplayUnits(i.Item1.Position), Color.White);
 
-//            spriteBatch.Draw(WorldTexture, LevelBody.Position, null, Color.White, 0, Vector2.Zero, TextureScale,
-//                SpriteEffects.None, 0);
-            //TODO test where this puts it
-            spriteBatch.Draw(WorldTexture, ConvertUnits.ToDisplayUnits(LevelBody.Position) - TextureOrigin, Color.White);
+            }
 
         }
 
