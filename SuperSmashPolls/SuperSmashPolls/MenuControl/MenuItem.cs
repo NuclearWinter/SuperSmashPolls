@@ -15,21 +15,21 @@ namespace SuperSmashPolls.MenuControl {
 
     /***************************************************************************************************************//**
      * Holds the different commands that the menu might need to send into the main game
+     * @note This is a somewhat kluge solution, but it works well
      ******************************************************************************************************************/
     enum MenuCommands {
         
         Nothing,     //The game should do nothing
         StartGame,   //The game should start
-        MultiplayerMenu,
-        SingleplayerMenu,
-        LoadSave,
-        SaveGame,
+        MultiplayerMenu, //Opens the multiplayer menu
+        SingleplayerMenu, //Opens the singleplayer menu
+        LoadSave, //Loads the game
+        SaveGame, //Saves the game
         BackToMainMenu, //Go back to the previous menu
-        ExitGame,
-        OnePlayer,
-        TwoPlayer,
-        ThreePlayer,
-        FourPlayer
+        ExitGame, //Exits the game
+        OnePlayer, TwoPlayer, ThreePlayer, FourPlayer,
+        ResumeGame,
+        PlayTemple
 
     }
 

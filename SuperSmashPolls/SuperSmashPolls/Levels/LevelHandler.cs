@@ -15,10 +15,11 @@ using FarseerPhysics.Factories;
 namespace SuperSmashPolls.Levels {
 
     /***************************************************************************************************************//**
-     * Holds and handles the drawing of and contruction of bodies
+     * Holds and handles the drawing of and contruction of bodies.
+     * This class is responsible for handling the storage and creation of static bodies to use in the game world.
      ******************************************************************************************************************/ 
     class LevelHandler {
-        /** The world for this level */
+        /** TODO The world for this level */
 
         /** The bodies of this level <Body, texture, size (in meters)> */
         private List<Tuple<Body, Texture2D, Vector2>> LevelBody;
@@ -31,6 +32,12 @@ namespace SuperSmashPolls.Levels {
 
         /***********************************************************************************************************//**
          * Constructor
+         * @param playerOneSpawn The spawn point for player one
+         * @param playerTwoSpawn The spawn point for player two
+         * @param playerThreeSpawn The spawn point for player three
+         * @param playerFourSpawn The spawn point for player four
+         * @param respawnPoint The respawn point for all players when/if they die
+         * @param gravity unused for for
          **************************************************************************************************************/ 
         public LevelHandler(Vector2 playerOneSpawn, Vector2 playerTwoSpawn, Vector2 playerThreeSpawn,
             Vector2 playerFourSpawn, Vector2 respawnPoint, bool gravity = true) {
@@ -45,7 +52,10 @@ namespace SuperSmashPolls.Levels {
         }
 
         /***********************************************************************************************************//**
-         * Adds a background to the level
+         * Sets a background to the level
+         * @param levelBackground The texture to use as a background
+         * @param levelBackgroundScale The scale to use for the background texture (i.e. background is 640x360,
+         * screen is 1280x720 we would need to scale by 2)
          **************************************************************************************************************/
         public void SetBackground(Texture2D levelBackground, Vector2 levelBackgroundScale) {
 
@@ -55,34 +65,9 @@ namespace SuperSmashPolls.Levels {
         }
 
         /***********************************************************************************************************//**
-         * Creates a polygon from a texture
-         * TODO document this
-         **************************************************************************************************************/
-        public Body CreatePolygonFromTexture(Texture2D tex, World world, float density, Vector2 position, float scale, 
-            TriangulationAlgorithm algorithm = TriangulationAlgorithm.Bayazit) {
-
-            uint[] texData = new uint[tex.Width * tex.Height];
-            tex.GetData<uint>(texData);
-
-            Vertices vertices = TextureConverter.DetectVertices(texData, tex.Width);
-            List<Vertices> vertexList = Triangulate.ConvexPartition(vertices, algorithm);
-
-            Vector2 vertScale = new Vector2(ConvertUnits.ToSimUnits(scale));
-            foreach (Vertices vert in vertexList)
-                vert.Scale(ref vertScale);
-
-            Vector2 centroid = -vertices.GetCentroid();
-            vertices.Translate(ref centroid);
-            //basketOrigin = -centroid;
-
-            return BodyFactory.CreateCompoundPolygon(world, vertexList, density, position);
-
-        }
-
-        /***********************************************************************************************************//**
          * Creates the body and puts it in the world
          * @param gameworld The world to put the body into
-         * @param items All the items to add to the world <Texture, position, size (in meters)>
+         * @param items All the items to add to the world (Texture, position, size (in meters))
          **************************************************************************************************************/
         public void AssignToWorld(ref World gameWorld, params Tuple<Texture2D, Vector2, Vector2>[] items) {
 
@@ -102,7 +87,7 @@ namespace SuperSmashPolls.Levels {
         }
 
         /***********************************************************************************************************//**
-         * This draws the texture associated with the world
+         * This draws world
          * @param spriteBatch The batch to draw with
          **************************************************************************************************************/
         public void DrawLevel(SpriteBatch spriteBatch) {
@@ -119,6 +104,41 @@ namespace SuperSmashPolls.Levels {
                     Vector2.Zero, ConvertUnits.ToSimUnits(i.Item2.Width)/i.Item3.X, SpriteEffects.None, 0);
 
             }
+
+        }
+
+        /***********************************************************************************************************//**
+         * Creates a polygon from a texture. This is the important function here.
+         * @param texture The texture to make a body from
+         * @param world The world to create the body in (This will be gone when we give each level their own world)
+         * @param density The density of the object (Will almost always be one
+         * @param position The position (in meters) of the object in the world
+         * @param scale The scale of the object (how much to change its size)
+         * @param algorithm The decomposition algorithm to use
+         * @note Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid
+         * @warning In order for this to work the input must have a transparent background. I highly reccomend that you
+         * only use this with PNGs as that is what I have texted and I know they work. This will only produce a bosy as
+         * clean as the texture you give it, so avoid partically transparent areas and little edges.
+         **************************************************************************************************************/
+        private Body CreatePolygonFromTexture(Texture2D texture, World world, float density, Vector2 position, float scale,
+            TriangulationAlgorithm algorithm = TriangulationAlgorithm.Bayazit) {
+
+            uint[] TextureData = new uint[texture.Width * texture.Height]; //Array to copy texture info into
+            texture.GetData<uint>(TextureData); //Gets which pixels of the texture are actually filled
+
+            Vertices vertices = TextureConverter.DetectVertices(TextureData, texture.Width);
+            List<Vertices> vertexList = Triangulate.ConvexPartition(vertices, algorithm);
+
+            Vector2 vertScale = new Vector2(ConvertUnits.ToSimUnits(scale));
+            foreach (Vertices vert in vertexList)
+                vert.Scale(ref vertScale); //Scales the vertices to match the size we specified
+
+            Vector2 centroid = -vertices.GetCentroid();
+            vertices.Translate(ref centroid);
+            //basketOrigin = -centroid;
+
+            //This actually creates the body
+            return BodyFactory.CreateCompoundPolygon(world, vertexList, density, position);
 
         }
 

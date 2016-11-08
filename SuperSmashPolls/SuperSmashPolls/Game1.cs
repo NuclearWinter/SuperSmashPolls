@@ -46,31 +46,26 @@ namespace SuperSmashPolls {
 
         /*   Characters   */
 
-        /** The one, the only, the Donald */
-        private Character TheDonald;
+            /** The one, the only, the Donald */
+            private Character TheDonald;
 
         /*  Levels  */
 
-        private LevelHandler Temple;
+            private LevelHandler Temple;
 
-        private LevelHandler Space;
+            private LevelHandler Space;
 
         /* Manages graphics. */
         private GraphicsDeviceManager Graphics;
-        /* Yarr, dis here be da world */
-        private World GameWorld;
-        /* The center of the screen */
-        private Vector2 ScreenCenter;
-        /* The body of the floor */
-        private Body Floor;
-        /* The handling of the texture for the floor @deprecated Using old class */
-        private SpritesheetHandler FloorTexture;
-        /* The origin of the floor */
-        private Vector2 FloorOrigin;
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
+        /* Yarr, dis here be da world */
+        private World GameWorld;
+        /* The center of the screen */
+        private Vector2 ScreenCenter;
+
         /* Menu system for the game to use */
         private MenuItem Menu;
 
@@ -92,16 +87,20 @@ namespace SuperSmashPolls {
         /** Variable to hold the state of the game */
         private GameState State = GameState.Menu;
 
-        /* Handles character matching */
+        /* Holds levels for matching from a save and for selection */
+        private List<Tuple<LevelHandler, string>> LevelStringPairs;
+        /* Holds characters for matching from a save and for selection*/
         private List<Tuple<Character, string>> CharacterStringPairs;
 
         /***********************************************************************************************************//** 
          * Constructs the game's class
+         * TODO clean up constructor
          **************************************************************************************************************/
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360);
 
+            LevelStringPairs     = new List<Tuple<LevelHandler, string>>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
 
             /* This is the player's screen controller */
@@ -144,24 +143,9 @@ namespace SuperSmashPolls {
             // This sets the width of the screen equal to 25m in the physics engine
             ConvertUnits.SetDisplayUnitToSimUnitRatio(PixelToMeterScale);
 
-            GameWorld = new World(new Vector2(0F, 9.80F)); //Creates the GameWorld with 9.82m/s^2 as a downward acceleration
+            GameWorld = new World(new Vector2(0F, 9.80F)); //Creates the GameWorld with 9.82m/s^2 as downward acceleration
 
             ScreenCenter = ScreenSize / 2F;
-
-//            Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
-//
-//            //This creates the body in Farseer's world
-//            Floor = BodyFactory.CreateRectangle(GameWorld, //The GameWorld to put the floor in
-//                                                ConvertUnits.ToSimUnits(FloorDisplaySize.Y), //The floor size is
-//                                                ConvertUnits.ToSimUnits(FloorDisplaySize.X), //converted to meters
-//                                                1F,             //Density
-//                                                FloorPosition); //This is the position of the floor
-//            Floor.IsStatic    = true;  //The floor does not move
-//            Floor.Restitution = 0.3F;  //This is how bouncy the object is
-//            Floor.Friction    = 0.09F; //This is how frictiony the floor is (
-//
-//            //To draw the floor properly with XNA we need to center is position about the origin
-//            FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X / 2F);
 
             /************************************ Initialization for Level things *************************************/
 
@@ -179,6 +163,8 @@ namespace SuperSmashPolls {
 
             Temple.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, SpaceBackground.Height)/ScreenSize);
 
+            LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
+
             //Space = new LevelHandler();
 
             //Texture2D TempBackground = Content.Load<Texture2D>("space");
@@ -187,6 +173,7 @@ namespace SuperSmashPolls {
             //    new Vector2(TempBackground.Width/ScreenSize.X, TempBackground.Height/ScreenSize.Y));
 
             /************************************* Initialization for Menu things *************************************/
+            //@note Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
@@ -197,14 +184,21 @@ namespace SuperSmashPolls {
                 Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
                     "New Game", true, EmptyUnit, true, true, MenuCommands.StartGame));
 
+                    //This holds the in game pause screen for any amount of players
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "One Player", false, 
                                      EmptyUnit, true, true, MenuCommands.OnePlayer));
 
+                    //This holds the level selection screen for any amount of players
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Two Player", false,
                                      EmptyUnit, true, true, MenuCommands.TwoPlayer));
 
+                        Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
+                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Temple", false,
+                                EmptyUnit, true, true, MenuCommands.PlayTemple));
+
+            //This holds character selection for any amount of players
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                                      EmptyUnit, true, true, MenuCommands.ThreePlayer));
@@ -270,8 +264,6 @@ namespace SuperSmashPolls {
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
             //TODO finish animations for TheDonald
 
-            FloorTexture = new SpritesheetHandler(1, new Point(10, 10), Content.Load<Texture2D>("Black Floor"), "f");
-
             Menu.SetFontForAll(GameFont);
 
         }
@@ -301,40 +293,6 @@ namespace SuperSmashPolls {
 
                     switch (CurrentCommand) {
 
-                        case MenuCommands.StartGame:
-                            State = GameState.GameLevel;
-                            Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
-                            Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
-
-                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
-                                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Save game", false,
-                                    EmptyUnit, true, true, MenuCommands.SaveGame));
-
-                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
-
-                            PlayerOne.SetCharacter(TheDonald); //debugging
-                            PlayerTwo.SetCharacter(new Character(TheDonald, GameWorld, new Vector2(8, 0)));
-                            PlayerThree.SetCharacter(TheDonald);
-                            PlayerFour.SetCharacter(TheDonald);
-
-                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
-
-                            break;
-
-                        case MenuCommands.ExitGame:
-                            this.Exit();
-                            break;
-                        case MenuCommands.BackToMainMenu:
-                            Menu.DrawDown = -1;
-                            break;
-                        case MenuCommands.MultiplayerMenu:
-                            Menu.DrawDown = 1;
-                            break;
-                        case MenuCommands.SingleplayerMenu:
-                            Menu.DrawDown = 0;
-                            break;
-                        case MenuCommands.Nothing:
-                            break;
                         case MenuCommands.OnePlayer:
                             NumPlayers = 1;
                             goto case MenuCommands.StartGame;
@@ -350,8 +308,48 @@ namespace SuperSmashPolls {
                         case MenuCommands.LoadSave:
                             State = GameState.LoadSave;
                             break;
+                        case MenuCommands.StartGame:
+                            State = GameState.GameLevel;
+                            Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
+                            Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
+
+                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
+                                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Save game", false,
+                                    EmptyUnit, true, true, MenuCommands.SaveGame));
+
+                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
+                                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Continue", false,
+                                    EmptyUnit, true, true, MenuCommands.ResumeGame));
+
+                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
+
+                            PlayerOne.SetCharacter(TheDonald); //debugging
+                            PlayerTwo.SetCharacter(new Character(TheDonald, GameWorld, new Vector2(8, 0)));
+                            PlayerThree.SetCharacter(TheDonald);
+                            PlayerFour.SetCharacter(TheDonald);
+
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
+
+                            break;
+                        case MenuCommands.BackToMainMenu:
+                            Menu.DrawDown = -1;
+                            break;
+                        case MenuCommands.MultiplayerMenu:
+                            Menu.DrawDown = 1;
+                            break;
+                        case MenuCommands.SingleplayerMenu:
+                            Menu.DrawDown = 0;
+                            break;
+                        case MenuCommands.Nothing:
+                            break;
                         case MenuCommands.SaveGame:
                             State = GameState.SaveGame;
+                            break;
+                        case MenuCommands.ResumeGame:
+                            State = GameState.GameLevel;
+                            break;
+                        case MenuCommands.ExitGame:
+                            this.Exit();
                             break;
                         default:
                             break;
@@ -391,37 +389,24 @@ namespace SuperSmashPolls {
 
                     try {
 
-                        StreamWriter FileWriter =
-                            new StreamWriter("C:\\Users\\Public\\SmashPollsSave.txt");
+                        StreamWriter FileWriter = new StreamWriter("C:\\Users\\Public\\SmashPollsSave.txt");
 
                         FileWriter.WriteLine(NumPlayers);
 
                         switch (NumPlayers) {
 
                             case 4: {
-
                                 PlayerFour.WriteInfo(ref FileWriter);
-
                                 goto case 3;
-
                             } case 3: {
-
                                 PlayerThree.WriteInfo(ref FileWriter);
-
                                 goto case 2;
-
                             } case 2: { 
-
                                 PlayerTwo.WriteInfo(ref FileWriter);
-
                                 goto default;
-
                             } default: {
-
                                 PlayerOne.WriteInfo(ref FileWriter);
-
                                 break;
-
                             }
 
                         }
@@ -442,37 +427,24 @@ namespace SuperSmashPolls {
 
                     try {
 
-                        StreamReader FileReader =
-                            new StreamReader("C:\\Users\\Public\\SmashPollsSave.txt");
+                        StreamReader FileReader = new StreamReader("C:\\Users\\Public\\SmashPollsSave.txt");
 
                         NumPlayers = int.Parse(FileReader.ReadLine());
 
                         switch (NumPlayers) {
 
                             case 4: {
-
                                 PlayerFour.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
-
                                 goto case 3;
-
                             } case 3: {
-
                                 PlayerThree.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
-
                                 goto case 2;
-
                             } case 2: {
-
                                 PlayerTwo.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
-
                                 goto default;
-
                             } default: {
-
                                 PlayerOne.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
-
                                 break;
-
                             }
 
                         }
@@ -541,17 +513,11 @@ namespace SuperSmashPolls {
                         break;
 
                     } case GameState.SaveGame: {
-
                         Batch.DrawString(GameFont, "Saving game data...", ScreenCenter, Color.Black);
-
                         break;
-
                     } case GameState.LoadSave: {
-
                         Batch.DrawString(GameFont, "Loading game data...", ScreenCenter, Color.Black);
-
                         break;
-
                     } default: {
 
                         break;
