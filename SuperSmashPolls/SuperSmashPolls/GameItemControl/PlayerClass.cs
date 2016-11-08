@@ -27,13 +27,19 @@ namespace SuperSmashPolls.GameItemControl {
         private readonly PlayerIndex PlayerID;
         /** The player's character */
         private Character PlayerCharacter;
+        /**  */
+        private float PlayerHealth;
+        /**  */
+        private int Deaths;
 
         /***********************************************************************************************************//**
          * Constructor
          **************************************************************************************************************/
         public PlayerClass(PlayerIndex playerId) {
-            PlayerID = playerId;
+            PlayerID        = playerId;
             PlayerCharacter = new Character();
+            PlayerHealth    = 0;
+            Deaths          = 0;
         }
 
         /***********************************************************************************************************//**
@@ -48,8 +54,15 @@ namespace SuperSmashPolls.GameItemControl {
         /***********************************************************************************************************//**
          * Update the player
          **************************************************************************************************************/
-        public void UpdatePlayer() {
-            
+        public void UpdatePlayer(Vector2 respawnPoint) {
+
+            if (Math.Abs(PlayerCharacter.GetPosition().X) > 40 || Math.Abs(PlayerCharacter.GetPosition().Y) > 30) {
+            //Player is past 40 meters
+                ++Deaths;
+                PlayerCharacter.Respawn(respawnPoint);
+
+            }
+
             PlayerCharacter.UpdateCharacter(GamePad.GetState(PlayerID));
 
         }

@@ -124,6 +124,15 @@ namespace SuperSmashPolls {
         }
 
         /***********************************************************************************************************//** 
+         * Get's the meters of something drawn in a 640x360 scale
+         **************************************************************************************************************/
+        private float InMeters(float pixels) {
+
+            return (pixels/640)*25;
+
+        }
+
+        /***********************************************************************************************************//** 
          * Allows the game to perform any initialization it needs to before starting to run. 
          * This is where it can query for any required services and load any non-graphic related content. Calling 
          * base.Initialize will enumerate through any components and initialize them as well.
@@ -156,11 +165,19 @@ namespace SuperSmashPolls {
 
             /************************************ Initialization for Level things *************************************/
 
-            Temple = new LevelHandler();
+            Temple = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
+                new Vector2(13.5F, 0));
+
+            Texture2D TempleRock = Content.Load<Texture2D>("TempleRock");
 
             Temple.AssignToWorld(ref GameWorld,
-                new Tuple<Texture2D, Vector2, Vector2>(Content.Load<Texture2D>("Black Floor"), new Vector2(0, 0),
-                    new Vector2(1, 10)));
+                new Tuple<Texture2D, Vector2, Vector2>(TempleRock, new Vector2(0,
+                        InMeters(360) - InMeters(TempleRock.Height)),
+                    new Vector2(InMeters(TempleRock.Width), InMeters(TempleRock.Height))));
+
+            Texture2D SpaceBackground = Content.Load<Texture2D>("space");
+
+            Temple.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, SpaceBackground.Height)/ScreenSize);
 
             //Space = new LevelHandler();
 
@@ -226,7 +243,7 @@ namespace SuperSmashPolls {
 
             CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
 
-            TheDonald.CreateBody(ref GameWorld, new Vector2(8, 8)); //TODO move this to after world selection
+            TheDonald.CreateBody(ref GameWorld, new Vector2(0, 0)); //TODO move this to after world selection
 
             base.Initialize();
 
@@ -283,6 +300,7 @@ namespace SuperSmashPolls {
                     MenuCommands CurrentCommand = Menu.UpdateMenu(PlayerIndex.One);
 
                     switch (CurrentCommand) {
+
                         case MenuCommands.StartGame:
                             State = GameState.GameLevel;
                             Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
@@ -349,16 +367,16 @@ namespace SuperSmashPolls {
                     switch (NumPlayers) {
 
                         case 4:
-                            PlayerFour.UpdatePlayer();
+                            PlayerFour.UpdatePlayer(Temple.RespawnPoint);
                             goto case 3;
                         case 3:
-                            PlayerThree.UpdatePlayer();
+                            PlayerThree.UpdatePlayer(Temple.RespawnPoint);
                             goto case 2;
                         case 2:
-                            PlayerTwo.UpdatePlayer();
+                            PlayerTwo.UpdatePlayer(Temple.RespawnPoint);
                             goto default;
                         default:
-                            PlayerOne.UpdatePlayer();
+                            PlayerOne.UpdatePlayer(Temple.RespawnPoint);
                             break;
 
                     }

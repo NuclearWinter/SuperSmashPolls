@@ -301,13 +301,25 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
-         * 
+         * Gets the position of the charatcer
+         * @return The position of the character
          **************************************************************************************************************/
         public Vector2 GetPosition() {
 
             return CharacterBody.Position;
 
         }
+
+        /***********************************************************************************************************//**
+         * Respawns the character
+         **************************************************************************************************************/
+        public void Respawn(Vector2 position) {
+
+            CharacterBody.Position = position;
+            CharacterBody.ResetDynamics();
+
+        }
+
 
     }
 

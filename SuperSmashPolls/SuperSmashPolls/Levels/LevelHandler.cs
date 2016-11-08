@@ -24,18 +24,24 @@ namespace SuperSmashPolls.Levels {
         private List<Tuple<Body, Texture2D, Vector2>> LevelBody;
         /** The background for this level */
         private Texture2D LevelBackground;
-        /**  */
+        /** The amount that the background needs to be scaled (adjusted for different screen sizes) */
         private Vector2 LevelBackgroundScale;
+        /** The place's for players to spawn */
+        public Vector2 PlayerOneSpawn, PlayerTwoSpawn, PlayerThreeSpawn, PlayerFourSpawn, RespawnPoint;
 
         /***********************************************************************************************************//**
          * Constructor
          **************************************************************************************************************/ 
-        public LevelHandler(bool gravity = true) {
+        public LevelHandler(Vector2 playerOneSpawn, Vector2 playerTwoSpawn, Vector2 playerThreeSpawn,
+            Vector2 playerFourSpawn, Vector2 respawnPoint, bool gravity = true) {
 
-
+            PlayerOneSpawn = playerOneSpawn;
+            PlayerTwoSpawn = playerTwoSpawn;
+            PlayerThreeSpawn = playerThreeSpawn;
+            PlayerFourSpawn = playerFourSpawn;
+            RespawnPoint = respawnPoint;
 
             LevelBody = new List<Tuple<Body, Texture2D, Vector2>>();
-
         }
 
         /***********************************************************************************************************//**
