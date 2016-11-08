@@ -19,8 +19,6 @@ namespace SuperSmashPolls.Levels {
      * This class is responsible for handling the storage and creation of static bodies to use in the game world.
      ******************************************************************************************************************/ 
     class LevelHandler {
-        /** TODO The world for this level */
-
         /** The bodies of this level <Body, texture, size (in meters)> */
         private List<Tuple<Body, Texture2D, Vector2>> LevelBody;
         /** The background for this level */
@@ -29,6 +27,8 @@ namespace SuperSmashPolls.Levels {
         private Vector2 LevelBackgroundScale;
         /** The place's for players to spawn */
         public Vector2 PlayerOneSpawn, PlayerTwoSpawn, PlayerThreeSpawn, PlayerFourSpawn, RespawnPoint;
+        /** The world for this level */
+        public World LevelWorld;
 
         /***********************************************************************************************************//**
          * Constructor
@@ -38,17 +38,20 @@ namespace SuperSmashPolls.Levels {
          * @param playerFourSpawn The spawn point for player four
          * @param respawnPoint The respawn point for all players when/if they die
          * @param gravity unused for for
-         **************************************************************************************************************/ 
+         **************************************************************************************************************/
         public LevelHandler(Vector2 playerOneSpawn, Vector2 playerTwoSpawn, Vector2 playerThreeSpawn,
-            Vector2 playerFourSpawn, Vector2 respawnPoint, bool gravity = true) {
+            Vector2 playerFourSpawn, Vector2 respawnPoint, float horizontalGravity = 0, float verticalGravity = 9.80F) {
 
-            PlayerOneSpawn = playerOneSpawn;
-            PlayerTwoSpawn = playerTwoSpawn;
+            PlayerOneSpawn   = playerOneSpawn;
+            PlayerTwoSpawn   = playerTwoSpawn;
             PlayerThreeSpawn = playerThreeSpawn;
-            PlayerFourSpawn = playerFourSpawn;
-            RespawnPoint = respawnPoint;
+            PlayerFourSpawn  = playerFourSpawn;
+            RespawnPoint     = respawnPoint;
+
+            LevelWorld = new World(new Vector2(horizontalGravity, verticalGravity));
 
             LevelBody = new List<Tuple<Body, Texture2D, Vector2>>();
+
         }
 
         /***********************************************************************************************************//**
@@ -66,18 +69,15 @@ namespace SuperSmashPolls.Levels {
 
         /***********************************************************************************************************//**
          * Creates the body and puts it in the world
-         * @param gameworld The world to put the body into
          * @param items All the items to add to the world (Texture, position, size (in meters))
          **************************************************************************************************************/
-        public void AssignToWorld(ref World gameWorld, params Tuple<Texture2D, Vector2, Vector2>[] items) {
+        public void AssignToWorld(params Tuple<Texture2D, Vector2, Vector2>[] items) {
 
             foreach (var i in items) {
 
-                Body TempBody = CreatePolygonFromTexture(i.Item1, gameWorld, 1F, i.Item2,
-                    ConvertUnits.ToSimUnits(i.Item1.Width) / i.Item3.X, TriangulationAlgorithm.Bayazit);
-
+                Body TempBody  = CreatePolygonFromTexture(i.Item1, 1F, i.Item2,
+                    ConvertUnits.ToSimUnits(i.Item1.Width)/i.Item3.X);
                 TempBody.BodyType = BodyType.Static;
-
                 TempBody.IsStatic = true;
 
                 LevelBody.Add(new Tuple<Body, Texture2D, Vector2>(TempBody, i.Item1, i.Item3));
@@ -110,7 +110,6 @@ namespace SuperSmashPolls.Levels {
         /***********************************************************************************************************//**
          * Creates a polygon from a texture. This is the important function here.
          * @param texture The texture to make a body from
-         * @param world The world to create the body in (This will be gone when we give each level their own world)
          * @param density The density of the object (Will almost always be one
          * @param position The position (in meters) of the object in the world
          * @param scale The scale of the object (how much to change its size)
@@ -120,7 +119,7 @@ namespace SuperSmashPolls.Levels {
          * only use this with PNGs as that is what I have texted and I know they work. This will only produce a bosy as
          * clean as the texture you give it, so avoid partically transparent areas and little edges.
          **************************************************************************************************************/
-        private Body CreatePolygonFromTexture(Texture2D texture, World world, float density, Vector2 position, float scale,
+        private Body CreatePolygonFromTexture(Texture2D texture, float density, Vector2 position, float scale,
             TriangulationAlgorithm algorithm = TriangulationAlgorithm.Bayazit) {
 
             uint[] TextureData = new uint[texture.Width * texture.Height]; //Array to copy texture info into
@@ -138,7 +137,7 @@ namespace SuperSmashPolls.Levels {
             //basketOrigin = -centroid;
 
             //This actually creates the body
-            return BodyFactory.CreateCompoundPolygon(world, vertexList, density, position);
+            return BodyFactory.CreateCompoundPolygon(LevelWorld, vertexList, density, position);
 
         }
 

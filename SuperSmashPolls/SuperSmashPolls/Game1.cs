@@ -115,8 +115,6 @@ namespace SuperSmashPolls {
 
             EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
 
-            //FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
-
             //This is equal to how many pixels are in one meter
             PixelToMeterScale = ScreenSize.X/25;
 
@@ -125,7 +123,7 @@ namespace SuperSmashPolls {
         /***********************************************************************************************************//** 
          * Get's the meters of something drawn in a 640x360 scale
          **************************************************************************************************************/
-        private float InMeters(float pixels) {
+        private static float InMeters(float pixels) {
 
             return (pixels/640)*25;
 
@@ -154,16 +152,16 @@ namespace SuperSmashPolls {
 
             Texture2D TempleRock = Content.Load<Texture2D>("TempleRock");
 
-            Temple.AssignToWorld(ref GameWorld,
-                new Tuple<Texture2D, Vector2, Vector2>(TempleRock, new Vector2(0,
-                        InMeters(360) - InMeters(TempleRock.Height)),
+                Temple.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(TempleRock,
+                    new Vector2(0, InMeters(360) - InMeters(TempleRock.Height)),
                     new Vector2(InMeters(TempleRock.Width), InMeters(TempleRock.Height))));
 
-            Texture2D SpaceBackground = Content.Load<Texture2D>("space");
+                Texture2D SpaceBackground = Content.Load<Texture2D>("space");
 
-            Temple.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, SpaceBackground.Height)/ScreenSize);
+                Temple.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, 
+                    SpaceBackground.Height)/ScreenSize);
 
-            LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
+                LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
 
             //Space = new LevelHandler();
 
@@ -237,8 +235,6 @@ namespace SuperSmashPolls {
 
             CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
 
-            TheDonald.CreateBody(ref GameWorld, new Vector2(0, 0)); //TODO move this to after world selection
-
             base.Initialize();
 
         }
@@ -292,19 +288,26 @@ namespace SuperSmashPolls {
                     MenuCommands CurrentCommand = Menu.UpdateMenu(PlayerIndex.One);
 
                     switch (CurrentCommand) {
-
+                        case MenuCommands.PlayTemple:
+                            GameWorld = Temple.LevelWorld;
+                            TheDonald.CreateBody(ref GameWorld, new Vector2(0, 0));
+                            goto case MenuCommands.StartGame;
                         case MenuCommands.OnePlayer:
                             NumPlayers = 1;
-                            goto case MenuCommands.StartGame;
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
+                            break;
                         case MenuCommands.TwoPlayer:
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
                             NumPlayers = 2;
-                            goto case MenuCommands.StartGame;
+                            break;
                         case MenuCommands.ThreePlayer:
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
                             NumPlayers = 3;
-                            goto case MenuCommands.StartGame;
+                            break;
                         case MenuCommands.FourPlayer:
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
                             NumPlayers = 4;
-                            goto case MenuCommands.StartGame;
+                            break;
                         case MenuCommands.LoadSave:
                             State = GameState.LoadSave;
                             break;
