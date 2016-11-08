@@ -64,6 +64,8 @@ namespace SuperSmashPolls.Characters {
         private List<CharacterAction> Actions;
         /* The index of a value in Actions that represents the current action of the player */
         private int CurrentActionIndex;
+        /* This characters name */
+        public string Name;
 
         /***********************************************************************************************************//**
          * Default constructor
@@ -83,7 +85,8 @@ namespace SuperSmashPolls.Characters {
          * @param specialAttackInterval The minimum time between special attacks
          **************************************************************************************************************/
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution, 
-            float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval) {
+            float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval, 
+            String name) {
             CharacterSize         = characterSize;
             CharacterOrigin       = new Vector2((characterSize.Y)/2F, (characterSize.X)/2F);
             Mass                  = mass;
@@ -97,6 +100,7 @@ namespace SuperSmashPolls.Characters {
             LastJump              = DateTime.Now;
             LastSpecialAttack     = DateTime.Now;
             Actions               = new List<CharacterAction>();
+            Name                  = name;
         }
 
         /***********************************************************************************************************//**
@@ -125,6 +129,7 @@ namespace SuperSmashPolls.Characters {
                 otherCharacter.Actions[6],
                 otherCharacter.Actions[7]
             };
+            Name = otherCharacter.Name;
 
             CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
                 ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
@@ -292,6 +297,15 @@ namespace SuperSmashPolls.Characters {
         public void DrawCharacter(ref SpriteBatch spriteBatch) {
             
             Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch);
+
+        }
+
+        /***********************************************************************************************************//**
+         * 
+         **************************************************************************************************************/
+        public Vector2 GetPosition() {
+
+            return CharacterBody.Position;
 
         }
 

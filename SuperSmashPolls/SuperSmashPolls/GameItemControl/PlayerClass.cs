@@ -5,8 +5,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -59,6 +61,40 @@ namespace SuperSmashPolls.GameItemControl {
             
             PlayerCharacter.DrawCharacter(ref batch);
             
+        }
+
+        /***********************************************************************************************************//**
+         * Writes the character information
+         **************************************************************************************************************/
+        public void WriteInfo(ref StreamWriter streamWriter) {
+            
+            streamWriter.WriteLine(PlayerCharacter.Name);
+            streamWriter.WriteLine(PlayerCharacter.GetPosition().X);
+            streamWriter.WriteLine(PlayerCharacter.GetPosition().Y);
+
+        }
+
+        /***********************************************************************************************************//**
+         * Sets up the character from saved data
+         **************************************************************************************************************/
+        public void ReadInfo(ref StreamReader streamReader, List<Tuple<Character, string>> characterList, World gameWorld) {
+
+            string CharacterName = streamReader.ReadLine();
+
+            if (null == CharacterName)
+                Console.WriteLine("Character name is null, expect an exception here");
+
+            for (int i = 0; i < characterList.Count(); ++i) {
+
+                if (CharacterName != characterList[i].Item2) continue;
+
+                PlayerCharacter = new Character(characterList[i].Item1, gameWorld,
+                    new Vector2(float.Parse(streamReader.ReadLine()), float.Parse(streamReader.ReadLine())));
+
+                break;
+
+            }
+
         }
 
     }

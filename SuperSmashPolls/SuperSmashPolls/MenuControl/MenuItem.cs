@@ -22,6 +22,8 @@ namespace SuperSmashPolls.MenuControl {
         StartGame,   //The game should start
         MultiplayerMenu,
         SingleplayerMenu,
+        LoadSave,
+        SaveGame,
         BackToMainMenu, //Go back to the previous menu
         ExitGame,
         OnePlayer,
