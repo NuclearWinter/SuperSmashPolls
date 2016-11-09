@@ -7,13 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SuperSmashPolls.Characters;
-using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls.GameItemControl {
 
@@ -25,12 +23,12 @@ namespace SuperSmashPolls.GameItemControl {
     class PlayerClass {
         /** The ID of the character */
         private readonly PlayerIndex PlayerID;
-        /** The player's character */
-        private Character PlayerCharacter;
-        /**  */
+        /** The health that the character has */
         private float PlayerHealth;
-        /**  */
+        /** Time number of times that the player has dies */
         private int Deaths;
+        /** The player's character */
+        public Character PlayerCharacter;
 
         /***********************************************************************************************************//**
          * Constructor
@@ -78,6 +76,7 @@ namespace SuperSmashPolls.GameItemControl {
 
         /***********************************************************************************************************//**
          * Writes the character information
+         * @param streamWriter What to write the file with (must already be opened)
          **************************************************************************************************************/
         public void WriteInfo(ref StreamWriter streamWriter) {
             
@@ -89,6 +88,10 @@ namespace SuperSmashPolls.GameItemControl {
 
         /***********************************************************************************************************//**
          * Sets up the character from saved data
+         * @param streamReader The stream to read data from (must already be opened)
+         * @param characterList 
+         * @param gameWorld 
+         * TODO make the new world system work with this loading methods
          **************************************************************************************************************/
         public void ReadInfo(ref StreamReader streamReader, List<Tuple<Character, string>> characterList, World gameWorld) {
 

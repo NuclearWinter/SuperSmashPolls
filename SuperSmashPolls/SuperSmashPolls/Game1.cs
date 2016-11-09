@@ -49,11 +49,15 @@ namespace SuperSmashPolls {
             /** The one, the only, the Donald */
             private Character TheDonald;
 
-        /*  Levels  */
 
-            private LevelHandler Temple;
+        /** This is the level currently being played on */
+        private LevelHandler CurrentLevel;
 
-            private LevelHandler Space;
+        private LevelHandler TempleRock;
+
+        private LevelHandler Temple;
+
+        private LevelHandler Space;
 
         /* Manages graphics. */
         private GraphicsDeviceManager Graphics;
@@ -130,6 +134,15 @@ namespace SuperSmashPolls {
         }
 
         /***********************************************************************************************************//** 
+         * Get's the meters of something drawn in a 640x360 scale in a vector 2
+         **************************************************************************************************************/
+        private Vector2 MetersV2(float X, float Y) {
+            
+            return new Vector2(InMeters(X), InMeters(Y));
+
+        }
+
+        /***********************************************************************************************************//** 
          * Allows the game to perform any initialization it needs to before starting to run. 
          * This is where it can query for any required services and load any non-graphic related content. Calling 
          * base.Initialize will enumerate through any components and initialize them as well.
@@ -147,28 +160,37 @@ namespace SuperSmashPolls {
 
             /************************************ Initialization for Level things *************************************/
 
-            Temple = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
+            TempleRock = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
                 new Vector2(13.5F, 0));
 
-            Texture2D TempleRock = Content.Load<Texture2D>("TempleRock");
+                Texture2D TempleRockTexture = Content.Load<Texture2D>("TempleRock");
 
-                Temple.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(TempleRock,
-                    new Vector2(0, InMeters(360) - InMeters(TempleRock.Height)),
-                    new Vector2(InMeters(TempleRock.Width), InMeters(TempleRock.Height))));
+                TempleRock.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(TempleRockTexture,
+                    new Vector2(0, InMeters(360) - InMeters(TempleRockTexture.Height)),
+                    new Vector2(InMeters(TempleRockTexture.Width), InMeters(TempleRockTexture.Height))));
 
                 Texture2D SpaceBackground = Content.Load<Texture2D>("space");
 
-                Temple.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, 
+                TempleRock.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, 
                     SpaceBackground.Height)/ScreenSize);
 
+                LevelStringPairs.Add(new Tuple<LevelHandler, string>(TempleRock, "Temple Rock"));
+
+            Temple = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
+                new Vector2(13.5F, 0));
+
+            Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
+                TempleMiddle = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
+                TempleRight = Content.Load<Texture2D>("TempleItems\\TempleRight"),
+                TempleTop = Content.Load<Texture2D>("TempleItems\\TempleTop");
+
+            Temple.AssignToWorld(
+                new Tuple<Texture2D, Vector2, Vector2>(TempleLeft, MetersV2(8, 188), MetersV2(132, 79)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
+
                 LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
-
-            //Space = new LevelHandler();
-
-            //Texture2D TempBackground = Content.Load<Texture2D>("space");
-
-            //Space.SetBackground(TempBackground,
-            //    new Vector2(TempBackground.Width/ScreenSize.X, TempBackground.Height/ScreenSize.Y));
 
             /************************************* Initialization for Menu things *************************************/
             //@note Some menus hold items for other things to make the menu system more compact, don't worry about it.
@@ -185,25 +207,29 @@ namespace SuperSmashPolls {
                     //This holds the in game pause screen for any amount of players
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "One Player", false, 
-                                     EmptyUnit, true, true, MenuCommands.OnePlayer));
+                            EmptyUnit, true, true, MenuCommands.OnePlayer));
 
                     //This holds the level selection screen for any amount of players
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Two Player", false,
-                                     EmptyUnit, true, true, MenuCommands.TwoPlayer));
+                            EmptyUnit, true, true, MenuCommands.TwoPlayer));
 
                         Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Temple", false,
                                 EmptyUnit, true, true, MenuCommands.PlayTemple));
 
+                        Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
+                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
+                                EmptyUnit, true, true, MenuCommands.PlayTempleRock));
+
             //This holds character selection for any amount of players
-                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+            Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
-                                     EmptyUnit, true, true, MenuCommands.ThreePlayer));
+                            EmptyUnit, true, true, MenuCommands.ThreePlayer));
 
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
-                                     EmptyUnit, true, true, MenuCommands.FourPlayer));
+                            EmptyUnit, true, true, MenuCommands.FourPlayer));
 
                 Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
                     "Load Game", false, EmptyUnit, true, true, MenuCommands.LoadSave));
@@ -272,6 +298,23 @@ namespace SuperSmashPolls {
         }
 
         /***********************************************************************************************************//** 
+         * Handles setting characters
+         * @warning Still currently testing this
+         **************************************************************************************************************/
+        private void SetCharacter(Character character) {
+
+            if (null == PlayerOne.PlayerCharacter)
+                PlayerOne.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+            else if (null == PlayerTwo.PlayerCharacter)
+                PlayerTwo.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+            else if (null == PlayerThree.PlayerCharacter)
+                PlayerThree.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+            else
+                PlayerFour.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+
+        }
+
+        /***********************************************************************************************************//** 
          * Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
          * playing audio.
          **************************************************************************************************************/
@@ -289,8 +332,12 @@ namespace SuperSmashPolls {
 
                     switch (CurrentCommand) {
                         case MenuCommands.PlayTemple:
-                            GameWorld = Temple.LevelWorld;
-                            TheDonald.CreateBody(ref GameWorld, new Vector2(0, 0));
+                            CurrentLevel = Temple;
+                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
+                            goto case MenuCommands.StartGame;
+                        case MenuCommands.PlayTempleRock:
+                            CurrentLevel = TempleRock;
+                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
                             goto case MenuCommands.StartGame;
                         case MenuCommands.OnePlayer:
                             NumPlayers = 1;
@@ -354,8 +401,12 @@ namespace SuperSmashPolls {
                         case MenuCommands.ExitGame:
                             this.Exit();
                             break;
+                        case MenuCommands.SelectTrump:
+                            SetCharacter(TheDonald);
+                            break;
                         default:
                             break;
+
                     } 
 
                     break;
@@ -368,21 +419,21 @@ namespace SuperSmashPolls {
                     switch (NumPlayers) {
 
                         case 4:
-                            PlayerFour.UpdatePlayer(Temple.RespawnPoint);
+                            PlayerFour.UpdatePlayer(TempleRock.RespawnPoint);
                             goto case 3;
                         case 3:
-                            PlayerThree.UpdatePlayer(Temple.RespawnPoint);
+                            PlayerThree.UpdatePlayer(TempleRock.RespawnPoint);
                             goto case 2;
                         case 2:
-                            PlayerTwo.UpdatePlayer(Temple.RespawnPoint);
+                            PlayerTwo.UpdatePlayer(TempleRock.RespawnPoint);
                             goto default;
                         default:
-                            PlayerOne.UpdatePlayer(Temple.RespawnPoint);
+                            PlayerOne.UpdatePlayer(TempleRock.RespawnPoint);
                             break;
 
                     }
 
-                    GameWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+                    CurrentLevel.LevelWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
 
                     break;
 
@@ -416,11 +467,7 @@ namespace SuperSmashPolls {
 
                         FileWriter.Close();
 
-                    } catch (Exception e) {
-
-                        Console.WriteLine("Exception: " + e.Message);
-
-                    }
+                    } catch (Exception e) { Console.WriteLine("Exception: " + e.Message); }
 
                     State = GameState.GameLevel;
 
@@ -494,7 +541,7 @@ namespace SuperSmashPolls {
 
                     } case GameState.GameLevel: {
 
-                        Temple.DrawLevel(Batch);
+                        CurrentLevel.DrawLevel(Batch);
 
                         switch (NumPlayers) {
 
