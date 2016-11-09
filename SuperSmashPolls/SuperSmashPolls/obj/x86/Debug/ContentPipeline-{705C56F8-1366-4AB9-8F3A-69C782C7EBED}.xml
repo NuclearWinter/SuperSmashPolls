@@ -89,7 +89,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Temple.xnb</Output>
-      <Time>2016-11-08T18:38:31-06:00</Time>
+      <Time>2016-11-08T18:53:50-06:00</Time>
     </Item>
     <Item>
       <Source>temple_kinda.png</Source>
@@ -134,7 +134,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleMiddle.xnb</Output>
-      <Time>2016-11-08T18:31:56-06:00</Time>
+      <Time>2016-11-08T19:10:31-06:00</Time>
     </Item>
     <Item>
       <Source>TempleItems\TempleTop.png</Source>
@@ -143,7 +143,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleTop.xnb</Output>
-      <Time>2016-11-08T18:39:11-06:00</Time>
+      <Time>2016-11-08T19:10:14-06:00</Time>
     </Item>
     <Item>
       <Source>TempleItems\TempleRight.png</Source>
@@ -153,6 +153,15 @@
       <Options>None</Options>
       <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleRight.xnb</Output>
       <Time>2016-11-08T18:33:01-06:00</Time>
+    </Item>
+    <Item>
+      <Source>TempleItems\TempleBackground.png</Source>
+      <Name>TempleItems\TempleBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleBackground.xnb</Output>
+      <Time>2016-11-08T19:16:46-06:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

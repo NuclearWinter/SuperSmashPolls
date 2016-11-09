@@ -15,3 +15,4 @@ Content\TempleItems\TempleLeft.xnb
 Content\TempleItems\TempleMiddle.xnb
 Content\TempleItems\TempleTop.xnb
 Content\TempleItems\TempleRight.xnb
+Content\TempleItems\TempleBackground.xnb

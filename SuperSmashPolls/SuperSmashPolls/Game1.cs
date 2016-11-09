@@ -179,16 +179,20 @@ namespace SuperSmashPolls {
             Temple = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
                 new Vector2(13.5F, 0));
 
-            Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
-                TempleMiddle = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
-                TempleRight = Content.Load<Texture2D>("TempleItems\\TempleRight"),
-                TempleTop = Content.Load<Texture2D>("TempleItems\\TempleTop");
+                Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
+                    TempleMiddle = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
+                    TempleRight = Content.Load<Texture2D>("TempleItems\\TempleRight"),
+                    TempleTop = Content.Load<Texture2D>("TempleItems\\TempleTop"),
+                    TempleBackground = Content.Load<Texture2D>("TempleItems\\TempleBackground");
 
-            Temple.AssignToWorld(
-                new Tuple<Texture2D, Vector2, Vector2>(TempleLeft, MetersV2(8, 188), MetersV2(132, 79)),
-                new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
-                new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
-                new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
+                Temple.SetBackground(TempleBackground,
+                    new Vector2(TempleBackground.Width/ScreenSize.X, TempleBackground.Height/ScreenSize.Y));
+
+                Temple.AssignToWorld(
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleLeft, MetersV2(8, 188), MetersV2(132, 79)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
 
                 LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
 
