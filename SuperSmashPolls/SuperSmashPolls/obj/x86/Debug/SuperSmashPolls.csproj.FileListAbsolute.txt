@@ -35,3 +35,4 @@ Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Tem
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleTop.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleRight.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleBackground.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.XML

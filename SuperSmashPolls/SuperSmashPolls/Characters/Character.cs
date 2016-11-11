@@ -1,10 +1,10 @@
 ﻿/*******************************************************************************************************************//**
- * @file Character.cs
+ * /doc:SuperSmashPolls.XML
  * @author William Kluge
  **********************************************************************************************************************/
 
- #define DEBUG
- #undef DEBUG
+#define DEBUG
+#undef DEBUG
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -22,7 +22,9 @@ using SuperSmashPolls.World_Control;
 namespace SuperSmashPolls.Characters {
 
     /***************************************************************************************************************//**
+     * <summary>
      * This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
+     * </summary>
      ******************************************************************************************************************/ 
     public class Character {
         /* These are the indicies that animations can be called with inside Actions */

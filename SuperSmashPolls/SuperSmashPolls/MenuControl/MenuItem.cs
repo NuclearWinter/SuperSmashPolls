@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************************************************//**
- * @file MenuItem.cs
+ * /doc:SuperSmashPolls.XML
  **********************************************************************************************************************/
 
 using System;
@@ -14,9 +14,11 @@ using SuperSmashPolls.World_Control;
 namespace SuperSmashPolls.MenuControl {
 
     /***************************************************************************************************************//**
+     * <summary>
      * Holds the different commands that the menu might need to send into the main game.
      * There should be one of these for everthing the menu is 
-     * <remarks> This is a somewhat kluge solution, but it works well
+     * <remarks> This is a somewhat kluge solution, but it works well</remarks>
+     * </summary>
      ******************************************************************************************************************/
     enum MenuCommands {
         
@@ -116,9 +118,9 @@ namespace SuperSmashPolls.MenuControl {
         /***********************************************************************************************************//**
          * <summary>
          * Add an item to display when this screen is being drawn.
-		 * <param name="position"> The position of this item on the screen.</param>
-	     * <param name="hasSubmenu"> Whether or not this item has a submenu</param>
-		 * <param name="text"> The text to show on this item</param>
+		 * <param name="position">The position of this item on the screen.</param>
+	     * <param name="hasSubmenu">Whether or not this item has a submenu</param>
+		 * <param name="text">The text to show on this item</param>
          * </summary>
          **************************************************************************************************************/
         public void AddItem(MenuItem addItem) {
@@ -147,8 +149,8 @@ namespace SuperSmashPolls.MenuControl {
         /***********************************************************************************************************//**
          * <summary>
          * Add's a texture to the item
-         * <param name="texture"> The texture of this item</param>
-         * <param name="size"> The size of this item (in pixels)</param>
+         * <param name="texture">The texture of this item</param>
+         * <param name="size">The size of this item (in pixels)</param>
          * </summary>
          **************************************************************************************************************/
         public void SetTexture(Texture2D texture , Vector2 size) {
