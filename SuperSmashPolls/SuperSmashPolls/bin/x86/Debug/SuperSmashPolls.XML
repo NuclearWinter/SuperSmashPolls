@@ -1,0 +1,584 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SuperSmashPolls</name>
+    </assembly>
+    <members>
+        <member name="T:SuperSmashPolls.Characters.Character">
+             <summary>
+             This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
+             </summary>
+            ****************************************************************************************************************
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.CharacterSize">
+            The size of the character (in display units) 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.CharacterOrigin">
+            The character's origin (in display units) 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.Mass">
+            The mass of the character (kg) 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.Friction">
+            The friction of the character 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.Restitution">
+            The restitution of the character 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.JumpForceMultiplier">
+            The multiplier for the character's jump force 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.JumpInterval">
+            The amount of time between jumps for this character (in seconds) 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.MovementMultiplier">
+            The multiplier for the character's movement 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.SpecialAttackInterval">
+            The minimum time between character's special attacks 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.CharacterBody">
+            The body of the character (must be created after level selection) 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.Actions">
+            The move animations for this character 
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.#ctor">
+             <summary>
+             Default constructor
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:SuperSmashPolls.Characters.Character.#ctor(Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.String)" -->
+        <member name="M:SuperSmashPolls.Characters.Character.#ctor(SuperSmashPolls.Characters.Character,FarseerPhysics.Dynamics.World,Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Constructor for the Character class from another character
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.AddToActions(SuperSmashPolls.Graphics.CharacterAction[])">
+                     * <summary>
+                     * Allows for multiple items to be easily added to the list
+                     * </summary>
+            	     * <param name="actions"> The actions to add to Actions</param>
+                     *************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.AddCharacterActions(SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction)">
+             <summary>
+             Adds adds all of the animations for moves to the character
+             </summary>
+             <remarks> Each character should have one of every move</remarks>
+             <remarks> It is done like this so that we can avoid having to compute this all the time based off a key</remarks>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.CreateBody(FarseerPhysics.Dynamics.World@,Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Creates the body for the character and adds it to the world
+             </summary>
+             <remarks> For now, character's bodies are all rectangles</remarks>
+             <remarks> This must be called from within the PlayerClass after the world has been selected</remarks>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.UpdateCharacter(Microsoft.Xna.Framework.Input.GamePadState)">
+             <summary>
+             Updates the character.
+             </summary>
+             This method controls movement, actions, and updates and character models accordingly
+             <remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
+             Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.DrawCharacter(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
+             <summary>
+             Draws the character
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.GetPosition">
+             <summary>
+             Gets the position of the charatcer
+             <returns> The position of the character</returns>
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.Respawn(Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Respawns the character by placing them at a position and reseting their dynamics.
+             </summary>
+             <param name="position">The position to respawn the character</param>
+            ************************************************************************************************************
+        </member>
+        <member name="T:SuperSmashPolls.GameItemControl.PlayerClass">
+             <summary>
+             Class to control the movment and interaction of players.
+             </summary>
+             <remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that 
+             class.</remarks>
+            ****************************************************************************************************************
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerID">
+            The ID of the character 
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerHealth">
+            The health that the character has 
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.Deaths">
+            Time number of times that the player has dies 
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerCharacter">
+            The player's character 
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex)">
+             <summary>
+             Constructor
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.SetCharacter(SuperSmashPolls.Characters.Character)">
+             <summary>
+             Sets the character
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.UpdatePlayer(Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Update the player
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.DrawPlayer(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
+             <summary>
+             Draw the character
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.WriteInfo(System.IO.StreamWriter@)">
+                     * <summary>
+                     * Writes the character information
+                     * </summary>
+            		 * <param name="streamWriter"> What to write the file with (must already be opened)</param>
+                     *************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.ReadInfo(System.IO.StreamReader@,System.Collections.Generic.List{System.Tuple{SuperSmashPolls.Characters.Character,System.String}},FarseerPhysics.Dynamics.World)">
+                     * <summary>
+                     * Sets up the character from saved data
+                     * </summary>
+            		 * <param name="streamReader"> The stream to read data from (must already be opened)</param>
+            		 * <param name="characterList"> The characters available in the game </param>
+            		 * <param name="gameWorld"> The world to use for this </param>
+                     * TODO make the new world system work with this loading methods
+                     *************************************************************************************************************
+        </member>
+        <member name="T:SuperSmashPolls.Graphics.CharacterAction">
+             <summary>
+             Class responsible for handing animations of characters.
+             </summary>
+            ****************************************************************************************************************
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.DrawColor">
+            The color to draw the image with, defaults to clear 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.PlayTime">
+            The amount of time (in seconds) that it takes to cycle through the sheet 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.ImageSize">
+            The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32) 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.SheetSize">
+            The amount of images on the X and Y axis, calculated in the constructor 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.SpriteSheet">
+            The spritesheet to take a value from (can be just one image) 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.AnimatedPoint">
+            The piece of the sheet to draw based on PlayTime @see Update 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.LastUpdateTime">
+            The last time that AnimatedPoint was updated 
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D)">
+                     * <summary>
+                     * Constructor
+                     * </summary>
+            	     * <param name="playTime"> The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+            		 * <param name="imageSize"> The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+            		 * <param name="spriteSheet"> The texture of the sheet</param>
+            		 * <param name="move"> The move that this animation if for</param>
+                     *************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+                     * <summary>
+                     * Updates the animation
+                     * </summary>
+            	     * <param name="position"> The position on screen to draw the image</param>
+            		 * <param name="drawSize"> the size to draw the image</param>
+                     *************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.DrawAnimation(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
+                     * <summary>
+                     * Draws the current image from the spritesheet based on the calculation of <see cref="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)"/>
+                     * </summary>
+            	     * <param name="batch"> A reference to the current SpriteBatch</param>
+                     *************************************************************************************************************
+        </member>
+        <member name="T:SuperSmashPolls.Levels.LevelHandler">
+             <summary>
+             Holds and handles the drawing of and contruction of bodies.
+             This class is responsible for handling the storage and creation of static bodies to use in the game world.
+             </summary>
+            ****************************************************************************************************************
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:SuperSmashPolls.Levels.LevelHandler.LevelBody" -->
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.LevelBackground">
+            The background for this level 
+        </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.LevelBackgroundScale">
+            The amount that the background needs to be scaled (adjusted for different screen sizes) 
+        </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerOneSpawn">
+            The place's for players to spawn 
+        </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerTwoSpawn">
+            The place's for players to spawn 
+        </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerThreeSpawn">
+            The place's for players to spawn 
+        </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerFourSpawn">
+            The place's for players to spawn 
+        </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.RespawnPoint">
+            The place's for players to spawn 
+        </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.LevelWorld">
+            The world for this level 
+        </member>
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.#ctor(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+             <summary>
+             Constructor
+             </summary>
+             <param name="playerOneSpawn">The spawn point for player one</param>
+             <param name="playerTwoSpawn">The spawn point for player two</param>
+             <param name="playerThreeSpawn">The spawn point for player three</param>
+             <param name="playerFourSpawn">The spawn point for player four</param>
+             <param name="respawnPoint">The respawn point for all players when/if they die</param>
+             <param name="horizontalGravity">The gravity of the world on a horizontal scale</param>
+             <param name="verticalGravity">The gravity on a vertical scale</param>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.SetBackground(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Sets a background to the level
+             </summary>
+             <param name="levelBackground">The texture to use as a background</param>
+             <param name="levelBackgroundScale">The scale to use for the background texture (i.e. background is 640x360,
+             screen is 1280x720 we would need to scale by 2)</param>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.AssignToWorld(System.Tuple{Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2}[])">
+             <summary>
+             Creates the body and puts it in the world
+             </summary>
+             <param name="items">All the items to add to the world (Texture, position, size (in meters))</param>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.DrawLevel(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+             <summary>
+             This draws world
+             </summary>
+             <param name="spriteBatch">The batch to draw with</param>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.CreatePolygonFromTexture(Microsoft.Xna.Framework.Graphics.Texture2D,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,FarseerPhysics.Common.Decomposition.TriangulationAlgorithm)">
+                     * <summary>
+                     * Creates a polygon from a texture. This is the important function here.
+                     * </summary>
+            		 * <param name="texture">The texture to make a body from</param>
+            		 * <param name="density">The density of the object (Will almost always be one</param>
+                     * <param name="position">The position (in meters) of the object in the world</param>
+            		 * <param name="scale">The scale of the object (how much to change its size)</param>
+            		 * <param name="algorithm">The decomposition algorithm to use</param>
+                     * <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
+                     * @warning In order for this to work the input must have a transparent background. I highly reccomend that you
+                     * only use this with PNGs as that is what I have texted and I know they work. This will only produce a bosy as
+                     * clean as the texture you give it, so avoid partically transparent areas and little edges.
+                     *************************************************************************************************************
+        </member>
+        <member name="T:SuperSmashPolls.MenuControl.MenuCommands">
+             <summary>
+             Holds the different commands that the menu might need to send into the main game.
+             There should be one of these for everthing the menu is 
+             <remarks> This is a somewhat kluge solution, but it works well</remarks>
+             </summary>
+            ****************************************************************************************************************
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:SuperSmashPolls.MenuControl.MenuItem" -->
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
+            Determines if the item is highlihtable or not 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CenterItem">
+            Whether or not to center the text 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.TextBuffer">
+            Buffer to move text over from Position 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Position">
+            Position of this item on the screen 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Text">
+            Text for this item (drawn on top of the screen if displaying the item's menu 
+        </member>
+        <member name="P:SuperSmashPolls.MenuControl.MenuItem.TextColor">
+            Color for this item's text 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Font">
+            Font to use for this item 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Texture">
+            Texture to use as the background for this item (not drawn if displaying the item's menu) 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.TextureSize">
+            The size of this item (as a ratio of the picture's size) 
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:SuperSmashPolls.MenuControl.MenuItem.Background" -->
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.ContainedItems">
+            The item's to display on this page 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.HasSubmenu">
+            Holds if the item has it's own menu that it can display 
+        </member>
+        <member name="P:SuperSmashPolls.MenuControl.MenuItem.SubOverlay">
+            Overlay this item's sub-menu on top of the current menu 
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands)">
+                     * <summary>
+                     * Constructor
+            		 * <param name="position"> The position of the item on the screen.</param>
+            	     * <param name="text"> The text of this item.</param>
+            		 * <param name="hasSubmenu"> Whether or not this item has a menu below it to navigate to.</param>
+            		 * <param name="textBuffer"> An amount to displace the text past the start of the item (to center with backgrounds)</param>
+            		 * <param name="centerItem"> Whether or not to center the item around the position.</param>
+            	     * <param name="highlightable"> Whether or not this item is highlightable</param>
+                     * </summary>
+                     *************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.AddItem(SuperSmashPolls.MenuControl.MenuItem)">
+                     * <summary>
+                     * Add an item to display when this screen is being drawn.
+            		 * <param name="position">The position of this item on the screen.</param>
+            	     * <param name="hasSubmenu">Whether or not this item has a submenu</param>
+            		 * <param name="text">The text to show on this item</param>
+                     * </summary>
+                     *************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetFontForAll(Microsoft.Xna.Framework.Graphics.SpriteFont)">
+             <summary>
+             Sets the font for all the items in this menu
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetTexture(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Add's a texture to the item
+             <param name="texture">The texture of this item</param>
+             <param name="size">The size of this item (in pixels)</param>
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.UpdateMenu(Microsoft.Xna.Framework.PlayerIndex)">
+             <summary>
+             Update control of the menu.
+             <param name="controllingPlayer">The player to control the menu</param>
+             <remarks>This is done to allow for enumerator values to be changed</remarks>
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.DisplayMenu(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
+             <summary>
+             Display the items in ContainedItems and other menu items.
+             This is for if this item has a menu that it can display.
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.DisplayItem(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
+             <summary>
+             Display this item.
+             This is for when this item is displayed (on a different menu).
+             </summary>
+             <param name="batch">The SpriteBatch to draw with</param>
+             @warning This method assumes that the spritebatch has already been started.
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.AccessItem(SuperSmashPolls.MenuControl.MenuItem,System.Int32[])">
+             <summary>
+             Access function for members of DisplayItems
+             TODO finish this
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Program.Main(System.String[])">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:SuperSmashPolls.Game1">
+             <summary> 
+             This is the main type of the game.
+             </summary>
+            ****************************************************************************************************************
+        </member>
+        <member name="F:SuperSmashPolls.Game1.TheDonald">
+            The one, the only, the Donald 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.CurrentLevel">
+            This is the level currently being played on 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.PlayerOne">
+            The player's in this game 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.PlayerTwo">
+            The player's in this game 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.PlayerThree">
+            The player's in this game 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.PlayerFour">
+            The player's in this game 
+        </member>
+        <member name="T:SuperSmashPolls.Game1.GameState">
+            Handles the different states that the game can be in 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.State">
+            Variable to hold the state of the game 
+        </member>
+        <member name="M:SuperSmashPolls.Game1.#ctor">
+             <summary>
+             Constructs the game's class
+             TODO clean up constructor
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
+             <summary> 
+             Get's the meters of something drawn in a 640x360 scale
+             <param name="pixels">The amount of pixels to convert</param>
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.MetersV2(System.Single,System.Single)">
+             <summary>
+             Get's the meters of something drawn in a 640x360 scale in a vector 2
+             </summary>
+             <param name="X"></param>
+             <param name="Y"></param>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.Initialize">
+             <summary>
+             Allows the game to perform any initialization it needs to before starting to run. 
+             This is where it can query for any required services and load any non-graphic related content. Calling 
+             base. Initialize will enumerate through any components and initialize them as well.
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.LoadContent">
+             <summary> 
+             LoadContent will be called once per game and is the place to load all of your content.
+             <remarks> The menu is created here</remarks>
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.UnloadContent">
+             <summary>
+             UnloadContent will be called once per game and is the place to unload all content.
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.SetCharacter(SuperSmashPolls.Characters.Character)">
+             <summary>
+             Handles setting characters
+             @warning Still currently testing this
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.Update(Microsoft.Xna.Framework.GameTime)">
+             <summary>
+             Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
+             playing audio.
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.Game1.Draw(Microsoft.Xna.Framework.GameTime)">
+             <summary>
+             This is where the game draw's the screen.
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="T:SuperSmashPolls.SpritesheetHandler">
+             This class handles spritesheets.
+             @deprecated This class has been replaced by CharacterActions
+            ****************************************************************************************************************
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:SuperSmashPolls.SpritesheetHandler.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:SuperSmashPolls.SpritesheetHandler.DrawImage(Microsoft.Xna.Framework.Graphics.SpriteBatch@,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Point)" -->
+        <!-- Badly formed XML comment ignored for member "M:SuperSmashPolls.SpritesheetHandler.DrawWithUpdate(Microsoft.Xna.Framework.Graphics.SpriteBatch@,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)" -->
+        <member name="T:SuperSmashPolls.World_Control.WorldUnit">
+             <summary>
+             This class will account for scaling of the physics system based on the size of the player's screen size.
+             </summary>
+             <remarks>WorldUnit should replace position and force/weight references throughout the rest of the game.</remarks>
+             <remarks>0.01F unit of position is equal to 1% of the screen.</remarks>
+             <remarks>1.0F of GodForce = ScreenSize * 10 | 0.1 of GodForce = ScreenSize</remarks>
+             <remarks>To use this class to determine the size of something use the position functions</remarks>
+            ****************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.World_Control.WorldUnit.#ctor(Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2)">
+             <summary>
+             Construct a WorldUnit class for use as a position.
+             </summary>
+             <param name="screenSize">Reference to the size of the players screen (in pixels)</param>
+             <param name="position">Position of the unit on screen as a float</param>
+             <remarks> Doing it like this allows for the screensize to be changed without messing up physics.</remarks>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.World_Control.WorldUnit.#ctor(Microsoft.Xna.Framework.Vector2,SuperSmashPolls.World_Control.WorldUnit)">
+             <summary>
+             Construct a WorldUnit class based off the same scales as another WorldUnit for use as a position.
+             </summary>
+             <param name="position">The position of this object on the screen (as a ratio)</param>
+             <param name="baseScaleUnit">The scale to base this new WorldUnit off of.</param>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.World_Control.WorldUnit.GetThisPosition">
+             <summary>
+             Gets this item's position on the screen
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.World_Control.WorldUnit.Add(SuperSmashPolls.World_Control.WorldUnit)">
+             <summary>
+             Adds two WorldUnits for a new WorldUnit
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.World_Control.WorldUnit.GetSize">
+             <summary>
+             Gets the size of this object
+             </summary>
+             <remarks> This is identical to GetThisPosition(), but it is easier to understand like this.</remarks>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.World_Control.WorldUnit.GetXSize">
+             <summary>
+             Gets the size of this object's X axis (the amount it is from (0,0))
+             </summary>
+            ************************************************************************************************************
+        </member>
+        <member name="M:SuperSmashPolls.World_Control.WorldUnit.GetYSize">
+             <summary>
+             Gets the size of this object's Y axis (the amount it is from (0,0))
+             </summary>
+            ************************************************************************************************************
+        </member>
+    </members>
+</doc>

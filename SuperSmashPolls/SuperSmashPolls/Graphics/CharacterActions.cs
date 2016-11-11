@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SuperSmashPolls.Graphics {
 
-    /***************************************************************************************************************//**
-     * Class responsible for handing animations of characters.
-     ******************************************************************************************************************/
+     ///<summary>
+     ///Class responsible for handing animations of characters.
+     ///</summary>
     public class CharacterAction {
         /** The color to draw the image with, defaults to clear */
         public Color DrawColor;
@@ -30,13 +30,12 @@ namespace SuperSmashPolls.Graphics {
         /* The destination for drawing the source rectangle */
         private Rectangle Destination;
 
-        /***********************************************************************************************************//**
-         * Constructor
-         * @param playTime The amount of time (in seconds) that it takes to loop through the entire sheet
-         * @param imageSize The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)
-         * @param spriteSheet The texture of the sheet
-         * @param move The move that this animation if for
-         **************************************************************************************************************/
+         ///<summary>
+         ///Constructor
+         ///</summary>
+	     ///<param name="playTime"> The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+		 ///<param name="imageSize"> The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+		 ///<param name="spriteSheet"> The texture of the sheet</param>
         public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet) {
 
             PlayTime       = playTime;
@@ -48,11 +47,11 @@ namespace SuperSmashPolls.Graphics {
             LastUpdateTime = DateTime.Now;
         }
 
-        /***********************************************************************************************************//**
-         * Updates the animation
-         * @param position The position on screen to draw the image
-         * @param drawSize the size to draw the image
-         **************************************************************************************************************/
+         ///<summary>
+         ///Updates the animation
+         ///</summary>
+	     ///<param name="position"> The position on screen to draw the image</param>
+		 ///<param name="drawSize"> the size to draw the image</param>
         public void UpdateAnimation(Vector2 position, Vector2 drawSize) {
 
             DateTime Now = DateTime.Now;
@@ -81,10 +80,10 @@ namespace SuperSmashPolls.Graphics {
 
         }
 
-        /***********************************************************************************************************//**
-         * Draws the current image from the spritesheet based on the calculation of @see UpdateAnimation
-         * @param batch A reference to the current SpriteBatch
-         **************************************************************************************************************/
+         ///<summary>
+         ///Draws the current image from the spritesheet based on the calculation of <see cref="UpdateAnimation"/>
+         ///</summary>
+	     ///<param name="batch"> A reference to the current SpriteBatch</param>
         public void DrawAnimation(ref SpriteBatch batch) {
 
             batch.Draw(SpriteSheet, Destination, Source, DrawColor);

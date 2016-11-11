@@ -1,11 +1,13 @@
 /*******************************************************************************************************************//**
- * @file Game1.cs
- * @note This game is now using Farseer Physics Engine
- **********************************************************************************************************************/ 
+ * <remarks> This game is now dependent on the Farseer Physics Engine.
+ * For information see http://farseerphysics.codeplex.com/ </remarks>
+ * @author (For all textures) Joe Brooksbank
+ **********************************************************************************************************************/
 
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FarseerPhysics;
 using FarseerPhysics.Dynamics;
@@ -21,42 +23,57 @@ using Microsoft.Xna.Framework.Media;
 using SuperSmashPolls.Characters;
 using SuperSmashPolls.GameItemControl;
 using SuperSmashPolls.Graphics;
+using SuperSmashPolls.Levels;
 using SuperSmashPolls.MenuControl;
 using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls {
 
-    /***************************************************************************************************************//** 
-     * This is the main type of the game.
-     ******************************************************************************************************************/ 
+     ///<summary> 
+     ///This is the main type of the game.
+     ///</summary>
     public class Game1 : Microsoft.Xna.Framework.Game {
 
         /* The total size of the screen */
         private static Vector2 ScreenSize;
         /* The most basic Functioning WorldUnit */
         private readonly WorldUnit EmptyUnit;
-        /* The display size for the floor */
-        private readonly Vector2 FloorDisplaySize;
-        /** The one, the only, the Donald */
-        private Character TheDonald;
+        /* The scale of how many pixels are equal to one meter */
+        private readonly float PixelToMeterScale;
+
+        /*   Characters   */
+
+            /** The one, the only, the Donald */
+            private Character TheDonald;
+
+
+        /** This is the level currently being played on */
+        private LevelHandler CurrentLevel;
+
+        private LevelHandler TempleRock;
+
+        private LevelHandler Temple;
+
+        private LevelHandler Space;
+
         /* Manages graphics. */
         private GraphicsDeviceManager Graphics;
-        /* Yarr, dis here be da world */
-        private World world;
-        /* The center of the screen */
-        private Vector2 ScreenCenter;
-        /* The body of the floor */
-        private Body Floor;
-        /* The handling of the texture for the floor @deprecated Using old class */
-        private SpritesheetHandler FloorTexture;
-        /* The origin of the floor */
-        private Vector2 FloorOrigin;
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
+        /* Yarr, dis here be da world */
+        private World GameWorld;
+        /* The center of the screen */
+        private Vector2 ScreenCenter;
+
         /* Menu system for the game to use */
         private MenuItem Menu;
+
+        /** The player's in this game */
+        private PlayerClass PlayerOne, PlayerTwo, PlayerThree, PlayerFour;
+        /* The number of players in the game */
+        private int NumPlayers;
 
         /** Handles the different states that the game can be in */
         enum GameState {
@@ -64,20 +81,30 @@ namespace SuperSmashPolls {
             Menu,           //The menu is open
             GameLevel,      //The first level of the game
             ScoreScreen,
-            LoadSave
+            LoadSave,
+            SaveGame
 
         };
         /** Variable to hold the state of the game */
         private GameState State = GameState.Menu;
 
-        /***********************************************************************************************************//** 
-         * Constructs the game's class
-         **************************************************************************************************************/ 
+        /* Holds levels for matching from a save and for selection */
+        private List<Tuple<LevelHandler, string>> LevelStringPairs;
+        /* Holds characters for matching from a save and for selection*/
+        private List<Tuple<Character, string>> CharacterStringPairs;
+
+         ///<summary>
+         ///Constructs the game's class
+         ///TODO clean up constructor
+         ///</summary>
         public Game1() {
+            /* !!! The size of the screen for the game !!! (this should be saved in options) */
+            ScreenSize = new Vector2(640, 360);
 
-            ScreenSize = new Vector2(600, 720);
+            LevelStringPairs     = new List<Tuple<LevelHandler, string>>();
+            CharacterStringPairs = new List<Tuple<Character, string>>();
 
-            /* This is the player's screen */
+            /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
                 IsFullScreen = false,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
@@ -89,82 +116,162 @@ namespace SuperSmashPolls {
 
             EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
 
-            FloorDisplaySize = new Vector2(ScreenSize.Y * 0.05F, ScreenSize.X);
+            //This is equal to how many pixels are in one meter
+            PixelToMeterScale = ScreenSize.X/25;
 
-            world = new World(new Vector2(0f, 9.82f));
+        }
+        
+         ///<summary> 
+         ///Get's the meters of something drawn in a 640x360 scale
+         ///<param name="pixels">The amount of pixels to convert</param>
+         ///</summary>
+        private static float InMeters(float pixels) {
+
+            return (pixels/640)*25;
 
         }
 
-        /***********************************************************************************************************//** 
-         * Allows the game to perform any initialization it needs to before starting to run. 
-         * This is where it can query for any required services and load any non-graphic related content. Calling 
-         * base.Initialize will enumerate through any components and initialize them as well.
-         **************************************************************************************************************/
+         ///<summary>
+         ///Get's the meters of something drawn in a 640x360 scale in a vector 2
+         ///</summary>
+         ///<param name="X"></param>
+         ///<param name="Y"></param>
+        private Vector2 MetersV2(float X, float Y) {
+            
+            return new Vector2(InMeters(X), InMeters(Y));
+
+        }
+
+         ///<summary>
+         ///Allows the game to perform any initialization it needs to before starting to run. 
+         ///This is where it can query for any required services and load any non-graphic related content. Calling 
+         ///base. Initialize will enumerate through any components and initialize them as well.
+         ///</summary>
         protected override void Initialize() {
 
+            /*********************************** Initialization for Physics things ************************************/
+
+            // This sets the width of the screen equal to 25m in the physics engine
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(PixelToMeterScale);
+
+            GameWorld = new World(new Vector2(0F, 9.80F)); //Creates the GameWorld with 9.82m/s^2 as downward acceleration
+
+            ScreenCenter = ScreenSize / 2F;
+
+            /************************************ Initialization for Level things *************************************/
+
+            TempleRock = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
+                new Vector2(13.5F, 0));
+
+                Texture2D TempleRockTexture = Content.Load<Texture2D>("TempleRock");
+
+                TempleRock.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(TempleRockTexture,
+                    new Vector2(0, InMeters(360) - InMeters(TempleRockTexture.Height)),
+                    new Vector2(InMeters(TempleRockTexture.Width), InMeters(TempleRockTexture.Height))));
+
+                Texture2D SpaceBackground = Content.Load<Texture2D>("space");
+
+                TempleRock.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, 
+                    SpaceBackground.Height)/ScreenSize);
+
+                LevelStringPairs.Add(new Tuple<LevelHandler, string>(TempleRock, "Temple Rock"));
+
+            Temple = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
+                new Vector2(13.5F, 0));
+
+                Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
+                    TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
+                    TempleRight      = Content.Load<Texture2D>("TempleItems\\TempleRight"),
+                    TempleTop        = Content.Load<Texture2D>("TempleItems\\TempleTop"),
+                    TempleBackground = Content.Load<Texture2D>("TempleItems\\TempleBackground");
+
+                Temple.SetBackground(TempleBackground,
+                    new Vector2(TempleBackground.Width/ScreenSize.X, TempleBackground.Height/ScreenSize.Y));
+
+                Temple.AssignToWorld(
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleLeft, MetersV2(8, 188), MetersV2(132, 79)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
+
+                LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
+
             /************************************* Initialization for Menu things *************************************/
+            //<remarks> Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), "Single Player", false,
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), "Local Game", false,
                 EmptyUnit, true, true, MenuCommands.SingleplayerMenu));
 
-                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.25F)), 
-                    "New Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
+                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
+                    "New Game", true, EmptyUnit, true, true, MenuCommands.StartGame));
+
+                    //This holds the in game pause screen for any amount of players
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "One Player", false, 
+                            EmptyUnit, true, true, MenuCommands.OnePlayer));
+
+                    //This holds the level selection screen for any amount of players
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Two Player", false,
+                            EmptyUnit, true, true, MenuCommands.TwoPlayer));
+
+                        Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
+                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Temple", false,
+                                EmptyUnit, true, true, MenuCommands.PlayTemple));
+
+                        Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
+                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
+                                EmptyUnit, true, true, MenuCommands.PlayTempleRock));
+
+            //This holds character selection for any amount of players
+            Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
+                            EmptyUnit, true, true, MenuCommands.ThreePlayer));
+
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                        new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
+                            EmptyUnit, true, true, MenuCommands.FourPlayer));
 
                 Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
-                    "Load Game", false, EmptyUnit, true, true, MenuCommands.StartGame));
+                    "Load Game", false, EmptyUnit, true, true, MenuCommands.LoadSave));
 
-                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)),
+                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
                 EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
 
-                Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), 
+                Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.35F)), "Exit", false,
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
+
+            /************************************** Initialization for Players ****************************************/
+
+            PlayerOne   = new PlayerClass(PlayerIndex.One);
+            PlayerTwo   = new PlayerClass(PlayerIndex.Two);
+            PlayerThree = new PlayerClass(PlayerIndex.Three);
+            PlayerFour  = new PlayerClass(PlayerIndex.Four);
 
             /************************************* Initialization for Characters **************************************/
 
-            //!@note Values used for TheDonald are just for debugging           | These are the fun ones |
-            TheDonald = new Character(ref ScreenSize, new Vector2(0.10F, 0.05F), 35F, 0.02F, 0.2F, 45F, 25F, 0.5F, 1F);
+            TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
+                0.01F, 500F, 25F, 0.1F, 1F, "TheDonald");
 
-            TheDonald.CreateBody(ref world, new Vector2(4, 4)); //TODO do this with the real map
-
-            /*********************************** Initialization for Physics things ************************************/
-
-            /* As a standard, all maps should be a total of 100m across */
-
-            // Farseer expects objects to be scaled to MKS (meters, kilos, seconds)
-            // 1 meters equals 1% of the player's screen size pixels here
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(64);
-
-            ScreenCenter = ScreenSize/2F;
-
-            Vector2 FloorPosition = ConvertUnits.ToSimUnits(ScreenCenter) + new Vector2(0, 0);
-
-            //Creates the Floor within world with a width of the entire screen, a height of 5% of the screen, a density 
-            //of 1, and a position at the equivilent of WorldUnit (0.0F, 0.90F)
-            Floor = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(FloorDisplaySize.Y), 
-                ConvertUnits.ToSimUnits(FloorDisplaySize.X), 1F, FloorPosition);
-            Floor.IsStatic    = true; //The floor does not move
-            Floor.Restitution = 0.3F;
-            Floor.Friction    = 0.05F;
-
-            FloorOrigin = new Vector2(FloorDisplaySize.Y / 2F, FloorDisplaySize.X/2F);
+            CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
 
             base.Initialize();
 
         }
 
-        /***********************************************************************************************************//** 
-         * LoadContent will be called once per game and is the place to load all of your content.
-         * @note The menu is created here
-         **************************************************************************************************************/
+         ///<summary> 
+         ///LoadContent will be called once per game and is the place to load all of your content.
+         ///<remarks> The menu is created here</remarks>
+         ///</summary>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             Batch = new SpriteBatch(GraphicsDevice);
@@ -172,9 +279,9 @@ namespace SuperSmashPolls {
             GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
 
             TheDonald.AddCharacterActions(
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-stand")),
+                new CharacterAction(1, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-jump")),
+                new CharacterAction(1, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-walk")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
@@ -182,23 +289,38 @@ namespace SuperSmashPolls {
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
             //TODO finish animations for TheDonald
 
-            FloorTexture = new SpritesheetHandler(1, new Point(10, 10), Content.Load<Texture2D>("Black Floor"), "f");
-
             Menu.SetFontForAll(GameFont);
 
         }
 
-        /***********************************************************************************************************//** 
-         * UnloadContent will be called once per game and is the place to unload all content.
-         **************************************************************************************************************/
+         ///<summary>
+         ///UnloadContent will be called once per game and is the place to unload all content.
+         ///</summary>
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
 
-        /***********************************************************************************************************//** 
-         * Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
-         * playing audio.
-         **************************************************************************************************************/
+         ///<summary>
+         ///Handles setting characters
+         ///@warning Still currently testing this
+         ///</summary>
+        private void SetCharacter(Character character) {
+
+            if (null == PlayerOne.PlayerCharacter)
+                PlayerOne.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+            else if (null == PlayerTwo.PlayerCharacter)
+                PlayerTwo.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+            else if (null == PlayerThree.PlayerCharacter)
+                PlayerThree.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+            else
+                PlayerFour.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+
+        }
+ 
+         ///<summary>
+         ///Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
+         ///playing audio.
+         ///</summary>
         protected override void Update(GameTime gameTime) {
                 
             // Allows the game to exit
@@ -212,14 +334,55 @@ namespace SuperSmashPolls {
                     MenuCommands CurrentCommand = Menu.UpdateMenu(PlayerIndex.One);
 
                     switch (CurrentCommand) {
+                        case MenuCommands.PlayTemple:
+                            CurrentLevel = Temple;
+                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
+                            goto case MenuCommands.StartGame;
+                        case MenuCommands.PlayTempleRock:
+                            CurrentLevel = TempleRock;
+                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
+                            goto case MenuCommands.StartGame;
+                        case MenuCommands.OnePlayer:
+                            NumPlayers = 1;
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
+                            break;
+                        case MenuCommands.TwoPlayer:
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
+                            NumPlayers = 2;
+                            break;
+                        case MenuCommands.ThreePlayer:
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
+                            NumPlayers = 3;
+                            break;
+                        case MenuCommands.FourPlayer:
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
+                            NumPlayers = 4;
+                            break;
+                        case MenuCommands.LoadSave:
+                            State = GameState.LoadSave;
+                            break;
                         case MenuCommands.StartGame:
                             State = GameState.GameLevel;
                             Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
                             Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
 
-                            break;
-                        case MenuCommands.ExitGame:
-                            this.Exit();
+                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
+                                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Save game", false,
+                                    EmptyUnit, true, true, MenuCommands.SaveGame));
+
+                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
+                                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Continue", false,
+                                    EmptyUnit, true, true, MenuCommands.ResumeGame));
+
+                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
+
+                            PlayerOne.SetCharacter(TheDonald); //debugging
+                            PlayerTwo.SetCharacter(new Character(TheDonald, GameWorld, new Vector2(8, 0)));
+                            PlayerThree.SetCharacter(TheDonald);
+                            PlayerFour.SetCharacter(TheDonald);
+
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
+
                             break;
                         case MenuCommands.BackToMainMenu:
                             Menu.DrawDown = -1;
@@ -232,28 +395,127 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.Nothing:
                             break;
+                        case MenuCommands.SaveGame:
+                            State = GameState.SaveGame;
+                            break;
+                        case MenuCommands.ResumeGame:
+                            State = GameState.GameLevel;
+                            break;
+                        case MenuCommands.ExitGame:
+                            this.Exit();
+                            break;
+                        case MenuCommands.SelectTrump:
+                            SetCharacter(TheDonald);
+                            break;
                         default:
                             break;
+
                     } 
 
                     break;
 
                 } case GameState.GameLevel: { /* The player is currently playing the game */
 
-                        State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
-                                GameState.Menu : State;
+                    State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
+                            GameState.Menu : State;
 
-                        TheDonald.UpdateCharacter(GamePad.GetState(PlayerIndex.One));
+                    switch (NumPlayers) {
 
-                        world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+                        case 4:
+                            PlayerFour.UpdatePlayer(TempleRock.RespawnPoint);
+                            goto case 3;
+                        case 3:
+                            PlayerThree.UpdatePlayer(TempleRock.RespawnPoint);
+                            goto case 2;
+                        case 2:
+                            PlayerTwo.UpdatePlayer(TempleRock.RespawnPoint);
+                            goto default;
+                        default:
+                            PlayerOne.UpdatePlayer(TempleRock.RespawnPoint);
+                            break;
 
-                        break;
+                    }
 
-                } case GameState.ScoreScreen:
+                    CurrentLevel.LevelWorld.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
+
                     break;
-                case GameState.LoadSave:
+
+                } case GameState.ScoreScreen: {
                     break;
-                default: {
+                } case GameState.SaveGame: {
+
+                    try {
+
+                        StreamWriter FileWriter = new StreamWriter("C:\\Users\\Public\\SmashPollsSave.txt");
+
+                        FileWriter.WriteLine(NumPlayers);
+
+                        switch (NumPlayers) {
+
+                            case 4: {
+                                PlayerFour.WriteInfo(ref FileWriter);
+                                goto case 3;
+                            } case 3: {
+                                PlayerThree.WriteInfo(ref FileWriter);
+                                goto case 2;
+                            } case 2: { 
+                                PlayerTwo.WriteInfo(ref FileWriter);
+                                goto default;
+                            } default: {
+                                PlayerOne.WriteInfo(ref FileWriter);
+                                break;
+                            }
+
+                        }
+
+                        FileWriter.Close();
+
+                    } catch (Exception e) { Console.WriteLine("Exception: " + e.Message); }
+
+                    State = GameState.GameLevel;
+
+                    break;
+
+                } case GameState.LoadSave: {
+
+                    try {
+
+                        StreamReader FileReader = new StreamReader("C:\\Users\\Public\\SmashPollsSave.txt");
+
+                        NumPlayers = int.Parse(FileReader.ReadLine());
+
+                        switch (NumPlayers) {
+
+                            case 4: {
+                                PlayerFour.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                goto case 3;
+                            } case 3: {
+                                PlayerThree.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                goto case 2;
+                            } case 2: {
+                                PlayerTwo.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                goto default;
+                            } default: {
+                                PlayerOne.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                break;
+                            }
+
+                        }
+
+                        FileReader.Close();
+
+                        State = GameState.GameLevel;
+
+                    } catch (Exception e) {
+
+                        Console.WriteLine("Exception: " + e.Message);
+
+                    }
+
+
+                    break;
+
+                } default: {
 
                     break;
 
@@ -265,13 +527,10 @@ namespace SuperSmashPolls {
 
         }
 
-        /***********************************************************************************************************//** 
-         * This is where the game draw's the screen.
-         **************************************************************************************************************/
+         ///<summary>
+         ///This is where the game draw's the screen.
+         ///</summary>
         protected override void Draw(GameTime gameTime) {
-
-            /* Gives the screen a background color */
-            GraphicsDevice.Clear(Color.LightSlateGray);
 
             Batch.Begin();
 
@@ -285,15 +544,33 @@ namespace SuperSmashPolls {
 
                     } case GameState.GameLevel: {
 
-                        FloorTexture.DrawWithUpdate(ref Batch, ConvertUnits.ToDisplayUnits(Floor.Position) - FloorOrigin,
-                            FloorDisplaySize);
+                        CurrentLevel.DrawLevel(Batch);
 
-                        TheDonald.DrawCharacter(ref Batch);
+                        switch (NumPlayers) {
 
-                        GraphicsDevice.Clear(Color.Wheat);
+                            case 4:
+                                PlayerFour.DrawPlayer(ref Batch);
+                                goto case 3;
+                            case 3:
+                                PlayerThree.DrawPlayer(ref Batch);
+                                goto case 2;
+                            case 2:
+                                PlayerTwo.DrawPlayer(ref Batch);
+                                goto case 1;
+                            case 1:
+                                PlayerOne.DrawPlayer(ref Batch);
+                                break;
+
+                        }
 
                         break;
 
+                    } case GameState.SaveGame: {
+                        Batch.DrawString(GameFont, "Saving game data...", ScreenCenter, Color.Black);
+                        break;
+                    } case GameState.LoadSave: {
+                        Batch.DrawString(GameFont, "Loading game data...", ScreenCenter, Color.Black);
+                        break;
                     } default: {
 
                         break;

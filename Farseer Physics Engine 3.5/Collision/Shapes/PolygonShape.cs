@@ -149,7 +149,7 @@ namespace FarseerPhysics.Collision.Shapes
             //
             // The rest of the derivation is handled by computer algebra.
 
-            Debug.Assert(Vertices.Count >= 3);
+            //Debug.Assert(Vertices.Count >= 3); Commented out -Kluge
 
             //FPE optimization: Early exit as polygons with 0 density does not have any properties.
             if (_density <= 0)
@@ -197,7 +197,7 @@ namespace FarseerPhysics.Collision.Shapes
             }
 
             //The area is too small for the engine to handle.
-            Debug.Assert(area > Settings.Epsilon);
+            //Debug.Assert(area > Settings.Epsilon); Commented out -Kluge
 
             // We save the area
             MassData.Area = area;

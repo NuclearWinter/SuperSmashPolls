@@ -1,5 +1,5 @@
 ﻿/*******************************************************************************************************************//**
- * @file MenuItem.cs
+ * /doc:SuperSmashPolls.XML
  **********************************************************************************************************************/
 
 using System;
@@ -14,26 +14,36 @@ using SuperSmashPolls.World_Control;
 namespace SuperSmashPolls.MenuControl {
 
     /***************************************************************************************************************//**
-     * Holds the different commands that the menu might need to send into the main game
+     * <summary>
+     * Holds the different commands that the menu might need to send into the main game.
+     * There should be one of these for everthing the menu is 
+     * <remarks> This is a somewhat kluge solution, but it works well</remarks>
+     * </summary>
      ******************************************************************************************************************/
     enum MenuCommands {
         
-        Nothing,     //The game should do nothing
-        StartGame,   //The game should start
-        MultiplayerMenu,
-        SingleplayerMenu,
-        BackToMainMenu, //Go back to the previous menu
-        ExitGame
+        Nothing,          //The game should do nothing
+        StartGame,        //The game should start
+        MultiplayerMenu,  //Opens the multiplayer menu
+        SingleplayerMenu, //Opens the singleplayer menu
+        LoadSave,         //Loads the game
+        SaveGame,         //Saves the game
+        BackToMainMenu,   //Go back to the previous menu
+        ExitGame,         //Exits the game
+        OnePlayer, TwoPlayer, ThreePlayer, FourPlayer,
+        ResumeGame,
+        PlayTemple,
+        PlayTempleRock,
+        SelectTrump
 
     }
 
-    /***************************************************************************************************************//**
-     * TODO This class
-     * This class handles all properties of an item on a menu.
-     * One very important object is the void function reference to be ran when the item is selected. This function needs
-     * to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
-     * @note To create multi-leveled menus you must construct items from bottom to top.
-     ******************************************************************************************************************/
+     ///<summary>
+     ///This class handles all properties of an item on a menu.
+     ///One very important object is the void function reference to be ran when the item is selected. This function needs
+     ///to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
+     ///</summary>
+     ///<remarks> To create multi-leveled menus you must construct items from bottom to top.</remarks>
     class MenuItem {
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
@@ -58,7 +68,7 @@ namespace SuperSmashPolls.MenuControl {
         private Texture2D Texture;
         /** The size of this item (as a ratio of the picture's size) */
         private Vector2 TextureSize;
-        /** Background for this menu item (if the item is selected). @note This will cover the entire screen
+        /** Background for this menu item (if the item is selected). <remarks> This will cover the entire screen
          * @warning This must be set during load content */
         private Texture2D Background { get; set; } = null;
 
@@ -78,15 +88,15 @@ namespace SuperSmashPolls.MenuControl {
         /* Holds the last time the menu was updates */
         private int LastTimeUpdated;
 
-        /***********************************************************************************************************//**
-         * Constructor
-         * @param position The position of the item on the screen.
-         * @param text The text of this item.
-         * @param hasSubmenu Whether or not this item has a menu below it to navigate to.
-         * @param textBuffer An amount to displace the text past the start of the item (to center with backgrounds)
-         * @param centerItem Whether or not to center the item around the position.
-         * @param highlightable Whether or not this item is highlightable
-         **************************************************************************************************************/
+         ///<summary>
+         ///Constructor
+		 ///<param name="position"> The position of the item on the screen.</param>
+	     ///<param name="text"> The text of this item.</param>
+		 ///<param name="hasSubmenu"> Whether or not this item has a menu below it to navigate to.</param>
+		 ///<param name="textBuffer"> An amount to displace the text past the start of the item (to center with backgrounds)</param>
+		 ///<param name="centerItem"> Whether or not to center the item around the position.</param>
+	     ///<param name="highlightable"> Whether or not this item is highlightable</param>
+         ///</summary>
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
             bool centerItem = false, MenuCommands command = MenuCommands.Nothing) {
             Position      = position;
@@ -102,12 +112,12 @@ namespace SuperSmashPolls.MenuControl {
             DrawDown       = -1;
         }
 
-        /***********************************************************************************************************//**
-         * Add an item to display when this screen is being drawn.
-         * @param position The position of this item on the screen.
-         * @param hasSubmenu Whether or not this item has a submenu
-         * @param text The text to show on this item
-         **************************************************************************************************************/
+         ///<summary>
+         ///Add an item to display when this screen is being drawn.
+		 ///<param name="position">The position of this item on the screen.</param>
+	     ///<param name="hasSubmenu">Whether or not this item has a submenu</param>
+		 ///<param name="text">The text to show on this item</param>
+         ///</summary>
         public void AddItem(MenuItem addItem) {
 
             ContainedItems.Add(addItem);
@@ -115,9 +125,9 @@ namespace SuperSmashPolls.MenuControl {
         }
 
 
-        /***********************************************************************************************************//**
-         * Sets the font for all the items in this menu
-         **************************************************************************************************************/
+         ///<summary>
+         ///Sets the font for all the items in this menu
+         ///</summary>
         public void SetFontForAll(SpriteFont font) {
 
             Font = font;
@@ -129,11 +139,11 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-        /***********************************************************************************************************//**
-         * Add's a texture to the item
-         * @param texture The texture of this item
-         * @param size The size of this item (in pixels)
-         **************************************************************************************************************/
+         ///<summary>
+         ///Add's a texture to the item
+         ///<param name="texture">The texture of this item</param>
+         ///<param name="size">The size of this item (in pixels)</param>
+         ///</summary>
         public void SetTexture(Texture2D texture , Vector2 size) {
 
             Texture     = texture;
@@ -141,12 +151,11 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-        /***********************************************************************************************************//**
-         * Update control of the menu.
-         * @param controllingPlayer The player to control the menu
-         * @return If the A button was pressed and a next menu is not being navigated to.
-         * @note This is done to allow for enumerator values to be changed
-         **************************************************************************************************************/
+         ///<summary>
+         ///Update control of the menu.
+         ///<param name="controllingPlayer">The player to control the menu</param>
+         ///<remarks>This is done to allow for enumerator values to be changed</remarks>
+         ///</summary>
         public MenuCommands UpdateMenu(PlayerIndex controllingPlayer) {
 
             DateTime now = DateTime.Now;
@@ -203,10 +212,10 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-        /***********************************************************************************************************//**
-         * Display the items in ContainedItems and other menu items.
-         * This is for if this item has a menu that it can display.
-         **************************************************************************************************************/
+         ///<summary>
+         ///Display the items in ContainedItems and other menu items.
+         ///This is for if this item has a menu that it can display.
+         ///</summary>
         public void DisplayMenu(ref SpriteBatch batch) {
 
             //Will draw this menu alone or with another menu on top of it
@@ -228,13 +237,12 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-
-        /***********************************************************************************************************//**
-         * Display this item.
-         * This is for when this item is displayed (on a different menu).
-         * @param batch The SpriteBatch to draw with
-         * @warning This method assumes that the spritebatch has already been started.
-         **************************************************************************************************************/
+         ///<summary>
+         ///Display this item.
+         ///This is for when this item is displayed (on a different menu).
+         ///</summary>
+         ///<param name="batch">The SpriteBatch to draw with</param>
+         ///@warning This method assumes that the spritebatch has already been started.
         public void DisplayItem(ref SpriteBatch batch) {
 
             if (Texture != null) {
@@ -254,6 +262,22 @@ namespace SuperSmashPolls.MenuControl {
                     Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text)/2, TextColor);
             else 
                 batch.DrawString(Font, Text, Position.Add(TextBuffer).GetThisPosition(), TextColor);
+
+        }
+
+         ///<summary>
+         ///Access function for members of DisplayItems
+         ///TODO finish this
+         ///</summary>
+        public void AccessItem(MenuItem add, params int[] index) {
+
+            MenuItem testthing;
+
+            for (int i = 0; i < index.Length; ++i) {
+                
+                //for the things in index add a new thing each time
+
+            }
 
         }
 
