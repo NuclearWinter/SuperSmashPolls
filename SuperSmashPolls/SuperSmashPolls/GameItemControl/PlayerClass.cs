@@ -16,9 +16,11 @@ using SuperSmashPolls.Characters;
 namespace SuperSmashPolls.GameItemControl {
 
     /***************************************************************************************************************//**
+     * <summary>
      * Class to control the movment and interaction of players.
-     * @note This class should inlcude an instance of the character class, and should not repeat any affects of that 
-     * class.
+     * <remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that 
+     * class.</remarks>
+     * </summary>
      ******************************************************************************************************************/
     class PlayerClass {
         /** The ID of the character */
@@ -31,7 +33,9 @@ namespace SuperSmashPolls.GameItemControl {
         public Character PlayerCharacter;
 
         /***********************************************************************************************************//**
+         * <summary>
          * Constructor
+         * </summary>
          **************************************************************************************************************/
         public PlayerClass(PlayerIndex playerId) {
             PlayerID        = playerId;
@@ -41,7 +45,9 @@ namespace SuperSmashPolls.GameItemControl {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Sets the character
+         * </summary>
          **************************************************************************************************************/
         public void SetCharacter(Character playerCharacter) {
 
@@ -50,7 +56,9 @@ namespace SuperSmashPolls.GameItemControl {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Update the player
+         * </summary>
          **************************************************************************************************************/
         public void UpdatePlayer(Vector2 respawnPoint) {
 
@@ -66,7 +74,9 @@ namespace SuperSmashPolls.GameItemControl {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Draw the character
+         * </summary>
          **************************************************************************************************************/
         public void DrawPlayer(ref SpriteBatch batch) {
             
@@ -75,8 +85,10 @@ namespace SuperSmashPolls.GameItemControl {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Writes the character information
-         * @param streamWriter What to write the file with (must already be opened)
+		 * <param name="streamWriter"> What to write the file with (must already be opened)</param>
+         * </summary>
          **************************************************************************************************************/
         public void WriteInfo(ref StreamWriter streamWriter) {
             
@@ -87,11 +99,13 @@ namespace SuperSmashPolls.GameItemControl {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Sets up the character from saved data
-         * @param streamReader The stream to read data from (must already be opened)
-         * @param characterList 
-         * @param gameWorld 
+		 * <param name="streamReader"> The stream to read data from (must already be opened)</param>
+		 * <param name="characterList"> The characters available in the game </param>
+		 * <param name="gameWorld"> The world to use for this </param>
          * TODO make the new world system work with this loading methods
+         * </summary>
          **************************************************************************************************************/
         public void ReadInfo(ref StreamReader streamReader, List<Tuple<Character, string>> characterList, World gameWorld) {
 

@@ -1,6 +1,6 @@
 /*******************************************************************************************************************//**
  * @file Game1.cs
- * @note This game is now dependent on the Farseer Physics Engine.
+ * <remarks> This game is now dependent on the Farseer Physics Engine.
  * For information see http://farseerphysics.codeplex.com/
  * @author (For all textures) Joe Brooksbank
  **********************************************************************************************************************/
@@ -30,9 +30,11 @@ using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls {
 
-    /***************************************************************************************************************//** 
+    /***************************************************************************************************************//**
+     * <summary> 
      * This is the main type of the game.
-     ******************************************************************************************************************/ 
+     * </summary>
+     ******************************************************************************************************************/
     public class Game1 : Microsoft.Xna.Framework.Game {
 
         /* The total size of the screen */
@@ -97,8 +99,10 @@ namespace SuperSmashPolls {
         private List<Tuple<Character, string>> CharacterStringPairs;
 
         /***********************************************************************************************************//** 
+         * <summary>
          * Constructs the game's class
          * TODO clean up constructor
+         * </summary>
          **************************************************************************************************************/
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
@@ -124,8 +128,11 @@ namespace SuperSmashPolls {
 
         }
 
-        /***********************************************************************************************************//** 
+        /***********************************************************************************************************//**
+         * <summary> 
          * Get's the meters of something drawn in a 640x360 scale
+         * <param name="pixels">The amount of pixels to convert</param>
+         * </summary>
          **************************************************************************************************************/
         private static float InMeters(float pixels) {
 
@@ -134,7 +141,9 @@ namespace SuperSmashPolls {
         }
 
         /***********************************************************************************************************//** 
+         * <summary>
          * Get's the meters of something drawn in a 640x360 scale in a vector 2
+         * </summary>
          **************************************************************************************************************/
         private Vector2 MetersV2(float X, float Y) {
             
@@ -142,10 +151,12 @@ namespace SuperSmashPolls {
 
         }
 
-        /***********************************************************************************************************//** 
+        /***********************************************************************************************************//**
+         * <summary>
          * Allows the game to perform any initialization it needs to before starting to run. 
          * This is where it can query for any required services and load any non-graphic related content. Calling 
          * base.Initialize will enumerate through any components and initialize them as well.
+         * </summary>
          **************************************************************************************************************/
         protected override void Initialize() {
 
@@ -180,9 +191,9 @@ namespace SuperSmashPolls {
                 new Vector2(13.5F, 0));
 
                 Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
-                    TempleMiddle = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
-                    TempleRight = Content.Load<Texture2D>("TempleItems\\TempleRight"),
-                    TempleTop = Content.Load<Texture2D>("TempleItems\\TempleTop"),
+                    TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
+                    TempleRight      = Content.Load<Texture2D>("TempleItems\\TempleRight"),
+                    TempleTop        = Content.Load<Texture2D>("TempleItems\\TempleTop"),
                     TempleBackground = Content.Load<Texture2D>("TempleItems\\TempleBackground");
 
                 Temple.SetBackground(TempleBackground,
@@ -197,7 +208,7 @@ namespace SuperSmashPolls {
                 LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
 
             /************************************* Initialization for Menu things *************************************/
-            //@note Some menus hold items for other things to make the menu system more compact, don't worry about it.
+            //<remarks> Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
@@ -259,7 +270,6 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Characters **************************************/
 
-            //!@note These values are based off of the real Donald
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
                 0.01F, 500F, 25F, 0.1F, 1F, "TheDonald");
 
@@ -269,9 +279,11 @@ namespace SuperSmashPolls {
 
         }
 
-        /***********************************************************************************************************//** 
+        /***********************************************************************************************************//**
+         * <summary> 
          * LoadContent will be called once per game and is the place to load all of your content.
-         * @note The menu is created here
+         * <remarks> The menu is created here</remarks>
+         * </summary>
          **************************************************************************************************************/
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -295,15 +307,19 @@ namespace SuperSmashPolls {
         }
 
         /***********************************************************************************************************//** 
+         * <summary>
          * UnloadContent will be called once per game and is the place to unload all content.
+         * </summary>
          **************************************************************************************************************/
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
 
         /***********************************************************************************************************//** 
+         * <summary>
          * Handles setting characters
          * @warning Still currently testing this
+         * </summary>
          **************************************************************************************************************/
         private void SetCharacter(Character character) {
 
@@ -319,8 +335,10 @@ namespace SuperSmashPolls {
         }
 
         /***********************************************************************************************************//** 
+         * <summary>
          * Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
          * playing audio.
+         * </summary>
          **************************************************************************************************************/
         protected override void Update(GameTime gameTime) {
                 
@@ -529,7 +547,9 @@ namespace SuperSmashPolls {
         }
 
         /***********************************************************************************************************//** 
+         * <summary>
          * This is where the game draw's the screen.
+         * </summary>
          **************************************************************************************************************/
         protected override void Draw(GameTime gameTime) {
 

@@ -59,9 +59,7 @@
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
     <Compile Include="GameItemControl\PlayerClass.cs" />
-    <Compile Include="GameItemControl\WorldObject.cs" />
     <Compile Include="Graphics\CharacterActions.cs" />
-    <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\LevelHandler.cs" />
     <Compile Include="MenuControl\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

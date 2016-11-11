@@ -36,12 +36,14 @@ namespace SuperSmashPolls { //I used 16x32
         public string Key = "null";
 
         /***********************************************************************************************************//**
+         * <summary>
          * Constructor
-         * @param playTime The amount of time (in seconds) that it takes to loop through the entire sheet
-         * @param imageSize The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)
-         * @param spriteSheet The texture of the sheet
-         * @param key The key to identify what this animation is (i.e. walking, jumpinng, etc.)
-         * @return A filled SpritesheetHandler class
+         * <param name="playTime"> The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+         * <param name="imageSize"> The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+         * <param name="spriteSheet"> The texture of the sheet</param>
+         * <param name="key"> The key to identify what this animation is (i.e. walking, jumpinng, etc.)</param>
+         * <returns> A filled SpritesheetHandler class
+         * </summary>
          **************************************************************************************************************/
         public SpritesheetHandler(int playTime, Point imageSize, Texture2D spriteSheet, string key) {
 
@@ -54,11 +56,13 @@ namespace SuperSmashPolls { //I used 16x32
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Gives the user the desired image from the sheet.
-         * @param batch A reference to the SpriteBatch to draw the textures with.
-         * @param image The X and Y coordinate of the image to get.
-         * @param position A reference to the position of the character on the screen.
-         * @param drawSize How big to draw the base image.
+         * <param name=""> batch A reference to the SpriteBatch to draw the textures with.
+         * <param name=""> image The X and Y coordinate of the image to get.
+         * <param name=""> position A reference to the position of the character on the screen.
+         * <param name=""> drawSize How big to draw the base image.
+         * </summary>
          **************************************************************************************************************/
         public void DrawImage(ref SpriteBatch batch, Point image, ref Vector2 position, Point drawSize) {
 
@@ -70,10 +74,12 @@ namespace SuperSmashPolls { //I used 16x32
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * This draws the sprite based on the PlayTime variable
-         * @param batch The SpriteBatch to draw with.
-         * @param position The position of the object on the screen.
-         * @param drawSize The size to draw the object.
+         * <param name=""> batch The SpriteBatch to draw with.
+         * <param name=""> position The position of the object on the screen.
+         * <param name=""> drawSize The size to draw the object.
+         * </summary>
          **************************************************************************************************************/
         public void DrawWithUpdate(ref SpriteBatch batch, Vector2 position, Vector2 drawSize) {
 

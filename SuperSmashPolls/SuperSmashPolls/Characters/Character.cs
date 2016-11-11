@@ -68,21 +68,25 @@ namespace SuperSmashPolls.Characters {
         public string Name;
 
         /***********************************************************************************************************//**
+         * <summary>
          * Default constructor
+         * </summary>
          **************************************************************************************************************/
-         public Character() { }
+        public Character() { }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Constructor for the Character class
-         * @param screenSize A reference to the size of the screen
-         * @param characterSize Size of the in display units
-         * @param mass The mass of the character in kilograms
-         * @param friction The friction of the character
-         * @param restitution The restitution of the character
-         * @param movementMultiplier The multiplier for how much the character should move
-         * @param jumpForceMultiplier The multiplier for how much the character should jump
-         * @param jumpInterval The interval between allowable jumps for the player
-         * @param specialAttackInterval The minimum time between special attacks
+         * <param name="screenSize"> A reference to the size of the screen
+		 * <param name="characterSize"> Size of the in display units</param>
+		 * <param name="mass"> The mass of the character in kilograms</param>
+		 * <param name="friction"> The friction of the character</param>
+		 * <param name="restitution"> The restitution of the character</param>
+		 * <param name="movementMultiplier"> The multiplier for how much the character should move</param>
+		 * <param name="jumpForceMultiplier"> The multiplier for how much the character should jump</param>
+		 * <param name="jumpInterval"> The interval between allowable jumps for the player</param>
+		 * <param name="specialAttackInterval"> The minimum time between special attacks</param>
+         * </summary>
          **************************************************************************************************************/
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution, 
             float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval, 
@@ -104,7 +108,9 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Constructor for the Character class from another character
+         * </summary>
          **************************************************************************************************************/
         public Character(Character otherCharacter, World gameWorld, Vector2 position) {
             CharacterSize         = otherCharacter.CharacterSize;
@@ -140,8 +146,10 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Allows for multiple items to be easily added to the list
-         * @param actions The actions to add to Actions
+	     * <param name="actions"> The actions to add to Actions</param>
+         * </summary>
          **************************************************************************************************************/
         private void AddToActions(params CharacterAction[] actions) {
 
@@ -151,9 +159,11 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Adds adds all of the animations for moves to the character
-         * @note Each character <i>should</i> have one of every move
-         * @note It is done like this so that we can avoid having to compute this all the time based off a key
+         * <remarks> Each character should have one of every move</remarks>
+         * <remarks> It is done like this so that we can avoid having to compute this all the time based off a key</remarks>
+         * </summary>
          **************************************************************************************************************/
         public void AddCharacterActions(CharacterAction idle, CharacterAction jump, CharacterAction run, 
             CharacterAction attack, CharacterAction specialAttack, CharacterAction specialUpAttack, 
@@ -164,9 +174,11 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Creates the body for the character and adds it to the world
-         * @note For now, character's bodies are all rectangles
-         * @note This must be called from within the PlayerClass after the world has been selected
+         * <remarks> For now, character's bodies are all rectangles</remarks>
+         * <remarks> This must be called from within the PlayerClass after the world has been selected</remarks>
+         * </summary>
          **************************************************************************************************************/
         public void CreateBody(ref World gameWorld, Vector2 position) {
             
@@ -180,10 +192,12 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Updates the character.
          * This method controls movement, actions, and updates and character models accordingly
-         * @notes For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
-         * Magenta = up special | Maroon = down special | OliveDrab = regular special
+         * <remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
+         * Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
+         * </summary>
          **************************************************************************************************************/
         public void UpdateCharacter(GamePadState gamePadState) {
 
@@ -292,7 +306,9 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Draws the character
+         * </summary>
          **************************************************************************************************************/
         public void DrawCharacter(ref SpriteBatch spriteBatch) {
             
@@ -301,8 +317,10 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
+         * <summary>
          * Gets the position of the charatcer
-         * @return The position of the character
+         * <returns> The position of the character</returns>
+         * </summary>
          **************************************************************************************************************/
         public Vector2 GetPosition() {
 
@@ -311,7 +329,10 @@ namespace SuperSmashPolls.Characters {
         }
 
         /***********************************************************************************************************//**
-         * Respawns the character
+         * <summary>
+         * Respawns the character by placing them at a position and reseting their dynamics.
+         * <param name="position">The position to respawn the character</param>
+         * </summary>
          **************************************************************************************************************/
         public void Respawn(Vector2 position) {
 
