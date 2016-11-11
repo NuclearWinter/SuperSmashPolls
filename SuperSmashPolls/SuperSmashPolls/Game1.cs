@@ -29,9 +29,9 @@ using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls {
 
-     ///<summary> 
-     ///This is the main type of the game.
-     ///</summary>
+    ///<summary> 
+    ///This is the main type of the game.
+    ///</summary>
     public class Game1 : Microsoft.Xna.Framework.Game {
 
         /* The total size of the screen */
@@ -69,6 +69,8 @@ namespace SuperSmashPolls {
 
         /* Menu system for the game to use */
         private MenuItem Menu;
+        /* The last button pressed during menu updates */
+        private GamePadState LastPressed;
 
         /** The player's in this game */
         private PlayerClass PlayerOne, PlayerTwo, PlayerThree, PlayerFour;
@@ -93,10 +95,10 @@ namespace SuperSmashPolls {
         /* Holds characters for matching from a save and for selection*/
         private List<Tuple<Character, string>> CharacterStringPairs;
 
-         ///<summary>
-         ///Constructs the game's class
-         ///TODO clean up constructor
-         ///</summary>
+        ///<summary>
+        ///Constructs the game's class
+        ///TODO clean up constructor
+        ///</summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360);
@@ -119,34 +121,36 @@ namespace SuperSmashPolls {
             //This is equal to how many pixels are in one meter
             PixelToMeterScale = ScreenSize.X/25;
 
+            LastPressed = GamePad.GetState(PlayerIndex.One);
+
         }
         
-         ///<summary> 
-         ///Get's the meters of something drawn in a 640x360 scale
-         ///<param name="pixels">The amount of pixels to convert</param>
-         ///</summary>
+        ///<summary> 
+        ///Get's the meters of something drawn in a 640x360 scale
+        ///<param name="pixels">The amount of pixels to convert</param>
+        ///</summary>
         private static float InMeters(float pixels) {
 
             return (pixels/640)*25;
 
         }
 
-         ///<summary>
-         ///Get's the meters of something drawn in a 640x360 scale in a vector 2
-         ///</summary>
-         ///<param name="X"></param>
-         ///<param name="Y"></param>
+        ///<summary>
+        ///Get's the meters of something drawn in a 640x360 scale in a vector 2
+        ///</summary>
+        ///<param name="X"></param>
+        ///<param name="Y"></param>
         private Vector2 MetersV2(float X, float Y) {
             
             return new Vector2(InMeters(X), InMeters(Y));
 
         }
 
-         ///<summary>
-         ///Allows the game to perform any initialization it needs to before starting to run. 
-         ///This is where it can query for any required services and load any non-graphic related content. Calling 
-         ///base. Initialize will enumerate through any components and initialize them as well.
-         ///</summary>
+        ///<summary>
+        ///Allows the game to perform any initialization it needs to before starting to run. 
+        ///This is where it can query for any required services and load any non-graphic related content. Calling 
+        ///base. Initialize will enumerate through any components and initialize them as well.
+        ///</summary>
         protected override void Initialize() {
 
             /*********************************** Initialization for Physics things ************************************/
@@ -176,7 +180,7 @@ namespace SuperSmashPolls {
 
                 LevelStringPairs.Add(new Tuple<LevelHandler, string>(TempleRock, "Temple Rock"));
 
-            Temple = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
+            Temple = new LevelHandler(new Vector2(1, 11), new Vector2(9.2F, 5.3F), new Vector2(6, 0), new Vector2(8, 0),
                 new Vector2(13.5F, 0));
 
                 Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
@@ -226,8 +230,8 @@ namespace SuperSmashPolls {
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
                                 EmptyUnit, true, true, MenuCommands.PlayTempleRock));
 
-            //This holds character selection for any amount of players
-            Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                    //This holds character selection for any amount of players
+                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
 
@@ -262,16 +266,20 @@ namespace SuperSmashPolls {
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
                 0.01F, 500F, 25F, 0.1F, 1F, "TheDonald");
 
+            TheDonaldsMoves thsdfasd = new TheDonaldsMoves(); //testing
+
+            thsdfasd.AddMovesToCharacter(TheDonald); //testing
+
             CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
 
             base.Initialize();
 
         }
 
-         ///<summary> 
-         ///LoadContent will be called once per game and is the place to load all of your content.
-         ///<remarks> The menu is created here</remarks>
-         ///</summary>
+        ///<summary> 
+        ///LoadContent will be called once per game and is the place to load all of your content.
+        ///<remarks> The menu is created here</remarks>
+        ///</summary>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             Batch = new SpriteBatch(GraphicsDevice);
@@ -293,17 +301,17 @@ namespace SuperSmashPolls {
 
         }
 
-         ///<summary>
-         ///UnloadContent will be called once per game and is the place to unload all content.
-         ///</summary>
+        ///<summary>
+        ///UnloadContent will be called once per game and is the place to unload all content.
+        ///</summary>
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
 
-         ///<summary>
-         ///Handles setting characters
-         ///@warning Still currently testing this
-         ///</summary>
+        ///<summary>
+        ///Handles setting characters
+        ///@warning Still currently testing this
+        ///</summary>
         private void SetCharacter(Character character) {
 
             if (null == PlayerOne.PlayerCharacter)
@@ -317,10 +325,10 @@ namespace SuperSmashPolls {
 
         }
  
-         ///<summary>
-         ///Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
-         ///playing audio.
-         ///</summary>
+        ///<summary>
+        ///Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
+        ///playing audio.
+        ///</summary>
         protected override void Update(GameTime gameTime) {
                 
             // Allows the game to exit
@@ -331,7 +339,11 @@ namespace SuperSmashPolls {
 
                 case GameState.Menu: { /* The player has the menu open */
 
-                    MenuCommands CurrentCommand = Menu.UpdateMenu(PlayerIndex.One);
+                    GamePadState CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
+
+                    MenuCommands CurrentCommand = Menu.UpdateMenu(CurrentGamePadState, LastPressed);
+
+                    LastPressed = CurrentGamePadState;
 
                     switch (CurrentCommand) {
                         case MenuCommands.PlayTemple:
@@ -377,7 +389,7 @@ namespace SuperSmashPolls {
                             Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
 
                             PlayerOne.SetCharacter(TheDonald); //debugging
-                            PlayerTwo.SetCharacter(new Character(TheDonald, GameWorld, new Vector2(8, 0)));
+                            PlayerTwo.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, new Vector2(8, 0)));
                             PlayerThree.SetCharacter(TheDonald);
                             PlayerFour.SetCharacter(TheDonald);
 
@@ -422,16 +434,16 @@ namespace SuperSmashPolls {
                     switch (NumPlayers) {
 
                         case 4:
-                            PlayerFour.UpdatePlayer(TempleRock.RespawnPoint);
+                            PlayerFour.UpdatePlayer(CurrentLevel.RespawnPoint);
                             goto case 3;
                         case 3:
-                            PlayerThree.UpdatePlayer(TempleRock.RespawnPoint);
+                            PlayerThree.UpdatePlayer(CurrentLevel.RespawnPoint);
                             goto case 2;
                         case 2:
-                            PlayerTwo.UpdatePlayer(TempleRock.RespawnPoint);
+                            PlayerTwo.UpdatePlayer(CurrentLevel.RespawnPoint);
                             goto default;
                         default:
-                            PlayerOne.UpdatePlayer(TempleRock.RespawnPoint);
+                            PlayerOne.UpdatePlayer(CurrentLevel.RespawnPoint);
                             break;
 
                     }
@@ -527,9 +539,9 @@ namespace SuperSmashPolls {
 
         }
 
-         ///<summary>
-         ///This is where the game draw's the screen.
-         ///</summary>
+        ///<summary>
+        ///This is where the game draw's the screen.
+        ///</summary>
         protected override void Draw(GameTime gameTime) {
 
             Batch.Begin();
@@ -549,16 +561,16 @@ namespace SuperSmashPolls {
                         switch (NumPlayers) {
 
                             case 4:
-                                PlayerFour.DrawPlayer(ref Batch);
+                                PlayerFour.DrawPlayer(ref Batch, GameFont);
                                 goto case 3;
                             case 3:
-                                PlayerThree.DrawPlayer(ref Batch);
+                                PlayerThree.DrawPlayer(ref Batch, GameFont);
                                 goto case 2;
                             case 2:
-                                PlayerTwo.DrawPlayer(ref Batch);
+                                PlayerTwo.DrawPlayer(ref Batch, GameFont);
                                 goto case 1;
                             case 1:
-                                PlayerOne.DrawPlayer(ref Batch);
+                                PlayerOne.DrawPlayer(ref Batch, GameFont);
                                 break;
 
                         }

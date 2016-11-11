@@ -38,12 +38,12 @@ namespace SuperSmashPolls.MenuControl {
 
     }
 
-     ///<summary>
-     ///This class handles all properties of an item on a menu.
-     ///One very important object is the void function reference to be ran when the item is selected. This function needs
-     ///to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
-     ///</summary>
-     ///<remarks> To create multi-leveled menus you must construct items from bottom to top.</remarks>
+    ///<summary>
+    ///This class handles all properties of an item on a menu.
+    ///One very important object is the void function reference to be ran when the item is selected. This function needs
+    ///to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
+    ///</summary>
+    ///<remarks> To create multi-leveled menus you must construct items from bottom to top.</remarks>
     class MenuItem {
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
@@ -88,15 +88,15 @@ namespace SuperSmashPolls.MenuControl {
         /* Holds the last time the menu was updates */
         private int LastTimeUpdated;
 
-         ///<summary>
-         ///Constructor
-		 ///<param name="position"> The position of the item on the screen.</param>
-	     ///<param name="text"> The text of this item.</param>
-		 ///<param name="hasSubmenu"> Whether or not this item has a menu below it to navigate to.</param>
-		 ///<param name="textBuffer"> An amount to displace the text past the start of the item (to center with backgrounds)</param>
-		 ///<param name="centerItem"> Whether or not to center the item around the position.</param>
-	     ///<param name="highlightable"> Whether or not this item is highlightable</param>
-         ///</summary>
+        ///<summary>
+        ///Constructor
+		///<param name="position">The position of the item on the screen.</param>
+	    ///<param name="text">The text of this item.</param>
+		///<param name="hasSubmenu">Whether or not this item has a menu below it to navigate to.</param>
+		///<param name="textBuffer">An amount to displace the text past the start of the item (to center with backgrounds)</param>
+		///<param name="centerItem">Whether or not to center the item around the position.</param>
+	    ///<param name="highlightable">Whether or not this item is highlightable</param>
+        ///</summary>
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
             bool centerItem = false, MenuCommands command = MenuCommands.Nothing) {
             Position      = position;
@@ -112,12 +112,12 @@ namespace SuperSmashPolls.MenuControl {
             DrawDown       = -1;
         }
 
-         ///<summary>
-         ///Add an item to display when this screen is being drawn.
-		 ///<param name="position">The position of this item on the screen.</param>
-	     ///<param name="hasSubmenu">Whether or not this item has a submenu</param>
-		 ///<param name="text">The text to show on this item</param>
-         ///</summary>
+        ///<summary>
+        ///Add an item to display when this screen is being drawn.
+		///<param name="position">The position of this item on the screen.</param>
+	    ///<param name="hasSubmenu">Whether or not this item has a submenu</param>
+		///<param name="text">The text to show on this item</param>
+        ///</summary>
         public void AddItem(MenuItem addItem) {
 
             ContainedItems.Add(addItem);
@@ -125,9 +125,9 @@ namespace SuperSmashPolls.MenuControl {
         }
 
 
-         ///<summary>
-         ///Sets the font for all the items in this menu
-         ///</summary>
+        ///<summary>
+        ///Sets the font for all the items in this menu
+        ///</summary>
         public void SetFontForAll(SpriteFont font) {
 
             Font = font;
@@ -139,11 +139,11 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-         ///<summary>
-         ///Add's a texture to the item
-         ///<param name="texture">The texture of this item</param>
-         ///<param name="size">The size of this item (in pixels)</param>
-         ///</summary>
+        ///<summary>
+        ///Add's a texture to the item
+        ///<param name="texture">The texture of this item</param>
+        ///<param name="size">The size of this item (in pixels)</param>
+        ///</summary>
         public void SetTexture(Texture2D texture , Vector2 size) {
 
             Texture     = texture;
@@ -151,26 +151,23 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-         ///<summary>
-         ///Update control of the menu.
-         ///<param name="controllingPlayer">The player to control the menu</param>
-         ///<remarks>This is done to allow for enumerator values to be changed</remarks>
-         ///</summary>
-        public MenuCommands UpdateMenu(PlayerIndex controllingPlayer) {
+        ///<summary>
+        ///Update control of the menu.
+        ///<param name="currentState">The current state to update from</param>
+        ///<param name="lastPressed">The state to check if something was updated the previous time</param>
+        ///<remarks>This is done to allow for enumerator values to be changed</remarks>
+        ///</summary>
+        public MenuCommands UpdateMenu(GamePadState currentState, GamePadState lastPressed) {
 
             DateTime now = DateTime.Now;
 
-            if (Math.Abs(now.Millisecond - LastTimeUpdated) <= 100) return MenuCommands.Nothing;
-
-            LastTimeUpdated = now.Millisecond;
-
             if (DrawDown == -1) {
-            /* Updates the current menu */
+                /* Updates the current menu */
 
                 ContainedItems[CurrentHighlightedItem].TextColor = Color.Black;
 
                 //Goes down to the next menu
-                if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.A)) {
+                if (currentState.IsButtonDown(Buttons.A) && lastPressed.IsButtonUp(Buttons.A)) {
 
                     if (ContainedItems[CurrentHighlightedItem].HasSubmenu)
                         DrawDown = CurrentHighlightedItem;
@@ -179,8 +176,8 @@ namespace SuperSmashPolls.MenuControl {
 
                 }
 
-                //Highlightes one item up
-                if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.DPadDown))
+                //Highlightes one item up in the array
+                if (currentState.IsButtonDown(Buttons.DPadDown) && lastPressed.IsButtonUp(Buttons.DPadDown))
                     for (int i = CurrentHighlightedItem + 1; i < ContainedItems.Count(); ++i) {
 
                         if (!ContainedItems[i].Highlightable) continue;
@@ -190,9 +187,9 @@ namespace SuperSmashPolls.MenuControl {
                         break;
 
                     }
-                        
-                //Highlights one item down
-                if (GamePad.GetState(controllingPlayer).IsButtonDown(Buttons.DPadUp))
+
+                //Highlights one item down in the array
+                if (currentState.IsButtonDown(Buttons.DPadUp) && lastPressed.IsButtonUp(Buttons.DPadUp))
                     for (int i = CurrentHighlightedItem - 1; i >= 0; --i) {
 
                         if (!ContainedItems[i].Highlightable) continue;
@@ -203,19 +200,32 @@ namespace SuperSmashPolls.MenuControl {
 
                     }
 
-            ContainedItems[CurrentHighlightedItem].TextColor = Color.Red;
+                ContainedItems[CurrentHighlightedItem].TextColor = Color.Red;
 
-            } else 
-                return ContainedItems[DrawDown].UpdateMenu(controllingPlayer);
+            } else {
+
+                //Moves the menu back a screen
+                if (DrawDown != -1 && ContainedItems[DrawDown].DrawDown == -1
+                    && currentState.IsButtonDown(Buttons.B) && lastPressed.IsButtonUp(Buttons.B)) {
+                    DrawDown = -1;
+
+                    return UpdateMenu(currentState, lastPressed);
+
+                }
+
+                return ContainedItems[DrawDown].UpdateMenu(currentState, lastPressed);
+
+            }
+
 
             return MenuCommands.Nothing;
 
         }
 
-         ///<summary>
-         ///Display the items in ContainedItems and other menu items.
-         ///This is for if this item has a menu that it can display.
-         ///</summary>
+        ///<summary>
+        ///Display the items in ContainedItems and other menu items.
+        ///This is for if this item has a menu that it can display.
+        ///</summary>
         public void DisplayMenu(ref SpriteBatch batch) {
 
             //Will draw this menu alone or with another menu on top of it
@@ -237,12 +247,12 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-         ///<summary>
-         ///Display this item.
-         ///This is for when this item is displayed (on a different menu).
-         ///</summary>
-         ///<param name="batch">The SpriteBatch to draw with</param>
-         ///@warning This method assumes that the spritebatch has already been started.
+        ///<summary>
+        ///Display this item.
+        ///This is for when this item is displayed (on a different menu).
+        ///</summary>
+        ///<param name="batch">The SpriteBatch to draw with</param>
+        ///@warning This method assumes that the spritebatch has already been started.
         public void DisplayItem(ref SpriteBatch batch) {
 
             if (Texture != null) {
@@ -265,10 +275,10 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-         ///<summary>
-         ///Access function for members of DisplayItems
-         ///TODO finish this
-         ///</summary>
+        ///<summary>
+        ///Access function for members of DisplayItems
+        ///TODO finish this
+        ///</summary>
         public void AccessItem(MenuItem add, params int[] index) {
 
             MenuItem testthing;

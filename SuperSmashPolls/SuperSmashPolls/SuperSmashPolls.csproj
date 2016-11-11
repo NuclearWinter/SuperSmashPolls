@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\Moves.cs" />
+    <Compile Include="Characters\TheDonaldsMoves.cs" />
     <Compile Include="GameItemControl\PlayerClass.cs" />
     <Compile Include="Graphics\CharacterActions.cs" />
     <Compile Include="Levels\LevelHandler.cs" />
