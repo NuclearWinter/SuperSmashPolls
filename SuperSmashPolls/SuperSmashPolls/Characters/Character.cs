@@ -86,7 +86,7 @@ namespace SuperSmashPolls.Characters {
          ///<param name="name">The name of this character as refered to in the game system</param>
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution, 
             float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval, 
-            String name) {
+            string name) {
             CharacterSize         = characterSize;
             CharacterOrigin       = new Vector2((characterSize.Y)/2F, (characterSize.X)/2F);
             Mass                  = mass;
@@ -105,6 +105,9 @@ namespace SuperSmashPolls.Characters {
 
          ///<summary>
          ///Constructor for the Character class from another character
+         ///<param name="otherCharacter">The character to copy from</param>
+         ///<param name="gameWorld">The world to put the character into</param>
+         ///<param name="position">The position to place the character</param>
          ///</summary>
         public Character(Character otherCharacter, World gameWorld, Vector2 position) {
             CharacterSize         = otherCharacter.CharacterSize;
@@ -179,21 +182,21 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-         ///<summary>
-         ///Updates the character.
-         ///</summary>
-         ///This method controls movement, actions, and updates and character models accordingly
-         ///<remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
-         ///Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
+        ///<summary>
+        ///Updates the character.
+        ///This method controls movement, actions, and updates and character models accordingly
+        ///</summary>
+        ///<remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
+        ///Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
         public void UpdateCharacter(GamePadState gamePadState) {
 
             DateTime Now = DateTime.Now;
 
             CurrentActionIndex = IdleIndex;
 
-#if DEBUG
+            #if DEBUG
             Actions[CurrentActionIndex].DrawColor = Color.Black;
-#endif
+            #endif
 
             if (Math.Abs(CharacterBody.LinearVelocity.Y) > 0.01F)
                 CurrentActionIndex = JumpIndex;
@@ -206,9 +209,9 @@ namespace SuperSmashPolls.Characters {
 
                 CharacterBody.ApplyLinearImpulse(new Vector2(0, -10 * JumpForceMultiplier));
 
-#if DEBUG
+                #if DEBUG
                 Actions[CurrentActionIndex].DrawColor = Color.YellowGreen;
-#endif
+                #endif
 
             }
 
@@ -216,9 +219,9 @@ namespace SuperSmashPolls.Characters {
 
                 CurrentActionIndex = AttackIndex;
 
-#if DEBUG
+                #if DEBUG
                 Actions[CurrentActionIndex].DrawColor = Color.Violet;
-#endif
+                #endif
 
             }
 
@@ -228,9 +231,9 @@ namespace SuperSmashPolls.Characters {
 
                 CurrentActionIndex = RunIndex;
 
-#if DEBUG
+                #if DEBUG
                 Actions[CurrentActionIndex].DrawColor = Color.Aqua;
-#endif
+                #endif
 
             }
 
@@ -245,9 +248,9 @@ namespace SuperSmashPolls.Characters {
                 //It is a special attack to the side
                     CurrentActionIndex = SpecialSideAttackIndex;
 
-#if DEBUG
+                    #if DEBUG
                     Actions[CurrentActionIndex].DrawColor = Color.Beige;
-#endif
+                    #endif
 
                     //TODO special side attack code
 
@@ -255,9 +258,9 @@ namespace SuperSmashPolls.Characters {
                 //This is a special attack up
                     CurrentActionIndex = SpecialUpAttackIndex;
 
-#if DEBUG
+                    #if DEBUG
                     Actions[CurrentActionIndex].DrawColor = Color.Magenta;
-#endif
+                    #endif
 
                     //TODO special up attack code
 
@@ -265,18 +268,18 @@ namespace SuperSmashPolls.Characters {
                 //This is a special down attack
                     CurrentActionIndex = SpecialDownAttackIndex;
 
-#if DEBUG
+                    #if DEBUG
                     Actions[CurrentActionIndex].DrawColor = Color.Maroon;
-#endif
+                    #endif
                     //TODO special down attack code
 
                 } else {
                 //This is a regular special attack
                     CurrentActionIndex = SpecialAttackIndex;
 
-#if DEBUG
+                    #if DEBUG 
                     Actions[CurrentActionIndex].DrawColor = Color.OliveDrab;
-#endif
+                    #endif
 
                     //TODO special attack code
 
