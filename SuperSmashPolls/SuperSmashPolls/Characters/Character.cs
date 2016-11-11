@@ -1,5 +1,4 @@
 ﻿/*******************************************************************************************************************//**
- * /doc:SuperSmashPolls.XML
  * @author William Kluge
  **********************************************************************************************************************/
 
@@ -21,11 +20,9 @@ using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls.Characters {
 
-    /***************************************************************************************************************//**
-     * <summary>
-     * This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
-     * </summary>
-     ******************************************************************************************************************/ 
+     ///<summary>
+     ///This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
+     ///</summary>
     public class Character {
         /* These are the indicies that animations can be called with inside Actions */
         private const int IdleIndex = 0,
@@ -66,30 +63,27 @@ namespace SuperSmashPolls.Characters {
         private List<CharacterAction> Actions;
         /* The index of a value in Actions that represents the current action of the player */
         private int CurrentActionIndex;
-        /* This characters name */
+        /** <summary> This characters name </summary> */
         public string Name;
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Default constructor
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Default constructor
+         ///</summary>
         public Character() { }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Constructor for the Character class
-         * <param name="screenSize"> A reference to the size of the screen
-		 * <param name="characterSize"> Size of the in display units</param>
-		 * <param name="mass"> The mass of the character in kilograms</param>
-		 * <param name="friction"> The friction of the character</param>
-		 * <param name="restitution"> The restitution of the character</param>
-		 * <param name="movementMultiplier"> The multiplier for how much the character should move</param>
-		 * <param name="jumpForceMultiplier"> The multiplier for how much the character should jump</param>
-		 * <param name="jumpInterval"> The interval between allowable jumps for the player</param>
-		 * <param name="specialAttackInterval"> The minimum time between special attacks</param>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Constructor for the Character class
+         ///</summary>
+         ///<param name="screenSize">A reference to the size of the screen</param>
+		 ///<param name="characterSize">Size of the in display units</param>
+		 ///<param name="mass">The mass of the character in kilograms</param>
+		 ///<param name="friction">The friction of the character</param>
+		 ///<param name="restitution">The restitution of the character</param>
+		 ///<param name="movementMultiplier">The multiplier for how much the character should move</param>
+		 ///<param name="jumpForceMultiplier">The multiplier for how much the character should jump</param>
+		 ///<param name="jumpInterval">The interval between allowable jumps for the player</param>
+		 ///<param name="specialAttackInterval">The minimum time between special attacks</param>
+         ///<param name="name">The name of this character as refered to in the game system</param>
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution, 
             float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval, 
             String name) {
@@ -109,11 +103,9 @@ namespace SuperSmashPolls.Characters {
             Name                  = name;
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Constructor for the Character class from another character
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Constructor for the Character class from another character
+         ///</summary>
         public Character(Character otherCharacter, World gameWorld, Vector2 position) {
             CharacterSize         = otherCharacter.CharacterSize;
             CharacterOrigin       = otherCharacter.CharacterOrigin;
@@ -147,12 +139,10 @@ namespace SuperSmashPolls.Characters {
             CharacterBody.Restitution = Restitution;
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Allows for multiple items to be easily added to the list
-	     * <param name="actions"> The actions to add to Actions</param>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Allows for multiple items to be easily added to the list
+         ///</summary>
+	     ///<param name="actions"> The actions to add to Actions</param>
         private void AddToActions(params CharacterAction[] actions) {
 
             foreach (var i in actions)
@@ -160,13 +150,11 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Adds adds all of the animations for moves to the character
-         * <remarks> Each character should have one of every move</remarks>
-         * <remarks> It is done like this so that we can avoid having to compute this all the time based off a key</remarks>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Adds adds all of the animations for moves to the character
+         ///</summary>
+         ///<remarks> Each character should have one of every move</remarks>
+         ///<remarks> It is done like this so that we can avoid having to compute this all the time based off a key</remarks>
         public void AddCharacterActions(CharacterAction idle, CharacterAction jump, CharacterAction run, 
             CharacterAction attack, CharacterAction specialAttack, CharacterAction specialUpAttack, 
             CharacterAction sideSpecialAttack, CharacterAction downSpecialAttack) {
@@ -175,13 +163,11 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Creates the body for the character and adds it to the world
-         * <remarks> For now, character's bodies are all rectangles</remarks>
-         * <remarks> This must be called from within the PlayerClass after the world has been selected</remarks>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Creates the body for the character and adds it to the world
+         ///</summary>
+         ///<remarks> For now, character's bodies are all rectangles</remarks>
+         ///<remarks> This must be called from within the PlayerClass after the world has been selected</remarks>
         public void CreateBody(ref World gameWorld, Vector2 position) {
             
             CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
@@ -193,14 +179,12 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Updates the character.
-         * This method controls movement, actions, and updates and character models accordingly
-         * <remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
-         * Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Updates the character.
+         ///</summary>
+         ///This method controls movement, actions, and updates and character models accordingly
+         ///<remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
+         ///Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
         public void UpdateCharacter(GamePadState gamePadState) {
 
             DateTime Now = DateTime.Now;
@@ -307,35 +291,29 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Draws the character
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Draws the character
+         ///</summary>
         public void DrawCharacter(ref SpriteBatch spriteBatch) {
             
             Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch);
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Gets the position of the charatcer
-         * <returns> The position of the character</returns>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Gets the position of the charatcer
+         ///</summary>
+         ///<returns> The position of the character</returns>
         public Vector2 GetPosition() {
 
             return CharacterBody.Position;
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Respawns the character by placing them at a position and reseting their dynamics.
-         * <param name="position">The position to respawn the character</param>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Respawns the character by placing them at a position and reseting their dynamics.
+         ///</summary>
+         ///<param name="position">The position to respawn the character</param>
         public void Respawn(Vector2 position) {
 
             CharacterBody.Position = position;

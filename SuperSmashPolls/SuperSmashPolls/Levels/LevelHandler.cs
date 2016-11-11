@@ -18,14 +18,12 @@ using FarseerPhysics.Factories;
 
 namespace SuperSmashPolls.Levels {
 
-    /***************************************************************************************************************//**
-     * <summary>
-     * Holds and handles the drawing of and contruction of bodies.
-     * This class is responsible for handling the storage and creation of static bodies to use in the game world.
-     * </summary>
-     ******************************************************************************************************************/
+     ///<summary>
+     ///Holds and handles the drawing of and contruction of bodies.
+     ///This class is responsible for handling the storage and creation of static bodies to use in the game world.
+     ///</summary>
     class LevelHandler {
-        /** The bodies of this level <Body, texture, size (in meters)> */
+        /** The bodies of this level (Body, texture, size (in meters)) */
         private List<Tuple<Body, Texture2D, Vector2>> LevelBody;
         /** The background for this level */
         private Texture2D LevelBackground;
@@ -36,17 +34,16 @@ namespace SuperSmashPolls.Levels {
         /** The world for this level */
         public World LevelWorld;
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Constructor
-         * <param name="playerOneSpawn"> The spawn point for player one</param>
-         * <param name="playerTwoSpawn"> The spawn point for player two</param>
-         * <param name="playerThreeSpawn"> The spawn point for player three</param>
-         * <param name="playerFourSpawn"> The spawn point for player four</param>
-         * <param name="respawnPoint"> The respawn point for all players when/if they die</param>
-         * <param name="gravity"> unused for for</param>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Constructor
+         ///</summary>
+         ///<param name="playerOneSpawn">The spawn point for player one</param>
+         ///<param name="playerTwoSpawn">The spawn point for player two</param>
+         ///<param name="playerThreeSpawn">The spawn point for player three</param>
+         ///<param name="playerFourSpawn">The spawn point for player four</param>
+         ///<param name="respawnPoint">The respawn point for all players when/if they die</param>
+         ///<param name="horizontalGravity">The gravity of the world on a horizontal scale</param>
+         ///<param name="verticalGravity">The gravity on a vertical scale</param>
         public LevelHandler(Vector2 playerOneSpawn, Vector2 playerTwoSpawn, Vector2 playerThreeSpawn,
             Vector2 playerFourSpawn, Vector2 respawnPoint, float horizontalGravity = 0, float verticalGravity = 9.80F) {
 
@@ -62,14 +59,12 @@ namespace SuperSmashPolls.Levels {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Sets a background to the level
-         * <param name="levelBackground">The texture to use as a background</param>
-         * <param name="levelBackgroundScale">The scale to use for the background texture (i.e. background is 640x360,
-         * screen is 1280x720 we would need to scale by 2)</param>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Sets a background to the level
+         ///</summary>
+         ///<param name="levelBackground">The texture to use as a background</param>
+         ///<param name="levelBackgroundScale">The scale to use for the background texture (i.e. background is 640x360,
+         ///screen is 1280x720 we would need to scale by 2)</param>
         public void SetBackground(Texture2D levelBackground, Vector2 levelBackgroundScale) {
 
             LevelBackground      = levelBackground;
@@ -77,12 +72,10 @@ namespace SuperSmashPolls.Levels {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Creates the body and puts it in the world
-         * <param name="items">All the items to add to the world (Texture, position, size (in meters))</param>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Creates the body and puts it in the world
+         ///</summary>
+         ///<param name="items">All the items to add to the world (Texture, position, size (in meters))</param>
         public void AssignToWorld(params Tuple<Texture2D, Vector2, Vector2>[] items) {
 
             foreach (var i in items) {
@@ -98,12 +91,10 @@ namespace SuperSmashPolls.Levels {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * This draws world
-         * <param name="spriteBatch">The batch to draw with</param>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///This draws world
+         ///</summary>
+         ///<param name="spriteBatch">The batch to draw with</param>
         public void DrawLevel(SpriteBatch spriteBatch) {
 
             if (LevelBackground != null)
@@ -121,20 +112,18 @@ namespace SuperSmashPolls.Levels {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Creates a polygon from a texture. This is the important function here.
-		 * <param name="texture">The texture to make a body from</param>
-		 * <param name="density">The density of the object (Will almost always be one</param>
-         * <param name="position">The position (in meters) of the object in the world</param>
-		 * <param name="scale">The scale of the object (how much to change its size)</param>
-		 * <param name="algorithm">The decomposition algorithm to use</param>
-         * <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
-         * @warning In order for this to work the input must have a transparent background. I highly reccomend that you
-         * only use this with PNGs as that is what I have texted and I know they work. This will only produce a bosy as
-         * clean as the texture you give it, so avoid partically transparent areas and little edges.
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Creates a polygon from a texture. This is the important function here.
+         ///</summary>
+		 ///<param name="texture">The texture to make a body from</param>
+		 ///<param name="density">The density of the object (Will almost always be one</param>
+         ///<param name="position">The position (in meters) of the object in the world</param>
+		 ///<param name="scale">The scale of the object (how much to change its size)</param>
+		 ///<param name="algorithm">The decomposition algorithm to use</param>
+         ///<remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
+         ///@warning In order for this to work the input must have a transparent background. I highly reccomend that you
+         ///only use this with PNGs as that is what I have texted and I know they work. This will only produce a bosy as
+         ///clean as the texture you give it, so avoid partically transparent areas and little edges.
         private Body CreatePolygonFromTexture(Texture2D texture, float density, Vector2 position, float scale,
             TriangulationAlgorithm algorithm = TriangulationAlgorithm.Bayazit) {
 

@@ -1,7 +1,6 @@
 /*******************************************************************************************************************//**
- * /doc:SuperSmashPolls.XML
  * <remarks> This game is now dependent on the Farseer Physics Engine.
- * For information see http://farseerphysics.codeplex.com/
+ * For information see http://farseerphysics.codeplex.com/ </remarks>
  * @author (For all textures) Joe Brooksbank
  **********************************************************************************************************************/
 
@@ -30,19 +29,15 @@ using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls {
 
-    /***************************************************************************************************************//**
-     * <summary> 
-     * This is the main type of the game.
-     * </summary>
-     ******************************************************************************************************************/
+     ///<summary> 
+     ///This is the main type of the game.
+     ///</summary>
     public class Game1 : Microsoft.Xna.Framework.Game {
 
         /* The total size of the screen */
         private static Vector2 ScreenSize;
         /* The most basic Functioning WorldUnit */
         private readonly WorldUnit EmptyUnit;
-        /* The display size for the floor */
-        private readonly Vector2 FloorDisplaySize;
         /* The scale of how many pixels are equal to one meter */
         private readonly float PixelToMeterScale;
 
@@ -98,12 +93,10 @@ namespace SuperSmashPolls {
         /* Holds characters for matching from a save and for selection*/
         private List<Tuple<Character, string>> CharacterStringPairs;
 
-        /***********************************************************************************************************//** 
-         * <summary>
-         * Constructs the game's class
-         * TODO clean up constructor
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Constructs the game's class
+         ///TODO clean up constructor
+         ///</summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360);
@@ -127,37 +120,33 @@ namespace SuperSmashPolls {
             PixelToMeterScale = ScreenSize.X/25;
 
         }
-
-        /***********************************************************************************************************//**
-         * <summary> 
-         * Get's the meters of something drawn in a 640x360 scale
-         * <param name="pixels">The amount of pixels to convert</param>
-         * </summary>
-         **************************************************************************************************************/
+        
+         ///<summary> 
+         ///Get's the meters of something drawn in a 640x360 scale
+         ///<param name="pixels">The amount of pixels to convert</param>
+         ///</summary>
         private static float InMeters(float pixels) {
 
             return (pixels/640)*25;
 
         }
 
-        /***********************************************************************************************************//** 
-         * <summary>
-         * Get's the meters of something drawn in a 640x360 scale in a vector 2
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Get's the meters of something drawn in a 640x360 scale in a vector 2
+         ///</summary>
+         ///<param name="X"></param>
+         ///<param name="Y"></param>
         private Vector2 MetersV2(float X, float Y) {
             
             return new Vector2(InMeters(X), InMeters(Y));
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary>
-         * Allows the game to perform any initialization it needs to before starting to run. 
-         * This is where it can query for any required services and load any non-graphic related content. Calling 
-         * base. Initialize will enumerate through any components and initialize them as well.
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Allows the game to perform any initialization it needs to before starting to run. 
+         ///This is where it can query for any required services and load any non-graphic related content. Calling 
+         ///base. Initialize will enumerate through any components and initialize them as well.
+         ///</summary>
         protected override void Initialize() {
 
             /*********************************** Initialization for Physics things ************************************/
@@ -279,12 +268,10 @@ namespace SuperSmashPolls {
 
         }
 
-        /***********************************************************************************************************//**
-         * <summary> 
-         * LoadContent will be called once per game and is the place to load all of your content.
-         * <remarks> The menu is created here</remarks>
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary> 
+         ///LoadContent will be called once per game and is the place to load all of your content.
+         ///<remarks> The menu is created here</remarks>
+         ///</summary>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             Batch = new SpriteBatch(GraphicsDevice);
@@ -306,21 +293,17 @@ namespace SuperSmashPolls {
 
         }
 
-        /***********************************************************************************************************//** 
-         * <summary>
-         * UnloadContent will be called once per game and is the place to unload all content.
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///UnloadContent will be called once per game and is the place to unload all content.
+         ///</summary>
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
 
-        /***********************************************************************************************************//** 
-         * <summary>
-         * Handles setting characters
-         * @warning Still currently testing this
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///Handles setting characters
+         ///@warning Still currently testing this
+         ///</summary>
         private void SetCharacter(Character character) {
 
             if (null == PlayerOne.PlayerCharacter)
@@ -333,13 +316,11 @@ namespace SuperSmashPolls {
                 PlayerFour.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
 
         }
-
-        /***********************************************************************************************************//** 
-         * <summary>
-         * Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
-         * playing audio.
-         * </summary>
-         **************************************************************************************************************/
+ 
+         ///<summary>
+         ///Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
+         ///playing audio.
+         ///</summary>
         protected override void Update(GameTime gameTime) {
                 
             // Allows the game to exit
@@ -546,11 +527,9 @@ namespace SuperSmashPolls {
 
         }
 
-        /***********************************************************************************************************//** 
-         * <summary>
-         * This is where the game draw's the screen.
-         * </summary>
-         **************************************************************************************************************/
+         ///<summary>
+         ///This is where the game draw's the screen.
+         ///</summary>
         protected override void Draw(GameTime gameTime) {
 
             Batch.Begin();
