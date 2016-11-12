@@ -97,13 +97,13 @@ namespace SuperSmashPolls.GameItemControl {
 
         }
 
-        ///<summary>
-        ///Sets up the character from saved data
-        ///</summary>
-		///<param name="streamReader"> The stream to read data from (must already be opened)</param>
-		///<param name="characterList"> The characters available in the game </param>
-		///<param name="gameWorld"> The world to use for this </param>
-        ///TODO make the new world system work with this loading methods
+        /// <summary>
+        /// Sets up the character from saved data
+        /// </summary>
+		/// <param name="streamReader"> The stream to read data from (must already be opened)</param>
+		/// <param name="characterList"> The characters available in the game </param>
+		/// <param name="gameWorld"> The world to use for this </param>
+        /// TODO make the new world system work with this loading methods
         public void ReadInfo(ref StreamReader streamReader, List<Tuple<Character, string>> characterList, World gameWorld) {
 
             string CharacterName = streamReader.ReadLine();

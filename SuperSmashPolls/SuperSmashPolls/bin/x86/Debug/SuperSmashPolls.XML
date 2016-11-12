@@ -74,10 +74,10 @@
         <member name="M:SuperSmashPolls.Characters.Character.#ctor(SuperSmashPolls.Characters.Character,FarseerPhysics.Dynamics.World,Microsoft.Xna.Framework.Vector2)">
             <summary>
             Constructor for the Character class from another character
+            </summary>
             <param name="otherCharacter">The character to copy from</param>
             <param name="gameWorld">The world to put the character into</param>
             <param name="position">The position to place the character</param>
-            </summary>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.AddToActions(SuperSmashPolls.Graphics.CharacterAction[])">
             <summary>
@@ -103,15 +103,15 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.CreateBody(FarseerPhysics.Dynamics.World@,Microsoft.Xna.Framework.Vector2)">
             <summary>
-            Creates the body for the character and adds it to the world
+            Creates the body for the character and adds it to the world.
             </summary>
+            TODO make the body use Bayazit Decomposition and change the active body 
             <remarks>For now, character's bodies are all rectangles</remarks>
             <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.UpdateCharacter(Microsoft.Xna.Framework.Input.GamePadState)">
             <summary>
-            Updates the character.
-            This method controls movement, actions, and updates and character models accordingly
+            Updates the character. This method controls movement, actions, and updates and character model.
             </summary>
             <remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
             Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
@@ -280,6 +280,9 @@
         <member name="F:SuperSmashPolls.Levels.LevelHandler.LevelBackgroundScale">
             The amount that the background needs to be scaled (adjusted for different screen sizes) 
         </member>
+        <member name="F:SuperSmashPolls.Levels.LevelHandler.Name">
+            <summary>The name of this level</summary>
+        </member>
         <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerOneSpawn">
             The place's for players to spawn 
         </member>
@@ -298,10 +301,11 @@
         <member name="F:SuperSmashPolls.Levels.LevelHandler.LevelWorld">
             The world for this level 
         </member>
-        <member name="M:SuperSmashPolls.Levels.LevelHandler.#ctor(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.#ctor(System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
             <summary>
             Constructor
             </summary>
+            <param name="name">The name of this level</param>
             <param name="playerOneSpawn">The spawn point for player one</param>
             <param name="playerTwoSpawn">The spawn point for player two</param>
             <param name="playerThreeSpawn">The spawn point for player three</param>
@@ -519,8 +523,8 @@
         <member name="M:SuperSmashPolls.Game1.LoadContent">
             <summary> 
             LoadContent will be called once per game and is the place to load all of your content.
-            <remarks> The menu is created here</remarks>
             </summary>
+            <remarks>The menu is created here</remarks>
         </member>
         <member name="M:SuperSmashPolls.Game1.UnloadContent">
             <summary>

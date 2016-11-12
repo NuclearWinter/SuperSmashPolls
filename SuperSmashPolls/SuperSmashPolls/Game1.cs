@@ -91,19 +91,20 @@ namespace SuperSmashPolls {
         private GameState State = GameState.Menu;
 
         /* Holds levels for matching from a save and for selection */
-        private List<Tuple<LevelHandler, string>> LevelStringPairs;
+        //private List<Tuple<LevelHandler, string>> LevelStringPairs;
+        private Dictionary<string, LevelHandler> LevelDictionary;
         /* Holds characters for matching from a save and for selection*/
         private List<Tuple<Character, string>> CharacterStringPairs;
 
-        ///<summary>
-        ///Constructs the game's class
-        ///TODO clean up constructor
-        ///</summary>
+        /// <summary>
+        /// Constructs the game's class
+        /// TODO clean up constructor
+        /// </summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360);
 
-            LevelStringPairs     = new List<Tuple<LevelHandler, string>>();
+            LevelDictionary = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
 
             /* This is the player's screen controller */
@@ -125,32 +126,32 @@ namespace SuperSmashPolls {
 
         }
         
-        ///<summary> 
-        ///Get's the meters of something drawn in a 640x360 scale
-        ///<param name="pixels">The amount of pixels to convert</param>
-        ///</summary>
+        /// <summary> 
+        /// Get's the meters of something drawn in a 640x360 scale
+        /// <param name="pixels">The amount of pixels to convert</param>
+        /// </summary>
         private static float InMeters(float pixels) {
 
             return (pixels/640)*25;
 
         }
 
-        ///<summary>
-        ///Get's the meters of something drawn in a 640x360 scale in a vector 2
-        ///</summary>
-        ///<param name="X"></param>
-        ///<param name="Y"></param>
+        /// <summary>
+        /// Get's the meters of something drawn in a 640x360 scale in a vector 2
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
         private Vector2 MetersV2(float X, float Y) {
             
             return new Vector2(InMeters(X), InMeters(Y));
 
         }
 
-        ///<summary>
-        ///Allows the game to perform any initialization it needs to before starting to run. 
-        ///This is where it can query for any required services and load any non-graphic related content. Calling 
-        ///base. Initialize will enumerate through any components and initialize them as well.
-        ///</summary>
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run. 
+        /// This is where it can query for any required services and load any non-graphic related content. Calling 
+        /// base. Initialize will enumerate through any components and initialize them as well.
+        /// </summary>
         protected override void Initialize() {
 
             /*********************************** Initialization for Physics things ************************************/
@@ -164,8 +165,8 @@ namespace SuperSmashPolls {
 
             /************************************ Initialization for Level things *************************************/
 
-            TempleRock = new LevelHandler(Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0), new Vector2(8, 0),
-                new Vector2(13.5F, 0));
+            TempleRock = new LevelHandler("Temple Rock", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
+                new Vector2(8, 0), new Vector2(13.5F, 0));
 
                 Texture2D TempleRockTexture = Content.Load<Texture2D>("TempleRock");
 
@@ -178,10 +179,10 @@ namespace SuperSmashPolls {
                 TempleRock.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, 
                     SpaceBackground.Height)/ScreenSize);
 
-                LevelStringPairs.Add(new Tuple<LevelHandler, string>(TempleRock, "Temple Rock"));
+                LevelDictionary.Add("TempleRock", TempleRock);
 
-            Temple = new LevelHandler(new Vector2(1, 11), new Vector2(9.2F, 5.3F), new Vector2(6, 0), new Vector2(8, 0),
-                new Vector2(13.5F, 0));
+            Temple = new LevelHandler("Temple", new Vector2(1, 11), new Vector2(9.2F, 5.3F), new Vector2(6, 0),
+                new Vector2(8, 0), new Vector2(13.5F, 0));
 
                 Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
                     TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
@@ -198,7 +199,7 @@ namespace SuperSmashPolls {
                     new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
                     new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
 
-                LevelStringPairs.Add(new Tuple<LevelHandler, string>(Temple, "Temple"));
+                LevelDictionary.Add("Temple", Temple);
 
             /************************************* Initialization for Menu things *************************************/
             //<remarks> Some menus hold items for other things to make the menu system more compact, don't worry about it.
@@ -224,7 +225,7 @@ namespace SuperSmashPolls {
 
                         Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Temple", false,
-                                EmptyUnit, true, true, MenuCommands.PlayTemple));
+                                EmptyUnit, true, true, MenuCommands.PlayTemple)); //TODO add to menu from list
 
                         Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
@@ -234,6 +235,8 @@ namespace SuperSmashPolls {
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
+
+                        //TODO character selection from list
 
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
@@ -276,10 +279,10 @@ namespace SuperSmashPolls {
 
         }
 
-        ///<summary> 
-        ///LoadContent will be called once per game and is the place to load all of your content.
-        ///<remarks> The menu is created here</remarks>
-        ///</summary>
+        /// <summary> 
+        /// LoadContent will be called once per game and is the place to load all of your content.
+        /// </summary>
+        /// <remarks>The menu is created here</remarks>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             Batch = new SpriteBatch(GraphicsDevice);
@@ -301,17 +304,17 @@ namespace SuperSmashPolls {
 
         }
 
-        ///<summary>
-        ///UnloadContent will be called once per game and is the place to unload all content.
-        ///</summary>
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload all content.
+        /// </summary>
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
 
-        ///<summary>
-        ///Handles setting characters
-        ///@warning Still currently testing this
-        ///</summary>
+        /// <summary>
+        /// Handles setting characters
+        /// @warning Still currently testing this
+        /// </summary>
         private void SetCharacter(Character character) {
 
             if (null == PlayerOne.PlayerCharacter)
@@ -325,10 +328,10 @@ namespace SuperSmashPolls {
 
         }
  
-        ///<summary>
-        ///Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
-        ///playing audio.
-        ///</summary>
+        /// <summary>
+        /// Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
+        /// playing audio.
+        /// </summary>
         protected override void Update(GameTime gameTime) {
                 
             // Allows the game to exit
@@ -388,7 +391,7 @@ namespace SuperSmashPolls {
 
                             Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
 
-                            PlayerOne.SetCharacter(TheDonald); //debugging
+                            PlayerOne.SetCharacter(TheDonald); //TODO actual character selection
                             PlayerTwo.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, new Vector2(8, 0)));
                             PlayerThree.SetCharacter(TheDonald);
                             PlayerFour.SetCharacter(TheDonald);
@@ -460,6 +463,8 @@ namespace SuperSmashPolls {
 
                         StreamWriter FileWriter = new StreamWriter("C:\\Users\\Public\\SmashPollsSave.txt");
 
+                        FileWriter.WriteLine(CurrentLevel.Name);
+
                         FileWriter.WriteLine(NumPlayers);
 
                         switch (NumPlayers) {
@@ -493,6 +498,8 @@ namespace SuperSmashPolls {
                     try {
 
                         StreamReader FileReader = new StreamReader("C:\\Users\\Public\\SmashPollsSave.txt");
+
+                        LevelDictionary.TryGetValue(FileReader.ReadLine(), out CurrentLevel);                        
 
                         NumPlayers = int.Parse(FileReader.ReadLine());
 
@@ -539,9 +546,9 @@ namespace SuperSmashPolls {
 
         }
 
-        ///<summary>
-        ///This is where the game draw's the screen.
-        ///</summary>
+        /// <summary>
+        /// This is where the game draw's the screen.
+        /// </summary>
         protected override void Draw(GameTime gameTime) {
 
             Batch.Begin();
