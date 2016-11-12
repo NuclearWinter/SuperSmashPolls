@@ -247,12 +247,12 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-        ///<summary>
-        ///Display this item.
-        ///This is for when this item is displayed (on a different menu).
-        ///</summary>
-        ///<param name="batch">The SpriteBatch to draw with</param>
-        ///@warning This method assumes that the spritebatch has already been started.
+        /// <summary>
+        /// Display this item.
+        /// This is for when this item is displayed (on a different menu).
+        /// </summary>
+        /// <param name="batch">The SpriteBatch to draw with</param>
+        /// @warning This method assumes that the spritebatch has already been started.
         public void DisplayItem(ref SpriteBatch batch) {
 
             if (Texture != null) {
@@ -275,10 +275,10 @@ namespace SuperSmashPolls.MenuControl {
 
         }
 
-        ///<summary>
-        ///Access function for members of DisplayItems
-        ///TODO finish this
-        ///</summary>
+        /// <summary>
+        /// Access function for members of DisplayItems
+        /// TODO finish this
+        /// </summary>
         public void AccessItem(MenuItem add, params int[] index) {
 
             MenuItem testthing;

@@ -102,14 +102,14 @@ namespace SuperSmashPolls {
         /// </summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
-            ScreenSize = new Vector2(640, 360);
+            ScreenSize = new Vector2(1280, 720);
 
             LevelDictionary = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
 
             /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
-                IsFullScreen = false,
+                IsFullScreen = true,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
                 PreferredBackBufferWidth  = (int) ScreenSize.X
             };
@@ -191,13 +191,13 @@ namespace SuperSmashPolls {
                     TempleBackground = Content.Load<Texture2D>("TempleItems\\TempleBackground");
 
                 Temple.SetBackground(TempleBackground,
-                    new Vector2(TempleBackground.Width/ScreenSize.X, TempleBackground.Height/ScreenSize.Y));
+                    new Vector2(ScreenSize.X/TempleBackground.Width, ScreenSize.Y/TempleBackground.Height));
 
                 Temple.AssignToWorld(
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleLeft, MetersV2(8, 188), MetersV2(132, 79)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleLeft,   MetersV2(8, 188),   MetersV2(132, 79)),
                     new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleRight,  MetersV2(309, 176), MetersV2(324, 137)),
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleTop,  MetersV2(185, 37),    MetersV2(132, 45)));
 
                 LevelDictionary.Add("Temple", Temple);
 
@@ -269,11 +269,9 @@ namespace SuperSmashPolls {
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
                 0.01F, 500F, 25F, 0.1F, 1F, "TheDonald");
 
-            TheDonaldsMoves thsdfasd = new TheDonaldsMoves(); //testing
+                new TheDonaldsMoves().AddMovesToCharacter(TheDonald);
 
-            thsdfasd.AddMovesToCharacter(TheDonald); //testing
-
-            CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
+                CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
 
             base.Initialize();
 

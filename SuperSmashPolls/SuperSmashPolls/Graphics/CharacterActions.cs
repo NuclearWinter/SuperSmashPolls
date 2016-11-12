@@ -7,17 +7,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SuperSmashPolls.Graphics {
 
-    ///<summary>
-    ///Class responsible for handing animations of characters.
-    ///</summary>
+    /// <summary>
+    /// Class responsible for handing animations of characters.
+    /// </summary>
     public class CharacterAction {
-       ///<summary>The spritesheet to take a value from (can be just one image)</summary>
+        /// <summary>The spritesheet to take a value from (can be just one image)</summary>
         public readonly Texture2D SpriteSheet;
-       ///<summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
+        /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
         public readonly int PlayTime;
-       ///<summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
+        /// <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
         public readonly Point ImageSize;
-       ///<summary>The color to draw the image with, defaults to clear</summary>
+        /// <summary>The color to draw the image with, defaults to clear</summary>
         public Color DrawColor;
         /** The amount of images on the X and Y axis, calculated in the constructor */
         private readonly Point SheetSize;
@@ -30,12 +30,12 @@ namespace SuperSmashPolls.Graphics {
         /* The destination for drawing the source rectangle */
         private Rectangle Destination;
 
-       ///<summary>
-       ///Constructor
-       ///</summary>
-       ///<param name="playTime"> The amount of time (in seconds) that it takes to loop through the entire sheet</param>
-       ///<param name="imageSize"> The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
-       ///<param name="spriteSheet"> The texture of the sheet</param>
+       /// <summary>
+       /// Constructor
+       /// </summary>
+       /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+       /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+       /// <param name="spriteSheet">The texture of the sheet</param>
         public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet) {
 
             PlayTime       = playTime;
@@ -48,11 +48,11 @@ namespace SuperSmashPolls.Graphics {
 
         }
 
-        ///<summary>
-        ///Updates the animation
-        ///</summary>
-	    ///<param name="position"> The position on screen to draw the image</param>
-		///<param name="drawSize"> the size to draw the image</param>
+        /// <summary>
+        /// Updates the animation
+        /// </summary>
+	    /// <param name="position">The position on screen to draw the image</param>
+		/// <param name="drawSize">The size to draw the image</param>
         public void UpdateAnimation(Vector2 position, Vector2 drawSize) {
 
             DateTime Now = DateTime.Now;
@@ -81,13 +81,18 @@ namespace SuperSmashPolls.Graphics {
 
         }
 
-        ///<summary>
-        ///Draws the current image from the spritesheet based on the calculation of <see cref="UpdateAnimation"/>
-        ///</summary>
-	    ///<param name="batch"> A reference to the current SpriteBatch</param>
-        public void DrawAnimation(ref SpriteBatch batch) {
+        /// <summary>
+        /// Draws the current image from the spritesheet based on the calculation of <see cref="UpdateAnimation"/>
+        /// </summary>
+	    /// <param name="batch"> A reference to the current SpriteBatch</param>
+	    /// <param name="sidewaysVelocity">The velocity of the character sideways. Used to flip the sprite if the motion
+	    /// is in the opposite direction of how it is drawn. Leave blank for no effect.</param>
+        public void DrawAnimation(ref SpriteBatch batch, float sidewaysVelocity = 0) {
+
+            SpriteEffects Effect = (sidewaysVelocity < -0.1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             batch.Draw(SpriteSheet, Destination, Source, DrawColor);
+            batch.Draw(SpriteSheet, Destination, Source, DrawColor, 0, Vector2.Zero, Effect, 0F);
 
         }
 

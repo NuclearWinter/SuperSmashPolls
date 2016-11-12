@@ -248,22 +248,24 @@
             <summary>
             Constructor
             </summary>
-            <param name="playTime"> The amount of time (in seconds) that it takes to loop through the entire sheet</param>
-            <param name="imageSize"> The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
-            <param name="spriteSheet"> The texture of the sheet</param>
+            <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+            <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+            <param name="spriteSheet">The texture of the sheet</param>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
             <summary>
             Updates the animation
             </summary>
-            <param name="position"> The position on screen to draw the image</param>
-            <param name="drawSize"> the size to draw the image</param>
+            <param name="position">The position on screen to draw the image</param>
+            <param name="drawSize">The size to draw the image</param>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.DrawAnimation(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.DrawAnimation(Microsoft.Xna.Framework.Graphics.SpriteBatch@,System.Single)">
             <summary>
             Draws the current image from the spritesheet based on the calculation of <see cref="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)"/>
             </summary>
             <param name="batch"> A reference to the current SpriteBatch</param>
+            <param name="sidewaysVelocity">The velocity of the character sideways. Used to flip the sprite if the motion
+            is in the opposite direction of how it is drawn. Leave blank for no effect.</param>
         </member>
         <member name="T:SuperSmashPolls.Levels.LevelHandler">
             <summary>

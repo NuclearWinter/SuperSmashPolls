@@ -232,13 +232,13 @@ namespace SuperSmashPolls.Characters {
             if (Math.Abs(CharacterBody.LinearVelocity.Y) > 0.01F)
                 CurrentActionIndex = JumpIndex;
 
-            if (gamePadState.IsButtonDown(Buttons.A) && (Now - LastJump).TotalMilliseconds > JumpInterval*1000) {
+            if (gamePadState.IsButtonDown(Buttons.A) && (Now - LastJump).TotalMilliseconds > JumpInterval * 1000) {
                 //The character is jumping
                 LastJump = Now;
 
                 CurrentActionIndex = JumpIndex;
 
-                CharacterBody.ApplyLinearImpulse(new Vector2(0, -10*JumpForceMultiplier));
+                CharacterBody.ApplyLinearImpulse(new Vector2(0, -10 * JumpForceMultiplier));
 
 #if DEBUG
                 Actions[CurrentActionIndex].DrawColor = Color.YellowGreen;
@@ -258,7 +258,7 @@ namespace SuperSmashPolls.Characters {
 
             if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
                 //The character is moving
-                CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0)*MovementMultiplier);
+                CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
 
                 CurrentActionIndex = RunIndex;
 
@@ -358,7 +358,7 @@ namespace SuperSmashPolls.Characters {
         ///</summary>
         public void DrawCharacter(ref SpriteBatch spriteBatch) {
             
-            Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch);
+            Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch, CharacterBody.LinearVelocity.X);
 
         }
 
