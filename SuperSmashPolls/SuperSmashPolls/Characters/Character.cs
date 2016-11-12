@@ -3,7 +3,7 @@
  **********************************************************************************************************************/
 
 #define DEBUG
-
+#undef DEBUG
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -26,13 +26,13 @@ namespace SuperSmashPolls.Characters {
     public class Character {
         /* These are the indicies that animations can be called with inside Actions */
         private const int IdleIndex = 0,
-            JumpIndex = 1,              //A (Players can always jump)
-            RunIndex = 2,               //Right Joystick (Can always run in any direction)
-            AttackIndex = 3,            //B
-            SpecialAttackIndex = 4,     //X
-            SpecialUpAttackIndex = 5,   //X + Left joystick up
-            SpecialSideAttackIndex = 6, //X + Left joystick to the left or right
-            SpecialDownAttackIndex = 7; //X + Left joystick down
+            JumpIndex               = 1, //A (Players can always jump)
+            RunIndex                = 2, //Right Joystick (Can always run in any direction)
+            AttackIndex             = 3, //B
+            SpecialAttackIndex      = 4, //X
+            SpecialUpAttackIndex    = 5, //X + Left joystick up
+            SpecialSideAttackIndex  = 6, //X + Left joystick to the left or right
+            SpecialDownAttackIndex  = 7; //X + Left joystick down
         /* This is the amount the joystick must be over for it to register as intentional */
         private const float Register = 0.2F;
         /** The size of the character (in display units) */
@@ -96,57 +96,59 @@ namespace SuperSmashPolls.Characters {
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution,
             float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval,
             string name) {
-            CharacterSize = characterSize;
-            CharacterOrigin = new Vector2((characterSize.Y)/2F, (characterSize.X)/2F);
-            Mass = mass;
-            Friction = friction;
-            Restitution = restitution;
-            MovementMultiplier = movementMultiplier;
-            JumpForceMultiplier = jumpForceMultiplier;
-            JumpInterval = jumpInterval;
+            CharacterSize         = characterSize;
+            CharacterOrigin       = new Vector2((characterSize.Y)/2F, (characterSize.X)/2F);
+            Mass                  = mass;
+            Friction              = friction;
+            Restitution           = restitution;
+            MovementMultiplier    = movementMultiplier;
+            JumpForceMultiplier   = jumpForceMultiplier;
+            JumpInterval          = jumpInterval;
             SpecialAttackInterval = specialAttackInterval;
-            CurrentActionIndex = IdleIndex;
-            LastJump = DateTime.Now;
-            LastSpecialAttack = DateTime.Now;
-            Actions = new List<CharacterAction>();
-            Moves = new List<CharacterMove>();
-            Name = name;
+            CurrentActionIndex    = IdleIndex;
+            LastJump              = DateTime.Now;
+            LastSpecialAttack     = DateTime.Now;
+            Actions               = new List<CharacterAction>();
+            Moves                 = new List<CharacterMove>();
+            Name                  = name;
+
         }
 
         /// <summary>
-        /// Constructor for the Character class from another character
+        /// Constructor for the Character class from another character.
         /// </summary>
         /// <param name="otherCharacter">The character to copy from</param>
         /// <param name="gameWorld">The world to put the character into</param>
         /// <param name="position">The position to place the character</param>
         public Character(Character otherCharacter, World gameWorld, Vector2 position) {
-            CharacterSize = otherCharacter.CharacterSize;
-            CharacterOrigin = otherCharacter.CharacterOrigin;
-            Mass = otherCharacter.Mass;
-            Friction = otherCharacter.Friction;
-            Restitution = otherCharacter.Restitution;
-            MovementMultiplier = otherCharacter.MovementMultiplier;
-            JumpForceMultiplier = otherCharacter.JumpForceMultiplier;
-            JumpInterval = otherCharacter.JumpInterval;
-            SpecialAttackInterval = otherCharacter.SpecialAttackInterval;
-            CurrentActionIndex = IdleIndex;
-            LastJump = DateTime.Now;
-            LastSpecialAttack = DateTime.Now;
-            Actions = new List<CharacterAction>();
-            Moves = new List<CharacterMove>();
-            GameWorld = gameWorld;
+            CharacterSize             = otherCharacter.CharacterSize;
+            CharacterOrigin           = otherCharacter.CharacterOrigin;
+            Mass                      = otherCharacter.Mass;
+            Friction                  = otherCharacter.Friction;
+            Restitution               = otherCharacter.Restitution;
+            MovementMultiplier        = otherCharacter.MovementMultiplier;
+            JumpForceMultiplier       = otherCharacter.JumpForceMultiplier;
+            JumpInterval              = otherCharacter.JumpInterval;
+            SpecialAttackInterval     = otherCharacter.SpecialAttackInterval;
+            CurrentActionIndex        = IdleIndex;
+            LastJump                  = DateTime.Now;
+            LastSpecialAttack         = DateTime.Now;
+            Actions                   = new List<CharacterAction>();
+            Moves                     = new List<CharacterMove>();
+            GameWorld                 = gameWorld;
+            Name                      = otherCharacter.Name;
+            CharacterBody             = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
+                ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
+            CharacterBody.BodyType    = BodyType.Dynamic;
+            CharacterBody.Friction    = Friction;
+            CharacterBody.Mass        = Mass;
+            CharacterBody.Restitution = Restitution;
 
-            foreach (CharacterAction i in otherCharacter.Actions)
+            foreach (CharacterAction i in otherCharacter.Actions) //Without this characters cant do the same move
                 Actions.Add(new CharacterAction(i.PlayTime, i.ImageSize, i.SpriteSheet));
 
-            Name = otherCharacter.Name;
-
-            CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
-                ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
-            CharacterBody.BodyType = BodyType.Dynamic;
-            CharacterBody.Friction = Friction;
-            CharacterBody.Mass = Mass;
-            CharacterBody.Restitution = Restitution;
+            foreach (CharacterMove i in otherCharacter.Moves)
+                Moves.Add(i);
 
         }
 
@@ -199,13 +201,13 @@ namespace SuperSmashPolls.Characters {
         /// <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         public void CreateBody(ref World gameWorld, Vector2 position) {
 
-            CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.X),
+            CharacterBody             = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.X),
                 ConvertUnits.ToSimUnits(CharacterSize.Y), 1F, position);
-            CharacterBody.BodyType = BodyType.Dynamic;
-            CharacterBody.Friction = Friction;
-            CharacterBody.Mass = Mass;
+            CharacterBody.BodyType    = BodyType.Dynamic;
+            CharacterBody.Friction    = Friction;
+            CharacterBody.Mass        = Mass;
             CharacterBody.Restitution = Restitution;
-            GameWorld = gameWorld;
+            GameWorld                 = gameWorld;
 
         }
 
@@ -377,7 +379,6 @@ namespace SuperSmashPolls.Characters {
             CharacterBody.ResetDynamics();
 
         }
-
 
     }
 

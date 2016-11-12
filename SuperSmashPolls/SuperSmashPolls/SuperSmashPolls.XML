@@ -76,7 +76,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.#ctor(SuperSmashPolls.Characters.Character,FarseerPhysics.Dynamics.World,Microsoft.Xna.Framework.Vector2)">
             <summary>
-            Constructor for the Character class from another character
+            Constructor for the Character class from another character.
             </summary>
             <param name="otherCharacter">The character to copy from</param>
             <param name="gameWorld">The world to put the character into</param>
