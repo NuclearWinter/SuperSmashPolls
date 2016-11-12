@@ -102,14 +102,14 @@ namespace SuperSmashPolls {
         /// </summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
-            ScreenSize = new Vector2(1280, 720);
+            ScreenSize = new Vector2(640, 360);
 
             LevelDictionary = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
 
             /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
-                IsFullScreen = true,
+                IsFullScreen = false,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
                 PreferredBackBufferWidth  = (int) ScreenSize.X
             };
@@ -182,7 +182,7 @@ namespace SuperSmashPolls {
                 LevelDictionary.Add("TempleRock", TempleRock);
 
             Temple = new LevelHandler("Temple", new Vector2(1, 11), new Vector2(9.2F, 5.3F), new Vector2(6, 0),
-                new Vector2(8, 0), new Vector2(13.5F, 0));
+                new Vector2(8, 0), new Vector2(21.5F, 8.1F));
 
                 Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
                     TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
@@ -267,7 +267,7 @@ namespace SuperSmashPolls {
             /************************************* Initialization for Characters **************************************/
 
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
-                0.01F, 500F, 25F, 0.1F, 1F, "TheDonald");
+                0.01F, 500F, 25F, 0.1F, 0F, "TheDonald");
 
                 new TheDonaldsMoves().AddMovesToCharacter(TheDonald);
 
@@ -390,9 +390,10 @@ namespace SuperSmashPolls {
                             Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
 
                             PlayerOne.SetCharacter(TheDonald); //TODO actual character selection
-                            PlayerTwo.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, new Vector2(8, 0)));
-                            PlayerThree.SetCharacter(TheDonald);
-                            PlayerFour.SetCharacter(TheDonald);
+                            PlayerOne.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerOneSpawn;
+                            PlayerTwo.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn));
+                            PlayerThree.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn));
+                            PlayerFour.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn));
 
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
 

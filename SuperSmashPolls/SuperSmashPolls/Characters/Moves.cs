@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FarseerPhysics.Dynamics;
+using Microsoft.Xna.Framework;
+using SuperSmashPolls.Levels;
 
 namespace SuperSmashPolls.Characters {
 
@@ -13,22 +16,22 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// The special move for this character
         /// </summary>
-        public abstract void Special();
+        public abstract void Special(Character character);
 
         /// <summary>
         /// The side special move for this character
         /// </summary>
-        public abstract void SideSpecial();
+        public abstract void SideSpecial(Character character);
 
         /// <summary>
         /// The up special move for this character
         /// </summary>
-        public abstract void UpSpecial();
+        public abstract void UpSpecial(Character character);
 
         /// <summary>
         /// The down special move for this character
         /// </summary>
-        public abstract void DownSpecial();
+        public abstract void DownSpecial(Character character);
 
         /// <summary>
         /// Adds moves to a character

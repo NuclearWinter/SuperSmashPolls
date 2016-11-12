@@ -1,10 +1,9 @@
-﻿/*******************************************************************************************************************/
-/**
+﻿/*******************************************************************************************************************//**
  * @author William Kluge
  **********************************************************************************************************************/
 
 #define DEBUG
-#undef DEBUG
+
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -21,27 +20,19 @@ using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls.Characters {
 
-    ///<summary>
-    ///This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
-    ///</summary>
+    /// <summary>
+    /// This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
+    /// </summary>
     public class Character {
         /* These are the indicies that animations can be called with inside Actions */
-
         private const int IdleIndex = 0,
-            JumpIndex = 1,
-            //A (Players can always jump)
-            RunIndex = 2,
-            //Right Joystick (Can always run in any direction)
-            AttackIndex = 3,
-            //B
-            SpecialAttackIndex = 4,
-            //X
-            SpecialUpAttackIndex = 5,
-            //X + Left joystick up
-            SpecialSideAttackIndex = 6,
-            //X + Left joystick to the left or right
+            JumpIndex = 1,              //A (Players can always jump)
+            RunIndex = 2,               //Right Joystick (Can always run in any direction)
+            AttackIndex = 3,            //B
+            SpecialAttackIndex = 4,     //X
+            SpecialUpAttackIndex = 5,   //X + Left joystick up
+            SpecialSideAttackIndex = 6, //X + Left joystick to the left or right
             SpecialDownAttackIndex = 7; //X + Left joystick down
-
         /* This is the amount the joystick must be over for it to register as intentional */
         private const float Register = 0.2F;
         /** The size of the character (in display units) */
@@ -66,40 +57,42 @@ namespace SuperSmashPolls.Characters {
         private DateTime LastJump;
         /* The last time that the character used their special attack */
         private DateTime LastSpecialAttack;
-        /** The body of the character (must be created after level selection) */
-        private Body CharacterBody; //TODO base this off the character's textures, enable and disable for current action
         /** The move animations for this character */
         private List<CharacterAction> Actions;
         /** The moves for this character. Links with Actions */
         private List<CharacterMove> Moves;
         /* The index of a value in Actions that represents the current action of the player */
         private int CurrentActionIndex;
+        /// <summary>The world that this character is in</summary>
+        public World GameWorld;
+        /// <summary>The body of the character (must be created after level selection)</summary>
+        public Body CharacterBody; //TODO base this off the character's textures, enable and disable for current action
 
-        ///<summary> This characters name </summary>
+        /// <summary> This characters name </summary>
         public string Name;
 
-        ///<summary>The type for character's moves</summary>
-        public delegate void CharacterMove();
+        /// <summary>The type for character's moves</summary>
+        public delegate void CharacterMove(Character character);
 
-        ///<summary>
-        ///Default constructor
-        ///</summary>
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Character() {
         }
 
-        ///<summary>
-        ///Constructor for the Character class
-        ///</summary>
-        ///<param name="screenSize">A reference to the size of the screen</param>
-        ///<param name="characterSize">Size of the in display units</param>
-        ///<param name="mass">The mass of the character in kilograms</param>
-        ///<param name="friction">The friction of the character</param>
-        ///<param name="restitution">The restitution of the character</param>
-        ///<param name="movementMultiplier">The multiplier for how much the character should move</param>
-        ///<param name="jumpForceMultiplier">The multiplier for how much the character should jump</param>
-        ///<param name="jumpInterval">The interval between allowable jumps for the player</param>
-        ///<param name="specialAttackInterval">The minimum time between special attacks</param>
-        ///<param name="name">The name of this character as refered to in the game system</param>
+        /// <summary>
+        /// Constructor for the Character class
+        /// </summary>
+        /// <param name="screenSize">A reference to the size of the screen</param>
+        /// <param name="characterSize">Size of the in display units</param>
+        /// <param name="mass">The mass of the character in kilograms</param>
+        /// <param name="friction">The friction of the character</param>
+        /// <param name="restitution">The restitution of the character</param>
+        /// <param name="movementMultiplier">The multiplier for how much the character should move</param>
+        /// <param name="jumpForceMultiplier">The multiplier for how much the character should jump</param>
+        /// <param name="jumpInterval">The interval between allowable jumps for the player</param>
+        /// <param name="specialAttackInterval">The minimum time between special attacks</param>
+        /// <param name="name">The name of this character as refered to in the game system</param>
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution,
             float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval,
             string name) {
@@ -141,6 +134,7 @@ namespace SuperSmashPolls.Characters {
             LastSpecialAttack = DateTime.Now;
             Actions = new List<CharacterAction>();
             Moves = new List<CharacterMove>();
+            GameWorld = gameWorld;
 
             foreach (CharacterAction i in otherCharacter.Actions)
                 Actions.Add(new CharacterAction(i.PlayTime, i.ImageSize, i.SpriteSheet));
@@ -205,12 +199,13 @@ namespace SuperSmashPolls.Characters {
         /// <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         public void CreateBody(ref World gameWorld, Vector2 position) {
 
-            CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
-                ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
+            CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.X),
+                ConvertUnits.ToSimUnits(CharacterSize.Y), 1F, position);
             CharacterBody.BodyType = BodyType.Dynamic;
             CharacterBody.Friction = Friction;
             CharacterBody.Mass = Mass;
             CharacterBody.Restitution = Restitution;
+            GameWorld = gameWorld;
 
         }
 
@@ -285,7 +280,7 @@ namespace SuperSmashPolls.Characters {
 
                     try {
 
-                        Moves[0]();
+                        Moves[0](this);
 
                     } catch (NotImplementedException) {
 
@@ -302,7 +297,7 @@ namespace SuperSmashPolls.Characters {
 
                     try {
 
-                        Moves[1]();
+                        Moves[1](this);
 
                     } catch (NotImplementedException) {
 
@@ -318,7 +313,7 @@ namespace SuperSmashPolls.Characters {
 #endif
                     try {
 
-                        Moves[2]();
+                        Moves[2](this);
 
                     } catch (NotImplementedException) {
 
@@ -335,7 +330,7 @@ namespace SuperSmashPolls.Characters {
 
                     try {
 
-                        Moves[3]();
+                        Moves[3](this);
 
                     } catch (NotImplementedException) {
 

@@ -36,14 +36,17 @@
         <member name="F:SuperSmashPolls.Characters.Character.SpecialAttackInterval">
             The minimum time between character's special attacks 
         </member>
-        <member name="F:SuperSmashPolls.Characters.Character.CharacterBody">
-            The body of the character (must be created after level selection) 
-        </member>
         <member name="F:SuperSmashPolls.Characters.Character.Actions">
             The move animations for this character 
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.Moves">
             The moves for this character. Links with Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.GameWorld">
+            <summary>The world that this character is in</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.CharacterBody">
+            <summary>The body of the character (must be created after level selection)</summary>
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.Name">
             <summary> This characters name </summary>
@@ -138,22 +141,22 @@
             Parent class for creating character moves.
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.Special">
+        <member name="M:SuperSmashPolls.Characters.Moves.Special(SuperSmashPolls.Characters.Character)">
             <summary>
             The special move for this character
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.SideSpecial">
+        <member name="M:SuperSmashPolls.Characters.Moves.SideSpecial(SuperSmashPolls.Characters.Character)">
             <summary>
             The side special move for this character
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.UpSpecial">
+        <member name="M:SuperSmashPolls.Characters.Moves.UpSpecial(SuperSmashPolls.Characters.Character)">
             <summary>
             The up special move for this character
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.DownSpecial">
+        <member name="M:SuperSmashPolls.Characters.Moves.DownSpecial(SuperSmashPolls.Characters.Character)">
             <summary>
             The down special move for this character
             </summary>
