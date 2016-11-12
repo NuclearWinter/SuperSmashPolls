@@ -29,9 +29,9 @@ using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls {
 
-    ///<summary> 
-    ///This is the main type of the game.
-    ///</summary>
+    /// <summary> 
+    /// This is the main type of the game.
+    /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game {
 
         /* The total size of the screen */
@@ -49,11 +49,11 @@ namespace SuperSmashPolls {
 
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
-
+        /**  */
         private LevelHandler TempleRock;
-
+        /**  */
         private LevelHandler Temple;
-
+        /**  */
         private LevelHandler Space;
 
         /* Manages graphics. */
@@ -109,7 +109,7 @@ namespace SuperSmashPolls {
 
             /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
-                IsFullScreen = false,
+                IsFullScreen              = false,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
                 PreferredBackBufferWidth  = (int) ScreenSize.X
             };
@@ -128,8 +128,8 @@ namespace SuperSmashPolls {
         
         /// <summary> 
         /// Get's the meters of something drawn in a 640x360 scale
-        /// <param name="pixels">The amount of pixels to convert</param>
         /// </summary>
+        /// <param name="pixels">The amount of pixels to convert</param>
         private static float InMeters(float pixels) {
 
             return (pixels/640)*25;
@@ -139,8 +139,8 @@ namespace SuperSmashPolls {
         /// <summary>
         /// Get's the meters of something drawn in a 640x360 scale in a vector 2
         /// </summary>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
+        /// <param name="X">The x value to convert</param>
+        /// <param name="Y">The y value to convert</param>
         private Vector2 MetersV2(float X, float Y) {
             
             return new Vector2(InMeters(X), InMeters(Y));
@@ -197,7 +197,7 @@ namespace SuperSmashPolls {
                     new Tuple<Texture2D, Vector2, Vector2>(TempleLeft,   MetersV2(8, 188),   MetersV2(132, 79)),
                     new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
                     new Tuple<Texture2D, Vector2, Vector2>(TempleRight,  MetersV2(309, 176), MetersV2(324, 137)),
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleTop,  MetersV2(185, 37),    MetersV2(132, 45)));
+                    new Tuple<Texture2D, Vector2, Vector2>(TempleTop,    MetersV2(185, 37),  MetersV2(132, 45)));
 
                 LevelDictionary.Add("Temple", Temple);
 

@@ -481,6 +481,15 @@
         <member name="F:SuperSmashPolls.Game1.CurrentLevel">
             This is the level currently being played on 
         </member>
+        <member name="F:SuperSmashPolls.Game1.TempleRock">
+             
+        </member>
+        <member name="F:SuperSmashPolls.Game1.Temple">
+             
+        </member>
+        <member name="F:SuperSmashPolls.Game1.Space">
+             
+        </member>
         <member name="F:SuperSmashPolls.Game1.PlayerOne">
             The player's in this game 
         </member>
@@ -508,15 +517,15 @@
         <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
             <summary> 
             Get's the meters of something drawn in a 640x360 scale
-            <param name="pixels">The amount of pixels to convert</param>
             </summary>
+            <param name="pixels">The amount of pixels to convert</param>
         </member>
         <member name="M:SuperSmashPolls.Game1.MetersV2(System.Single,System.Single)">
             <summary>
             Get's the meters of something drawn in a 640x360 scale in a vector 2
             </summary>
-            <param name="X"></param>
-            <param name="Y"></param>
+            <param name="X">The x value to convert</param>
+            <param name="Y">The y value to convert</param>
         </member>
         <member name="M:SuperSmashPolls.Game1.Initialize">
             <summary>
