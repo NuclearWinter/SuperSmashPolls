@@ -62,8 +62,6 @@ namespace SuperSmashPolls {
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
-        /* Yarr, dis here be da world */
-        //private World GameWorld;
         /* The center of the screen */
         private Vector2 ScreenCenter;
 
@@ -91,7 +89,6 @@ namespace SuperSmashPolls {
         private GameState State = GameState.Menu;
 
         /* Holds levels for matching from a save and for selection */
-        //private List<Tuple<LevelHandler, string>> LevelStringPairs;
         private Dictionary<string, LevelHandler> LevelDictionary;
         /* Holds characters for matching from a save and for selection*/
         private List<Tuple<Character, string>> CharacterStringPairs;
@@ -158,8 +155,6 @@ namespace SuperSmashPolls {
 
             // This sets the width of the screen equal to 25m in the physics engine
             ConvertUnits.SetDisplayUnitToSimUnitRatio(PixelToMeterScale);
-
-            //GameWorld = new World(new Vector2(0F, 9.80F)); //Creates the GameWorld with 9.82m/s^2 as downward acceleration
 
             ScreenCenter = ScreenSize / 2F;
 

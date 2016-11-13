@@ -91,7 +91,6 @@ namespace SuperSmashPolls.Graphics {
 
             SpriteEffects Effect = (sidewaysVelocity < -0.1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-            //batch.Draw(SpriteSheet, Destination, Source, DrawColor);
             batch.Draw(SpriteSheet, Destination, Source, DrawColor, 0, Vector2.Zero, Effect, 0F);
 
         }
