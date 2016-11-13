@@ -35,7 +35,8 @@ namespace SuperSmashPolls.MenuControl {
         PlayTemple,
         PlayTempleRock,
         SelectTrump,
-        CharacterSelection
+        CharacterSelection,
+        HelpMenu
 
     }
 

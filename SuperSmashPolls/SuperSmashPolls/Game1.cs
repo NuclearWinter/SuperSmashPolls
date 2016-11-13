@@ -176,8 +176,8 @@ namespace SuperSmashPolls {
 
                 LevelDictionary.Add("TempleRock", TempleRock);
 
-            Temple = new LevelHandler("Temple", new Vector2(1, 11), new Vector2(9.2F, 5.3F), new Vector2(6, 0),
-                new Vector2(8, 0), new Vector2(21.5F, 8.1F));
+            Temple = new LevelHandler("Temple", new Vector2(2.5F, 7.21F), new Vector2(9.2F, 5.3F),
+                new Vector2(16.5F, 7.21F), new Vector2(20.8F, 7.6F), new Vector2(21.5F, 8.1F));
 
                 Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
                     TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
@@ -251,7 +251,19 @@ namespace SuperSmashPolls {
                 Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Exit", false,
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Help", true, EmptyUnit,
+                true, true));
+
+                Menu.AccessItem(2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)),
+                    "Jump - A", false, EmptyUnit, false, true));
+
+                Menu.AccessItem(2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.3F)),
+                    "Move - Left stick", false, EmptyUnit, false, true));
+
+                Menu.AccessItem(2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
+                    "Special Attack - RT (Right Trigger)", false, EmptyUnit, false, true));
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
 
             /************************************** Initialization for Players ****************************************/
@@ -303,7 +315,7 @@ namespace SuperSmashPolls {
         /// UnloadContent will be called once per game and is the place to unload all content.
         /// </summary>
         protected override void UnloadContent() {
-            // TODO: Unload any non ContentManager content here
+            //Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -425,6 +437,9 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.SingleplayerMenu:
                             Menu.DrawDown = 0;
+                            break;
+                        case MenuCommands.HelpMenu:
+                            Menu.DrawDown = 2;
                             break;
                         case MenuCommands.Nothing:
                             break;
