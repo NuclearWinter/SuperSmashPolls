@@ -56,7 +56,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.#ctor">
             <summary>
-            Default constructor
+            Default constructor for making a blank character
             </summary>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.#ctor(Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.String)">
@@ -108,8 +108,7 @@
             <summary>
             Creates the body for the character and adds it to the world.
             </summary>
-            TODO make the body use Bayazit Decomposition and change the active body 
-            <remarks>For now, character's bodies are all rectangles</remarks>
+            <remarks>For now, character's bodies are all rectangles. TODO change this to Bayazit bodies</remarks>
             <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.UpdateCharacter(Microsoft.Xna.Framework.Input.GamePadState)">
@@ -166,6 +165,32 @@
             Adds moves to a character
             </summary>
             <param name="addTo">The character to add moves to</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.Special(SuperSmashPolls.Characters.Character)">
+            <summary>
+            Builds a wall. This handles the creation of the body and the forces of the wall.
+            </summary>
+            <param name="character">The character casting this</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.SideSpecial(SuperSmashPolls.Characters.Character)">
+            <summary>
+            Creates an explosion outward from TheDonald. This is a linear explosion from the center of TheDonald's body,
+            with a radius of 4m and a force of 300, maxforce of the max value of a float. This explosion does not affect
+            TheDonald.
+            </summary>
+            <param name="character">The character casting this</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.UpSpecial(SuperSmashPolls.Characters.Character)">
+            <summary>
+            
+            </summary>
+            <param name="character">The character casting this.</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.DownSpecial(SuperSmashPolls.Characters.Character)">
+            <summary>
+            
+            </summary>
+            <param name="character">The character casting this.</param>
         </member>
         <member name="T:SuperSmashPolls.GameItemControl.PlayerClass">
             <summary>
@@ -356,9 +381,9 @@
         <member name="T:SuperSmashPolls.MenuControl.MenuCommands">
              <summary>
              Holds the different commands that the menu might need to send into the main game.
-             There should be one of these for everthing the menu is 
-             <remarks> This is a somewhat kluge solution, but it works well</remarks>
+             There should be one of these for everthing the menu is supposed to do.
              </summary>
+             <remarks> This is a somewhat kluge solution, but it works well</remarks>
             ****************************************************************************************************************
         </member>
         <member name="T:SuperSmashPolls.MenuControl.MenuItem">
@@ -433,17 +458,17 @@
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetTexture(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
             <summary>
             Add's a texture to the item
+            </summary>
             <param name="texture">The texture of this item</param>
             <param name="size">The size of this item (in pixels)</param>
-            </summary>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.UpdateMenu(Microsoft.Xna.Framework.Input.GamePadState,Microsoft.Xna.Framework.Input.GamePadState)">
             <summary>
             Update control of the menu.
+            </summary>
             <param name="currentState">The current state to update from</param>
             <param name="lastPressed">The state to check if something was updated the previous time</param>
             <remarks>This is done to allow for enumerator values to be changed</remarks>
-            </summary>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.DisplayMenu(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
             <summary>
@@ -459,11 +484,17 @@
             <param name="batch">The SpriteBatch to draw with</param>
             @warning This method assumes that the spritebatch has already been started.
         </member>
-        <member name="M:SuperSmashPolls.MenuControl.MenuItem.AccessItem(SuperSmashPolls.MenuControl.MenuItem,System.Int32[])">
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.AccessItem(System.Int32[])">
             <summary>
-            Access function for members of DisplayItems
-            TODO finish this
+            Access function for members of DisplayItems.
             </summary>
+            <param name="index">The indices for the path to the desired item</param>
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetDrawDown(System.Int32[])">
+            <summary>
+            Sets the menu to view a specific item.
+            </summary>
+            <param name="drawTo">The path to the item to view</param>
         </member>
         <member name="M:SuperSmashPolls.Program.Main(System.String[])">
             <summary>
@@ -545,11 +576,17 @@
             UnloadContent will be called once per game and is the place to unload all content.
             </summary>
         </member>
+        <member name="M:SuperSmashPolls.Game1.AllCharactersSet">
+            <summary>
+            This helps to determine if all of the player characters have been set.
+            </summary>
+            <returns>Whether or not each player has a character set for them</returns>
+        </member>
         <member name="M:SuperSmashPolls.Game1.SetCharacter(SuperSmashPolls.Characters.Character)">
             <summary>
             Handles setting characters
-            @warning Still currently testing this
             </summary>
+            <returns>Whether or not a character has been set for each player in the game</returns>
         </member>
         <member name="M:SuperSmashPolls.Game1.Update(Microsoft.Xna.Framework.GameTime)">
             <summary>

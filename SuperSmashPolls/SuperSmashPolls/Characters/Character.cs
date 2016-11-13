@@ -75,9 +75,10 @@ namespace SuperSmashPolls.Characters {
         public delegate void CharacterMove(Character character);
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor for making a blank character
         /// </summary>
         public Character() {
+            Name = "blank";
         }
 
         /// <summary>
@@ -196,8 +197,7 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// Creates the body for the character and adds it to the world.
         /// </summary>
-        /// TODO make the body use Bayazit Decomposition and change the active body 
-        /// <remarks>For now, character's bodies are all rectangles</remarks>
+        /// <remarks>For now, character's bodies are all rectangles. TODO change this to Bayazit bodies</remarks>
         /// <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         public void CreateBody(ref World gameWorld, Vector2 position) {
 

@@ -63,7 +63,7 @@ namespace SuperSmashPolls {
         /* A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
         /* Yarr, dis here be da world */
-        private World GameWorld;
+        //private World GameWorld;
         /* The center of the screen */
         private Vector2 ScreenCenter;
 
@@ -159,7 +159,7 @@ namespace SuperSmashPolls {
             // This sets the width of the screen equal to 25m in the physics engine
             ConvertUnits.SetDisplayUnitToSimUnitRatio(PixelToMeterScale);
 
-            GameWorld = new World(new Vector2(0F, 9.80F)); //Creates the GameWorld with 9.82m/s^2 as downward acceleration
+            //GameWorld = new World(new Vector2(0F, 9.80F)); //Creates the GameWorld with 9.82m/s^2 as downward acceleration
 
             ScreenCenter = ScreenSize / 2F;
 
@@ -202,7 +202,7 @@ namespace SuperSmashPolls {
                 LevelDictionary.Add("Temple", Temple);
 
             /************************************* Initialization for Menu things *************************************/
-            //<remarks> Some menus hold items for other things to make the menu system more compact, don't worry about it.
+            //Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
@@ -236,7 +236,9 @@ namespace SuperSmashPolls {
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
 
-                        //TODO character selection from list
+                        Menu.AccessItem(0, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
+                            new Vector2(0.5F, 0.2F)), "The Donald", false, EmptyUnit, true, true, 
+                            MenuCommands.SelectTrump));
 
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
@@ -310,19 +312,47 @@ namespace SuperSmashPolls {
         }
 
         /// <summary>
-        /// Handles setting characters
-        /// @warning Still currently testing this
+        /// This helps to determine if all of the player characters have been set.
         /// </summary>
+        /// <returns>Whether or not each player has a character set for them</returns>
+        private bool AllCharactersSet() {
+
+            switch (NumPlayers) {
+
+                case 4:
+                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank" &&
+                            PlayerThree.PlayerCharacter.Name != "blank" && PlayerFour.PlayerCharacter.Name != "blank");
+                case 3:
+                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank" &&
+                            PlayerThree.PlayerCharacter.Name != "blank");
+                case 2:
+                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank");
+                default:
+                    return PlayerOne.PlayerCharacter.Name != "blank";
+
+            }
+
+        }
+
+        /// <summary>
+        /// Handles setting characters
+        /// </summary>
+        /// <returns>Whether or not a character has been set for each player in the game</returns>
         private void SetCharacter(Character character) {
 
-            if (null == PlayerOne.PlayerCharacter)
-                PlayerOne.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
-            else if (null == PlayerTwo.PlayerCharacter)
-                PlayerTwo.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
-            else if (null == PlayerThree.PlayerCharacter)
-                PlayerThree.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
-            else
-                PlayerFour.PlayerCharacter = new Character(character, GameWorld, Vector2.One); //!!!TESTING!!!
+            if ("blank" == PlayerOne.PlayerCharacter.Name) {
+                PlayerOne.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn));
+                PlayerOne.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn);
+            } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
+                PlayerTwo.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn));
+                PlayerTwo.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn);
+            } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
+                PlayerThree.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn));
+                PlayerThree.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn);
+            } else {
+                PlayerFour.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn));
+                PlayerFour.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn);
+            }
 
         }
  
@@ -350,11 +380,11 @@ namespace SuperSmashPolls {
                         case MenuCommands.PlayTemple:
                             CurrentLevel = Temple;
                             TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
-                            goto case MenuCommands.StartGame;
+                            goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayTempleRock:
                             CurrentLevel = TempleRock;
                             TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
-                            goto case MenuCommands.StartGame;
+                            goto case MenuCommands.CharacterSelection;
                         case MenuCommands.OnePlayer:
                             NumPlayers = 1;
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
@@ -389,12 +419,6 @@ namespace SuperSmashPolls {
 
                             Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
 
-                            PlayerOne.SetCharacter(TheDonald); //TODO actual character selection
-                            PlayerOne.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerOneSpawn;
-                            PlayerTwo.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn));
-                            PlayerThree.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn));
-                            PlayerFour.SetCharacter(new Character(TheDonald, CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn));
-
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
 
                             break;
@@ -420,9 +444,14 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.SelectTrump:
                             SetCharacter(TheDonald);
+                            goto default;
+                        case MenuCommands.CharacterSelection:
+                            Menu.SetDrawDown(0, 0, 2);
                             break;
                         default:
-                            break;
+                            if (AllCharactersSet())
+                                goto case MenuCommands.StartGame;
+                            goto case MenuCommands.CharacterSelection;
 
                     } 
 
@@ -505,16 +534,16 @@ namespace SuperSmashPolls {
                         switch (NumPlayers) {
 
                             case 4: {
-                                PlayerFour.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                PlayerFour.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
                                 goto case 3;
                             } case 3: {
-                                PlayerThree.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                PlayerThree.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
                                 goto case 2;
                             } case 2: {
-                                PlayerTwo.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                PlayerTwo.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
                                 goto default;
                             } default: {
-                                PlayerOne.ReadInfo(ref FileReader, CharacterStringPairs, GameWorld);
+                                PlayerOne.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
                                 break;
                             }
 
