@@ -4,7 +4,7 @@
  **********************************************************************************************************************/
 
  #define DEBUG
- #undef DEBUG
+#undef DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -87,6 +87,33 @@ namespace SuperSmashPolls.GameItemControl {
                         ConvertUnits.ToDisplayUnits(PlayerCharacter.GetPosition().Y) - 35), Color.White);
             
 #endif
+
+            if (font != null) {
+
+                const int DeathTextHeight = 13;
+
+                Vector2 DeathTextPosition = new Vector2();
+
+                switch (PlayerID) {
+                    case PlayerIndex.One:
+                        DeathTextPosition = new Vector2(1, DeathTextHeight);
+                        break;
+                    case PlayerIndex.Two:
+                        DeathTextPosition = new Vector2(7.25F, DeathTextHeight);
+                        break;
+                    case PlayerIndex.Three:
+                        DeathTextPosition = new Vector2(13.5F, DeathTextHeight);
+                        break;
+                    case PlayerIndex.Four:
+                        DeathTextPosition = new Vector2(19.75F, DeathTextHeight);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                batch.DrawString(font, "Deaths: " + Deaths, ConvertUnits.ToDisplayUnits(DeathTextPosition), Color.Black);
+
+            }
 
         }
 
