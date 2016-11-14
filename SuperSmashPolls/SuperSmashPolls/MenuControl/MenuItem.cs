@@ -92,13 +92,14 @@ namespace SuperSmashPolls.MenuControl {
 
         /// <summary>
         /// Constructor
+        /// </summary>
 		/// <param name="position">The position of the item on the screen.</param>
 	    /// <param name="text">The text of this item.</param>
 		/// <param name="hasSubmenu">Whether or not this item has a menu below it to navigate to.</param>
 		/// <param name="textBuffer">An amount to displace the text past the start of the item (to center with backgrounds)</param>
 		/// <param name="centerItem">Whether or not to center the item around the position.</param>
 	    /// <param name="highlightable">Whether or not this item is highlightable</param>
-        /// </summary>
+	    /// <param name="command">The command to have this item return</param>
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
             bool centerItem = false, MenuCommands command = MenuCommands.Nothing) {
             Position      = position;
@@ -114,12 +115,10 @@ namespace SuperSmashPolls.MenuControl {
             DrawDown       = -1;
         }
 
-        ///<summary>
-        ///Add an item to display when this screen is being drawn.
-		///<param name="position">The position of this item on the screen.</param>
-	    ///<param name="hasSubmenu">Whether or not this item has a submenu</param>
-		///<param name="text">The text to show on this item</param>
-        ///</summary>
+        /// <summary>
+        /// Add an item to display when this screen is being drawn.
+        /// </summary>
+		/// <param name="addItem">The item to add</param>
         public void AddItem(MenuItem addItem) {
 
             ContainedItems.Add(addItem);
@@ -127,9 +126,10 @@ namespace SuperSmashPolls.MenuControl {
         }
 
 
-        ///<summary>
-        ///Sets the font for all the items in this menu
-        ///</summary>
+        /// <summary>
+        /// Sets the font for all the items in this menu
+        /// </summary>
+        /// <param name="font">The font to set for all items in this menu</param>
         public void SetFontForAll(SpriteFont font) {
 
             Font = font;
@@ -160,8 +160,6 @@ namespace SuperSmashPolls.MenuControl {
         /// <param name="lastPressed">The state to check if something was updated the previous time</param>
         /// <remarks>This is done to allow for enumerator values to be changed</remarks>
         public MenuCommands UpdateMenu(GamePadState currentState, GamePadState lastPressed) {
-
-            DateTime now = DateTime.Now;
 
             if (DrawDown == -1) {
                 /* Updates the current menu */
@@ -254,7 +252,6 @@ namespace SuperSmashPolls.MenuControl {
         /// This is for when this item is displayed (on a different menu).
         /// </summary>
         /// <param name="batch">The SpriteBatch to draw with</param>
-        /// @warning This method assumes that the spritebatch has already been started.
         public void DisplayItem(ref SpriteBatch batch) {
 
             if (Texture != null) {

@@ -90,7 +90,7 @@ namespace SuperSmashPolls {
 
         /* Holds levels for matching from a save and for selection */
         private Dictionary<string, LevelHandler> LevelDictionary;
-        /* Holds characters for matching from a save and for selection*/
+        /* Holds characters for matching from a save and for selection TODO change to Dictionary*/
         private List<Tuple<Character, string>> CharacterStringPairs;
 
         /// <summary>
@@ -230,6 +230,9 @@ namespace SuperSmashPolls {
                     Menu.ContainedItems[0].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
+                        
+                        Menu.AccessItem(0, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
+                            new Vector2(0.5F, 0.1F)), "Player One Character", false, EmptyUnit, false, true));
 
                         Menu.AccessItem(0, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
                             new Vector2(0.5F, 0.2F)), "The Donald", false, EmptyUnit, true, true, 
@@ -292,8 +295,7 @@ namespace SuperSmashPolls {
         /// <remarks>The menu is created here</remarks>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
-            Batch = new SpriteBatch(GraphicsDevice);
-
+            Batch    = new SpriteBatch(GraphicsDevice);
             GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
 
             TheDonald.AddCharacterActions(
@@ -350,12 +352,15 @@ namespace SuperSmashPolls {
             if ("blank" == PlayerOne.PlayerCharacter.Name) {
                 PlayerOne.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn));
                 PlayerOne.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn);
+                Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
                 PlayerTwo.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn));
                 PlayerTwo.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn);
+                Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
                 PlayerThree.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn));
                 PlayerThree.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn);
+                Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
             } else {
                 PlayerFour.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn));
                 PlayerFour.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn);
@@ -378,10 +383,8 @@ namespace SuperSmashPolls {
                 case GameState.Menu: { /* The player has the menu open */
 
                     GamePadState CurrentGamePadState = GamePad.GetState(PlayerIndex.One);
-
-                    MenuCommands CurrentCommand = Menu.UpdateMenu(CurrentGamePadState, LastPressed);
-
-                    LastPressed = CurrentGamePadState;
+                    MenuCommands CurrentCommand      = Menu.UpdateMenu(CurrentGamePadState, LastPressed);
+                    LastPressed                      = CurrentGamePadState;
 
                     switch (CurrentCommand) {
                         case MenuCommands.PlayTemple:
