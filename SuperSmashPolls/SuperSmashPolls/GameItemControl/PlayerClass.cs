@@ -3,7 +3,8 @@
  * @author William Kluge
  **********************************************************************************************************************/
 
- #define PLAYER_DEBUG
+ #define DEBUG
+ #undef DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,10 @@ using SuperSmashPolls.Characters;
 
 namespace SuperSmashPolls.GameItemControl {
 
-    ///<summary>
-    ///Class to control the movment and interaction of players.
-    ///</summary>
-    ///<remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that 
+    /// <summary>
+    /// Class to control the movment and interaction of players.
+    /// </summary>
+    /// <remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that
     ///class.</remarks>
     class PlayerClass {
         /** The ID of the character */
@@ -33,9 +34,9 @@ namespace SuperSmashPolls.GameItemControl {
         /** The player's character */
         public Character PlayerCharacter;
 
-        ///<summary>
-        ///Constructor
-        ///</summary>
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PlayerClass(PlayerIndex playerId) {
             PlayerID        = playerId;
             PlayerCharacter = new Character();
@@ -43,18 +44,18 @@ namespace SuperSmashPolls.GameItemControl {
             Deaths          = 0;
         }
 
-        ///<summary>
-        ///Sets the character
-        ///</summary>
+        /// <summary>
+        /// Sets the character
+        /// </summary>
         public void SetCharacter(Character playerCharacter) {
 
             PlayerCharacter = playerCharacter;
 
         }
 
-        ///<summary>
-        ///Update the player
-        ///</summary>
+        /// <summary>
+        /// Update the player
+        /// </summary>
         public void UpdatePlayer(Vector2 respawnPoint) {
 
             if (Math.Abs(PlayerCharacter.GetPosition().X) > 40 || Math.Abs(PlayerCharacter.GetPosition().Y) > 30) {
@@ -68,14 +69,14 @@ namespace SuperSmashPolls.GameItemControl {
 
         }
 
-        ///<summary>
-        ///Draw the character
-        ///</summary>
+        /// <summary>
+        /// Draw the character
+        /// </summary>
         public void DrawPlayer(ref SpriteBatch batch, SpriteFont font = null) {
 
             PlayerCharacter.DrawCharacter(ref batch);
 
-#if PLAYER_DEBUG
+#if DEBUG
             if (font != null)
                 batch.DrawString(font, "X: " + PlayerCharacter.GetPosition().X + "Y: " + PlayerCharacter.GetPosition().Y,
                     new Vector2(ConvertUnits.ToDisplayUnits(PlayerCharacter.GetPosition().X) - 8,

@@ -2,6 +2,9 @@
  * /doc:SuperSmashPolls.XML
  **********************************************************************************************************************/
 
+ #define DEBUG
+ #undef DEBUG
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,7 +101,7 @@ namespace SuperSmashPolls.Levels {
         /// This draws world
         /// </summary>
         /// <param name="spriteBatch">The batch to draw with</param>
-        public void DrawLevel(SpriteBatch spriteBatch) {
+        public void DrawLevel(SpriteBatch spriteBatch, SpriteFont font = null) {
 
             if (LevelBackground != null)
                 spriteBatch.Draw(LevelBackground, Vector2.Zero, null, Color.White, 0, Vector2.Zero, LevelBackgroundScale,
@@ -112,6 +115,11 @@ namespace SuperSmashPolls.Levels {
                     Vector2.Zero, i.Item3.X/ConvertUnits.ToSimUnits(i.Item2.Width), SpriteEffects.None, 0);
 
             }
+
+#if DEBUG
+            if (font != null)
+                spriteBatch.DrawString(font, "Debug mode is on", Vector2.Zero, Color.Red);
+#endif
 
         }
 

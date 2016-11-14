@@ -4,6 +4,9 @@
  * @author (For all textures) Joe Brooksbank
  **********************************************************************************************************************/
 
+ #define DEBUG
+ #undef DEBUG
+
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -279,7 +282,7 @@ namespace SuperSmashPolls {
             /************************************* Initialization for Characters **************************************/
 
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
-                0.01F, 500F, 25F, 0.1F, 0F, "TheDonald");
+                0.01F, 500F, 10F, 0.8F, 0F, "TheDonald");
 
                 new TheDonaldsMoves().AddMovesToCharacter(TheDonald);
 
@@ -430,6 +433,13 @@ namespace SuperSmashPolls {
                             Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
 
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
+
+#if (DEBUG)
+                            PlayerOne.PlayerCharacter.JumpInterval   = 0.1F;
+                            PlayerTwo.PlayerCharacter.JumpInterval   = 0.1F;
+                            PlayerThree.PlayerCharacter.JumpInterval = 0.1F;
+                            PlayerFour.PlayerCharacter.JumpInterval  = 0.1F;
+#endif
 
                             break;
                         case MenuCommands.BackToMainMenu:
@@ -604,7 +614,7 @@ namespace SuperSmashPolls {
 
                     } case GameState.GameLevel: {
 
-                        CurrentLevel.DrawLevel(Batch);
+                        CurrentLevel.DrawLevel(Batch, GameFont);
 
                         switch (NumPlayers) {
 

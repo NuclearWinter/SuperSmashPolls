@@ -47,8 +47,6 @@ namespace SuperSmashPolls.Characters {
         private readonly float Restitution;
         /** The multiplier for the character's jump force */
         private readonly float JumpForceMultiplier;
-        /** The amount of time between jumps for this character (in seconds) */
-        private readonly float JumpInterval;
         /** The multiplier for the character's movement */
         private readonly float MovementMultiplier;
         /** The minimum time between character's special attacks */
@@ -67,6 +65,8 @@ namespace SuperSmashPolls.Characters {
         public World GameWorld;
         /// <summary>The body of the character (must be created after level selection)</summary>
         public Body CharacterBody; //TODO base this off the character's textures, enable and disable for current action
+        /** The amount of time between jumps for this character (in seconds) */
+        public float JumpInterval;
 
         /// <summary> This characters name </summary>
         public string Name;
@@ -222,7 +222,7 @@ namespace SuperSmashPolls.Characters {
 
             CurrentActionIndex = IdleIndex;
 
-#if DEBUG
+#if (DEBUG)
             Actions[CurrentActionIndex].DrawColor = Color.Black;
 #endif
 
@@ -235,9 +235,9 @@ namespace SuperSmashPolls.Characters {
 
                 CurrentActionIndex = JumpIndex;
 
-                CharacterBody.ApplyLinearImpulse(new Vector2(0, -10 * JumpForceMultiplier));
+                CharacterBody.ApplyLinearImpulse(new Vector2(0, -50 * JumpForceMultiplier));
 
-#if DEBUG
+#if (DEBUG)
                 Actions[CurrentActionIndex].DrawColor = Color.YellowGreen;
 #endif
 
@@ -247,7 +247,7 @@ namespace SuperSmashPolls.Characters {
 
                 CurrentActionIndex = AttackIndex;
 
-#if DEBUG
+#if (DEBUG)
                 Actions[CurrentActionIndex].DrawColor = Color.Violet;
 #endif
 
@@ -259,7 +259,7 @@ namespace SuperSmashPolls.Characters {
 
                 CurrentActionIndex = RunIndex;
 
-#if DEBUG
+#if (DEBUG)
                 Actions[CurrentActionIndex].DrawColor = Color.Aqua;
 #endif
 
@@ -276,7 +276,7 @@ namespace SuperSmashPolls.Characters {
                     //It is a special attack to the side
                     CurrentActionIndex = SpecialSideAttackIndex;
 
-#if DEBUG
+#if (DEBUG)
                     Actions[CurrentActionIndex].DrawColor = Color.Beige;
 #endif
 
@@ -293,7 +293,7 @@ namespace SuperSmashPolls.Characters {
                 //This is a special attack up
                     CurrentActionIndex = SpecialUpAttackIndex;
 
-#if DEBUG
+#if (DEBUG)
                     Actions[CurrentActionIndex].DrawColor = Color.Magenta;
 #endif
 
@@ -310,7 +310,7 @@ namespace SuperSmashPolls.Characters {
                 //This is a special down attack
                     CurrentActionIndex = SpecialDownAttackIndex;
 
-#if DEBUG
+#if (DEBUG)
                     Actions[CurrentActionIndex].DrawColor = Color.Maroon;
 #endif
                     try {
@@ -326,7 +326,7 @@ namespace SuperSmashPolls.Characters {
                 //This is a regular special attack
                     CurrentActionIndex = SpecialAttackIndex;
 
-#if DEBUG
+#if (DEBUG)
                     Actions[CurrentActionIndex].DrawColor = Color.OliveDrab;
 #endif
 

@@ -27,9 +27,6 @@
         <member name="F:SuperSmashPolls.Characters.Character.JumpForceMultiplier">
             The multiplier for the character's jump force 
         </member>
-        <member name="F:SuperSmashPolls.Characters.Character.JumpInterval">
-            The amount of time between jumps for this character (in seconds) 
-        </member>
         <member name="F:SuperSmashPolls.Characters.Character.MovementMultiplier">
             The multiplier for the character's movement 
         </member>
@@ -47,6 +44,9 @@
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.CharacterBody">
             <summary>The body of the character (must be created after level selection)</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.JumpInterval">
+            The amount of time between jumps for this character (in seconds) 
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.Name">
             <summary> This characters name </summary>
@@ -193,10 +193,10 @@
             <param name="character">The character casting this.</param>
         </member>
         <member name="T:SuperSmashPolls.GameItemControl.PlayerClass">
-            <summary>
-            Class to control the movment and interaction of players.
-            </summary>
-            <remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that 
+             <summary>
+             Class to control the movment and interaction of players.
+             </summary>
+             <remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that
             class.</remarks>
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerID">
@@ -358,7 +358,7 @@
             </summary>
             <param name="items">All the items to add to the world (Texture, position, size (in meters))</param>
         </member>
-        <member name="M:SuperSmashPolls.Levels.LevelHandler.DrawLevel(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.DrawLevel(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Graphics.SpriteFont)">
             <summary>
             This draws world
             </summary>
@@ -434,26 +434,26 @@
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands)">
             <summary>
             Constructor
+            </summary>
             <param name="position">The position of the item on the screen.</param>
             <param name="text">The text of this item.</param>
             <param name="hasSubmenu">Whether or not this item has a menu below it to navigate to.</param>
             <param name="textBuffer">An amount to displace the text past the start of the item (to center with backgrounds)</param>
             <param name="centerItem">Whether or not to center the item around the position.</param>
             <param name="highlightable">Whether or not this item is highlightable</param>
-            </summary>
+            <param name="command">The command to have this item return</param>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.AddItem(SuperSmashPolls.MenuControl.MenuItem)">
             <summary>
             Add an item to display when this screen is being drawn.
-            <param name="position">The position of this item on the screen.</param>
-            <param name="hasSubmenu">Whether or not this item has a submenu</param>
-            <param name="text">The text to show on this item</param>
             </summary>
+            <param name="addItem">The item to add</param>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetFontForAll(Microsoft.Xna.Framework.Graphics.SpriteFont)">
             <summary>
             Sets the font for all the items in this menu
             </summary>
+            <param name="font">The font to set for all items in this menu</param>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetTexture(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
             <summary>
@@ -482,7 +482,6 @@
             This is for when this item is displayed (on a different menu).
             </summary>
             <param name="batch">The SpriteBatch to draw with</param>
-            @warning This method assumes that the spritebatch has already been started.
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.AccessItem(System.Int32[])">
             <summary>
