@@ -24,16 +24,12 @@ namespace SuperSmashPolls.Characters {
         /// <param name="character">The character casting this</param>
         public override void SideSpecial(Character character) {
 
-            character.CharacterBody.CollisionGroup = Int16.MaxValue - 1;
-
             SimpleExplosion Explosion = new SimpleExplosion(character.GameWorld) {
                 Power = 1,
-                DisabledOnGroup = Int16.MaxValue - 1
+                DisabledOnGroup = character.CharacterBody.CollisionGroup
             };
 
             Explosion.Activate(character.GetPosition(), 4, 300);
-
-            character.CharacterBody.CollisionCategories = Category.All;
 
         }
         /// <summary>

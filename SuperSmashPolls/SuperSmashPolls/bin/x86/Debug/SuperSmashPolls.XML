@@ -104,7 +104,7 @@
             <param name="specialDown">The special down move to add</param>
             <param name="special">The special move (basic) to add</param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.CreateBody(FarseerPhysics.Dynamics.World@,Microsoft.Xna.Framework.Vector2)">
+        <member name="M:SuperSmashPolls.Characters.Character.CreateBody(FarseerPhysics.Dynamics.World@,Microsoft.Xna.Framework.Vector2,System.Int16)">
             <summary>
             Creates the body for the character and adds it to the world.
             </summary>
@@ -211,7 +211,10 @@
         <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerCharacter">
             The player's character 
         </member>
-        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex)">
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.CollisionCategory">
+            The collision category for this player 
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex,System.Int16)">
             <summary>
             Constructor
             </summary>

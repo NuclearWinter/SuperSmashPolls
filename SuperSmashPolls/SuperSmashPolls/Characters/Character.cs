@@ -61,6 +61,8 @@ namespace SuperSmashPolls.Characters {
         private List<CharacterMove> Moves;
         /* The index of a value in Actions that represents the current action of the player */
         private int CurrentActionIndex;
+        /**/
+        private Int16 CollisionGroup;
         /// <summary>The world that this character is in</summary>
         public World GameWorld;
         /// <summary>The body of the character (must be created after level selection)</summary>
@@ -199,7 +201,7 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         /// <remarks>For now, character's bodies are all rectangles. TODO change this to Bayazit bodies</remarks>
         /// <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
-        public void CreateBody(ref World gameWorld, Vector2 position) {
+        public void CreateBody(ref World gameWorld, Vector2 position, Int16 collisionGroup) {
 
             CharacterBody             = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.X),
                 ConvertUnits.ToSimUnits(CharacterSize.Y), 1F, position);
@@ -208,6 +210,7 @@ namespace SuperSmashPolls.Characters {
             CharacterBody.Mass        = Mass;
             CharacterBody.Restitution = Restitution;
             GameWorld                 = gameWorld;
+            CharacterBody.CollisionGroup = collisionGroup;
 
         }
 

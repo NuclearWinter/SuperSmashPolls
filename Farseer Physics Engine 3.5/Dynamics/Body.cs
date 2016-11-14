@@ -664,6 +664,7 @@ namespace FarseerPhysics.Dynamics
                     f.CollisionGroup = value;
                 }
             }
+            get { return FixtureList[0].CollisionGroup; } //Added by William Kluge
         }
 
         public bool IsSensor

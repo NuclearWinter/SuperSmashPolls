@@ -102,14 +102,14 @@ namespace SuperSmashPolls {
         /// </summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
-            ScreenSize = new Vector2(640, 360);
+            ScreenSize = new Vector2(1280, 800);
 
             LevelDictionary = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
 
             /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
-                IsFullScreen              = false,
+                IsFullScreen              = true,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
                 PreferredBackBufferWidth  = (int) ScreenSize.X
             };
@@ -274,10 +274,10 @@ namespace SuperSmashPolls {
 
             /************************************** Initialization for Players ****************************************/
 
-            PlayerOne   = new PlayerClass(PlayerIndex.One);
-            PlayerTwo   = new PlayerClass(PlayerIndex.Two);
-            PlayerThree = new PlayerClass(PlayerIndex.Three);
-            PlayerFour  = new PlayerClass(PlayerIndex.Four);
+            PlayerOne   = new PlayerClass(PlayerIndex.One, Int16.MaxValue - 1);
+            PlayerTwo   = new PlayerClass(PlayerIndex.Two, Int16.MaxValue - 2);
+            PlayerThree = new PlayerClass(PlayerIndex.Three, Int16.MaxValue - 3);
+            PlayerFour  = new PlayerClass(PlayerIndex.Four, Int16.MaxValue - 4);
 
             /************************************* Initialization for Characters **************************************/
 
@@ -354,19 +354,19 @@ namespace SuperSmashPolls {
 
             if ("blank" == PlayerOne.PlayerCharacter.Name) {
                 PlayerOne.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn));
-                PlayerOne.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn);
+                PlayerOne.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn, Int16.MaxValue);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
                 PlayerTwo.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn));
-                PlayerTwo.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn);
+                PlayerTwo.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn, Int16.MaxValue - 1);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
                 PlayerThree.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn));
-                PlayerThree.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn);
+                PlayerThree.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn, Int16.MaxValue - 2);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
             } else {
                 PlayerFour.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn));
-                PlayerFour.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn);
+                PlayerFour.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn, Int16.MaxValue - 3);
             }
 
         }
@@ -392,11 +392,11 @@ namespace SuperSmashPolls {
                     switch (CurrentCommand) {
                         case MenuCommands.PlayTemple:
                             CurrentLevel = Temple;
-                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
+                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0), Int16.MinValue);//For testing
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayTempleRock:
                             CurrentLevel = TempleRock;
-                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0));//For testing
+                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0), Int16.MinValue);//For testing
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.OnePlayer:
                             NumPlayers = 1;

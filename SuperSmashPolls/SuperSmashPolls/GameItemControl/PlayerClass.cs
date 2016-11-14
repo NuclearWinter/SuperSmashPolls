@@ -33,15 +33,18 @@ namespace SuperSmashPolls.GameItemControl {
         private int Deaths;
         /** The player's character */
         public Character PlayerCharacter;
+        /** The collision category for this player */
+        public Int16 CollisionCategory;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public PlayerClass(PlayerIndex playerId) {
+        public PlayerClass(PlayerIndex playerId, Int16 collisionCategory) {
             PlayerID        = playerId;
             PlayerCharacter = new Character();
             PlayerHealth    = 0;
             Deaths          = 0;
+            CollisionCategory = collisionCategory;
         }
 
         /// <summary>
@@ -50,6 +53,7 @@ namespace SuperSmashPolls.GameItemControl {
         public void SetCharacter(Character playerCharacter) {
 
             PlayerCharacter = playerCharacter;
+            playerCharacter.CharacterBody.CollisionGroup = CollisionCategory;
 
         }
 
