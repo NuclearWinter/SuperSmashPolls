@@ -18,7 +18,7 @@ namespace SuperSmashPolls.MenuControl {
      * Holds the different commands that the menu might need to send into the main game.
      * There should be one of these for everthing the menu is supposed to do.
      * </summary>
-     * <remarks> This is a somewhat kluge solution, but it works well</remarks>
+     * <remarks>This is a somewhat kluge solution, but it works well</remarks>
      ******************************************************************************************************************/
     enum MenuCommands {
         
@@ -45,7 +45,7 @@ namespace SuperSmashPolls.MenuControl {
     /// One very important object is the void function reference to be ran when the item is selected. This function needs
     /// to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
     /// </summary>
-    /// <remarks> To create multi-leveled menus you must construct items from bottom to top.</remarks>
+    /// <remarks>To create multi-leveled menus you must construct items from bottom to top.</remarks>
     class MenuItem {
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
@@ -84,6 +84,11 @@ namespace SuperSmashPolls.MenuControl {
         private bool SubOverlay { get; set; } = false;
         /* The item within ContainedItems to draw instead of this one (-1 means draw this one) */
         public int DrawDown;
+        /// <summary>Makes the text more american, not american't</summary>
+        public bool AmericaText;
+        /*  */
+        private int AmericanCounter;
+
 
         /* The item on screen that is currently highlighted */
         private int CurrentHighlightedItem;
@@ -100,8 +105,9 @@ namespace SuperSmashPolls.MenuControl {
 		/// <param name="centerItem">Whether or not to center the item around the position.</param>
 	    /// <param name="highlightable">Whether or not this item is highlightable</param>
 	    /// <param name="command">The command to have this item return</param>
+	    /// <param name="americaText">Makes the text great again</param>
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
-            bool centerItem = false, MenuCommands command = MenuCommands.Nothing) {
+            bool centerItem = false, MenuCommands command = MenuCommands.Nothing, bool americaText = false) {
             Position      = position;
             Text          = text;
             HasSubmenu    = hasSubmenu;
@@ -113,6 +119,8 @@ namespace SuperSmashPolls.MenuControl {
 
             ContainedItems = new List<MenuItem>();
             DrawDown       = -1;
+            AmericaText    = americaText;
+            AmericanCounter = 0;
         }
 
         /// <summary>
@@ -163,6 +171,9 @@ namespace SuperSmashPolls.MenuControl {
 
             if (DrawDown == -1) {
                 /* Updates the current menu */
+
+                foreach (var i in ContainedItems)
+                    i.AmericaTextUpdate();
 
                 ContainedItems[CurrentHighlightedItem].TextColor = Color.Black;
 
@@ -310,6 +321,23 @@ namespace SuperSmashPolls.MenuControl {
                 ContainedItems[drawTo[0]].SetDrawDown(drawTo.Skip(1).ToArray());
             else
                 ContainedItems[DrawDown].DrawDown = -1;
+
+        }
+
+        /// <summary>
+        /// Continues to make text great
+        /// </summary>
+        private void AmericaTextUpdate() {
+
+            if (!AmericaText) return;
+
+            if (AmericanCounter >= 1) {
+
+                AmericanCounter = 0;
+                TextColor       = (TextColor == Color.Blue) ? Color.Red : Color.Blue;
+
+            } else
+                ++AmericanCounter;
 
         }
 

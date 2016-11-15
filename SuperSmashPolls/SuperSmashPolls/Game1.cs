@@ -208,47 +208,49 @@ namespace SuperSmashPolls {
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), "Local Game", false,
                 EmptyUnit, true, true, MenuCommands.SingleplayerMenu));
 
-                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
+            const int LocalGameMenu = 0;
+
+                Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
                     "New Game", true, EmptyUnit, true, true, MenuCommands.StartGame));
 
                     //This holds the in game pause screen for any amount of players
-                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                    Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "One Player", false, 
                             EmptyUnit, true, true, MenuCommands.OnePlayer));
 
                     //This holds the level selection screen for any amount of players
-                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                    Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Two Player", false,
                             EmptyUnit, true, true, MenuCommands.TwoPlayer));
 
-                        Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
+                        Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Temple", false,
                                 EmptyUnit, true, true, MenuCommands.PlayTemple)); //TODO add to menu from list
 
-                        Menu.ContainedItems[0].ContainedItems[0].ContainedItems[1].AddItem(
+                        Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
                                 EmptyUnit, true, true, MenuCommands.PlayTempleRock));
 
                     //This holds character selection for any amount of players
-                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                    Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
                         
-                        Menu.AccessItem(0, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
+                        Menu.AccessItem(LocalGameMenu, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
                             new Vector2(0.5F, 0.1F)), "Player One Character", false, EmptyUnit, false, true));
 
-                        Menu.AccessItem(0, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
+                        Menu.AccessItem(LocalGameMenu, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
                             new Vector2(0.5F, 0.2F)), "The Donald", false, EmptyUnit, true, true, 
                             MenuCommands.SelectTrump));
 
-                    Menu.ContainedItems[0].ContainedItems[0].AddItem(
+                    Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
                             EmptyUnit, true, true, MenuCommands.FourPlayer));
 
-                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
+                Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
                     "Load Game", false, EmptyUnit, true, true, MenuCommands.LoadSave));
 
-                Menu.ContainedItems[0].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
+                Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
@@ -271,6 +273,14 @@ namespace SuperSmashPolls {
 
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
+
+
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)), "Super Smash Polls", false,
+                EmptyUnit, false, true, MenuCommands.Nothing, true));
+
+            const int SuperSmashText = 5;
+
+            //Menu.AccessItem(SuperSmashText).
 
             /************************************** Initialization for Players ****************************************/
 

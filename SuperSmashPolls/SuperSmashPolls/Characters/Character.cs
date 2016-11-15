@@ -187,12 +187,13 @@ namespace SuperSmashPolls.Characters {
         /// <param name="specialDown">The special down move to add</param>
         /// <param name="special">The special move (basic) to add</param>
         public void AddCharacterMoves(CharacterMove specialSide, CharacterMove specialUp, CharacterMove specialDown,
-            CharacterMove special) {
+            CharacterMove special, CharacterMove basicAttack) {
 
             Moves.Add(specialSide);
             Moves.Add(specialUp);
             Moves.Add(specialDown);
             Moves.Add(special);
+            Moves.Add(basicAttack);
 
         }
 
@@ -249,6 +250,8 @@ namespace SuperSmashPolls.Characters {
             if (gamePadState.IsButtonDown(Buttons.B)) {
 
                 CurrentActionIndex = AttackIndex;
+
+                Moves[4](this);
 
 #if (DEBUG)
                 Actions[CurrentActionIndex].DrawColor = Color.Violet;

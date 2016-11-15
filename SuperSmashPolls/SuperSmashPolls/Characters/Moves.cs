@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FarseerPhysics;
+using FarseerPhysics.Common.PhysicsLogic;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using SuperSmashPolls.Levels;
@@ -34,12 +36,33 @@ namespace SuperSmashPolls.Characters {
         public abstract void DownSpecial(Character character);
 
         /// <summary>
+        /// The basic attack that all characters have
+        /// </summary>
+        /// <param name="character"></param>
+        /// TODO fix this
+        public void BasicAttack(Character character) {
+            //If true, moving forwards (right), if negative backwards (left)
+            bool Direction = character.CharacterBody.LinearVelocity.X > 0;
+
+            Vector2 AttackPosition = character.CharacterBody.Position; //16 = punch texture width
+            AttackPosition.X += (Direction) ? ConvertUnits.ToSimUnits(16) : -ConvertUnits.ToSimUnits(16);
+
+            SimpleExplosion Explosion = new SimpleExplosion(character.GameWorld) {
+                Power = 1,
+                DisabledOnGroup = character.CharacterBody.CollisionGroup
+            };
+
+            Explosion.Activate(AttackPosition, ConvertUnits.ToSimUnits(30), 700);
+
+        }
+
+        /// <summary>
         /// Adds moves to a character
         /// </summary>
         /// <param name="addTo">The character to add moves to</param>
         public void AddMovesToCharacter(Character addTo) {
             
-            addTo.AddCharacterMoves(SideSpecial, UpSpecial, DownSpecial, Special);
+            addTo.AddCharacterMoves(SideSpecial, UpSpecial, DownSpecial, Special, BasicAttack);
 
         }
 

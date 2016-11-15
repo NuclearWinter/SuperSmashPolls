@@ -95,7 +95,7 @@
             <remarks> Each character should have one of every move</remarks>
             <remarks> It is done like this so that we can avoid having to compute this all the time based off a key</remarks>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.AddCharacterMoves(SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove)">
+        <member name="M:SuperSmashPolls.Characters.Character.AddCharacterMoves(SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove)">
             <summary>
             Add moves to the character.
             </summary>
@@ -159,6 +159,13 @@
             <summary>
             The down special move for this character
             </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.BasicAttack(SuperSmashPolls.Characters.Character)">
+            <summary>
+            The basic attack that all characters have
+            </summary>
+            <param name="character"></param>
+            TODO fix this
         </member>
         <member name="M:SuperSmashPolls.Characters.Moves.AddMovesToCharacter(SuperSmashPolls.Characters.Character)">
             <summary>
@@ -386,7 +393,7 @@
              Holds the different commands that the menu might need to send into the main game.
              There should be one of these for everthing the menu is supposed to do.
              </summary>
-             <remarks> This is a somewhat kluge solution, but it works well</remarks>
+             <remarks>This is a somewhat kluge solution, but it works well</remarks>
             ****************************************************************************************************************
         </member>
         <member name="T:SuperSmashPolls.MenuControl.MenuItem">
@@ -395,7 +402,7 @@
             One very important object is the void function reference to be ran when the item is selected. This function needs
             to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
             </summary>
-            <remarks> To create multi-leveled menus you must construct items from bottom to top.</remarks>
+            <remarks>To create multi-leveled menus you must construct items from bottom to top.</remarks>
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
             Determines if the item is highlihtable or not 
@@ -434,7 +441,10 @@
         <member name="P:SuperSmashPolls.MenuControl.MenuItem.SubOverlay">
             Overlay this item's sub-menu on top of the current menu 
         </member>
-        <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands)">
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericaText">
+            <summary>Makes the text more american, not american't</summary>
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands,System.Boolean)">
             <summary>
             Constructor
             </summary>
@@ -445,6 +455,7 @@
             <param name="centerItem">Whether or not to center the item around the position.</param>
             <param name="highlightable">Whether or not this item is highlightable</param>
             <param name="command">The command to have this item return</param>
+            <param name="americaText">Makes the text great again</param>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.AddItem(SuperSmashPolls.MenuControl.MenuItem)">
             <summary>
@@ -497,6 +508,11 @@
             Sets the menu to view a specific item.
             </summary>
             <param name="drawTo">The path to the item to view</param>
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.AmericaTextUpdate">
+            <summary>
+            Continues to make text great
+            </summary>
         </member>
         <member name="M:SuperSmashPolls.Program.Main(System.String[])">
             <summary>
