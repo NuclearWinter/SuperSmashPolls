@@ -3,7 +3,6 @@
  **********************************************************************************************************************/
 
 #define DEBUG
-#undef DEBUG
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -61,23 +60,22 @@ namespace SuperSmashPolls.Characters {
         private List<CharacterMove> Moves;
         /* The index of a value in Actions that represents the current action of the player */
         private int CurrentActionIndex;
-        /**/
+        /* The group that this character's moves don't affect */
         private Int16 CollisionGroup;
         /// <summary>The world that this character is in</summary>
         public World GameWorld;
         /// <summary>The body of the character (must be created after level selection)</summary>
         public Body CharacterBody; //TODO base this off the character's textures, enable and disable for current action
-        /** The amount of time between jumps for this character (in seconds) */
+        /// <summary>The amount of time between jumps for this character (in seconds)</summary>
         public float JumpInterval;
-
         /// <summary> This characters name </summary>
         public string Name;
-
         /// <summary>The type for character's moves</summary>
         public delegate void CharacterMove(Character character);
 
         /// <summary>
-        /// Default constructor for making a blank character
+        /// Default constructor for making a blank character. The name is initialized to check and to check after a game 
+        /// has already been played (and they already selected a character so it wouldn't be null)
         /// </summary>
         public Character() {
             Name = "blank";

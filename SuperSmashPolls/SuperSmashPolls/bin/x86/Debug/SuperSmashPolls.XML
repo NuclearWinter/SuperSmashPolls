@@ -469,6 +469,12 @@
             </summary>
             <param name="font">The font to set for all items in this menu</param>
         </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetFont(Microsoft.Xna.Framework.Graphics.SpriteFont)">
+            <summary>
+            Sets the font for this item
+            </summary>
+            <param name="font">The font to set it to</param>
+        </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.SetTexture(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
             <summary>
             Add's a texture to the item
@@ -512,6 +518,11 @@
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.AmericaTextUpdate">
             <summary>
             Continues to make text great
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.DrawAmerican(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the text every other color
             </summary>
         </member>
         <member name="M:SuperSmashPolls.Program.Main(System.String[])">

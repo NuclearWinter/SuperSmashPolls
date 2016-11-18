@@ -63,7 +63,7 @@ namespace SuperSmashPolls.MenuControl {
         /* Anything below here must be loaded after the constructor */
 
         /** Color for this item's text */
-        private Color TextColor { get; set; } = Color.Black;
+        public Color TextColor { get; set; } = Color.Black;
         /** Font to use for this item */
         private SpriteFont Font;
         /** Texture to use as the background for this item (not drawn if displaying the item's menu) */
@@ -146,6 +146,16 @@ namespace SuperSmashPolls.MenuControl {
                 i.SetFontForAll(font);
                 i.Font = font;
             }
+
+        }
+
+        /// <summary>
+        /// Sets the font for this item
+        /// </summary>
+        /// <param name="font">The font to set it to</param>
+        public void SetFont(SpriteFont font) {
+
+            Font = font;
 
         }
 
@@ -276,8 +286,9 @@ namespace SuperSmashPolls.MenuControl {
 
             }
 
-
-            if (CenterItem)
+            if (AmericaText)
+                DrawAmerican(batch);
+            else if (CenterItem)
                 batch.DrawString(Font, Text, 
                     Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text)/2, TextColor);
             else 
@@ -331,13 +342,32 @@ namespace SuperSmashPolls.MenuControl {
 
             if (!AmericaText) return;
 
-            if (AmericanCounter >= 1) {
+            if (AmericanCounter >= 50) {
 
                 AmericanCounter = 0;
                 TextColor       = (TextColor == Color.Blue) ? Color.Red : Color.Blue;
 
             } else
                 ++AmericanCounter;
+
+        }
+
+        /// <summary>
+        /// Draws the text every other color
+        /// </summary>
+        private void DrawAmerican(SpriteBatch batch) {
+
+            var pos = Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text)/2;
+
+            foreach (char i in Text) {
+                
+                batch.DrawString(Font, i.ToString(), pos, TextColor);
+
+                pos.X += Font.MeasureString(i.ToString()).X;
+
+                TextColor = (TextColor == Color.Blue) ? Color.Red : Color.Blue;
+
+            }
 
         }
 

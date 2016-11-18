@@ -65,6 +65,10 @@ namespace SuperSmashPolls {
         private SpriteBatch Batch;
         /* A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
+        /* The font used for the title */
+        private SpriteFont TitleFont;
+        /* A smaller version of the titlefont */
+        private SpriteFont TitleFontSmall;
         /* The center of the screen */
         private Vector2 ScreenCenter;
 
@@ -102,14 +106,14 @@ namespace SuperSmashPolls {
         /// </summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
-            ScreenSize = new Vector2(1280, 800);
+            ScreenSize = new Vector2(640, 360);
 
             LevelDictionary = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
 
             /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
-                IsFullScreen              = true,
+                IsFullScreen              = false,
                 PreferredBackBufferHeight = (int) ScreenSize.Y,
                 PreferredBackBufferWidth  = (int) ScreenSize.X
             };
@@ -205,7 +209,7 @@ namespace SuperSmashPolls {
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
                 new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), "Local Game", false,
+/* 00 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), "Local Game", false,
                 EmptyUnit, true, true, MenuCommands.SingleplayerMenu));
 
             const int LocalGameMenu = 0;
@@ -253,13 +257,13 @@ namespace SuperSmashPolls {
                 Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
+/* 01 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
                 EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
 
                 Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Help", true, EmptyUnit,
+/* 02 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Help", true, EmptyUnit,
                 true, true));
 
                 Menu.AccessItem(2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)),
@@ -271,12 +275,16 @@ namespace SuperSmashPolls {
                 Menu.AccessItem(2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
                     "Special Attack - RT (Right Trigger)", false, EmptyUnit, false, true));
 
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Exit", false,
+/* 03 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Exit", false,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
 
-
-            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)), "Super Smash Polls", false,
+/* 04 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)), "Super Smash Polls ", false,
                 EmptyUnit, false, true, MenuCommands.Nothing, true));
+
+                Menu.AccessItem(4).TextColor = Color.Red;
+
+/* 05 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0F, 0.9F)),
+                "Use DPad up and down to navigate the menu", false, EmptyUnit, false));
 
             const int SuperSmashText = 5;
 
@@ -308,8 +316,10 @@ namespace SuperSmashPolls {
         /// <remarks>The menu is created here</remarks>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
-            Batch    = new SpriteBatch(GraphicsDevice);
-            GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
+            Batch     = new SpriteBatch(GraphicsDevice);
+            GameFont  = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
+            TitleFont = Content.Load<SpriteFont>("TitleFont");
+            TitleFontSmall = Content.Load<SpriteFont>("TitleFont-Small");
 
             TheDonald.AddCharacterActions(
                 new CharacterAction(2, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-stand")),
@@ -322,7 +332,9 @@ namespace SuperSmashPolls {
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
             //TODO finish animations for TheDonald
 
-            Menu.SetFontForAll(GameFont);
+            Menu.SetFontForAll(TitleFont);
+
+            Menu.AccessItem(5).SetFont(TitleFontSmall);
 
         }
 
