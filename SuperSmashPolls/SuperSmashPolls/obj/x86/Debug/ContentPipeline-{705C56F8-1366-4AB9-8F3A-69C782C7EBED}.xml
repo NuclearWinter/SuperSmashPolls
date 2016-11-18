@@ -190,6 +190,24 @@
       <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont-Small.xnb</Output>
       <Time>2016-11-18T15:15:59-06:00</Time>
     </Item>
+    <Item>
+      <Source>Debate\First Level Foreground.png</Source>
+      <Name>Debate\First Level Foreground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Foreground.xnb</Output>
+      <Time>2016-11-18T15:27:41-06:00</Time>
+    </Item>
+    <Item>
+      <Source>Debate\First Level Background.png</Source>
+      <Name>Debate\First Level Background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Background.xnb</Output>
+      <Time>2016-11-18T15:27:58-06:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{705C56F8-1366-4AB9-8F3A-69C782C7EBED}</ContentProjectGUID>

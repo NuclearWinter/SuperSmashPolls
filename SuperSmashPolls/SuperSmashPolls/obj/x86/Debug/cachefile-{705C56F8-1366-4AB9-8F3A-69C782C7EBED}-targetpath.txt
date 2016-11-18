@@ -19,3 +19,5 @@ Content\TempleItems\TempleBackground.xnb
 Content\SaikyoBlack.xnb
 Content\TitleFont.xnb
 Content\TitleFont-Small.xnb
+Content\Debate\First Level Foreground.xnb
+Content\Debate\First Level Background.xnb

@@ -170,38 +170,8 @@ namespace SuperSmashPolls {
             TempleRock = new LevelHandler("Temple Rock", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
                 new Vector2(8, 0), new Vector2(13.5F, 0));
 
-                Texture2D TempleRockTexture = Content.Load<Texture2D>("TempleRock");
-
-                TempleRock.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(TempleRockTexture,
-                    new Vector2(0, InMeters(360) - InMeters(TempleRockTexture.Height)),
-                    new Vector2(InMeters(TempleRockTexture.Width), InMeters(TempleRockTexture.Height))));
-
-                Texture2D SpaceBackground = Content.Load<Texture2D>("space");
-
-                TempleRock.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width, 
-                    SpaceBackground.Height)/ScreenSize);
-
-                LevelDictionary.Add("TempleRock", TempleRock);
-
             Temple = new LevelHandler("Temple", new Vector2(2.5F, 7.21F), new Vector2(9.2F, 5.3F),
                 new Vector2(16.5F, 7.21F), new Vector2(20.8F, 7.6F), new Vector2(21.5F, 8.1F));
-
-                Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
-                    TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
-                    TempleRight      = Content.Load<Texture2D>("TempleItems\\TempleRight"),
-                    TempleTop        = Content.Load<Texture2D>("TempleItems\\TempleTop"),
-                    TempleBackground = Content.Load<Texture2D>("TempleItems\\TempleBackground");
-
-                Temple.SetBackground(TempleBackground,
-                    new Vector2(ScreenSize.X/TempleBackground.Width, ScreenSize.Y/TempleBackground.Height));
-
-                Temple.AssignToWorld(
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleLeft,   MetersV2(8, 188),   MetersV2(132, 79)),
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleRight,  MetersV2(309, 176), MetersV2(324, 137)),
-                    new Tuple<Texture2D, Vector2, Vector2>(TempleTop,    MetersV2(185, 37),  MetersV2(132, 45)));
-
-                LevelDictionary.Add("Temple", Temple);
 
             /************************************* Initialization for Menu things *************************************/
             //Some menus hold items for other things to make the menu system more compact, don't worry about it.
@@ -335,6 +305,40 @@ namespace SuperSmashPolls {
             Menu.SetFontForAll(TitleFont);
 
             Menu.AccessItem(5).SetFont(TitleFontSmall);
+
+            /* Load for Temple Rock */
+
+            Texture2D TempleRockTexture = Content.Load<Texture2D>("TempleRock");
+
+            TempleRock.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(TempleRockTexture,
+                new Vector2(0, InMeters(360) - InMeters(TempleRockTexture.Height)),
+                new Vector2(InMeters(TempleRockTexture.Width), InMeters(TempleRockTexture.Height))));
+
+            Texture2D SpaceBackground = Content.Load<Texture2D>("space");
+
+            TempleRock.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width,
+                SpaceBackground.Height) / ScreenSize);
+
+            LevelDictionary.Add("TempleRock", TempleRock);
+
+            /* Load Temple */
+
+            Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
+                TempleMiddle = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
+                TempleRight = Content.Load<Texture2D>("TempleItems\\TempleRight"),
+                TempleTop = Content.Load<Texture2D>("TempleItems\\TempleTop"),
+                TempleBackground = Content.Load<Texture2D>("TempleItems\\TempleBackground");
+
+            Temple.SetBackground(TempleBackground,
+                new Vector2(ScreenSize.X / TempleBackground.Width, ScreenSize.Y / TempleBackground.Height));
+
+            Temple.AssignToWorld(
+                new Tuple<Texture2D, Vector2, Vector2>(TempleLeft, MetersV2(8, 188), MetersV2(132, 79)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
+
+            LevelDictionary.Add("Temple", Temple);
 
         }
 

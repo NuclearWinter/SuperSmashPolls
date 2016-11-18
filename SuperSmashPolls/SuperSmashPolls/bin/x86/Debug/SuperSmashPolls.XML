@@ -46,7 +46,7 @@
             <summary>The body of the character (must be created after level selection)</summary>
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.JumpInterval">
-            The amount of time between jumps for this character (in seconds) 
+            <summary>The amount of time between jumps for this character (in seconds)</summary>
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.Name">
             <summary> This characters name </summary>
@@ -56,7 +56,8 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.#ctor">
             <summary>
-            Default constructor for making a blank character
+            Default constructor for making a blank character. The name is initialized to check and to check after a game 
+            has already been played (and they already selected a character so it wouldn't be null)
             </summary>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.#ctor(Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.String)">
@@ -127,7 +128,7 @@
             <summary>
             Gets the position of the charatcer
             </summary>
-            <returns> The position of the character</returns>
+            <returns>The position of the character</returns>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.Respawn(Microsoft.Xna.Framework.Vector2)">
             <summary>

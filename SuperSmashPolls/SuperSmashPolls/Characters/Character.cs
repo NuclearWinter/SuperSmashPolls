@@ -245,18 +245,6 @@ namespace SuperSmashPolls.Characters {
 
             }
 
-            if (gamePadState.IsButtonDown(Buttons.B)) {
-
-                CurrentActionIndex = AttackIndex;
-
-                Moves[4](this);
-
-#if (DEBUG)
-                Actions[CurrentActionIndex].DrawColor = Color.Violet;
-#endif
-
-            }
-
             if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
                 //The character is moving
                 CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
@@ -269,7 +257,17 @@ namespace SuperSmashPolls.Characters {
 
             }
 
-            if (gamePadState.Triggers.Right > Register &&
+            if (gamePadState.IsButtonDown(Buttons.B)) {
+
+                CurrentActionIndex = AttackIndex;
+
+                Moves[4](this);
+
+#if (DEBUG)
+                Actions[CurrentActionIndex].DrawColor = Color.Violet;
+#endif
+
+            } else if (gamePadState.Triggers.Right > Register &&
                 (Now - LastSpecialAttack).TotalMilliseconds > SpecialAttackInterval*1000) {
 
                 LastSpecialAttack = Now;
@@ -354,9 +352,9 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-        ///<summary>
-        ///Draws the character
-        ///</summary>
+        /// <summary>
+        /// Draws the character
+        /// </summary>
         public void DrawCharacter(ref SpriteBatch spriteBatch) {
             
             Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch, CharacterBody.LinearVelocity.X);
@@ -366,7 +364,7 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// Gets the position of the charatcer
         /// </summary>
-        /// <returns> The position of the character</returns>
+        /// <returns>The position of the character</returns>
         public Vector2 GetPosition() {
 
             return CharacterBody.Position;
