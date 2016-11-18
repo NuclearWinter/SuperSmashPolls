@@ -309,8 +309,12 @@ namespace SuperSmashPolls.MenuControl {
                     return ContainedItems[index[0]];
 
                 } catch (ArgumentOutOfRangeException) {
-                    
+
                     Console.WriteLine("The menu you are trying to acess does not exist.");
+
+                } catch (Exception e) {
+                    
+                    Console.WriteLine("you dun f***ed up boi" + e.Message);
 
                 }
 
