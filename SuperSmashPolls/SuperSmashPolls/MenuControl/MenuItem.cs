@@ -122,23 +122,11 @@ namespace SuperSmashPolls.MenuControl {
             CenterItem    = centerItem;
             Command       = command;
             Texture       = null;
-
-            ContainedItems = new List<MenuItem>();
-            DrawDown       = -1;
-            AmericaText    = americaText;
-            AmericanCounter = 0;
-
-            if (!AmericaText) return;
-
-            Vector2 pos = Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text) / 2;
-
-            foreach (char i in Text) {
-
-                AmericanPositions.Add(pos);
-
-                pos.X += Font.MeasureString(i.ToString()).X;
-
-            }
+            AmericanPositions = new List<Vector2>();
+            ContainedItems    = new List<MenuItem>();
+            DrawDown          = -1;
+            AmericaText       = americaText;
+            AmericanCounter   = 0;
 
         }
 
@@ -164,6 +152,18 @@ namespace SuperSmashPolls.MenuControl {
             foreach (MenuItem i in ContainedItems) {
                 i.SetFontForAll(font);
                 i.Font = font;
+            }
+
+            if (!AmericaText) return;
+
+            Vector2 pos = Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text) / 2;
+
+            foreach (char i in Text) {
+
+                AmericanPositions.Add(pos);
+
+                pos.X += Font.MeasureString(i.ToString()).X;
+
             }
 
         }

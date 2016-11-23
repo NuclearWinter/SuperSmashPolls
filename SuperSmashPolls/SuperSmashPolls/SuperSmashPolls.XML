@@ -49,7 +49,7 @@
             <summary>The amount of time between jumps for this character (in seconds)</summary>
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.Name">
-            <summary> This characters name </summary>
+            <summary> This characters name</summary>
         </member>
         <member name="T:SuperSmashPolls.Characters.Character.CharacterMove">
             <summary>The type for character's moves</summary>
@@ -140,33 +140,69 @@
             <summary>
             Parent class for creating character moves.
             </summary>
+            <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.Special(SuperSmashPolls.Characters.Character)">
+        <member name="P:SuperSmashPolls.Characters.Moves.SideSpecialSound">
             <summary>
-            The special move for this character
+            The audio handler to play during the side special attack
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.SideSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="P:SuperSmashPolls.Characters.Moves.UpSpecialSound">
             <summary>
-            The side special move for this character
+            The audio handler to play during the up special attack
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.UpSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="P:SuperSmashPolls.Characters.Moves.DownSpecialSound">
             <summary>
-            The up special move for this character
+            The audio handler to play during the down special attack
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.DownSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="P:SuperSmashPolls.Characters.Moves.SpecialSound">
             <summary>
-            The down special move for this character
+            The audio handler to play during the special attack
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.BasicAttack(SuperSmashPolls.Characters.Character)">
+        <member name="P:SuperSmashPolls.Characters.Moves.BasicAttackSound">
+            <summary>
+            The audio handler to play during a basic attack
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.BasicPunch(SuperSmashPolls.Characters.Character)">
             <summary>
             The basic attack that all characters have
             </summary>
             <param name="character"></param>
             TODO fix this
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.Special(SuperSmashPolls.Characters.Character)">
+            <summary>
+            The special move for this character
+            </summary>
+            <param name="character">The character preforming the move</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.SideSpecial(SuperSmashPolls.Characters.Character)">
+            <summary>
+            The side special move for this character
+            </summary>
+            <param name="character">The character preforming the move</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.UpSpecial(SuperSmashPolls.Characters.Character)">
+            <summary>
+            The up special move for this character
+            </summary>
+            <param name="character">The character preforming the move</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.DownSpecial(SuperSmashPolls.Characters.Character)">
+            <summary>
+            The down special move for this character
+            </summary>
+            <param name="character">The character preforming the move</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.BasicAttack(SuperSmashPolls.Characters.Character)">
+            <summary>
+            The basic attack for a character.
+            </summary>
+            <param name="character">The character preforming the move</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.Moves.AddMovesToCharacter(SuperSmashPolls.Characters.Character)">
             <summary>
@@ -174,11 +210,21 @@
             </summary>
             <param name="addTo">The character to add moves to</param>
         </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.AddAudio(SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler)">
+            <summary>
+            Adds the sounds to this class
+            </summary>
+            <param name="sideSpecialSound">Audio manajer to handle playing during the side special</param>
+            <param name="upSpecialSound">Audio manajer to handle playing during the up special</param>
+            <param name="downSpecialSound">Audio manajer to handle playing during the down special</param>
+            <param name="specialSound">Audio manajer to handle playing during the special</param>
+            <param name="basicAttackSound">Audio manajer to handle playing during a basic attack</param>
+        </member>
         <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.Special(SuperSmashPolls.Characters.Character)">
             <summary>
             Builds a wall. This handles the creation of the body and the forces of the wall.
             </summary>
-            <param name="character">The character casting this</param>
+            <param name="character">The character preforming the move</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.SideSpecial(SuperSmashPolls.Characters.Character)">
             <summary>
@@ -186,19 +232,36 @@
             with a radius of 4m and a force of 300, maxforce of the max value of a float. This explosion does not affect
             TheDonald.
             </summary>
-            <param name="character">The character casting this</param>
+            <param name="character">The character preforming the move</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.UpSpecial(SuperSmashPolls.Characters.Character)">
             <summary>
             
             </summary>
-            <param name="character">The character casting this.</param>
+            <param name="character">The character preforming the move</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.DownSpecial(SuperSmashPolls.Characters.Character)">
             <summary>
             
             </summary>
-            <param name="character">The character casting this.</param>
+            <param name="character">The character preforming the move</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.BasicAttack(SuperSmashPolls.Characters.Character)">
+            <summary>
+            Impliments the basic punch
+            </summary>
+            <param name="character">The character preforming the move</param>
+        </member>
+        <member name="T:SuperSmashPolls.GameItemControl.Gamemode">
+            <summary>
+            This is to hold information on what game mode people are playing, how much time is left, the max number of lives,
+            etc.
+            </summary>
+        </member>
+        <member name="T:SuperSmashPolls.GameItemControl.Gamemode.Modes">
+            <summary>
+            
+            </summary>
         </member>
         <member name="T:SuperSmashPolls.GameItemControl.PlayerClass">
              <summary>
@@ -256,6 +319,34 @@
             <param name="characterList"> The characters available in the game </param>
             <param name="gameWorld"> The world to use for this </param>
             TODO make the new world system work with this loading methods
+        </member>
+        <member name="T:SuperSmashPolls.Graphics.AudioHandler">
+            <summary>
+            Handles the playing of audio.
+            </summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.AudioHandler.Effects">
+            The effects that this object can play 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.AudioHandler.RNG">
+            The (pseudo-)Random Number Generator for deciding which file to play 
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.AudioHandler.#ctor">
+            <summary>
+            The default constructor for this class.
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.AudioHandler.AddAudio(Microsoft.Xna.Framework.Audio.SoundEffect[])">
+            <summary>
+            Add effects to this item.
+            </summary>
+            <param name="effects">The effects to add</param>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.AudioHandler.PlayEffect(System.Int32)">
+            <summary>
+            Plays a (pseudo-)random effect from effects, or a selected one.
+            </summary>
+            <param name="specifiedEffect">If a specific effect is desired, put its index here to play it</param>
         </member>
         <member name="T:SuperSmashPolls.Graphics.CharacterAction">
             <summary>
@@ -325,22 +416,22 @@
             <summary>The name of this level</summary>
         </member>
         <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerOneSpawn">
-            The place's for players to spawn 
+            <summary>he place for a player to spawn on this map</summary>
         </member>
         <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerTwoSpawn">
-            The place's for players to spawn 
+            <summary>he place for a player to spawn on this map</summary>
         </member>
         <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerThreeSpawn">
-            The place's for players to spawn 
+            <summary>he place for a player to spawn on this map</summary>
         </member>
         <member name="F:SuperSmashPolls.Levels.LevelHandler.PlayerFourSpawn">
-            The place's for players to spawn 
+            <summary>he place for a player to spawn on this map</summary>
         </member>
         <member name="F:SuperSmashPolls.Levels.LevelHandler.RespawnPoint">
-            The place's for players to spawn 
+            <summary>he place for a player to spawn on this map</summary>
         </member>
         <member name="F:SuperSmashPolls.Levels.LevelHandler.LevelWorld">
-            The world for this level 
+            <summary>The Farseer world for this level</summary>
         </member>
         <member name="M:SuperSmashPolls.Levels.LevelHandler.#ctor(System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
             <summary>
@@ -432,7 +523,13 @@
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.TextureSize">
             The size of this item (as a ratio of the picture's size) 
         </member>
-        <!-- Badly formed XML comment ignored for member "P:SuperSmashPolls.MenuControl.MenuItem.Background" -->
+        <member name="P:SuperSmashPolls.MenuControl.MenuItem.Background">
+            Background for this menu item (if the item is selected). This will cover the entire screen
+            @warning This must be set during load content 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericanPositions">
+            The position of characters for American Text mode 
+        </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.ContainedItems">
             The item's to display on this page 
         </member>
@@ -628,41 +725,6 @@
             <summary>
             This is where the game draw's the screen.
             </summary>
-        </member>
-        <member name="T:SuperSmashPolls.SpritesheetHandler">
-             This class handles spritesheets.
-             @deprecated This class has been replaced by CharacterActions
-            ****************************************************************************************************************
-        </member>
-        <member name="M:SuperSmashPolls.SpritesheetHandler.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,System.String)">
-             <summary>
-             Constructor
-             </summary>
-             <param name="playTime"> The amount of time (in seconds) that it takes to loop through the entire sheet</param>
-             <param name="imageSize"> The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
-             <param name="spriteSheet"> The texture of the sheet</param>
-             <param name="key"> The key to identify what this animation is (i.e. walking, jumpinng, etc.)</param>
-             <returns> A filled SpritesheetHandler class</returns>
-            ************************************************************************************************************
-        </member>
-        <member name="M:SuperSmashPolls.SpritesheetHandler.DrawImage(Microsoft.Xna.Framework.Graphics.SpriteBatch@,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Point)">
-             <summary>
-             Gives the user the desired image from the sheet.
-             </summary>
-             <param name=""> batch A reference to the SpriteBatch to draw the textures with.</param>
-             <param name=""> image The X and Y coordinate of the image to get.</param>
-             <param name=""> position A reference to the position of the character on the screen.</param>
-             <param name=""> drawSize How big to draw the base image.</param>
-            ************************************************************************************************************
-        </member>
-        <member name="M:SuperSmashPolls.SpritesheetHandler.DrawWithUpdate(Microsoft.Xna.Framework.Graphics.SpriteBatch@,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
-             <summary>
-             This draws the sprite based on the PlayTime variable
-             </summary>
-             <param name=""> batch The SpriteBatch to draw with.</param>
-             <param name=""> position The position of the object on the screen.</param>
-             <param name=""> drawSize The size to draw the object.</param>
-            ************************************************************************************************************
         </member>
         <member name="T:SuperSmashPolls.World_Control.WorldUnit">
             <summary>
