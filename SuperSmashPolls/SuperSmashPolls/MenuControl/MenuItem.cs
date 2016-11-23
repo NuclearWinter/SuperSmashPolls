@@ -95,6 +95,8 @@ namespace SuperSmashPolls.MenuControl {
         /* Holds the last time the menu was updates */
         private int LastTimeUpdated;
 
+        //TODO music
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -311,10 +313,6 @@ namespace SuperSmashPolls.MenuControl {
                 } catch (ArgumentOutOfRangeException) {
 
                     Console.WriteLine("The menu you are trying to acess does not exist.");
-
-                } catch (Exception e) {
-                    
-                    Console.WriteLine("you dun f***ed up boi" + e.Message);
 
                 }
 

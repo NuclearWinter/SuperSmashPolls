@@ -15,7 +15,6 @@ using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SuperSmashPolls.Graphics;
-using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls.Characters {
 
@@ -68,10 +67,20 @@ namespace SuperSmashPolls.Characters {
         public Body CharacterBody; //TODO base this off the character's textures, enable and disable for current action
         /// <summary>The amount of time between jumps for this character (in seconds)</summary>
         public float JumpInterval;
-        /// <summary> This characters name </summary>
+        /// <summary> This characters name</summary>
         public string Name;
         /// <summary>The type for character's moves</summary>
         public delegate void CharacterMove(Character character);
+
+        //TODO attack sounds
+
+        //TODO damage sounds
+
+        //TODO damage multiplier (health)
+
+        //TODO aggro
+
+        //TODO arrange this better
 
         /// <summary>
         /// Default constructor for making a blank character. The name is initialized to check and to check after a game 

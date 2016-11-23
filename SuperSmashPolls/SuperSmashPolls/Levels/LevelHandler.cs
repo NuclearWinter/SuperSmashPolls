@@ -32,12 +32,14 @@ namespace SuperSmashPolls.Levels {
         private Texture2D LevelBackground; 
         /** The amount that the background needs to be scaled (adjusted for different screen sizes) */
         private Vector2 LevelBackgroundScale;
-        ///<summary>The name of this level</summary>
+        /// <summary>The name of this level</summary>
         public readonly string Name;
-        /** The place's for players to spawn */
+        /// <summary>he place for a player to spawn on this map</summary>
         public Vector2 PlayerOneSpawn, PlayerTwoSpawn, PlayerThreeSpawn, PlayerFourSpawn, RespawnPoint;
-        /** The world for this level */
+        /// <summary>The Farseer world for this level</summary>
         public World LevelWorld;
+
+        //TODO music
 
         /// <summary>
         /// Constructor

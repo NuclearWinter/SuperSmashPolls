@@ -16,31 +16,11 @@ namespace SuperSmashPolls.Characters {
     public abstract class Moves {
 
         /// <summary>
-        /// The special move for this character
-        /// </summary>
-        public abstract void Special(Character character);
-
-        /// <summary>
-        /// The side special move for this character
-        /// </summary>
-        public abstract void SideSpecial(Character character);
-
-        /// <summary>
-        /// The up special move for this character
-        /// </summary>
-        public abstract void UpSpecial(Character character);
-
-        /// <summary>
-        /// The down special move for this character
-        /// </summary>
-        public abstract void DownSpecial(Character character);
-
-        /// <summary>
         /// The basic attack that all characters have
         /// </summary>
         /// <param name="character"></param>
         /// TODO fix this
-        public void BasicAttack(Character character) {
+        protected internal void BasicPunch(Character character) {
             //If true, moving forwards (right), if negative backwards (left)
             bool Direction = character.CharacterBody.LinearVelocity.X > 0;
 
@@ -55,6 +35,36 @@ namespace SuperSmashPolls.Characters {
             Explosion.Activate(AttackPosition, ConvertUnits.ToSimUnits(30), 700);
 
         }
+
+        /// <summary>
+        /// The special move for this character
+        /// </summary>
+        /// <param name="character">The character preforming the move</param>
+        public abstract void Special(Character character);
+
+        /// <summary>
+        /// The side special move for this character
+        /// </summary>
+        /// <param name="character">The character preforming the move</param>
+        public abstract void SideSpecial(Character character);
+
+        /// <summary>
+        /// The up special move for this character
+        /// </summary>
+        /// <param name="character">The character preforming the move</param>
+        public abstract void UpSpecial(Character character);
+
+        /// <summary>
+        /// The down special move for this character
+        /// </summary>
+        /// <param name="character">The character preforming the move</param>
+        public abstract void DownSpecial(Character character);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="character">The character preforming the move</param>
+        public abstract void BasicAttack(Character character);
 
         /// <summary>
         /// Adds moves to a character
