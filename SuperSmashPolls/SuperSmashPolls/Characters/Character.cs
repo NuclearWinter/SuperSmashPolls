@@ -72,7 +72,6 @@ namespace SuperSmashPolls.Characters {
         /// <summary>The type for character's moves</summary>
         public delegate void CharacterMove(Character character);
 
-        //TODO attack sounds
 
         //TODO damage sounds
 

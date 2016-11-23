@@ -47,6 +47,7 @@ namespace SuperSmashPolls.MenuControl {
     /// </summary>
     /// <remarks>To create multi-leveled menus you must construct items from bottom to top.</remarks>
     class MenuItem {
+
         /** Determines if the item is highlihtable or not */
         public readonly bool Highlightable;
         /** Whether or not to center the text */
@@ -70,9 +71,11 @@ namespace SuperSmashPolls.MenuControl {
         private Texture2D Texture;
         /** The size of this item (as a ratio of the picture's size) */
         private Vector2 TextureSize;
-        /** Background for this menu item (if the item is selected). <remarks> This will cover the entire screen
+        /** Background for this menu item (if the item is selected). This will cover the entire screen
          * @warning This must be set during load content */
         private Texture2D Background { get; set; } = null;
+        /** The position of characters for American Text mode */
+        private List<Vector2> AmericanPositions;
 
         /* Anything below here is for if this item can be selected to display another menu */
 
@@ -84,6 +87,7 @@ namespace SuperSmashPolls.MenuControl {
         private bool SubOverlay { get; set; } = false;
         /* The item within ContainedItems to draw instead of this one (-1 means draw this one) */
         public int DrawDown;
+
         /// <summary>Makes the text more american, not american't</summary>
         public bool AmericaText;
         /*  */
@@ -123,6 +127,19 @@ namespace SuperSmashPolls.MenuControl {
             DrawDown       = -1;
             AmericaText    = americaText;
             AmericanCounter = 0;
+
+            if (!AmericaText) return;
+
+            Vector2 pos = Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text) / 2;
+
+            foreach (char i in Text) {
+
+                AmericanPositions.Add(pos);
+
+                pos.X += Font.MeasureString(i.ToString()).X;
+
+            }
+
         }
 
         /// <summary>
@@ -359,13 +376,9 @@ namespace SuperSmashPolls.MenuControl {
         /// </summary>
         private void DrawAmerican(SpriteBatch batch) {
 
-            var pos = Position.Add(TextBuffer).GetThisPosition() - Font.MeasureString(Text)/2;
-
-            foreach (char i in Text) {
+            for (int i = 0; i < Text.Length; ++i) {
                 
-                batch.DrawString(Font, i.ToString(), pos, TextColor);
-
-                pos.X += Font.MeasureString(i.ToString()).X;
+                batch.DrawString(Font, Text[i].ToString(), AmericanPositions[i], TextColor);
 
                 TextColor = (TextColor == Color.Blue) ? Color.Red : Color.Blue;
 

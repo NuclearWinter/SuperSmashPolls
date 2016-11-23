@@ -10,12 +10,17 @@ namespace SuperSmashPolls.Characters {
 
 
     class TheDonaldsMoves : Moves {
+
         /// <summary>
         /// Builds a wall. This handles the creation of the body and the forces of the wall.
         /// </summary>
         /// <param name="character">The character preforming the move</param>
         public override void Special(Character character) {
+
             SideSpecial(character);
+
+            SpecialSound.PlayEffect();
+
         }
 
         /// <summary>
@@ -33,6 +38,8 @@ namespace SuperSmashPolls.Characters {
 
             Explosion.Activate(character.GetPosition(), 4, 300);
 
+            SideSpecialSound.PlayEffect();
+
         }
 
         /// <summary>
@@ -40,7 +47,11 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         /// <param name="character">The character preforming the move</param>
         public override void UpSpecial(Character character) {
+
             throw new NotImplementedException();
+
+            UpSpecialSound.PlayEffect();
+
         }
 
         /// <summary>
@@ -49,14 +60,21 @@ namespace SuperSmashPolls.Characters {
         /// <param name="character">The character preforming the move</param>
         public override void DownSpecial(Character character) {
             throw new NotImplementedException();
+
+            DownSpecialSound.PlayEffect();
+
         }
 
         /// <summary>
-        /// 
+        /// Impliments the basic punch
         /// </summary>
         /// <param name="character">The character preforming the move</param>
         public override void BasicAttack(Character character) {
+
             BasicPunch(character);
+
+            BasicAttackSound.PlayEffect();
+
         }
 
     }

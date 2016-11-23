@@ -9,7 +9,8 @@ namespace SuperSmashPolls.Graphics {
     /// <summary>
     /// Handles the playing of audio.
     /// </summary>
-    class AudioHandler {
+    public class AudioHandler {
+
         /** The effects that this object can play */
         private readonly List<SoundEffect> Effects;
         /** The (pseudo-)Random Number Generator for deciding which file to play */
@@ -43,10 +44,31 @@ namespace SuperSmashPolls.Graphics {
         /// <param name="specifiedEffect">If a specific effect is desired, put its index here to play it</param>
         public void PlayEffect(int specifiedEffect = -1) {
 
-            if (specifiedEffect != -1)
-                Effects[specifiedEffect].Play();
-            else 
-                Effects[RNG.Next(Effects.Count)].Play();
+            if (specifiedEffect != -1) {
+
+                try {
+
+                    Effects[specifiedEffect].Play();
+
+                } catch (NullReferenceException) {
+                    
+                    Console.WriteLine("The item " + specifiedEffect + " cannot be accessed in Effects");
+
+                }
+
+            } else {
+
+                try {
+
+                    Effects[RNG.Next(Effects.Count)].Play();
+
+                } catch (NullReferenceException) {
+
+                    Console.WriteLine("The desired item cannot be accessed in Effects");
+
+                }
+
+            }
 
         }
 

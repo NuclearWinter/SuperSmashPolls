@@ -6,6 +6,7 @@ using FarseerPhysics;
 using FarseerPhysics.Common.PhysicsLogic;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
+using SuperSmashPolls.Graphics;
 using SuperSmashPolls.Levels;
 
 namespace SuperSmashPolls.Characters {
@@ -13,7 +14,48 @@ namespace SuperSmashPolls.Characters {
     /// <summary>
     /// Parent class for creating character moves.
     /// </summary>
+    /// <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
     public abstract class Moves {
+
+        /// <summary>
+        /// The audio handler to play during the side special attack
+        /// </summary>
+        protected internal virtual AudioHandler SideSpecialSound {
+            get { return SideSpecialSound; }
+            set { SideSpecialSound = value; }
+        }
+
+        /// <summary>
+        /// The audio handler to play during the up special attack
+        /// </summary>
+        protected internal virtual AudioHandler UpSpecialSound {
+            get { return UpSpecialSound; }
+            set { UpSpecialSound = value; }
+        }
+
+        /// <summary>
+        /// The audio handler to play during the down special attack
+        /// </summary>
+        protected internal virtual AudioHandler DownSpecialSound {
+            get { return DownSpecialSound; }
+            set { DownSpecialSound = value; }
+        }
+
+        /// <summary>
+        /// The audio handler to play during the special attack
+        /// </summary>
+        protected internal virtual AudioHandler SpecialSound {
+            get { return SpecialSound; }
+            set { SpecialSound = value; }
+        }
+
+        /// <summary>
+        /// The audio handler to play during a basic attack
+        /// </summary>
+        protected internal virtual AudioHandler BasicAttackSound {
+            get { return BasicAttackSound; }
+            set { BasicAttackSound = value; }
+        }
 
         /// <summary>
         /// The basic attack that all characters have
@@ -61,7 +103,7 @@ namespace SuperSmashPolls.Characters {
         public abstract void DownSpecial(Character character);
 
         /// <summary>
-        /// 
+        /// The basic attack for a character.
         /// </summary>
         /// <param name="character">The character preforming the move</param>
         public abstract void BasicAttack(Character character);
@@ -74,6 +116,23 @@ namespace SuperSmashPolls.Characters {
             
             addTo.AddCharacterMoves(SideSpecial, UpSpecial, DownSpecial, Special, BasicAttack);
 
+        }
+
+        /// <summary>
+        /// Adds the sounds to this class
+        /// </summary>
+        /// <param name="sideSpecialSound">Audio manajer to handle playing during the side special</param>
+        /// <param name="upSpecialSound">Audio manajer to handle playing during the up special</param>
+        /// <param name="downSpecialSound">Audio manajer to handle playing during the down special</param>
+        /// <param name="specialSound">Audio manajer to handle playing during the special</param>
+        /// <param name="basicAttackSound">Audio manajer to handle playing during a basic attack</param>
+        public void AddAudio(AudioHandler sideSpecialSound, AudioHandler upSpecialSound, AudioHandler downSpecialSound,
+            AudioHandler specialSound, AudioHandler basicAttackSound) {
+            SideSpecialSound = sideSpecialSound;
+            UpSpecialSound   = upSpecialSound;
+            DownSpecialSound = downSpecialSound;
+            SpecialSound     = specialSound;
+            BasicAttackSound = basicAttackSound;
         }
 
     }
