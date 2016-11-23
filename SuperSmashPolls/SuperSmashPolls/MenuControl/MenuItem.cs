@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SuperSmashPolls.Graphics;
 using SuperSmashPolls.World_Control;
 
 namespace SuperSmashPolls.MenuControl {
@@ -70,6 +71,8 @@ namespace SuperSmashPolls.MenuControl {
         private int CurrentHighlightedItem;
         /* Counts how many cycles the text has been a color for American text */
         private int AmericanCounter;
+        /** The music for this menu */
+        private AudioHandler MenuAudio;
         /// <summary>Makes the text more american, not american't</summary>
         public bool AmericaText;
         /// <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
@@ -92,14 +95,15 @@ namespace SuperSmashPolls.MenuControl {
         /// <summary>
         /// Constructor
         /// </summary>
-		/// <param name="position">The position of the item on the screen.</param>
-	    /// <param name="text">The text of this item.</param>
-		/// <param name="hasSubmenu">Whether or not this item has a menu below it to navigate to.</param>
-		/// <param name="textBuffer">An amount to displace the text past the start of the item (to center with backgrounds)</param>
-		/// <param name="centerItem">Whether or not to center the item around the position.</param>
-	    /// <param name="highlightable">Whether or not this item is highlightable</param>
-	    /// <param name="command">The command to have this item return</param>
-	    /// <param name="americaText">Makes the text great again</param>
+        /// <param name="position">The position of the item on the screen.</param>
+        /// <param name="text">The text of this item.</param>
+        /// <param name="hasSubmenu">Whether or not this item has a menu below it to navigate to.</param>
+        /// <param name="textBuffer">An amount to displace the text past the start of the item (to center with backgrounds)</param>
+        /// <param name="centerItem">Whether or not to center the item around the position.</param>
+        /// <param name="highlightable">Whether or not this item is highlightable</param>
+        /// <param name="command">The command to have this item return</param>
+        /// <param name="americaText">Makes the text great again</param>
+        /// <param name="deferAudio">Whther or not to play the audio of the MenuItem above this one</param>
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
             bool centerItem = false, MenuCommands command = MenuCommands.Nothing, bool americaText = false) {
             Position      = position;
@@ -115,7 +119,6 @@ namespace SuperSmashPolls.MenuControl {
             DrawDown          = -1;
             AmericaText       = americaText;
             AmericanCounter   = 0;
-
         }
 
         /// <summary>
@@ -179,6 +182,16 @@ namespace SuperSmashPolls.MenuControl {
         }
 
         /// <summary>
+        /// Adds audio to this object to be played
+        /// </summary>
+        /// <param name="audioHandler">The audio to add to this object</param>
+        public void AddAudio(AudioHandler audioHandler) {
+
+            MenuAudio = audioHandler;
+
+        }
+
+        /// <summary>
         /// Update control of the menu.
         /// </summary>
         /// <param name="currentState">The current state to update from</param>
@@ -188,6 +201,8 @@ namespace SuperSmashPolls.MenuControl {
 
             if (DrawDown == -1) {
                 /* Updates the current menu */
+
+                MenuAudio?.PlayEffect();
 
                 foreach (var i in ContainedItems)
                     i.AmericaTextUpdate();
@@ -244,7 +259,6 @@ namespace SuperSmashPolls.MenuControl {
                 return ContainedItems[DrawDown].UpdateMenu(currentState, lastPressed);
 
             }
-
 
             return MenuCommands.Nothing;
 

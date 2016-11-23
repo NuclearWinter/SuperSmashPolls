@@ -496,29 +496,23 @@
             </summary>
             <remarks>To create multi-leveled menus you must construct items from bottom to top.</remarks>
         </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
-            Determines if the item is highlihtable or not 
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CenterItem">
-            Whether or not to center the text 
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Position">
+            Position of this item on the screen 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.TextBuffer">
             Buffer to move text over from Position 
         </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Position">
-            Position of this item on the screen 
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.HasSubmenu">
+            If the item has it's own menu that it can display if selected 
         </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Text">
-            Text for this item (drawn on top of the screen if displaying the item's menu 
-        </member>
-        <member name="P:SuperSmashPolls.MenuControl.MenuItem.TextColor">
-            Color for this item's text 
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericanPositions">
+            The position of characters for American Text mode 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.Font">
             Font to use for this item 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.Texture">
-            Texture to use as the background for this item (not drawn if displaying the item's menu) 
+            Texture to use as the thumbnail for this item 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.TextureSize">
             The size of this item (as a ratio of the picture's size) 
@@ -527,20 +521,35 @@
             Background for this menu item (if the item is selected). This will cover the entire screen
             @warning This must be set during load content 
         </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericanPositions">
-            The position of characters for American Text mode 
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.ContainedItems">
-            The item's to display on this page 
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.HasSubmenu">
-            Holds if the item has it's own menu that it can display 
-        </member>
         <member name="P:SuperSmashPolls.MenuControl.MenuItem.SubOverlay">
-            Overlay this item's sub-menu on top of the current menu 
+            Overlay this item's sub-menu on top of the current menu TODO impliment 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.MenuAudio">
+            The music for this menu 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericaText">
             <summary>Makes the text more american, not american't</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.DrawDown">
+            <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Text">
+            <summary>Text for this item (drawn on top of the screen if displaying the item's menu</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.ContainedItems">
+            <summary>The item's to display on this page</summary>
+        </member>
+        <member name="P:SuperSmashPolls.MenuControl.MenuItem.TextColor">
+            <summary>Color for this item's text</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
+            <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CenterItem">
+            <summary>Whether or not to center the item horizontally around the position.</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Command">
+            <summary>The command to use if clicked on</summary>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands,System.Boolean)">
             <summary>
@@ -554,6 +563,7 @@
             <param name="highlightable">Whether or not this item is highlightable</param>
             <param name="command">The command to have this item return</param>
             <param name="americaText">Makes the text great again</param>
+            <param name="deferAudio">Whther or not to play the audio of the MenuItem above this one</param>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.AddItem(SuperSmashPolls.MenuControl.MenuItem)">
             <summary>
@@ -579,6 +589,12 @@
             </summary>
             <param name="texture">The texture of this item</param>
             <param name="size">The size of this item (in pixels)</param>
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.AddAudio(SuperSmashPolls.Graphics.AudioHandler)">
+            <summary>
+            Adds audio to this object to be played
+            </summary>
+            <param name="audioHandler">The audio to add to this object</param>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.UpdateMenu(Microsoft.Xna.Framework.Input.GamePadState,Microsoft.Xna.Framework.Input.GamePadState)">
             <summary>
