@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -48,56 +47,45 @@ namespace SuperSmashPolls.MenuControl {
     /// <remarks>To create multi-leveled menus you must construct items from bottom to top.</remarks>
     class MenuItem {
 
-        /** Determines if the item is highlihtable or not */
-        public readonly bool Highlightable;
-        /** Whether or not to center the text */
-        public readonly bool CenterItem;
-        /* The command to use if clicked on */
-        public readonly MenuCommands Command;
-        /** Buffer to move text over from Position */
-        private readonly WorldUnit TextBuffer;
         /** Position of this item on the screen */
         private readonly WorldUnit Position;
-        /** Text for this item (drawn on top of the screen if displaying the item's menu */
-        public string Text;
-
-        /* Anything below here must be loaded after the constructor */
-
-        /** Color for this item's text */
-        public Color TextColor { get; set; } = Color.Black;
+        /** Buffer to move text over from Position */
+        private readonly WorldUnit TextBuffer;
+        /** If the item has it's own menu that it can display if selected */
+        private readonly bool HasSubmenu;
+        /** The position of characters for American Text mode */
+        private readonly List<Vector2> AmericanPositions;
         /** Font to use for this item */
         private SpriteFont Font;
-        /** Texture to use as the background for this item (not drawn if displaying the item's menu) */
+        /** Texture to use as the thumbnail for this item */
         private Texture2D Texture;
         /** The size of this item (as a ratio of the picture's size) */
         private Vector2 TextureSize;
         /** Background for this menu item (if the item is selected). This will cover the entire screen
          * @warning This must be set during load content */
         private Texture2D Background { get; set; } = null;
-        /** The position of characters for American Text mode */
-        private List<Vector2> AmericanPositions;
-
-        /* Anything below here is for if this item can be selected to display another menu */
-
-        /** The item's to display on this page */
-        public List<MenuItem> ContainedItems;
-        /** Holds if the item has it's own menu that it can display */
-        private readonly bool HasSubmenu;
-        /** Overlay this item's sub-menu on top of the current menu */
+        /** Overlay this item's sub-menu on top of the current menu TODO impliment */
         private bool SubOverlay { get; set; } = false;
-        /* The item within ContainedItems to draw instead of this one (-1 means draw this one) */
-        public int DrawDown;
-
-        /// <summary>Makes the text more american, not american't</summary>
-        public bool AmericaText;
-        /*  */
-        private int AmericanCounter;
-
-
         /* The item on screen that is currently highlighted */
         private int CurrentHighlightedItem;
-        /* Holds the last time the menu was updates */
-        private int LastTimeUpdated;
+        /* Counts how many cycles the text has been a color for American text */
+        private int AmericanCounter;
+        /// <summary>Makes the text more american, not american't</summary>
+        public bool AmericaText;
+        /// <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
+        public int DrawDown;
+        /// <summary>Text for this item (drawn on top of the screen if displaying the item's menu</summary>
+        public string Text;
+        /// <summary>The item's to display on this page</summary>
+        public List<MenuItem> ContainedItems;
+        /// <summary>Color for this item's text</summary>
+        public Color TextColor { get; set; } = Color.Black;
+        /// <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
+        public readonly bool Highlightable;
+        /// <summary>Whether or not to center the item horizontally around the position.</summary>
+        public readonly bool CenterItem;
+        /// <summary>The command to use if clicked on</summary>
+        public readonly MenuCommands Command;
 
         //TODO music
 
