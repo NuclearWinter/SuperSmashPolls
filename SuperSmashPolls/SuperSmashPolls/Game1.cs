@@ -37,29 +37,34 @@ namespace SuperSmashPolls {
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game {
 
+        /** Handles the different states that the game can be in */
+        enum GameState {
+
+            Menu,           //The menu is open
+            GameLevel,      //The first level of the game
+            ScoreScreen,
+            LoadSave,
+            SaveGame
+
+        };
+
         /* The total size of the screen */
         private static Vector2 ScreenSize;
         /* The most basic Functioning WorldUnit */
         private readonly WorldUnit EmptyUnit;
         /* The scale of how many pixels are equal to one meter */
         private readonly float PixelToMeterScale;
-
-        /*   Characters   */
-
-            /** The one, the only, the Donald */
-            private Character TheDonald;
-
-
+        /* Holds levels for matching from a save and for selection */
+        private readonly Dictionary<string, LevelHandler> LevelDictionary;
+        /* Holds characters for matching from a save and for selection TODO change to Dictionary*/
+        private readonly List<Tuple<Character, string>> CharacterStringPairs;
+        /** The one, the only, the Donald */
+        private Character TheDonald;
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
-        /**  */
-        private LevelHandler TempleRock;
-        /**  */
-        private LevelHandler Temple;
-        /**  */
-        private LevelHandler Space;
-
-        /* Manages graphics. */
+        /** Levels for the player to play on */
+        private LevelHandler TempleRock, Temple, Space;
+        /* Manages graphics */
         private GraphicsDeviceManager Graphics;
         /* Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
@@ -71,34 +76,16 @@ namespace SuperSmashPolls {
         private SpriteFont TitleFontSmall;
         /* The center of the screen */
         private Vector2 ScreenCenter;
-
         /* Menu system for the game to use */
         private MenuItem Menu;
         /* The last button pressed during menu updates */
         private GamePadState LastPressed;
-
         /** The player's in this game */
         private PlayerClass PlayerOne, PlayerTwo, PlayerThree, PlayerFour;
         /* The number of players in the game */
         private int NumPlayers;
-
-        /** Handles the different states that the game can be in */
-        enum GameState {
-
-            Menu,           //The menu is open
-            GameLevel,      //The first level of the game
-            ScoreScreen,
-            LoadSave,
-            SaveGame
-
-        };
         /** Variable to hold the state of the game */
         private GameState State = GameState.Menu;
-
-        /* Holds levels for matching from a save and for selection */
-        private Dictionary<string, LevelHandler> LevelDictionary;
-        /* Holds characters for matching from a save and for selection TODO change to Dictionary*/
-        private List<Tuple<Character, string>> CharacterStringPairs;
 
         /// <summary>
         /// Constructs the game's class
@@ -106,7 +93,7 @@ namespace SuperSmashPolls {
         /// </summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
-            ScreenSize = new Vector2(640, 360);
+            ScreenSize = new Vector2(640, 360); //TODO options in file
 
             LevelDictionary = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
@@ -259,6 +246,8 @@ namespace SuperSmashPolls {
             const int SuperSmashText = 5;
 
             //Menu.AccessItem(SuperSmashText).
+
+            //TODO Settings menu
 
             /************************************** Initialization for Players ****************************************/
 
