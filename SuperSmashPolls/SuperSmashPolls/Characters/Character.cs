@@ -3,6 +3,7 @@
  **********************************************************************************************************************/
 
 #define DEBUG
+ #undef DEBUG
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -22,6 +23,7 @@ namespace SuperSmashPolls.Characters {
     /// This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
     /// </summary>
     public class Character {
+
         /* These are the indicies that animations can be called with inside Actions */
         private const int IdleIndex = 0,
             JumpIndex               = 1, //A (Players can always jump)
@@ -105,6 +107,7 @@ namespace SuperSmashPolls.Characters {
         public Character(ref Vector2 screenSize, Vector2 characterSize, float mass, float friction, float restitution,
             float movementMultiplier, float jumpForceMultiplier, float jumpInterval, float specialAttackInterval,
             string name) {
+
             CharacterSize         = characterSize;
             CharacterOrigin       = new Vector2((characterSize.Y)/2F, (characterSize.X)/2F);
             Mass                  = mass;
@@ -130,6 +133,7 @@ namespace SuperSmashPolls.Characters {
         /// <param name="gameWorld">The world to put the character into</param>
         /// <param name="position">The position to place the character</param>
         public Character(Character otherCharacter, World gameWorld, Vector2 position) {
+
             CharacterSize             = otherCharacter.CharacterSize;
             CharacterOrigin           = otherCharacter.CharacterOrigin;
             Mass                      = otherCharacter.Mass;
@@ -216,8 +220,8 @@ namespace SuperSmashPolls.Characters {
             CharacterBody.Friction    = Friction;
             CharacterBody.Mass        = Mass;
             CharacterBody.Restitution = Restitution;
-            GameWorld                 = gameWorld;
             CharacterBody.CollisionGroup = collisionGroup;
+            GameWorld                    = gameWorld;
 
         }
 

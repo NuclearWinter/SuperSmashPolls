@@ -3,7 +3,7 @@
  * @author William Kluge
  **********************************************************************************************************************/
 
- #define DEBUG
+#define DEBUG
 #undef DEBUG
 
 using System;
@@ -30,6 +30,8 @@ namespace SuperSmashPolls.GameItemControl {
         private readonly PlayerIndex PlayerID;
         /** The health that the character has */
         private float PlayerHealth;
+        /** Whether or not the player died in the last update cycle */
+        private bool JustDied;
         /// <summary>The number of times that the player has died</summary>
         public int Deaths;
         /// <summary>The player's character</summary>
@@ -46,6 +48,7 @@ namespace SuperSmashPolls.GameItemControl {
             PlayerHealth      = 0;
             Deaths            = 0;
             CollisionCategory = collisionCategory;
+            JustDied          = false;
         }
 
         /// <summary>
@@ -66,14 +69,16 @@ namespace SuperSmashPolls.GameItemControl {
             if (eliminated)
                 return;
 
-            if (Math.Abs(PlayerCharacter.GetPosition().X) > 40 || Math.Abs(PlayerCharacter.GetPosition().Y) > 30) {
-            //Player is past 40 meters
-                ++Deaths;
+            if (JustDied) {
+
                 PlayerCharacter.Respawn(respawnPoint);
+                ++Deaths;
+                JustDied = false;
 
-            }
-
-            PlayerCharacter.UpdateCharacter(GamePad.GetState(PlayerID));
+            } else if (Math.Abs(PlayerCharacter.GetPosition().X) > 40 || Math.Abs(PlayerCharacter.GetPosition().Y) > 30)
+                JustDied = true;
+            else 
+                PlayerCharacter.UpdateCharacter(GamePad.GetState(PlayerID));
 
         }
 
@@ -91,33 +96,6 @@ namespace SuperSmashPolls.GameItemControl {
                         ConvertUnits.ToDisplayUnits(PlayerCharacter.GetPosition().Y) - 35), Color.White);
             
 #endif
-
-            if (font != null) {
-
-                const int DeathTextHeight = 13;
-
-                Vector2 DeathTextPosition = new Vector2();
-
-                switch (PlayerID) {
-                    case PlayerIndex.One:
-                        DeathTextPosition = new Vector2(1, DeathTextHeight);
-                        break;
-                    case PlayerIndex.Two:
-                        DeathTextPosition = new Vector2(7.25F, DeathTextHeight);
-                        break;
-                    case PlayerIndex.Three:
-                        DeathTextPosition = new Vector2(13.5F, DeathTextHeight);
-                        break;
-                    case PlayerIndex.Four:
-                        DeathTextPosition = new Vector2(19.75F, DeathTextHeight);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                batch.DrawString(font, "Deaths: " + Deaths, ConvertUnits.ToDisplayUnits(DeathTextPosition), Color.Black);
-
-            }
 
         }
 

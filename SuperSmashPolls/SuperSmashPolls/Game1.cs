@@ -267,11 +267,11 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Gamemode ****************************************/
 
-            CurrentGamemode = new Gamemode(ref PlayerOne.Deaths, ref PlayerTwo.Deaths, ref PlayerThree.Deaths,
-                ref PlayerFour.Deaths, TitleFontSmall);
+
+            CurrentGamemode = new Gamemode();
 
             CurrentGamemode.CurrentMode = Gamemode.Mode.Stock; //Used for debugging before menu is implimented
-            CurrentGamemode.Stock = 2;
+            CurrentGamemode.Stock = 5;
 
             /************************************* Initialization for Characters **************************************/
 
@@ -308,9 +308,17 @@ namespace SuperSmashPolls {
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
             //TODO finish animations for TheDonald
 
+            /* Menu content */
+
             Menu.SetFontForAll(TitleFont);
 
             Menu.AccessItem(5).SetFont(TitleFontSmall);
+
+            /* DEBUG Gamemode content */
+
+            Texture2D Icon = Content.Load<Texture2D>("PlayerOne");
+
+            CurrentGamemode.AssignIcons(Icon, Icon, Icon, Icon, TitleFontSmall);
 
             /* Load for Temple Rock */
 
@@ -330,9 +338,9 @@ namespace SuperSmashPolls {
             /* Load Temple */
 
             Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
-                TempleMiddle = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
-                TempleRight = Content.Load<Texture2D>("TempleItems\\TempleRight"),
-                TempleTop = Content.Load<Texture2D>("TempleItems\\TempleTop"),
+                TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
+                TempleRight      = Content.Load<Texture2D>("TempleItems\\TempleRight"),
+                TempleTop        = Content.Load<Texture2D>("TempleItems\\TempleTop"),
                 TempleBackground = Content.Load<Texture2D>("TempleItems\\TempleBackground");
 
             Temple.SetBackground(TempleBackground,
@@ -466,6 +474,8 @@ namespace SuperSmashPolls {
 
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
 
+                            CurrentGamemode.NumberOfPlayers = NumPlayers;
+
 #if (DEBUG)
                             PlayerOne.PlayerCharacter.JumpInterval   = 0.1F;
                             PlayerTwo.PlayerCharacter.JumpInterval   = 0.1F;
@@ -517,19 +527,22 @@ namespace SuperSmashPolls {
                     State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
                             GameState.Menu : State;
 
+                    CurrentGamemode.UpdateGamemodeState(PlayerOne.Deaths, PlayerTwo.Deaths, PlayerThree.Deaths,
+                        PlayerFour.Deaths);
+
                     switch (NumPlayers) {
 
                         case 4:
-                            PlayerFour.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[0]);
+                            PlayerFour.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.ElimStatus[3]);
                             goto case 3;
                         case 3:
-                            PlayerThree.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[1]);
+                            PlayerThree.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.ElimStatus[2]);
                             goto case 2;
                         case 2:
-                            PlayerTwo.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[2]);
+                            PlayerTwo.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.ElimStatus[1]);
                             goto default;
                         default:
-                            PlayerOne.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[3]);
+                            PlayerOne.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.ElimStatus[0]);
                             break;
 
                     }
@@ -664,6 +677,8 @@ namespace SuperSmashPolls {
                                 break;
 
                         }
+
+                        CurrentGamemode.DrawGamemodeOverlay(Batch);
 
                         break;
 

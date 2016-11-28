@@ -17,45 +17,16 @@ namespace SuperSmashPolls.Characters {
     /// <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
     public abstract class Moves {
 
-        /// <summary>
-        /// The audio handler to play during the side special attack
-        /// </summary>
-        protected internal virtual AudioHandler SideSpecialSound {
-            get { return SideSpecialSound; }
-            set { SideSpecialSound = value; }
-        }
-
-        /// <summary>
-        /// The audio handler to play during the up special attack
-        /// </summary>
-        protected internal virtual AudioHandler UpSpecialSound {
-            get { return UpSpecialSound; }
-            set { UpSpecialSound = value; }
-        }
-
-        /// <summary>
-        /// The audio handler to play during the down special attack
-        /// </summary>
-        protected internal virtual AudioHandler DownSpecialSound {
-            get { return DownSpecialSound; }
-            set { DownSpecialSound = value; }
-        }
-
-        /// <summary>
-        /// The audio handler to play during the special attack
-        /// </summary>
-        protected internal virtual AudioHandler SpecialSound {
-            get { return SpecialSound; }
-            set { SpecialSound = value; }
-        }
-
-        /// <summary>
-        /// The audio handler to play during a basic attack
-        /// </summary>
-        protected internal virtual AudioHandler BasicAttackSound {
-            get { return BasicAttackSound; }
-            set { BasicAttackSound = value; }
-        }
+        /// <summary>The audio handler to play during the side special attack</summary>
+        protected internal AudioHandler SideSpecialSound;
+        /// <summary>The audio handler to play during the up special attack</summary>
+        protected internal AudioHandler UpSpecialSound;
+        /// <summary>The audio handler to play during the down special attack</summary>
+        protected internal AudioHandler DownSpecialSound;
+        /// <summary>The audio handler to play during the special attack</summary>
+        protected internal AudioHandler SpecialSound;
+        /// <summary>The audio handler to play during a basic attack</summary>
+        protected internal AudioHandler BasicAttackSound;
 
         /// <summary>
         /// The basic attack that all characters have

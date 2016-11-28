@@ -19,7 +19,7 @@ namespace SuperSmashPolls.Characters {
 
             SideSpecial(character);
 
-            SpecialSound.PlayEffect();
+            //SpecialSound.PlayEffect();
 
         }
 
@@ -38,7 +38,15 @@ namespace SuperSmashPolls.Characters {
 
             Explosion.Activate(character.GetPosition(), 4, 300);
 
-            SideSpecialSound.PlayEffect();
+            try {
+
+                SideSpecialSound.PlayEffect();
+
+            } catch (NullReferenceException) {
+                
+                Console.WriteLine("SideSpecialSound is null");
+
+            }
 
         }
 
@@ -73,7 +81,15 @@ namespace SuperSmashPolls.Characters {
 
             BasicPunch(character);
 
-            BasicAttackSound.PlayEffect();
+            try {
+
+                BasicAttackSound.PlayEffect();
+
+            } catch (NullReferenceException) {
+                
+                Console.WriteLine("basic attack is null");
+
+            }
 
         }
 
