@@ -321,6 +321,12 @@
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerIcons">
             The icons for players 
         </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Places">
+            The places of players for winning and loosing TODO 
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Winner">
+            The winner of the game 
+        </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.NumberOfPlayers">
             <summary>The number of players in the game</summary>
         </member>

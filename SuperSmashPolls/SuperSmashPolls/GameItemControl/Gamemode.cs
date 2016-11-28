@@ -45,6 +45,10 @@ namespace SuperSmashPolls.GameItemControl {
         private SpriteFont GameFont;
         /** The icons for players */
         private Texture2D[] PlayerIcons;
+        /** The places of players for winning and loosing TODO */
+        private string[] Places;
+        /** The winner of the game */
+        private string Winner;
         /// <summary>The number of players in the game</summary>
         public int NumberOfPlayers;
         /// <summary>The lives available to players</summary>
@@ -230,27 +234,41 @@ namespace SuperSmashPolls.GameItemControl {
         public void UpdateGamemodeState(int playerOneDeaths, int playerTwoDeaths, int playerThreeDeaths,
             int playerFourDeaths) {
 
-            PlayerOneDeaths = playerOneDeaths;
-            PlayerTwoDeaths = playerTwoDeaths;
-            PlayerThreeDeaths = playerThreeDeaths;
-            PlayerFourDeaths = playerFourDeaths; //TODO replace this shitty system with pointers
+            if (!GameOver) {
+                PlayerOneDeaths = playerOneDeaths;
+                PlayerTwoDeaths = playerTwoDeaths;
+                PlayerThreeDeaths = playerThreeDeaths;
+                PlayerFourDeaths = playerFourDeaths; //TODO replace this shitty system with pointers
 
-            switch (CurrentMode) {
-                case Mode.Time:
-                    break;
-                case Mode.Stock:
-                    LifeLimit();
-                    break;
-                case Mode.TimeStockCombo:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (CurrentMode) {
+                    case Mode.Time:
+                        break;
+                    case Mode.Stock:
+                        LifeLimit();
+                        break;
+                    case Mode.TimeStockCombo:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                int EliminatedPlayers = ElimStatus.Aggregate(0, (Current, i) => (i) ? ++Current : Current);
+
+                if (EliminatedPlayers >= NumberOfPlayers - 1)
+                    GameOver = true;
+
+            } else {
+
+                if (PlayerOneDeaths < Stock)
+                    Winner = "Player one";
+                else if (PlayerTwoDeaths < Stock)
+                    Winner = "Player two";
+                else if (PlayerThreeDeaths < Stock)
+                    Winner = "Player three";
+                else if (PlayerFourDeaths < Stock)
+                    Winner = "Player four";
+
             }
-
-            int EliminatedPlayers = ElimStatus.Aggregate(0, (Current, i) => (i) ? ++Current : Current);
-
-            if (EliminatedPlayers >= NumberOfPlayers - 1)
-                GameOver = true;
 
         }
 
@@ -286,7 +304,9 @@ namespace SuperSmashPolls.GameItemControl {
 
             } else {
 
-                //win/loss screen
+                batch.DrawString(GameFont, Winner + " wins!", ConvertUnits.ToDisplayUnits(new Vector2(25/2 - 3, 6)), Color.White);
+
+                //TODO just make this screen into a menuitem so it is navigatable
 
             }
 
