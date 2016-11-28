@@ -142,6 +142,9 @@
             </summary>
             <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
         </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.SpecialSound">
+            <summary>The audio handler to play during the special attack</summary>
+        </member>
         <member name="F:SuperSmashPolls.Characters.Moves.SideSpecialSound">
             <summary>The audio handler to play during the side special attack</summary>
         </member>
@@ -151,11 +154,13 @@
         <member name="F:SuperSmashPolls.Characters.Moves.DownSpecialSound">
             <summary>The audio handler to play during the down special attack</summary>
         </member>
-        <member name="F:SuperSmashPolls.Characters.Moves.SpecialSound">
-            <summary>The audio handler to play during the special attack</summary>
-        </member>
         <member name="F:SuperSmashPolls.Characters.Moves.BasicAttackSound">
             <summary>The audio handler to play during a basic attack</summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.PlaySpecialSound">
+            <summary>
+            Trys to play the sound effect for the special attack
+            </summary>
         </member>
         <member name="M:SuperSmashPolls.Characters.Moves.BasicPunch(SuperSmashPolls.Characters.Character)">
             <summary>
@@ -477,7 +482,20 @@
         <member name="F:SuperSmashPolls.Graphics.AudioHandler.RNG">
             The (pseudo-)Random Number Generator for deciding which file to play 
         </member>
+        <member name="F:SuperSmashPolls.Graphics.AudioHandler.EffectInstances">
+            Instances for the sound effects 
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.AudioHandler.MakeEffectInstances">
+            <summary>
+            Makes instances for the sound effects
+            </summary>
+        </member>
         <member name="M:SuperSmashPolls.Graphics.AudioHandler.#ctor">
+            <summary>
+            The default constructor for this class.
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.AudioHandler.#ctor(Microsoft.Xna.Framework.Audio.SoundEffect[])">
             <summary>
             The default constructor for this class.
             </summary>
@@ -761,6 +779,12 @@
             <param name="currentState">The current state to update from</param>
             <param name="lastPressed">The state to check if something was updated the previous time</param>
             <remarks>This is done to allow for enumerator values to be changed</remarks>
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.StopAudio(System.Boolean)">
+            <summary>
+            Stops playing audio
+            </summary>
+            <param name="recursive">Stop audio for all child members as well</param>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.DisplayMenu(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
             <summary>

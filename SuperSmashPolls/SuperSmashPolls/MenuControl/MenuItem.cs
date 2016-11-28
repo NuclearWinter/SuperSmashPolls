@@ -276,6 +276,20 @@ namespace SuperSmashPolls.MenuControl {
         }
 
         /// <summary>
+        /// Stops playing audio
+        /// </summary>
+        /// <param name="recursive">Stop audio for all child members as well</param>
+        public void StopAudio(bool recursive = false) {
+            
+            if (recursive)
+                foreach (var i in ContainedItems)
+                    i.MusicInstance.Stop();
+            
+            MusicInstance.Stop();
+
+        }
+
+        /// <summary>
         /// Display the items in ContainedItems and other menu items.
         /// This is for if this item has a menu that it can display.
         /// </summary>

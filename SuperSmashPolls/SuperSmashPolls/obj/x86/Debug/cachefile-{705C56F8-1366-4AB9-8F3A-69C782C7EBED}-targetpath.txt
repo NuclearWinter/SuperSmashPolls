@@ -22,3 +22,4 @@ Content\TitleFont-Small.xnb
 Content\Debate\First Level Foreground.xnb
 Content\Debate\First Level Background.xnb
 Content\Music\MainSong.xnb
+Content\Donald\SpecialAttack.xnb

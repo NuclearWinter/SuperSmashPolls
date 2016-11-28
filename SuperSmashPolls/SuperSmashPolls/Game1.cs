@@ -278,10 +278,6 @@ namespace SuperSmashPolls {
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
                 0.01F, 500F, 10F, 0.8F, 0F, "TheDonald");
 
-                new TheDonaldsMoves().AddMovesToCharacter(TheDonald);
-
-                CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
-
             base.Initialize();
 
         }
@@ -307,6 +303,16 @@ namespace SuperSmashPolls {
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
             //TODO finish animations for TheDonald
+
+            TheDonaldsMoves TheDonaldsAttacks = new TheDonaldsMoves();
+
+            AudioHandler TheDonaldEffect = new AudioHandler(Content.Load<SoundEffect>("Donald\\SpecialAttack"));
+
+            TheDonaldsAttacks.AddAudio(TheDonaldEffect, TheDonaldEffect, TheDonaldEffect, TheDonaldEffect, TheDonaldEffect);
+
+            TheDonaldsAttacks.AddMovesToCharacter(TheDonald);
+
+            CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
 
             /* Menu content */
 
@@ -478,6 +484,8 @@ namespace SuperSmashPolls {
                             Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
 
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
+
+                            Menu.StopAudio();
 
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
 

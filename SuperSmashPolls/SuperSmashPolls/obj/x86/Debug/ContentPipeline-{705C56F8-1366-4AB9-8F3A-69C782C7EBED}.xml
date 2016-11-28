@@ -217,6 +217,15 @@
       <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Music\MainSong.xnb</Output>
       <Time>2016-11-28T16:25:36-06:00</Time>
     </Item>
+    <Item>
+      <Source>Donald\SpecialAttack.wav</Source>
+      <Name>Donald\SpecialAttack</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\SpecialAttack.xnb</Output>
+      <Time>2016-11-28T16:55:52-06:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{705C56F8-1366-4AB9-8F3A-69C782C7EBED}</ContentProjectGUID>

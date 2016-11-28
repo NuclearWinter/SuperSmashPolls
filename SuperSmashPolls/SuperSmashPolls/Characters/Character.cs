@@ -3,7 +3,7 @@
  **********************************************************************************************************************/
 
 #define DEBUG
- #undef DEBUG
+// #undef DEBUG
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -214,8 +214,8 @@ namespace SuperSmashPolls.Characters {
         /// <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         public void CreateBody(ref World gameWorld, Vector2 position, Int16 collisionGroup) {
 
-            CharacterBody             = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.X),
-                ConvertUnits.ToSimUnits(CharacterSize.Y), 1F, position);
+            CharacterBody             = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
+                ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
             CharacterBody.BodyType    = BodyType.Dynamic;
             CharacterBody.Friction    = Friction;
             CharacterBody.Mass        = Mass;

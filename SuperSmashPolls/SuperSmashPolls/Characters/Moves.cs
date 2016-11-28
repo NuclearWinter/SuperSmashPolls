@@ -17,16 +17,33 @@ namespace SuperSmashPolls.Characters {
     /// <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
     public abstract class Moves {
 
+        /// <summary>The audio handler to play during the special attack</summary>
+        protected internal AudioHandler SpecialSound;
         /// <summary>The audio handler to play during the side special attack</summary>
         protected internal AudioHandler SideSpecialSound;
         /// <summary>The audio handler to play during the up special attack</summary>
         protected internal AudioHandler UpSpecialSound;
         /// <summary>The audio handler to play during the down special attack</summary>
         protected internal AudioHandler DownSpecialSound;
-        /// <summary>The audio handler to play during the special attack</summary>
-        protected internal AudioHandler SpecialSound;
         /// <summary>The audio handler to play during a basic attack</summary>
         protected internal AudioHandler BasicAttackSound;
+
+        /// <summary>
+        /// Trys to play the sound effect for the special attack
+        /// </summary>
+        protected internal void PlaySpecialSound() {
+
+            try {
+
+                SpecialSound.PlayEffect();
+
+            } catch (NullReferenceException) {
+
+                Console.WriteLine("Special attack sound not available");
+
+            }
+
+        }
 
         /// <summary>
         /// The basic attack that all characters have

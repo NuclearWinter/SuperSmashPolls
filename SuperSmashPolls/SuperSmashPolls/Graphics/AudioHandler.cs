@@ -15,6 +15,20 @@ namespace SuperSmashPolls.Graphics {
         private readonly List<SoundEffect> Effects;
         /** The (pseudo-)Random Number Generator for deciding which file to play */
         private readonly Random RNG;
+        /** Instances for the sound effects */
+        private List<SoundEffectInstance> EffectInstances;
+
+        /// <summary>
+        /// Makes instances for the sound effects
+        /// </summary>
+        private void MakeEffectInstances() {
+            
+            EffectInstances = new List<SoundEffectInstance>();
+
+            foreach (var i in Effects) 
+                EffectInstances.Add(i.CreateInstance());
+
+        }
 
         /// <summary>
         /// The default constructor for this class.
@@ -22,6 +36,16 @@ namespace SuperSmashPolls.Graphics {
         public AudioHandler() {
             Effects = new List<SoundEffect>();
             RNG     = new Random();
+            MakeEffectInstances();
+        }
+
+        /// <summary>
+        /// The default constructor for this class.
+        /// </summary>
+        public AudioHandler(params SoundEffect[] effect) {
+            Effects = new List<SoundEffect>(effect);
+            RNG     = new Random();
+            MakeEffectInstances();
         }
 
         /// <summary>
@@ -35,6 +59,8 @@ namespace SuperSmashPolls.Graphics {
 
             foreach (SoundEffect i in effects)
                 Effects.Add(i);
+
+            MakeEffectInstances();
 
         }
 
@@ -58,7 +84,7 @@ namespace SuperSmashPolls.Graphics {
 
                 try {
 
-                    Effects[specifiedEffect].Play();
+                    EffectInstances[specifiedEffect].Play();
 
                 } catch (NullReferenceException) {
                     
@@ -70,7 +96,7 @@ namespace SuperSmashPolls.Graphics {
 
                 try {
 
-                    Effects[RNG.Next(Effects.Count)].Play();
+                    EffectInstances[RNG.Next(Effects.Count)].Play();
 
                 } catch (NullReferenceException) {
 

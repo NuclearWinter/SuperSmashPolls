@@ -19,7 +19,7 @@ namespace SuperSmashPolls.Characters {
 
             SideSpecial(character);
 
-            //SpecialSound.PlayEffect();
+            PlaySpecialSound();
 
         }
 
