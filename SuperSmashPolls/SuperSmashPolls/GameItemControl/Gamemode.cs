@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using FarseerPhysics;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SuperSmashPolls.GameItemControl {
@@ -25,6 +27,16 @@ namespace SuperSmashPolls.GameItemControl {
             TimeStockCombo = 2
         }
 
+        /** The size of the full icon for players */
+        private readonly Vector2 FullIconSize;
+        /** The position to put the player's stock indicators, indices 1+ are for the small stock icons/text */
+        private readonly Vector2[] PlayerOneStockPos, PlayerTwoStockPos, PlayerThreeStockPos, PlayerFourStockPos;
+        /** The scale of how big the small stock icons are compared to the full icon */
+        private readonly float SmallStockIconScale;
+        /** The space between stock icons */
+        private readonly float IconBuffer;
+        /** The amount needed to scale the icons to the correct size */
+        private Vector2 PlayerOneIconScale, PlayerTwoIconScale, PlayerThreeIconScale, PlayerFourIconScale;
         /** Whether or not the game has ended */
         private bool GameOver;
         /** Holds the references of deaths */
@@ -33,6 +45,8 @@ namespace SuperSmashPolls.GameItemControl {
         private SpriteFont GameFont;
         /** The icons for players */
         private Texture2D[] PlayerIcons;
+        /** The number of players in the game */
+        private int NumberOfPlayers;
         /// <summary>The lives available to players</summary>
         public int Stock;
         /// <summary>Holds whether or not a player has been eliminated</summary>
@@ -51,13 +65,44 @@ namespace SuperSmashPolls.GameItemControl {
         public Gamemode(ref int playerOneDeaths, ref int playerTwoDeaths, ref int playerThreeDeaths, 
             ref int playerFourDeaths, SpriteFont gameFont) {
 
-            PlayerOneDeaths   = playerOneDeaths;
-            PlayerTwoDeaths   = playerTwoDeaths;
-            PlayerThreeDeaths = playerThreeDeaths;
-            PlayerFourDeaths  = playerFourDeaths;
-            GameFont          = gameFont;
-            EliminationStatus = new[] {false, false, false, false};
-            GameOver          = false;
+            PlayerOneDeaths     = playerOneDeaths;
+            PlayerTwoDeaths     = playerTwoDeaths;
+            PlayerThreeDeaths   = playerThreeDeaths;
+            PlayerFourDeaths    = playerFourDeaths;
+            GameFont            = gameFont;
+            FullIconSize        = ConvertUnits.ToDisplayUnits(new Vector2(0.1F, 0.1F));
+            SmallStockIconScale = 0.15F;
+            IconBuffer          = ConvertUnits.ToDisplayUnits(0.11F);
+            EliminationStatus   = new[] {false, false, false, false};
+            GameOver            = false;
+            PlayerOneStockPos   = new[] {ConvertUnits.ToDisplayUnits(new Vector2(1, 9))};
+            PlayerTwoStockPos   = new[] {ConvertUnits.ToDisplayUnits(new Vector2(7.25F, 9))};
+            PlayerThreeStockPos = new[] {ConvertUnits.ToDisplayUnits(new Vector2(13.5F, 9))};
+            PlayerFourStockPos  = new[] {ConvertUnits.ToDisplayUnits(new Vector2(19.85F, 9))};
+
+            FillStockIconPositions(PlayerOneStockPos);
+            FillStockIconPositions(PlayerTwoStockPos);
+            FillStockIconPositions(PlayerThreeStockPos);
+            FillStockIconPositions(PlayerFourStockPos);
+
+        }
+
+        /// <summary>
+        /// Calculates the smaller icons used to display individual stocks for players
+        /// </summary>
+        /// <param name="iconPosition">The Vector2 array being used to hold the positions</param>
+        /// Only five stock icons cans can be displayed, than it must go to text
+        private void FillStockIconPositions(Vector2[] iconPosition) {
+
+            Vector2 SmallIconSize = FullIconSize * SmallStockIconScale;
+
+            iconPosition[1] = iconPosition[0] + new Vector2(0, IconBuffer);
+
+            for (int i = 2; i <= 5; ++i) {
+                
+                iconPosition[i] = iconPosition[i-1] + new Vector2(0, IconBuffer + SmallIconSize.X);
+
+            } 
 
         }
 
@@ -95,15 +140,53 @@ namespace SuperSmashPolls.GameItemControl {
 
         }
 
-        private void DrawStock() {
-            
+        /// <summary>
+        /// Draws the indicator for a player's stock
+        /// </summary>
+        /// <param name="icon">The icon for the player</param>
+        /// <param name="position">The position to draw the stock indicator</param>
+        /// <param name="stock">The stock of the player (if time based 0)</param>
+        /// <param name="eliminated">Whether or not they have been eliminated</param>
+        /// <param name="spriteBatch">The batch to draw with</param>
+        private void DrawStock(Texture2D icon, Vector2[] position, int stock, bool eliminated, SpriteBatch spriteBatch) {
 
+            spriteBatch.Draw(icon, position[0], null, !eliminated ? Color.White : Color.Red, 0, Vector2.Zero,
+                PlayerOneIconScale, SpriteEffects.None, 0);
+
+            if (stock < 5)
+                for (int i = stock; i > 0; --i)
+                    spriteBatch.Draw(icon, position[i], null, Color.White, 0, Vector2.Zero, SmallStockIconScale,
+                        SpriteEffects.None, 0);
+            else
+                spriteBatch.DrawString(GameFont, stock.ToString(), position[1], Color.White);
 
         }
 
-        public void AssignIcons(params Texture2D ) {
+        /// <summary>
+        /// Assigns icons to player to use for drawing gamemode screens
+        /// </summary>
+        /// <param name="playerOneIcon">The icon for player one</param>
+        /// <param name="playerTwoIcon">The icon for player two</param>
+        /// <param name="playerThreeIcon">The icon for player three</param>
+        /// <param name="playerFourIcon">The icon for player four</param>
+        /// <param name="numberOfPlayers">A reference to the number of players in the game</param>
+        public void AssignIcons(Texture2D playerOneIcon, Texture2D playerTwoIcon, Texture2D playerThreeIcon, 
+            Texture2D playerFourIcon, ref int numberOfPlayers) {
             
+            PlayerIcons     = new[] {playerOneIcon, playerTwoIcon, playerThreeIcon, playerFourIcon};
+            NumberOfPlayers = numberOfPlayers;
 
+            if (PlayerIcons[0] != null)
+                PlayerOneIconScale   = new Vector2(PlayerIcons[0].Width, PlayerIcons[0].Height) / FullIconSize;
+
+            if (PlayerIcons[1] != null)
+                PlayerTwoIconScale   = new Vector2(PlayerIcons[1].Width, PlayerIcons[1].Height) / FullIconSize;
+
+            if (PlayerIcons[2] != null)
+                PlayerThreeIconScale = new Vector2(PlayerIcons[2].Width, PlayerIcons[2].Height) / FullIconSize;
+
+            if (PlayerIcons[3] != null)
+                PlayerOneIconScale   = new Vector2(PlayerIcons[3].Width, PlayerIcons[3].Height) / FullIconSize;
 
         }
 
@@ -124,30 +207,6 @@ namespace SuperSmashPolls.GameItemControl {
         public void ReadGamemode(StreamReader streamReader) {
             
 
-
-        }
-
-        /// <summary>
-        /// Allows for the disableing of extra characters so if there were only two players, only two are counted
-        /// </summary>
-        /// <param name="numPlayers">The number of players in this game</param>
-        /// This just sets their deaths to an illegal character
-        public void DisableExtraCharacters(int numPlayers) {
-
-            switch (numPlayers) {
-                case 3:
-                    PlayerFourDeaths = -1;
-                    break;
-                case 2:
-                    PlayerThreeDeaths = -1;
-                    goto case 3;
-                case 1:
-                    PlayerTwoDeaths = -1;
-                    goto case 2;
-                default:
-                    Console.WriteLine("The number of players used in Gamemode.DisableExtraCharacters wasn't handled");
-                    break;
-            }
 
         }
 
@@ -182,12 +241,25 @@ namespace SuperSmashPolls.GameItemControl {
         /// <param name="spriteBatch">The spritebatch to draw with</param>
         public void DrawGamemodeOverlay(SpriteBatch spriteBatch) {
 
-            switch (GameOver) {
+            if (!GameOver) {
 
-                case false:
-                    break;
-                case true:
-                    break;
+                switch (NumberOfPlayers) {
+                    case 4:
+
+                        break;
+                    case 3:
+                        break;
+                    case 2:
+                        break;
+                    case 1:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+            } else {
+
+                //win/loss screen
 
             }
 

@@ -254,6 +254,10 @@ namespace SuperSmashPolls {
 
             //TODO gamemode menu
 
+            //TODO have all player's character selection on the same screen
+
+            //TODO menu item option type
+
             /************************************** Initialization for Players ****************************************/
 
             PlayerOne   = new PlayerClass(PlayerIndex.One,   Int16.MaxValue - 1);

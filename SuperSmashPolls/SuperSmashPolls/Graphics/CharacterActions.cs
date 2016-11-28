@@ -11,14 +11,7 @@ namespace SuperSmashPolls.Graphics {
     /// Class responsible for handing animations of characters.
     /// </summary>
     public class CharacterAction {
-        /// <summary>The spritesheet to take a value from (can be just one image)</summary>
-        public readonly Texture2D SpriteSheet;
-        /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
-        public readonly int PlayTime;
-        /// <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
-        public readonly Point ImageSize;
-        /// <summary>The color to draw the image with, defaults to clear</summary>
-        public Color DrawColor;
+
         /** The amount of images on the X and Y axis, calculated in the constructor */
         private readonly Point SheetSize;
         /** The piece of the sheet to draw based on PlayTime @see Update */
@@ -29,13 +22,21 @@ namespace SuperSmashPolls.Graphics {
         private Rectangle Source;
         /* The destination for drawing the source rectangle */
         private Rectangle Destination;
+        /// <summary>The spritesheet to take a value from (can be just one image)</summary>
+        public readonly Texture2D SpriteSheet;
+        /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
+        public readonly int PlayTime;
+        /// <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
+        public readonly Point ImageSize;
+        /// <summary>The color to draw the image with, defaults to clear</summary>
+        public Color DrawColor;
 
-       /// <summary>
-       /// Constructor
-       /// </summary>
-       /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
-       /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
-       /// <param name="spriteSheet">The texture of the sheet</param>
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+        /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+        /// <param name="spriteSheet">The texture of the sheet</param>
         public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet) {
 
             PlayTime       = playTime;
