@@ -61,7 +61,10 @@ namespace SuperSmashPolls.GameItemControl {
         /// <summary>
         /// Update the player
         /// </summary>
-        public void UpdatePlayer(Vector2 respawnPoint) {
+        public void UpdatePlayer(Vector2 respawnPoint, bool eliminated) {
+
+            if (eliminated)
+                return;
 
             if (Math.Abs(PlayerCharacter.GetPosition().X) > 40 || Math.Abs(PlayerCharacter.GetPosition().Y) > 30) {
             //Player is past 40 meters

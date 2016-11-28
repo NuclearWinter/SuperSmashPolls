@@ -59,6 +59,8 @@ namespace SuperSmashPolls {
         private readonly Dictionary<string, LevelHandler> LevelDictionary;
         /* Holds characters for matching from a save and for selection TODO change to Dictionary*/
         private readonly List<Tuple<Character, string>> CharacterStringPairs;
+        /** The gamemode for this game */
+        private Gamemode CurrentGamemode;
         /** The one, the only, the Donald */
         private Character TheDonald;
         /** This is the level currently being played on */
@@ -250,12 +252,22 @@ namespace SuperSmashPolls {
 
             //TODO Settings menu
 
+            //TODO gamemode menu
+
             /************************************** Initialization for Players ****************************************/
 
-            PlayerOne   = new PlayerClass(PlayerIndex.One, Int16.MaxValue - 1);
-            PlayerTwo   = new PlayerClass(PlayerIndex.Two, Int16.MaxValue - 2);
+            PlayerOne   = new PlayerClass(PlayerIndex.One,   Int16.MaxValue - 1);
+            PlayerTwo   = new PlayerClass(PlayerIndex.Two,   Int16.MaxValue - 2);
             PlayerThree = new PlayerClass(PlayerIndex.Three, Int16.MaxValue - 3);
-            PlayerFour  = new PlayerClass(PlayerIndex.Four, Int16.MaxValue - 4);
+            PlayerFour  = new PlayerClass(PlayerIndex.Four,  Int16.MaxValue - 4);
+
+            /************************************* Initialization for Gamemode ****************************************/
+
+            CurrentGamemode = new Gamemode(ref PlayerOne.Deaths, ref PlayerTwo.Deaths, ref PlayerThree.Deaths,
+                ref PlayerFour.Deaths, TitleFontSmall);
+
+            CurrentGamemode.CurrentMode = Gamemode.Mode.Stock; //Used for debugging before menu is implimented
+            CurrentGamemode.Stock = 2;
 
             /************************************* Initialization for Characters **************************************/
 
@@ -504,16 +516,16 @@ namespace SuperSmashPolls {
                     switch (NumPlayers) {
 
                         case 4:
-                            PlayerFour.UpdatePlayer(CurrentLevel.RespawnPoint);
+                            PlayerFour.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[0]);
                             goto case 3;
                         case 3:
-                            PlayerThree.UpdatePlayer(CurrentLevel.RespawnPoint);
+                            PlayerThree.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[1]);
                             goto case 2;
                         case 2:
-                            PlayerTwo.UpdatePlayer(CurrentLevel.RespawnPoint);
+                            PlayerTwo.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[2]);
                             goto default;
                         default:
-                            PlayerOne.UpdatePlayer(CurrentLevel.RespawnPoint);
+                            PlayerOne.UpdatePlayer(CurrentLevel.RespawnPoint, CurrentGamemode.EliminationStatus[3]);
                             break;
 
                     }
