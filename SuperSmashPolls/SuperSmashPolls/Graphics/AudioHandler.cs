@@ -39,6 +39,16 @@ namespace SuperSmashPolls.Graphics {
         }
 
         /// <summary>
+        /// Gets a random sound effect from Effects
+        /// </summary>
+        /// <returns></returns>
+        public SoundEffect GetRandomAudio() {
+
+            return Effects[RNG.Next(Effects.Count)];
+
+        }
+
+        /// <summary>
         /// Plays a (pseudo-)random effect from effects, or a selected one.
         /// </summary>
         /// <param name="specifiedEffect">If a specific effect is desired, put its index here to play it</param>

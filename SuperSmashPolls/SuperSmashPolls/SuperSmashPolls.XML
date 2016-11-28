@@ -488,6 +488,12 @@
             </summary>
             <param name="effects">The effects to add</param>
         </member>
+        <member name="M:SuperSmashPolls.Graphics.AudioHandler.GetRandomAudio">
+            <summary>
+            Gets a random sound effect from Effects
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:SuperSmashPolls.Graphics.AudioHandler.PlayEffect(System.Int32)">
             <summary>
             Plays a (pseudo-)random effect from effects, or a selected one.
@@ -654,6 +660,9 @@
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericanPositions">
             The position of characters for American Text mode 
         </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.DeferAudio">
+            Whether or not to play the audio of the item above it 
+        </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.Font">
             Font to use for this item 
         </member>
@@ -672,6 +681,9 @@
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.MenuAudio">
             The music for this menu 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.MusicInstance">
+            Handles looping of audio 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericaText">
             <summary>Makes the text more american, not american't</summary>
@@ -697,7 +709,7 @@
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.Command">
             <summary>The command to use if clicked on</summary>
         </member>
-        <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands,System.Boolean)">
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands,System.Boolean,System.Boolean)">
             <summary>
             Constructor
             </summary>

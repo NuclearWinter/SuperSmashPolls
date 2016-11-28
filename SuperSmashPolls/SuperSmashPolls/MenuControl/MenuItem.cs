@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SuperSmashPolls.Graphics;
@@ -56,6 +57,8 @@ namespace SuperSmashPolls.MenuControl {
         private readonly bool HasSubmenu;
         /** The position of characters for American Text mode */
         private readonly List<Vector2> AmericanPositions;
+        /** Whether or not to play the audio of the item above it */
+        private readonly bool DeferAudio;
         /** Font to use for this item */
         private SpriteFont Font;
         /** Texture to use as the thumbnail for this item */
@@ -73,6 +76,8 @@ namespace SuperSmashPolls.MenuControl {
         private int AmericanCounter;
         /** The music for this menu */
         private AudioHandler MenuAudio;
+        /** Handles looping of audio */
+        private SoundEffectInstance MusicInstance;
         /// <summary>Makes the text more american, not american't</summary>
         public bool AmericaText;
         /// <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
@@ -90,8 +95,6 @@ namespace SuperSmashPolls.MenuControl {
         /// <summary>The command to use if clicked on</summary>
         public readonly MenuCommands Command;
 
-        //TODO music
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -105,7 +108,8 @@ namespace SuperSmashPolls.MenuControl {
         /// <param name="americaText">Makes the text great again</param>
         /// <param name="deferAudio">Whther or not to play the audio of the MenuItem above this one</param>
         public MenuItem(WorldUnit position, string text, bool hasSubmenu, WorldUnit textBuffer, bool highlightable, 
-            bool centerItem = false, MenuCommands command = MenuCommands.Nothing, bool americaText = false) {
+            bool centerItem = false, MenuCommands command = MenuCommands.Nothing, bool americaText = false, 
+            bool deferAudio = true) {
             Position      = position;
             Text          = text;
             HasSubmenu    = hasSubmenu;
@@ -119,6 +123,7 @@ namespace SuperSmashPolls.MenuControl {
             DrawDown          = -1;
             AmericaText       = americaText;
             AmericanCounter   = 0;
+            DeferAudio        = deferAudio;
         }
 
         /// <summary>
@@ -188,6 +193,8 @@ namespace SuperSmashPolls.MenuControl {
         public void AddAudio(AudioHandler audioHandler) {
 
             MenuAudio = audioHandler;
+            MusicInstance = MenuAudio.GetRandomAudio().CreateInstance();
+            MusicInstance.IsLooped = true;
 
         }
 
@@ -202,7 +209,8 @@ namespace SuperSmashPolls.MenuControl {
             if (DrawDown == -1) {
                 /* Updates the current menu */
 
-                MenuAudio?.PlayEffect();
+                if (!DeferAudio)
+                    MusicInstance?.Play();
 
                 foreach (var i in ContainedItems)
                     i.AmericaTextUpdate();
@@ -248,13 +256,16 @@ namespace SuperSmashPolls.MenuControl {
             } else {
 
                 //Moves the menu back a screen
-                if (DrawDown != -1 && ContainedItems[DrawDown].DrawDown == -1
+                if (ContainedItems[DrawDown].DrawDown == -1
                     && currentState.IsButtonDown(Buttons.B) && lastPressed.IsButtonUp(Buttons.B)) {
                     DrawDown = -1;
 
                     return UpdateMenu(currentState, lastPressed);
 
                 }
+
+                if (ContainedItems[DrawDown].DeferAudio && !DeferAudio)
+                    MusicInstance?.Play();
 
                 return ContainedItems[DrawDown].UpdateMenu(currentState, lastPressed);
 

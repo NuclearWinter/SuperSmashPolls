@@ -167,7 +167,7 @@ namespace SuperSmashPolls {
             //Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
             Menu = new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0, 0)), "", true,
-                new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false);
+                new WorldUnit(ref ScreenSize, new Vector2(0, 0)), false, false, MenuCommands.Nothing, false, false);
 
 /* 00 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), "Local Game", false,
                 EmptyUnit, true, true, MenuCommands.SingleplayerMenu));
@@ -313,6 +313,11 @@ namespace SuperSmashPolls {
             Menu.SetFontForAll(TitleFont);
 
             Menu.AccessItem(5).SetFont(TitleFontSmall);
+
+            AudioHandler MenuAudio = new AudioHandler();
+            MenuAudio.AddAudio(Content.Load<SoundEffect>("Music\\MainSong"));
+
+            Menu.AddAudio(MenuAudio);
 
             /* DEBUG Gamemode content */
 
