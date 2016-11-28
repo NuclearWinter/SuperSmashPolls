@@ -649,6 +649,9 @@
             This is the main type of the game.
             </summary>
         </member>
+        <member name="T:SuperSmashPolls.Game1.GameState">
+            Handles the different states that the game can be in 
+        </member>
         <member name="F:SuperSmashPolls.Game1.TheDonald">
             The one, the only, the Donald 
         </member>
@@ -656,13 +659,13 @@
             This is the level currently being played on 
         </member>
         <member name="F:SuperSmashPolls.Game1.TempleRock">
-             
+            Levels for the player to play on 
         </member>
         <member name="F:SuperSmashPolls.Game1.Temple">
-             
+            Levels for the player to play on 
         </member>
         <member name="F:SuperSmashPolls.Game1.Space">
-             
+            Levels for the player to play on 
         </member>
         <member name="F:SuperSmashPolls.Game1.PlayerOne">
             The player's in this game 
@@ -675,9 +678,6 @@
         </member>
         <member name="F:SuperSmashPolls.Game1.PlayerFour">
             The player's in this game 
-        </member>
-        <member name="T:SuperSmashPolls.Game1.GameState">
-            Handles the different states that the game can be in 
         </member>
         <member name="F:SuperSmashPolls.Game1.State">
             Variable to hold the state of the game 

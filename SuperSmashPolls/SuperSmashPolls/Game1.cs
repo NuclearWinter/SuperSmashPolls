@@ -44,7 +44,8 @@ namespace SuperSmashPolls {
             GameLevel,      //The first level of the game
             ScoreScreen,
             LoadSave,
-            SaveGame
+            SaveGame,
+            EndgameScreen //Shows rankings of the match (win/loss)
 
         };
 

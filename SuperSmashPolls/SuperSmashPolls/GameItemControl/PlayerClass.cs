@@ -25,25 +25,26 @@ namespace SuperSmashPolls.GameItemControl {
     /// <remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that
     ///class.</remarks>
     class PlayerClass {
+
         /** The ID of the character */
         private readonly PlayerIndex PlayerID;
         /** The health that the character has */
         private float PlayerHealth;
-        /** Time number of times that the player has dies */
-        private int Deaths;
-        /** The player's character */
+        /// <summary>The number of times that the player has died</summary>
+        public int Deaths;
+        /// <summary>The player's character</summary>
         public Character PlayerCharacter;
-        /** The collision category for this player */
+        /// <summary>The collision category for this player</summary>
         public Int16 CollisionCategory;
 
         /// <summary>
         /// Constructor
         /// </summary>
         public PlayerClass(PlayerIndex playerId, Int16 collisionCategory) {
-            PlayerID        = playerId;
-            PlayerCharacter = new Character();
-            PlayerHealth    = 0;
-            Deaths          = 0;
+            PlayerID          = playerId;
+            PlayerCharacter   = new Character();
+            PlayerHealth      = 0;
+            Deaths            = 0;
             CollisionCategory = collisionCategory;
         }
 
