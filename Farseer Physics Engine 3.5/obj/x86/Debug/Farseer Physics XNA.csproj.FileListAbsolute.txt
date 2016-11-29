@@ -9,3 +9,14 @@ Y:\git\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\Farseer Physics 
 Y:\git\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 Y:\git\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\FarseerPhysics XNA.dll
 Y:\git\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\FarseerPhysics XNA.pdb
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\bin\x86\Debug\FarseerPhysics XNA.xml
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\bin\x86\Debug\FarseerPhysics XNA.dll
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\bin\x86\Debug\FarseerPhysics XNA.pdb
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\bin\x86\Debug\Microsoft.Xna.Framework.dll
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\bin\x86\Debug\Microsoft.Xna.Framework.xml
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\Farseer Physics XNA.csprojResolveAssemblyReference.cache
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\FarseerPhysics XNA.dll
+Z:\Desktop\SuperSmashPolls\Farseer Physics Engine 3.5\obj\x86\Debug\FarseerPhysics XNA.pdb

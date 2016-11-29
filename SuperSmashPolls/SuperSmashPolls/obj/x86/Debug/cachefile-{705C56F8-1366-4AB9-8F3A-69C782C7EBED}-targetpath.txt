@@ -1,4 +1,6 @@
 Content\SpriteFont1.xnb
+Content\TitleFont.xnb
+Content\TitleFont-Small.xnb
 Content\PlayerOne.xnb
 Content\PlayerTwo.xnb
 Content\sprite sheet template 32 bit.xnb
@@ -17,9 +19,9 @@ Content\TempleItems\TempleTop.xnb
 Content\TempleItems\TempleRight.xnb
 Content\TempleItems\TempleBackground.xnb
 Content\SaikyoBlack.xnb
-Content\TitleFont.xnb
-Content\TitleFont-Small.xnb
 Content\Debate\First Level Foreground.xnb
 Content\Debate\First Level Background.xnb
 Content\Music\MainSong.xnb
 Content\Donald\SpecialAttack.xnb
+Content\Donald\donald_walk.xnb
+Content\Donald\donald_stand.xnb
