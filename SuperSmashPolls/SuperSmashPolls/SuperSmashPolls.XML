@@ -300,9 +300,6 @@
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerFourIconScale">
             The amount needed to scale the icons to the correct size 
         </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.GameOver">
-            Whether or not the game has ended 
-        </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerOneDeaths">
             Holds the references of deaths 
         </member>
@@ -326,6 +323,9 @@
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Winner">
             The winner of the game 
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.GameOver">
+            <summary>Whether or not the game has ended</summary>
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.NumberOfPlayers">
             <summary>The number of players in the game</summary>

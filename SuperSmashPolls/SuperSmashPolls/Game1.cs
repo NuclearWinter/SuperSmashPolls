@@ -246,6 +246,18 @@ namespace SuperSmashPolls {
 /* 05 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0F, 0.9F)),
                 "Use DPad up and down to navigate the menu", false, EmptyUnit, false));
 
+            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
+                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Save game", false,
+                    EmptyUnit, true, true, MenuCommands.SaveGame));
+
+            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
+                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Continue", false,
+                    EmptyUnit, true, true, MenuCommands.ResumeGame));
+
+            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
+                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Main Menu", false,
+                    EmptyUnit, true, true, MenuCommands.BackToMainMenu));
+
             const int SuperSmashText = 5;
 
             //Menu.AccessItem(SuperSmashText).
@@ -470,24 +482,37 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.StartGame:
                             State = GameState.GameLevel;
-                            Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
-                            Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
+                            //Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
+                            //Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
 
-                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
-                                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Save game", false,
-                                    EmptyUnit, true, true, MenuCommands.SaveGame));
-
-                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
-                                new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Continue", false,
-                                    EmptyUnit, true, true, MenuCommands.ResumeGame));
-
-                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(GameFont);
+                            Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(TitleFont);
 
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 0;
 
                             Menu.StopAudio();
 
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
+                            CurrentGamemode.GameOver        = false;
+
+                            switch (NumPlayers) {
+                                case 1:
+                                    PlayerOne.Deaths = 0;
+                                    PlayerOne.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerOneSpawn;
+                                    break;
+                                case 2:
+                                    PlayerTwo.Deaths = 0;
+                                    PlayerTwo.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerTwoSpawn;
+                                    goto case 1;
+                                case 3:
+                                    PlayerThree.Deaths = 0;
+                                    PlayerThree.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerThreeSpawn;
+                                    goto case 2;
+                                case 4:
+                                    PlayerFour.Deaths = 0;
+                                    PlayerFour.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerFourSpawn;
+                                    goto case 3;
+
+                            }
 
 #if (DEBUG)
                             PlayerOne.PlayerCharacter.JumpInterval   = 0.1F;
@@ -496,9 +521,10 @@ namespace SuperSmashPolls {
                             PlayerFour.PlayerCharacter.JumpInterval  = 0.1F;
 #endif
 
-                            break;
+                                break;
                         case MenuCommands.BackToMainMenu:
                             Menu.DrawDown = -1;
+                            Menu.ContainedItems[0].ContainedItems[0].DrawDown = -1;
                             break;
                         case MenuCommands.MultiplayerMenu:
                             Menu.DrawDown = 1;

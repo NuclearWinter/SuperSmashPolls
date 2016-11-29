@@ -37,8 +37,6 @@ namespace SuperSmashPolls.GameItemControl {
         private readonly float IconBuffer;
         /** The amount needed to scale the icons to the correct size */
         private Vector2 PlayerOneIconScale, PlayerTwoIconScale, PlayerThreeIconScale, PlayerFourIconScale;
-        /** Whether or not the game has ended */
-        private bool GameOver;
         /** Holds the references of deaths */
         private int PlayerOneDeaths, PlayerTwoDeaths, PlayerThreeDeaths, PlayerFourDeaths;
         /** The font to use for drawing stuff */
@@ -49,6 +47,8 @@ namespace SuperSmashPolls.GameItemControl {
         private string[] Places;
         /** The winner of the game */
         private string Winner;
+        /// <summary>Whether or not the game has ended</summary>
+        public bool GameOver;
         /// <summary>The number of players in the game</summary>
         public int NumberOfPlayers;
         /// <summary>The lives available to players</summary>
@@ -257,16 +257,22 @@ namespace SuperSmashPolls.GameItemControl {
                 if (EliminatedPlayers >= NumberOfPlayers - 1)
                     GameOver = true;
 
+                if (NumberOfPlayers == 1)
+                    GameOver = ElimStatus[0];
+
             } else {
 
-                if (PlayerOneDeaths < Stock)
+                if (PlayerOneDeaths < Stock) {
                     Winner = "Player one";
-                else if (PlayerTwoDeaths < Stock)
+                } else if (PlayerTwoDeaths < Stock)
                     Winner = "Player two";
                 else if (PlayerThreeDeaths < Stock)
                     Winner = "Player three";
                 else if (PlayerFourDeaths < Stock)
                     Winner = "Player four";
+
+                if (NumberOfPlayers == 1)
+                    Winner = "none";
 
             }
 
@@ -304,7 +310,14 @@ namespace SuperSmashPolls.GameItemControl {
 
             } else {
 
-                batch.DrawString(GameFont, Winner + " wins!", ConvertUnits.ToDisplayUnits(new Vector2(25/2 - 3, 6)), Color.White);
+                batch.GraphicsDevice.Clear(Color.DarkGray);
+
+                if (Winner != "none")
+                    batch.DrawString(GameFont, Winner + " is the next president!",
+                        ConvertUnits.ToDisplayUnits(new Vector2(25/2 - 6, 6)), Color.Maroon);
+                else
+                    batch.DrawString(GameFont, "Everyone was terrible...no next president",
+                        ConvertUnits.ToDisplayUnits(new Vector2(25/2 - 7, 6)), Color.Maroon);
 
                 //TODO just make this screen into a menuitem so it is navigatable
 
