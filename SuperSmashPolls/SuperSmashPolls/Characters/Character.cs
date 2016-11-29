@@ -51,14 +51,14 @@ namespace SuperSmashPolls.Characters {
         private readonly float MovementMultiplier;
         /** The minimum time between character's special attacks */
         private readonly float SpecialAttackInterval;
+        /** The move animations for this character */
+        private readonly List<CharacterAction> Actions;
+        /** The moves for this character. Links with Actions */
+        private readonly List<CharacterMove> Moves;
         /* The last time that the character jumped */
         private DateTime LastJump;
         /* The last time that the character used their special attack */
         private DateTime LastSpecialAttack;
-        /** The move animations for this character */
-        private List<CharacterAction> Actions;
-        /** The moves for this character. Links with Actions */
-        private List<CharacterMove> Moves;
         /* The index of a value in Actions that represents the current action of the player */
         private int CurrentActionIndex;
         /* The group that this character's moves don't affect */
@@ -173,6 +173,16 @@ namespace SuperSmashPolls.Characters {
 
             foreach (var i in actions)
                 Actions.Add(i);
+
+        }
+
+        /// <summary>
+        /// This is called to create bodies for the character from their textures. This must be called after textures
+        /// are loaded in.
+        /// </summary>
+        private void CreateBayazitBodies() {
+
+
 
         }
 
