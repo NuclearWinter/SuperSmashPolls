@@ -299,11 +299,11 @@ namespace SuperSmashPolls {
 
             TheDonald.AddCharacterActions(
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")),
-                new CharacterAction(1, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-jump")),
+                new CharacterAction(1, new Point(19, 26), Content.Load<Texture2D>("Donald\\donald_jump")),
                 new CharacterAction(1, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_walk")),
+                new CharacterAction(1, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_punch")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
+                new CharacterAction(2, new Point(26, 30), Content.Load<Texture2D>("Donald\\donald_upmash")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
                 new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
             //TODO finish animations for TheDonald

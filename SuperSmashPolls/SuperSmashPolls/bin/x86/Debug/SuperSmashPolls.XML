@@ -89,6 +89,12 @@
             </summary>
             <param name="actions"> The actions to add to Actions</param>
         </member>
+        <member name="M:SuperSmashPolls.Characters.Character.CreateBayazitBodies">
+            <summary>
+            This is called to create bodies for the character from their textures. This must be called after textures
+            are loaded in.
+            </summary>
+        </member>
         <member name="M:SuperSmashPolls.Characters.Character.AddCharacterActions(SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction)">
             <summary>
             Adds adds all of the animations for moves to the character
@@ -876,7 +882,6 @@
         <member name="M:SuperSmashPolls.Game1.#ctor">
             <summary>
             Constructs the game's class
-            TODO clean up constructor
             </summary>
         </member>
         <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
@@ -889,8 +894,8 @@
             <summary>
             Get's the meters of something drawn in a 640x360 scale in a vector 2
             </summary>
-            <param name="X">The x value to convert</param>
-            <param name="Y">The y value to convert</param>
+            <param name="x">The x value to convert</param>
+            <param name="y">The y value to convert</param>
         </member>
         <member name="M:SuperSmashPolls.Game1.Initialize">
             <summary>
@@ -903,7 +908,6 @@
             <summary> 
             LoadContent will be called once per game and is the place to load all of your content.
             </summary>
-            <remarks>The menu is created here</remarks>
         </member>
         <member name="M:SuperSmashPolls.Game1.UnloadContent">
             <summary>
