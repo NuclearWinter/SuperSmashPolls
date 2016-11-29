@@ -8,21 +8,13 @@
  #undef DEBUG
 
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using FarseerPhysics;
-using FarseerPhysics.Dynamics;
-using FarseerPhysics.Collision;
-using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using SuperSmashPolls.Characters;
 using SuperSmashPolls.GameItemControl;
 using SuperSmashPolls.Graphics;
@@ -92,13 +84,12 @@ namespace SuperSmashPolls {
 
         /// <summary>
         /// Constructs the game's class
-        /// TODO clean up constructor
         /// </summary>
         public Game1() {
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360); //TODO options in file
 
-            LevelDictionary = new Dictionary<string, LevelHandler>();
+            LevelDictionary      = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
 
             /* This is the player's screen controller */
@@ -110,13 +101,9 @@ namespace SuperSmashPolls {
 
             /* This is to import pictures and sounds and stuff */
             Content.RootDirectory = "Content";
-
-            EmptyUnit = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
-
-            //This is equal to how many pixels are in one meter
-            PixelToMeterScale = ScreenSize.X/25;
-
-            LastPressed = GamePad.GetState(PlayerIndex.One);
+            EmptyUnit             = new WorldUnit(ref ScreenSize, new Vector2(0, 0)); //TODO remove worldunit usage
+            PixelToMeterScale     = ScreenSize.X/25; //How many pixels are in one meter
+            LastPressed           = GamePad.GetState(PlayerIndex.One);
 
         }
         
@@ -133,11 +120,11 @@ namespace SuperSmashPolls {
         /// <summary>
         /// Get's the meters of something drawn in a 640x360 scale in a vector 2
         /// </summary>
-        /// <param name="X">The x value to convert</param>
-        /// <param name="Y">The y value to convert</param>
-        private Vector2 MetersV2(float X, float Y) {
+        /// <param name="x">The x value to convert</param>
+        /// <param name="y">The y value to convert</param>
+        private Vector2 MetersV2(float x, float y) {
             
-            return new Vector2(InMeters(X), InMeters(Y));
+            return new Vector2(InMeters(x), InMeters(y));
 
         }
 
@@ -258,7 +245,7 @@ namespace SuperSmashPolls {
                 new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Main Menu", false,
                     EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
-            const int SuperSmashText = 5;
+            //const int SuperSmashText = 5;
 
             //Menu.AccessItem(SuperSmashText).
 
@@ -279,7 +266,6 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Gamemode ****************************************/
 
-
             CurrentGamemode = new Gamemode();
 
             CurrentGamemode.CurrentMode = Gamemode.Mode.Stock; //Used for debugging before menu is implimented
@@ -297,13 +283,19 @@ namespace SuperSmashPolls {
         /// <summary> 
         /// LoadContent will be called once per game and is the place to load all of your content.
         /// </summary>
-        /// <remarks>The menu is created here</remarks>
         protected override void LoadContent() {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            Batch     = new SpriteBatch(GraphicsDevice);
-            GameFont  = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
-            TitleFont = Content.Load<SpriteFont>("TitleFont");
+
+            /***************** System Creations *****************/
+
+            Batch = new SpriteBatch(GraphicsDevice);
+
+            /****************** Font Loading ********************/
+
+            GameFont       = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
+            TitleFont      = Content.Load<SpriteFont>("TitleFont");
             TitleFontSmall = Content.Load<SpriteFont>("TitleFont-Small");
+
+            /************ The Donald Content Loading ************/
 
             TheDonald.AddCharacterActions(
                 new CharacterAction(2, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-stand")),
@@ -324,26 +316,25 @@ namespace SuperSmashPolls {
 
             TheDonaldsAttacks.AddMovesToCharacter(TheDonald);
 
+            /***** Add characters to character string pairs *****/
+
             CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
 
-            /* Menu content */
+            /******************* Menu content *******************/
 
             Menu.SetFontForAll(TitleFont);
 
             Menu.AccessItem(5).SetFont(TitleFontSmall);
 
-            AudioHandler MenuAudio = new AudioHandler();
-            MenuAudio.AddAudio(Content.Load<SoundEffect>("Music\\MainSong"));
+            Menu.AddAudio(new AudioHandler(Content.Load<SoundEffect>("Music\\MainSong")));
 
-            Menu.AddAudio(MenuAudio);
-
-            /* DEBUG Gamemode content */
+            /******** TODO remove DEBUG Gamemode content ********/
 
             Texture2D Icon = Content.Load<Texture2D>("PlayerOne");
 
             CurrentGamemode.AssignIcons(Icon, Icon, Icon, Icon, TitleFontSmall);
 
-            /* Load for Temple Rock */
+            /*************** Load for Temple Rock ***************/
 
             Texture2D TempleRockTexture = Content.Load<Texture2D>("TempleRock");
 
@@ -356,9 +347,7 @@ namespace SuperSmashPolls {
             TempleRock.SetBackground(SpaceBackground, new Vector2(SpaceBackground.Width,
                 SpaceBackground.Height) / ScreenSize);
 
-            LevelDictionary.Add("TempleRock", TempleRock);
-
-            /* Load Temple */
+            /******************* Load Temple ********************/
 
             Texture2D TempleLeft = Content.Load<Texture2D>("TempleItems\\TempleLeft"),
                 TempleMiddle     = Content.Load<Texture2D>("TempleItems\\TempleMiddle"),
@@ -375,7 +364,10 @@ namespace SuperSmashPolls {
                 new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
                 new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
 
-            LevelDictionary.Add("Temple", Temple);
+            /************* Add levels to dictionary *************/
+
+            LevelDictionary.Add("Temple",     Temple);
+            LevelDictionary.Add("TempleRock", TempleRock);
 
         }
 
@@ -442,7 +434,7 @@ namespace SuperSmashPolls {
                 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+                Exit();
 
             switch (State) {
 
@@ -544,7 +536,7 @@ namespace SuperSmashPolls {
                             State = GameState.GameLevel;
                             break;
                         case MenuCommands.ExitGame:
-                            this.Exit();
+                            Exit();
                             break;
                         case MenuCommands.SelectTrump:
                             SetCharacter(TheDonald);
@@ -622,7 +614,7 @@ namespace SuperSmashPolls {
 
                         FileWriter.Close();
 
-                    } catch (Exception e) { Console.WriteLine("Exception: " + e.Message); }
+                    } catch (Exception E) { Console.WriteLine("Exception: " + E.Message); }
 
                     State = GameState.GameLevel;
 
@@ -660,9 +652,9 @@ namespace SuperSmashPolls {
 
                         State = GameState.GameLevel;
 
-                    } catch (Exception e) {
+                    } catch (Exception E) {
 
-                        Console.WriteLine("Exception: " + e.Message);
+                        Console.WriteLine("Exception: " + E.Message);
 
                     }
 
