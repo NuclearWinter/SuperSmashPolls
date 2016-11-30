@@ -11,3 +11,19 @@ SuperSmashPolls/bin/*
 *.exe
 
 *.cache
+
+Farseer Physics Engine 3.5/bin/x86/Debug/FarseerPhysics XNA.pdb
+
+Farseer Physics Engine 3.5/bin/x86/Debug/FarseerPhysics XNA.pdb
+
+Farseer Physics Engine 3.5/bin/x86/Debug/FarseerPhysics XNA.pdb
+
+Farseer Physics Engine 3.5/obj/x86/Debug/FarseerPhysics XNA.pdb
+
+SuperSmashPolls/SuperSmashPolls/bin/x86/Debug/FarseerPhysics XNA.pdb
+
+SuperSmashPolls/SuperSmashPolls/bin/x86/Debug/SuperSmashPolls.pdb
+
+SuperSmashPolls/SuperSmashPolls/obj/x86/Debug/SuperSmashPolls.pdb
+
+*.pdb
