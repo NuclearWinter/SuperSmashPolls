@@ -7,9 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Resources;
-using System.Text;
 using FarseerPhysics;
 using FarseerPhysics.Common;
 using Microsoft.Xna.Framework;
@@ -27,7 +24,7 @@ namespace SuperSmashPolls.Levels {
     /// </summary>
     public class LevelHandler {
         /** The bodies of this level (Body, texture, size (in meters)) */
-        private List<Tuple<Body, Texture2D, Vector2>> LevelBody;
+        private readonly List<Tuple<Body, Texture2D, Vector2>> LevelBody;
         /** The background for this level */
         private Texture2D LevelBackground; 
         /** The amount that the background needs to be scaled (adjusted for different screen sizes) */

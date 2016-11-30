@@ -359,10 +359,10 @@ namespace SuperSmashPolls {
                 new Vector2(ScreenSize.X / TempleBackground.Width, ScreenSize.Y / TempleBackground.Height));
 
             Temple.AssignToWorld(
-                new Tuple<Texture2D, Vector2, Vector2>(TempleLeft, MetersV2(8, 188), MetersV2(132, 79)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleLeft,   MetersV2(8, 188),   MetersV2(132, 79)),
                 new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
-                new Tuple<Texture2D, Vector2, Vector2>(TempleRight, MetersV2(309, 176), MetersV2(324, 137)),
-                new Tuple<Texture2D, Vector2, Vector2>(TempleTop, MetersV2(185, 37), MetersV2(132, 45)));
+                new Tuple<Texture2D, Vector2, Vector2>(TempleRight,  MetersV2(309, 176), MetersV2(324, 137)),
+                new Tuple<Texture2D, Vector2, Vector2>(TempleTop,    MetersV2(185, 37),  MetersV2(132, 45)));
 
             /************* Add levels to dictionary *************/
 

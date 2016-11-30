@@ -55,6 +55,8 @@ namespace SuperSmashPolls.Characters {
         private readonly List<CharacterAction> Actions;
         /** The moves for this character. Links with Actions */
         private readonly List<CharacterMove> Moves;
+        /** The bodies for this character */
+        private Body[] BayazitBodies;
         /* The last time that the character jumped */
         private DateTime LastJump;
         /* The last time that the character used their special attack */
@@ -182,7 +184,9 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         private void CreateBayazitBodies() {
 
+            BayazitBodies = new Body[8];
 
+            //TODO update body from CharacterActions disable collision for bad stuff
 
         }
 
@@ -224,13 +228,15 @@ namespace SuperSmashPolls.Characters {
         /// <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         public void CreateBody(ref World gameWorld, Vector2 position, Int16 collisionGroup) {
 
-            CharacterBody             = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
-                ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
-            CharacterBody.BodyType    = BodyType.Dynamic;
-            CharacterBody.Friction    = Friction;
-            CharacterBody.Mass        = Mass;
-            CharacterBody.Restitution = Restitution;
-            CharacterBody.CollisionGroup = collisionGroup;
+            foreach (var I in Actions)
+                I.GenerateBodies(gameWorld);
+
+            CharacterBody                = Actions[IdleIndex].FirstBody();
+            CharacterBody.Friction       = Friction;
+            CharacterBody.Mass           = Mass;
+            CharacterBody.Restitution    = Restitution;
+            CollisionGroup               = collisionGroup;
+            CharacterBody.CollisionGroup = CollisionGroup;
             GameWorld                    = gameWorld;
 
         }
@@ -367,10 +373,15 @@ namespace SuperSmashPolls.Characters {
 
             }
 
-            //Updates the character model
-            Actions[CurrentActionIndex].UpdateAnimation(
-                ConvertUnits.ToDisplayUnits(CharacterBody.Position) - CharacterOrigin, //I don't like this line :(
-                CharacterSize);
+            //Updates the character model and sets the character body to its new body
+            CharacterBody =
+                Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
+                                                            CharacterOrigin);
+            CharacterBody.CollisionGroup = CollisionGroup;
+            CharacterBody.Restitution    = Restitution;
+            CharacterBody.Enabled        = true;
+            CharacterBody.Friction       = Friction;
+            CharacterBody.Mass           = Mass;
 
         }
 

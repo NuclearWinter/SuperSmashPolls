@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FarseerPhysics;
+using FarseerPhysics.Common;
+using FarseerPhysics.Common.Decomposition;
+using FarseerPhysics.Common.TextureTools;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,13 +20,15 @@ namespace SuperSmashPolls.Graphics {
 
         /** The amount of images on the X and Y axis, calculated in the constructor */
         private readonly Point SheetSize;
+        /** Array to hold bodies */
+        private readonly Body[] Bodies;
         /** The piece of the sheet to draw based on PlayTime @see Update */
         private Point AnimatedPoint;
         /** The last time that AnimatedPoint was updated */
         private DateTime LastUpdateTime;
-        /* The source on the spritesheet to draw */
+        /** The source on the spritesheet to draw */
         private Rectangle Source;
-        /* The destination for drawing the source rectangle */
+        /** The destination for drawing the source rectangle */
         private Rectangle Destination;
         /// <summary>The spritesheet to take a value from (can be just one image)</summary>
         public readonly Texture2D SpriteSheet;
@@ -30,6 +38,8 @@ namespace SuperSmashPolls.Graphics {
         public readonly Point ImageSize;
         /// <summary>The color to draw the image with, defaults to clear</summary>
         public Color DrawColor;
+        /// <summary>The scale to use</summary>
+        public int Scale;
 
         /// <summary>
         /// Constructor
@@ -46,6 +56,67 @@ namespace SuperSmashPolls.Graphics {
             AnimatedPoint  = new Point(0, 0);
             DrawColor      = Color.White;
             LastUpdateTime = DateTime.Now;
+            Bodies = new Body[SheetSize.X * SheetSize.Y];
+            Scale = 1; //TODO get scale
+
+        }
+
+        /// <summary>
+        /// Generates the bodies for each of the pieces of the sheet.
+        /// </summary>
+        /// <param name="LevelWorld">The world to create bodies in</param>
+        public void GenerateBodies(World LevelWorld) { //TODO get scale
+
+            int SpriteSheetSize = SpriteSheet.Width * SpriteSheet.Height;
+            int IndividualSize  = ImageSize.X * ImageSize.Y;
+
+            uint[] TextureData = new uint[SpriteSheetSize]; //Array to copy texture info into
+            SpriteSheet.GetData<uint>(TextureData); //Gets which pixels of the texture are actually filled
+
+            List<uint[]> IndividualData = new List<uint[]>();
+
+            for (int Processed = 0; Processed <= SpriteSheetSize; Processed += IndividualSize) {
+
+                uint[] TempArray = new uint[IndividualSize];
+
+                Array.Copy(TextureData, Processed, TempArray, 0, IndividualSize);
+
+                IndividualData.Add(TempArray);
+
+            }
+
+            int BodyIndex = 0;
+
+            foreach (uint[] I in IndividualData) {
+
+                Vertices vertices         = TextureConverter.DetectVertices(I, SpriteSheet.Width);
+                List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, TriangulationAlgorithm.Bayazit);
+
+                Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(Scale));
+                foreach (Vertices vert in VertexList)
+                    vert.Scale(ref VertScale); //Scales the vertices to match the size we specified
+
+                Vector2 Centroid = -vertices.GetCentroid();
+                vertices.Translate(ref Centroid);
+                //basketOrigin = -centroid;
+
+                //This actually creates the body
+                Bodies[BodyIndex] = BodyFactory.CreateCompoundPolygon(LevelWorld, VertexList, 1, Vector2.Zero);
+                Bodies[BodyIndex].BodyType = BodyType.Dynamic;
+                Bodies[BodyIndex].Enabled  = false;
+                ++BodyIndex;
+
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Body FirstBody() {
+
+            return Bodies[0];
 
         }
 
@@ -53,8 +124,9 @@ namespace SuperSmashPolls.Graphics {
         /// Updates the animation
         /// </summary>
 	    /// <param name="position">The position on screen to draw the image</param>
-		/// <param name="drawSize">The size to draw the image</param>
-        public void UpdateAnimation(Vector2 position, Vector2 drawSize) {
+		/// <returns>The body related to the current action</returns>
+		/// <remarks>The body returned from here must be enabled if it is to collide with anything</remarks>
+        public Body UpdateAnimation(Vector2 position) {
 
             DateTime Now = DateTime.Now;
 
@@ -78,7 +150,9 @@ namespace SuperSmashPolls.Graphics {
 
             Source      = new Rectangle(ImageSize.X * AnimatedPoint.X, ImageSize.Y * AnimatedPoint.Y, ImageSize.X,
                 ImageSize.Y);
-            Destination = new Rectangle((int)position.X, (int)position.Y, (int)drawSize.Y, (int)drawSize.X);
+            Destination = new Rectangle((int)position.X, (int)position.Y, ImageSize.X * Scale, ImageSize.Y * Scale);
+
+            return Bodies[AnimatedPoint.X*AnimatedPoint.Y];
 
         }
 

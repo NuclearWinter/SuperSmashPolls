@@ -39,6 +39,9 @@
         <member name="F:SuperSmashPolls.Characters.Character.Moves">
             The moves for this character. Links with Actions 
         </member>
+        <member name="F:SuperSmashPolls.Characters.Character.BayazitBodies">
+            The bodies for this character 
+        </member>
         <member name="F:SuperSmashPolls.Characters.Character.GameWorld">
             <summary>The world that this character is in</summary>
         </member>
@@ -88,6 +91,12 @@
             Allows for multiple items to be easily added to the list
             </summary>
             <param name="actions"> The actions to add to Actions</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.CreateBayazitBodies">
+            <summary>
+            This is called to create bodies for the character from their textures. This must be called after textures
+            are loaded in.
+            </summary>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.AddCharacterActions(SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction)">
             <summary>
@@ -532,11 +541,20 @@
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.SheetSize">
             The amount of images on the X and Y axis, calculated in the constructor 
         </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Bodies">
+            Array to hold bodies 
+        </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.AnimatedPoint">
             The piece of the sheet to draw based on PlayTime @see Update 
         </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.LastUpdateTime">
             The last time that AnimatedPoint was updated 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Source">
+            The source on the spritesheet to draw 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Destination">
+            The destination for drawing the source rectangle 
         </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.SpriteSheet">
             <summary>The spritesheet to take a value from (can be just one image)</summary>
@@ -550,6 +568,9 @@
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.DrawColor">
             <summary>The color to draw the image with, defaults to clear</summary>
         </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Scale">
+            <summary>The scale to use</summary>
+        </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D)">
             <summary>
             Constructor
@@ -558,16 +579,29 @@
             <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
             <param name="spriteSheet">The texture of the sheet</param>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.GenerateBodies(FarseerPhysics.Dynamics.World)">
+            <summary>
+            Generates the bodies for each of the pieces of the sheet.
+            </summary>
+            <param name="LevelWorld">The world to create bodies in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.FirstBody">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2)">
             <summary>
             Updates the animation
             </summary>
             <param name="position">The position on screen to draw the image</param>
-            <param name="drawSize">The size to draw the image</param>
+            <returns>The body related to the current action</returns>
+            <remarks>The body returned from here must be enabled if it is to collide with anything</remarks>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.DrawAnimation(Microsoft.Xna.Framework.Graphics.SpriteBatch@,System.Single)">
             <summary>
-            Draws the current image from the spritesheet based on the calculation of <see cref="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Vector2)"/>
+            Draws the current image from the spritesheet based on the calculation of <see cref="M:SuperSmashPolls.Graphics.CharacterAction.UpdateAnimation(Microsoft.Xna.Framework.Vector2)"/>
             </summary>
             <param name="batch"> A reference to the current SpriteBatch</param>
             <param name="sidewaysVelocity">The velocity of the character sideways. Used to flip the sprite if the motion
@@ -876,7 +910,6 @@
         <member name="M:SuperSmashPolls.Game1.#ctor">
             <summary>
             Constructs the game's class
-            TODO clean up constructor
             </summary>
         </member>
         <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
@@ -889,8 +922,8 @@
             <summary>
             Get's the meters of something drawn in a 640x360 scale in a vector 2
             </summary>
-            <param name="X">The x value to convert</param>
-            <param name="Y">The y value to convert</param>
+            <param name="x">The x value to convert</param>
+            <param name="y">The y value to convert</param>
         </member>
         <member name="M:SuperSmashPolls.Game1.Initialize">
             <summary>
@@ -903,7 +936,6 @@
             <summary> 
             LoadContent will be called once per game and is the place to load all of your content.
             </summary>
-            <remarks>The menu is created here</remarks>
         </member>
         <member name="M:SuperSmashPolls.Game1.UnloadContent">
             <summary>

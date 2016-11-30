@@ -21,7 +21,7 @@ Content\TempleItems\TempleBackground.xnb
 Content\SaikyoBlack.xnb
 Content\Debate\First Level Foreground.xnb
 Content\Debate\First Level Background.xnb
+Content\Donald\donald_stand.xnb
+Content\Donald\donald_walk.xnb
 Content\Music\MainSong.xnb
 Content\Donald\SpecialAttack.xnb
-Content\Donald\donald_walk.xnb
-Content\Donald\donald_stand.xnb
