@@ -1,28 +1,11 @@
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.exe
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.pdb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.dll
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.dll
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.dll
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.dll
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.xml
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.xml
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.xml
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.xml
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.csprojResolveAssemblyReference.cache
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.exe
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.pdb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SpriteFont1.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont-Small.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerOne.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerTwo.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\sprite sheet template 32 bit.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TheDonaldWalking.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Black Floor.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.dll
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.pdb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.xml
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-jump.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-stand.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-walk.xnb
@@ -35,66 +18,33 @@ Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Tem
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleTop.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleRight.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleBackground.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.XML
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SaikyoBlack.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont-Small.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Foreground.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Background.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Music\MainSong.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\SpecialAttack.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.pdb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SpriteFont1.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont-Small.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerOne.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerTwo.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\sprite sheet template 32 bit.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TheDonaldWalking.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Black Floor.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-jump.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-stand.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-walk.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Temple.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\temple_kinda.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\space.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleRock.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleLeft.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleMiddle.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleTop.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleRight.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleBackground.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SaikyoBlack.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Foreground.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Background.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Music\MainSong.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\SpecialAttack.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.exe
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.pdb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.XML
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.dll
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.dll
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.dll
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.dll
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.dll
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.pdb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.xml
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.xml
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.xml
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.xml
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.xml
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.csprojResolveAssemblyReference.cache
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.exe
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_walk.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_stand.xnb
-<<<<<<< HEAD
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_stand.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_walk.xnb
-=======
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_jump.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_punch.xnb
-Z:\Desktop\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_upmash.xnb
->>>>>>> origin/master
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_punch.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_upmash.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Music\MainSong.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\SpecialAttack.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.exe
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.pdb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.XML
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.dll
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.dll
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.dll
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.dll
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.dll
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.pdb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.xml
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.xml
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.xml
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.xml
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.xml
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.csprojResolveAssemblyReference.cache
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.exe
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.pdb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_jump.xnb

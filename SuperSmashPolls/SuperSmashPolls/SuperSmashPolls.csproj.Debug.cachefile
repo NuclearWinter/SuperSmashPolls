@@ -23,13 +23,8 @@ Content\Debate\First Level Foreground.xnb
 Content\Debate\First Level Background.xnb
 Content\Donald\donald_stand.xnb
 Content\Donald\donald_walk.xnb
-Content\Music\MainSong.xnb
-Content\Donald\SpecialAttack.xnb
-<<<<<<< HEAD
-=======
-Content\Donald\donald_walk.xnb
-Content\Donald\donald_stand.xnb
-Content\Donald\donald_jump.xnb
 Content\Donald\donald_punch.xnb
 Content\Donald\donald_upmash.xnb
->>>>>>> origin/master
+Content\Music\MainSong.xnb
+Content\Donald\SpecialAttack.xnb
+Content\Donald\donald_jump.xnb

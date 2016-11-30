@@ -298,14 +298,14 @@ namespace SuperSmashPolls {
             /************ The Donald Content Loading ************/
 
             TheDonald.AddCharacterActions(
+                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")), //checked
+                new CharacterAction(1, new Point(19, 26), Content.Load<Texture2D>("Donald\\donald_jump")), //checked
+                new CharacterAction(1, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_walk")), //error
+                new CharacterAction(2, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_punch")), //checked
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")),
-                new CharacterAction(1, new Point(16, 30), Content.Load<Texture2D>("Donald\\donald64-jump")),
-                new CharacterAction(1, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_walk")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")),
-                new CharacterAction(2, new Point(16, 32), Content.Load<Texture2D>("TheDonaldWalking")));
+                new CharacterAction(2, new Point(26, 30), Content.Load<Texture2D>("Donald\\donald_upmash")), //checked
+                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")),
+                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")));
             //TODO finish animations for TheDonald
 
             TheDonaldsMoves TheDonaldsAttacks = new TheDonaldsMoves();

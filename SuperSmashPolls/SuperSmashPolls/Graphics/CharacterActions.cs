@@ -75,7 +75,7 @@ namespace SuperSmashPolls.Graphics {
 
             List<uint[]> IndividualData = new List<uint[]>();
 
-            for (int Processed = 0; Processed <= SpriteSheetSize; Processed += IndividualSize) {
+            for (int Processed = 0; Processed < SpriteSheetSize; Processed += IndividualSize) {
 
                 uint[] TempArray = new uint[IndividualSize];
 
