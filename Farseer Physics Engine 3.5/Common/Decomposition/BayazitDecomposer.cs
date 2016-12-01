@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
@@ -151,7 +152,7 @@ namespace FarseerPhysics.Common.Decomposition
         private static Vector2 At(int i, Vertices vertices)
         {
             int s = vertices.Count;
-            return vertices[i < 0 ? s - 1 - ((-i - 1) % s) : i % s];
+            return vertices[i < 0 ? s - 1 - ((-i - 1)%s) : i%s];
         }
 
         private static Vertices Copy(int i, int j, Vertices vertices)
@@ -208,9 +209,8 @@ namespace FarseerPhysics.Common.Decomposition
             return Right(i, vertices);
         }
 
-        private static bool Right(int i, Vertices vertices)
-        {
-            return Right(At(i - 1, vertices), At(i, vertices), At(i + 1, vertices));
+        private static bool Right(int i, Vertices vertices) {
+            return Right(At(i - 1, vertices), At(i, vertices), At(i + 1, vertices)); 
         }
 
         private static bool Left(Vector2 a, Vector2 b, Vector2 c)

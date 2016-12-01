@@ -39,9 +39,6 @@
         <member name="F:SuperSmashPolls.Characters.Character.Moves">
             The moves for this character. Links with Actions 
         </member>
-        <member name="F:SuperSmashPolls.Characters.Character.BayazitBodies">
-            The bodies for this character 
-        </member>
         <member name="F:SuperSmashPolls.Characters.Character.GameWorld">
             <summary>The world that this character is in</summary>
         </member>
@@ -92,18 +89,24 @@
             </summary>
             <param name="actions"> The actions to add to Actions</param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.CreateBayazitBodies">
-            <summary>
-            This is called to create bodies for the character from their textures. This must be called after textures
-            are loaded in.
-            </summary>
-        </member>
         <member name="M:SuperSmashPolls.Characters.Character.AddCharacterActions(SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction)">
             <summary>
             Adds adds all of the animations for moves to the character
             </summary>
             <remarks> Each character should have one of every move</remarks>
             <remarks> It is done like this so that we can avoid having to compute this all the time based off a key</remarks>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.BodiesGenerated">
+            <summary>
+            Tells if the bodies hae been generated for this character
+            </summary>
+            <returns>Whether or not bodies have been generated</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Character.SetPosition(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Sets the position of the character in the world
+            </summary>
+            <param name="position">The position to put the character at (in meters)</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.AddCharacterMoves(SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove)">
             <summary>
@@ -132,6 +135,7 @@
             <summary>
             Draws the character
             </summary>
+            TODO fix jump animation cause Joe hates it
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.GetPosition">
             <summary>
@@ -541,9 +545,6 @@
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.SheetSize">
             The amount of images on the X and Y axis, calculated in the constructor 
         </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Bodies">
-            Array to hold bodies 
-        </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.AnimatedPoint">
             The piece of the sheet to draw based on PlayTime @see Update 
         </member>
@@ -555,6 +556,12 @@
         </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.Destination">
             The destination for drawing the source rectangle 
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.BodiesGenerated">
+            <summary>Tells if the bodies have been generated for this character</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Bodies">
+            <summary>Holds the generated bodies for this action</summary>
         </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.SpriteSheet">
             <summary>The spritesheet to take a value from (can be just one image)</summary>
@@ -571,7 +578,7 @@
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.Scale">
             <summary>The scale to use</summary>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,FarseerPhysics.Dynamics.Body[])">
             <summary>
             Constructor
             </summary>
@@ -579,6 +586,7 @@
             <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
             <param name="spriteSheet">The texture of the sheet</param>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D)" -->
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.GenerateBodies(FarseerPhysics.Dynamics.World)">
             <summary>
             Generates the bodies for each of the pieces of the sheet.
@@ -890,6 +898,9 @@
             Levels for the player to play on 
         </member>
         <member name="F:SuperSmashPolls.Game1.Space">
+            Levels for the player to play on 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.FinalDestination">
             Levels for the player to play on 
         </member>
         <member name="F:SuperSmashPolls.Game1.PlayerOne">

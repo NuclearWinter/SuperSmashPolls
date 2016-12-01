@@ -20,8 +20,6 @@ namespace SuperSmashPolls.Graphics {
 
         /** The amount of images on the X and Y axis, calculated in the constructor */
         private readonly Point SheetSize;
-        /** Array to hold bodies */
-        private readonly Body[] Bodies;
         /** The piece of the sheet to draw based on PlayTime @see Update */
         private Point AnimatedPoint;
         /** The last time that AnimatedPoint was updated */
@@ -30,6 +28,10 @@ namespace SuperSmashPolls.Graphics {
         private Rectangle Source;
         /** The destination for drawing the source rectangle */
         private Rectangle Destination;
+        /// <summary>Tells if the bodies have been generated for this character</summary>
+        public bool BodiesGenerated;
+        /// <summary>Holds the generated bodies for this action</summary>
+        public readonly Body[] Bodies;
         /// <summary>The spritesheet to take a value from (can be just one image)</summary>
         public readonly Texture2D SpriteSheet;
         /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
@@ -47,7 +49,7 @@ namespace SuperSmashPolls.Graphics {
         /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
         /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
         /// <param name="spriteSheet">The texture of the sheet</param>
-        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet) {
+        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet, Body[] bodies) {
 
             PlayTime       = playTime;
             ImageSize      = imageSize;
@@ -56,8 +58,29 @@ namespace SuperSmashPolls.Graphics {
             AnimatedPoint  = new Point(0, 0);
             DrawColor      = Color.White;
             LastUpdateTime = DateTime.Now;
+            Bodies         = new Body[SheetSize.X * SheetSize.Y];
+            Array.Copy(bodies, Bodies, bodies.Length);
+            Scale          = 1; //TODO get scale
+            BodiesGenerated = true;
+
+        }
+
+        /// </summary>
+        /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+        /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+        /// <param name="spriteSheet">The texture of the sheet</param>
+        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet) {
+
+            PlayTime = playTime;
+            ImageSize = imageSize;
+            SheetSize = new Point(spriteSheet.Width / imageSize.X, spriteSheet.Height / imageSize.Y);
+            SpriteSheet = spriteSheet;
+            AnimatedPoint = new Point(0, 0);
+            DrawColor = Color.White;
+            LastUpdateTime = DateTime.Now;
             Bodies = new Body[SheetSize.X * SheetSize.Y];
             Scale = 1; //TODO get scale
+            BodiesGenerated = false;
 
         }
 
@@ -66,6 +89,8 @@ namespace SuperSmashPolls.Graphics {
         /// </summary>
         /// <param name="LevelWorld">The world to create bodies in</param>
         public void GenerateBodies(World LevelWorld) { //TODO get scale
+
+            BodiesGenerated = true;
 
             int SpriteSheetSize = SpriteSheet.Width * SpriteSheet.Height;
             int IndividualSize  = ImageSize.X * ImageSize.Y;
@@ -87,12 +112,17 @@ namespace SuperSmashPolls.Graphics {
 
             int BodyIndex = 0;
 
-            foreach (uint[] I in IndividualData) {
+            for (int count = 0; count < IndividualData.Count; ++count) {
+
+                uint[] I = IndividualData[count];
 
                 Vertices vertices         = TextureConverter.DetectVertices(I, SpriteSheet.Width);
-                List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, TriangulationAlgorithm.Bayazit);
+                List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, TriangulationAlgorithm.Earclip); 
+                //error with bayazit and deluny
+                //Earclip & flipcode results in glitches
 
-                Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(Scale));
+                Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(Scale)); 
+
                 foreach (Vertices vert in VertexList)
                     vert.Scale(ref VertScale); //Scales the vertices to match the size we specified
 

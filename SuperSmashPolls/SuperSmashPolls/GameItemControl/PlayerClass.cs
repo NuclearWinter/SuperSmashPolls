@@ -57,7 +57,7 @@ namespace SuperSmashPolls.GameItemControl {
         public void SetCharacter(Character playerCharacter) {
 
             PlayerCharacter = playerCharacter;
-            playerCharacter.CharacterBody.CollisionGroup = CollisionCategory;
+            //playerCharacter.CharacterBody.CollisionGroup = CollisionCategory;
 
         }
 

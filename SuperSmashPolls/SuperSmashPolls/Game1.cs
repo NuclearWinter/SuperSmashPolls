@@ -58,7 +58,7 @@ namespace SuperSmashPolls {
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
         /** Levels for the player to play on */
-        private LevelHandler TempleRock, Temple, Space;
+        private LevelHandler TempleRock, Temple, Space, FinalDestination;
         /* Manages graphics */
         private GraphicsDeviceManager Graphics;
         /* Used to draw multiple 2D textures at one time */
@@ -150,6 +150,9 @@ namespace SuperSmashPolls {
             Temple = new LevelHandler("Temple", new Vector2(2.5F, 7.21F), new Vector2(9.2F, 5.3F),
                 new Vector2(16.5F, 7.21F), new Vector2(20.8F, 7.6F), new Vector2(21.5F, 8.1F));
 
+            FinalDestination = new LevelHandler("FinalDestination", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
+                new Vector2(8, 0), new Vector2(13.5F, 0));
+
             /************************************* Initialization for Menu things *************************************/
             //Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
@@ -182,8 +185,12 @@ namespace SuperSmashPolls {
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
                                 EmptyUnit, true, true, MenuCommands.PlayTempleRock));
 
-                    //This holds character selection for any amount of players
-                    Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
+                        Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
+                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Final Destination", 
+                                false, EmptyUnit, true, true, MenuCommands.PlayFinalDestination));
+
+            //This holds character selection for any amount of players
+            Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
                         
@@ -273,8 +280,8 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Characters **************************************/
 
-            TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 89F, 0.5F,
-                0.01F, 500F, 10F, 0.8F, 0F, "TheDonald");
+            TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40F, 0.5F,
+                0.01F, 500, 10F, 0.8F, 0F, "TheDonald");
 
             base.Initialize();
 
@@ -297,10 +304,12 @@ namespace SuperSmashPolls {
 
             /************ The Donald Content Loading ************/
 
+            //Checked = image size correct | Working = Decomposition working
+
             TheDonald.AddCharacterActions(
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")), //checked
                 new CharacterAction(1, new Point(19, 26), Content.Load<Texture2D>("Donald\\donald_jump")), //checked
-                new CharacterAction(1, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_walk")), //error
+                new CharacterAction(1, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_walk")), //checked
                 new CharacterAction(2, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_punch")), //checked
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")),
                 new CharacterAction(2, new Point(26, 30), Content.Load<Texture2D>("Donald\\donald_upmash")), //checked
@@ -364,10 +373,24 @@ namespace SuperSmashPolls {
                 new Tuple<Texture2D, Vector2, Vector2>(TempleRight,  MetersV2(309, 176), MetersV2(324, 137)),
                 new Tuple<Texture2D, Vector2, Vector2>(TempleTop,    MetersV2(185, 37),  MetersV2(132, 45)));
 
+            /*************** Load Final Destional ****************/
+
+            Texture2D FinalPlatform   = Content.Load<Texture2D>("FinalDestination\\FinalPlatform"),
+                      FinalBackground = Content.Load<Texture2D>("FinalDestination\\FinalBackground");
+
+            Vector2 ObjectScale = new Vector2(ScreenSize.X/FinalBackground.Width, ScreenSize.Y/FinalBackground.Height);
+
+            FinalDestination.SetBackground(FinalBackground,ObjectScale);
+
+
+            FinalDestination.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(FinalPlatform,
+                MetersV2(218, 336)*ObjectScale, MetersV2(658, 243)*ObjectScale));
+
             /************* Add levels to dictionary *************/
 
             LevelDictionary.Add("Temple",     Temple);
             LevelDictionary.Add("TempleRock", TempleRock);
+            LevelDictionary.Add("FinalDestination", FinalDestination);
 
         }
 
@@ -409,19 +432,15 @@ namespace SuperSmashPolls {
 
             if ("blank" == PlayerOne.PlayerCharacter.Name) {
                 PlayerOne.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn));
-                PlayerOne.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn, Int16.MaxValue);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
                 PlayerTwo.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn));
-                PlayerTwo.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn, Int16.MaxValue - 1);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
                 PlayerThree.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn));
-                PlayerThree.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn, Int16.MaxValue - 2);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
             } else {
                 PlayerFour.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn));
-                PlayerFour.PlayerCharacter.CreateBody(ref CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn, Int16.MaxValue - 3);
             }
 
         }
@@ -447,11 +466,13 @@ namespace SuperSmashPolls {
                     switch (CurrentCommand) {
                         case MenuCommands.PlayTemple:
                             CurrentLevel = Temple;
-                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0), Int16.MinValue);//For testing
+                            
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayTempleRock:
                             CurrentLevel = TempleRock;
-                            TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0), Int16.MinValue);//For testing
+                            goto case MenuCommands.CharacterSelection;
+                        case MenuCommands.PlayFinalDestination:
+                            CurrentLevel = FinalDestination;
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.OnePlayer:
                             NumPlayers = 1;
@@ -474,8 +495,6 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.StartGame:
                             State = GameState.GameLevel;
-                            //Menu.ContainedItems[0].ContainedItems[0].Text = "Continue";  //Changes New Game
-                            //Menu.ContainedItems[0].ContainedItems[2].Text = "Main Menu"; //Changes Back
 
                             Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].SetFontForAll(TitleFont);
 
@@ -489,19 +508,19 @@ namespace SuperSmashPolls {
                             switch (NumPlayers) {
                                 case 1:
                                     PlayerOne.Deaths = 0;
-                                    PlayerOne.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerOneSpawn;
+                                    PlayerOne.PlayerCharacter.SetPosition(CurrentLevel.PlayerOneSpawn);
                                     break;
                                 case 2:
                                     PlayerTwo.Deaths = 0;
-                                    PlayerTwo.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerTwoSpawn;
+                                    PlayerTwo.PlayerCharacter.SetPosition(CurrentLevel.PlayerTwoSpawn) ;
                                     goto case 1;
                                 case 3:
                                     PlayerThree.Deaths = 0;
-                                    PlayerThree.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerThreeSpawn;
+                                    PlayerThree.PlayerCharacter.SetPosition(CurrentLevel.PlayerThreeSpawn);
                                     goto case 2;
                                 case 4:
                                     PlayerFour.Deaths = 0;
-                                    PlayerFour.PlayerCharacter.CharacterBody.Position = CurrentLevel.PlayerFourSpawn;
+                                    PlayerFour.PlayerCharacter.SetPosition(CurrentLevel.PlayerFourSpawn);
                                     goto case 3;
 
                             }
@@ -539,6 +558,8 @@ namespace SuperSmashPolls {
                             Exit();
                             break;
                         case MenuCommands.SelectTrump:
+                            if (!TheDonald.BodiesGenerated())
+                                TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0), Int16.MinValue);
                             SetCharacter(TheDonald);
                             goto default;
                         case MenuCommands.CharacterSelection:

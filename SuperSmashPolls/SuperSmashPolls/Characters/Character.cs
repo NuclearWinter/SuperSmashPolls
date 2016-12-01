@@ -55,8 +55,6 @@ namespace SuperSmashPolls.Characters {
         private readonly List<CharacterAction> Actions;
         /** The moves for this character. Links with Actions */
         private readonly List<CharacterMove> Moves;
-        /** The bodies for this character */
-        private Body[] BayazitBodies;
         /* The last time that the character jumped */
         private DateTime LastJump;
         /* The last time that the character used their special attack */
@@ -152,15 +150,11 @@ namespace SuperSmashPolls.Characters {
             Moves                     = new List<CharacterMove>();
             GameWorld                 = gameWorld;
             Name                      = otherCharacter.Name;
-            CharacterBody             = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterSize.Y),
-                ConvertUnits.ToSimUnits(CharacterSize.X), 1F, position);
-            CharacterBody.BodyType    = BodyType.Dynamic;
-            CharacterBody.Friction    = Friction;
-            CharacterBody.Mass        = Mass;
-            CharacterBody.Restitution = Restitution;
 
-            foreach (CharacterAction i in otherCharacter.Actions) //Without this characters cant do the same move
-                Actions.Add(new CharacterAction(i.PlayTime, i.ImageSize, i.SpriteSheet));
+            foreach (CharacterAction i in otherCharacter.Actions)
+                Actions.Add(new CharacterAction(i.PlayTime, i.ImageSize, i.SpriteSheet, i.Bodies));
+
+            CharacterBody = Actions[0].FirstBody();
 
             foreach (CharacterMove i in otherCharacter.Moves)
                 Moves.Add(i);
@@ -179,18 +173,6 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// This is called to create bodies for the character from their textures. This must be called after textures
-        /// are loaded in.
-        /// </summary>
-        private void CreateBayazitBodies() {
-
-            BayazitBodies = new Body[8];
-
-            //TODO update body from CharacterActions disable collision for bad stuff
-
-        }
-
-        /// <summary>
         /// Adds adds all of the animations for moves to the character
         /// </summary>
         /// <remarks> Each character should have one of every move</remarks>
@@ -200,6 +182,28 @@ namespace SuperSmashPolls.Characters {
             CharacterAction sideSpecialAttack, CharacterAction downSpecialAttack) {
 
             AddToActions(idle, jump, run, attack, specialAttack, specialUpAttack, sideSpecialAttack, downSpecialAttack);
+
+            CharacterBody = Actions[0].FirstBody();
+
+        }
+
+        /// <summary>
+        /// Tells if the bodies hae been generated for this character
+        /// </summary>
+        /// <returns>Whether or not bodies have been generated</returns>
+        public bool BodiesGenerated() {
+
+            return Actions[0].BodiesGenerated;
+
+        }
+
+        /// <summary>
+        /// Sets the position of the character in the world
+        /// </summary>
+        /// <param name="position">The position to put the character at (in meters)</param>
+        public void SetPosition(Vector2 position) {
+
+            Actions[0].Bodies[0].Position = position;
 
         }
 
@@ -275,6 +279,7 @@ namespace SuperSmashPolls.Characters {
 
             if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
                 //The character is moving
+
                 CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
 
                 CurrentActionIndex = RunIndex;
@@ -373,12 +378,23 @@ namespace SuperSmashPolls.Characters {
 
             }
 
+            CurrentActionIndex = JumpIndex; //Debugging
+
             //Updates the character model and sets the character body to its new body
+            Vector2 tempPosition = CharacterBody.Position;
+            Vector2 tempLinVel   = CharacterBody.LinearVelocity;
+            Vector2 tempLocalMid = CharacterBody.LocalCenter;
+
             CharacterBody =
                 Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
                                                             CharacterOrigin);
             CharacterBody.CollisionGroup = CollisionGroup;
+            //CharacterBody.ResetDynamics();
             CharacterBody.Restitution    = Restitution;
+            CharacterBody.LocalCenter = tempLocalMid;
+
+            CharacterBody.LinearVelocity = tempLinVel;
+            CharacterBody.Position       = tempPosition;
             CharacterBody.Enabled        = true;
             CharacterBody.Friction       = Friction;
             CharacterBody.Mass           = Mass;
@@ -388,6 +404,7 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// Draws the character
         /// </summary>
+        /// TODO fix jump animation cause Joe hates it
         public void DrawCharacter(ref SpriteBatch spriteBatch) {
             
             Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch, CharacterBody.LinearVelocity.X);
