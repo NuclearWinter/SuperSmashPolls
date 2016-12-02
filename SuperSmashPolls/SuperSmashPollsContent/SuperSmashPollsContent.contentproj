@@ -215,13 +215,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Donald\donald_punch.png">
-      <Name>donald_punch</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Donald\donald_upmash.png">
       <Name>donald_upmash</Name>
       <Importer>TextureImporter</Importer>
@@ -245,6 +238,13 @@
   <ItemGroup>
     <Compile Include="FinalDestination\FinalPlatform.png">
       <Name>FinalPlatform</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Donald\donald_punch.png">
+      <Name>donald_punch</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
