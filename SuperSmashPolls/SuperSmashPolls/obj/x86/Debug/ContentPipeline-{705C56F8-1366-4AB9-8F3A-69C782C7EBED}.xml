@@ -17,7 +17,7 @@
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6254477-06:00</Time>
     </Item>
     <Item>
       <Source>TitleFont-Small.spritefont</Source>
@@ -26,7 +26,7 @@
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont-Small.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6254477-06:00</Time>
     </Item>
     <Item>
       <Source>PlayerOne.png</Source>
@@ -35,7 +35,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerOne.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6164471-06:00</Time>
     </Item>
     <Item>
       <Source>PlayerTwo.png</Source>
@@ -44,7 +44,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerTwo.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6164471-06:00</Time>
     </Item>
     <Item>
       <Source>sprite sheet template 32 bit.png</Source>
@@ -53,7 +53,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\sprite sheet template 32 bit.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6264477-06:00</Time>
     </Item>
     <Item>
       <Source>TheDonaldWalking.png</Source>
@@ -62,7 +62,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TheDonaldWalking.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6254477-06:00</Time>
     </Item>
     <Item>
       <Source>Black Floor.png</Source>
@@ -71,7 +71,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Black Floor.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5914457-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald64-jump.png</Source>
@@ -80,7 +80,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-jump.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5944459-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald64-stand.png</Source>
@@ -89,7 +89,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-stand.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5944459-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald64-walk.png</Source>
@@ -98,7 +98,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-walk.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5944459-06:00</Time>
     </Item>
     <Item>
       <Source>Temple.png</Source>
@@ -107,7 +107,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Temple.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6204474-06:00</Time>
     </Item>
     <Item>
       <Source>temple_kinda.png</Source>
@@ -116,7 +116,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\temple_kinda.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6264477-06:00</Time>
     </Item>
     <Item>
       <Source>space.png</Source>
@@ -125,7 +125,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\space.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6254477-06:00</Time>
     </Item>
     <Item>
       <Source>TempleRock.png</Source>
@@ -134,7 +134,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleRock.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6244476-06:00</Time>
     </Item>
     <Item>
       <Source>TempleItems\TempleLeft.png</Source>
@@ -143,7 +143,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleLeft.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6224475-06:00</Time>
     </Item>
     <Item>
       <Source>TempleItems\TempleMiddle.png</Source>
@@ -152,7 +152,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleMiddle.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6224475-06:00</Time>
     </Item>
     <Item>
       <Source>TempleItems\TempleTop.png</Source>
@@ -161,7 +161,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleTop.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6234475-06:00</Time>
     </Item>
     <Item>
       <Source>TempleItems\TempleRight.png</Source>
@@ -170,7 +170,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleRight.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6234475-06:00</Time>
     </Item>
     <Item>
       <Source>TempleItems\TempleBackground.png</Source>
@@ -179,7 +179,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleBackground.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6224475-06:00</Time>
     </Item>
     <Item>
       <Source>SaikyoBlack.png</Source>
@@ -188,7 +188,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SaikyoBlack.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6164471-06:00</Time>
     </Item>
     <Item>
       <Source>Debate\First Level Foreground.png</Source>
@@ -197,7 +197,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Foreground.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5914457-06:00</Time>
     </Item>
     <Item>
       <Source>Debate\First Level Background.png</Source>
@@ -206,7 +206,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Background.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5914457-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_stand.png</Source>
@@ -215,7 +215,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_stand.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5954459-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_walk.png</Source>
@@ -224,7 +224,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_walk.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5954459-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_punch.png</Source>
@@ -233,7 +233,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_punch.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-02T14:51:34.2683265-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_upmash.png</Source>
@@ -242,7 +242,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_upmash.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5954459-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_jump.png</Source>
@@ -251,7 +251,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_jump.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5944459-06:00</Time>
     </Item>
     <Item>
       <Source>FinalDestination\FinalBackground.png</Source>
@@ -260,7 +260,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\FinalDestination\FinalBackground.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5974461-06:00</Time>
     </Item>
     <Item>
       <Source>FinalDestination\FinalPlatform.png</Source>
@@ -269,7 +269,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\FinalDestination\FinalPlatform.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5984461-06:00</Time>
     </Item>
     <Item>
       <Source>Music\MainSong.wav</Source>
@@ -278,7 +278,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Music\MainSong.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.6154471-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\SpecialAttack.wav</Source>
@@ -287,9 +287,9 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\SpecialAttack.xnb</Output>
-      <Time>0001-01-01T00:00:00</Time>
+      <Time>2016-12-01T23:36:55.5944459-06:00</Time>
     </Item>
-    <BuildSuccessful>false</BuildSuccessful>
+    <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{705C56F8-1366-4AB9-8F3A-69C782C7EBED}</ContentProjectGUID>
       <TargetPlatform>Windows</TargetPlatform>

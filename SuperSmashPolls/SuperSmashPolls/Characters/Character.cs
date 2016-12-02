@@ -280,7 +280,8 @@ namespace SuperSmashPolls.Characters {
             if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
                 //The character is moving
 
-                CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
+                //CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
+                CharacterBody.Position += (new Vector2(4, 0) * gamePadState.ThumbSticks.Left)/60;
 
                 CurrentActionIndex = RunIndex;
 
@@ -378,12 +379,16 @@ namespace SuperSmashPolls.Characters {
 
             }
 
-            CurrentActionIndex = JumpIndex; //Debugging
+            //CurrentActionIndex = JumpIndex; //Debugging
+
+            //CharacterBody.LinearDamping = 5;
+            //CharacterBody.
 
             //Updates the character model and sets the character body to its new body
             Vector2 tempPosition = CharacterBody.Position;
             Vector2 tempLinVel   = CharacterBody.LinearVelocity;
             Vector2 tempLocalMid = CharacterBody.LocalCenter;
+            CharacterBody.Enabled = false;
 
             CharacterBody =
                 Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
