@@ -37,8 +37,6 @@ namespace SuperSmashPolls.GameItemControl {
         private readonly float IconBuffer;
         /** The amount needed to scale the icons to the correct size */
         private Vector2 PlayerOneIconScale, PlayerTwoIconScale, PlayerThreeIconScale, PlayerFourIconScale;
-        /** Holds the references of deaths */
-        private int PlayerOneDeaths, PlayerTwoDeaths, PlayerThreeDeaths, PlayerFourDeaths;
         /** The font to use for drawing stuff */
         private SpriteFont GameFont;
         /** The icons for players */
@@ -47,6 +45,8 @@ namespace SuperSmashPolls.GameItemControl {
         private string[] Places;
         /** The winner of the game */
         private string Winner;
+        /// <summary>Holds the references of deaths</summary>
+        public int PlayerOneDeaths, PlayerTwoDeaths, PlayerThreeDeaths, PlayerFourDeaths;
         /// <summary>Whether or not the game has ended</summary>
         public bool GameOver;
         /// <summary>The number of players in the game</summary>
@@ -95,11 +95,8 @@ namespace SuperSmashPolls.GameItemControl {
 
             iconPosition[1] = iconPosition[0] - new Vector2(0, IconBuffer + SmallIconSize.Y);
 
-            for (int i = 2; i <= 5; ++i) {
-                
+            for (int i = 2; i <= 5; ++i)
                 iconPosition[i] = iconPosition[i-1] + new Vector2(IconBuffer + SmallIconSize.X, 0);
-
-            } 
 
         }
 
@@ -213,17 +210,25 @@ namespace SuperSmashPolls.GameItemControl {
         /// <param name="streamWriter"></param>
         public void WriteGamemode(StreamWriter streamWriter) {
             
-
+            streamWriter.WriteLine(CurrentMode);
+            streamWriter.WriteLine(PlayerOneDeaths);
+            streamWriter.WriteLine(PlayerTwoDeaths);
+            streamWriter.WriteLine(PlayerThreeDeaths);
+            streamWriter.WriteLine(PlayerFourDeaths);
 
         }
 
         /// <summary>
-        /// 
+        /// Reads the information about a previosuly started game from a file
         /// </summary>
         /// <param name="streamReader"></param>
         public void ReadGamemode(StreamReader streamReader) {
-            
 
+            CurrentMode       = (Mode)Enum.Parse(typeof(Mode), streamReader.ReadLine());
+            PlayerOneDeaths   = int.Parse(streamReader.ReadLine());
+            PlayerTwoDeaths   = int.Parse(streamReader.ReadLine());
+            PlayerThreeDeaths = int.Parse(streamReader.ReadLine());
+            PlayerFourDeaths  = int.Parse(streamReader.ReadLine());
 
         }
 
@@ -235,10 +240,11 @@ namespace SuperSmashPolls.GameItemControl {
             int playerFourDeaths) {
 
             if (!GameOver) {
-                PlayerOneDeaths = playerOneDeaths;
-                PlayerTwoDeaths = playerTwoDeaths;
+
+                PlayerOneDeaths   = playerOneDeaths;
+                PlayerTwoDeaths   = playerTwoDeaths;
                 PlayerThreeDeaths = playerThreeDeaths;
-                PlayerFourDeaths = playerFourDeaths; //TODO replace this shitty system with pointers
+                PlayerFourDeaths  = playerFourDeaths; //TODO replace this shitty system with pointers
 
                 switch (CurrentMode) {
                     case Mode.Time:
