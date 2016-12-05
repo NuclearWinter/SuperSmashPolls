@@ -41,6 +41,10 @@ namespace SuperSmashPolls {
 
         };
 
+        /** The location to save the settings for the game */
+        private const string SettingsLocation = "C:\\Users\\Public\\SmashPollsSettings.txt";
+        /** The location to save the game */
+        private const string SaveLocation     = "C:\\Users\\Public\\SmashPollsSave.txt";
         /* The total size of the screen */
         private static Vector2 ScreenSize;
         /* The most basic Functioning WorldUnit */
@@ -86,6 +90,13 @@ namespace SuperSmashPolls {
         /// Constructs the game's class
         /// </summary>
         public Game1() {
+
+            if (!DoesFileExist(SaveLocation)) {
+                
+
+
+            }
+
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360); //TODO options in file
 
@@ -104,6 +115,17 @@ namespace SuperSmashPolls {
             EmptyUnit             = new WorldUnit(ref ScreenSize, new Vector2(0, 0)); //TODO remove worldunit usage
             PixelToMeterScale     = ScreenSize.X/25; //How many pixels are in one meter
             LastPressed           = GamePad.GetState(PlayerIndex.One);
+
+        }
+
+        /// <summary>
+        /// Tells if a file exists by checking if its size is greater than 0
+        /// </summary>
+        /// <param name="path">The path of the file to check</param>
+        /// <returns>If the file exists</returns>
+        private bool DoesFileExist(string path) {
+            
+            return new System.IO.FileInfo(path).Length > 0;
 
         }
         
@@ -610,7 +632,7 @@ namespace SuperSmashPolls {
 
                     try {
 
-                        StreamWriter FileWriter = new StreamWriter("C:\\Users\\Public\\SmashPollsSave.txt");
+                        StreamWriter FileWriter = new StreamWriter(SaveLocation);
 
                         FileWriter.WriteLine(CurrentLevel.Name);
 
@@ -646,9 +668,9 @@ namespace SuperSmashPolls {
 
                 } case GameState.LoadSave: {
 
-                    try {
+                    try { //TODO fix glitch where is there is no save data it get's stuck
 
-                        StreamReader FileReader = new StreamReader("C:\\Users\\Public\\SmashPollsSave.txt");
+                        StreamReader FileReader = new StreamReader(SaveLocation);
 
                         LevelDictionary.TryGetValue(FileReader.ReadLine(), out CurrentLevel);                        
 
