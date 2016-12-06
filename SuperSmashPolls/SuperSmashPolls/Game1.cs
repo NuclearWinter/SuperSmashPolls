@@ -124,9 +124,9 @@ namespace SuperSmashPolls {
         /// <param name="path">The path of the file to check</param>
         /// <returns>If the file exists</returns>
         private bool DoesFileExist(string path) {
-            
-            return new System.IO.FileInfo(path).Length > 0;
 
+            // return new System.IO.FileInfo(path).Length > 0;
+            return false;
         }
         
         /// <summary> 
@@ -213,6 +213,7 @@ namespace SuperSmashPolls {
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Final Destination", 
                                 false, EmptyUnit, true, true, MenuCommands.PlayFinalDestination));
+           
 
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.50F)), "Debate Room",
@@ -258,15 +259,34 @@ namespace SuperSmashPolls {
                 Menu.AccessItem(2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
                     "Special Attack - RT (Right Trigger)", false, EmptyUnit, false, true));
 
-/* 03 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Exit", false,
+/* 03 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "BIO", true,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
 
-/* 04 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)), "Super Smash Polls ", false,
+                Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)),
+                     "BIOs", false, EmptyUnit, false, true));
+
+                Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.3F)),
+                     "Donald Trump", true, EmptyUnit, true, true));
+                  //  Menu.AccessItem(3,1).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.1F, 0.1F)), 
+                   //   ""))
+                
+
+                Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
+                     "Hillary Clinton", true, EmptyUnit, true, true));
+
+                Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.7F)),
+                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
+
+            /* 04 */
+            Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.6F)), "Exit", false,
+                EmptyUnit, true, true, MenuCommands.ExitGame));
+
+/* 05 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)), "Super Smash Polls ", false,
                 EmptyUnit, false, true, MenuCommands.Nothing, true));
 
                 Menu.AccessItem(4).TextColor = Color.Red;
 
-/* 05 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0F, 0.9F)),
+/* 06 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0F, 0.9F)),
                 "Use DPad up and down to navigate the menu", false, EmptyUnit, false));
 
                 Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
