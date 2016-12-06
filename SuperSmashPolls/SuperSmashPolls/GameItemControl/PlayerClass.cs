@@ -87,7 +87,7 @@ namespace SuperSmashPolls.GameItemControl {
         /// </summary>
         public void DrawPlayer(ref SpriteBatch batch, SpriteFont font = null) {
 
-            PlayerCharacter.DrawCharacter(ref batch);
+            PlayerCharacter.DrawCharacter(ref batch, font);
 
 #if DEBUG
             if (font != null)

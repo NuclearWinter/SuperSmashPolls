@@ -5,6 +5,8 @@
 #define DEBUG
  #undef DEBUG
 
+#define DEBUG_INFO
+
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -63,25 +65,20 @@ namespace SuperSmashPolls.Characters {
         private int CurrentActionIndex;
         /* The group that this character's moves don't affect */
         private Int16 CollisionGroup;
+        /** The direction that the character is moving */
+        private float Direction;
+        /**  */
+        private bool InAction, ImportantAction = false;
         /// <summary>The world that this character is in</summary>
         public World GameWorld;
         /// <summary>The body of the character (must be created after level selection)</summary>
-        public Body CharacterBody; //TODO base this off the character's textures, enable and disable for current action
+        public Body CharacterBody;
         /// <summary>The amount of time between jumps for this character (in seconds)</summary>
         public float JumpInterval;
         /// <summary> This characters name</summary>
         public string Name;
         /// <summary>The type for character's moves</summary>
         public delegate void CharacterMove(Character character);
-
-
-        //TODO damage sounds
-
-        //TODO damage multiplier (health)
-
-        //TODO aggro
-
-        //TODO arrange this better
 
         /// <summary>
         /// Default constructor for making a blank character. The name is initialized to check and to check after a game 
@@ -123,6 +120,8 @@ namespace SuperSmashPolls.Characters {
             Actions               = new List<CharacterAction>();
             Moves                 = new List<CharacterMove>();
             Name                  = name;
+            Direction = 0;
+            InAction = false;
 
         }
 
@@ -150,6 +149,8 @@ namespace SuperSmashPolls.Characters {
             Moves                     = new List<CharacterMove>();
             GameWorld                 = gameWorld;
             Name                      = otherCharacter.Name;
+            Direction = 0;
+            InAction = false;
 
             foreach (CharacterAction i in otherCharacter.Actions)
                 Actions.Add(new CharacterAction(i.PlayTime, i.ImageSize, i.SpriteSheet, i.Bodies));
@@ -214,6 +215,7 @@ namespace SuperSmashPolls.Characters {
         /// <param name="specialUp">The special up move to add</param>
         /// <param name="specialDown">The special down move to add</param>
         /// <param name="special">The special move (basic) to add</param>
+        /// <param name="basicAttack">The "punch" for this character</param>
         public void AddCharacterMoves(CharacterMove specialSide, CharacterMove specialUp, CharacterMove specialDown,
             CharacterMove special, CharacterMove basicAttack) {
 
@@ -228,7 +230,6 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// Creates the body for the character and adds it to the world.
         /// </summary>
-        /// <remarks>For now, character's bodies are all rectangles. TODO change this to Bayazit bodies</remarks>
         /// <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         public void CreateBody(ref World gameWorld, Vector2 position, Int16 collisionGroup) {
 
@@ -236,14 +237,16 @@ namespace SuperSmashPolls.Characters {
                 I.GenerateBodies(gameWorld);
 
             CharacterBody                = Actions[IdleIndex].FirstBody();
-            CharacterBody.Friction       = Friction;
-            CharacterBody.Mass           = Mass;
-            CharacterBody.Restitution    = Restitution;
             CollisionGroup               = collisionGroup;
             CharacterBody.CollisionGroup = CollisionGroup;
             GameWorld                    = gameWorld;
 
+            foreach (CharacterAction i in Actions) 
+                i.SetCharactaristics(Mass, Friction, Restitution, CollisionGroup);
+
         }
+
+        private bool test = false;
 
         /// <summary>
         /// Updates the character. This method controls movement, actions, and updates and character model.
@@ -252,173 +255,164 @@ namespace SuperSmashPolls.Characters {
         /// Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
         public void UpdateCharacter(GamePadState gamePadState) {
 
-            Vector2 tempPosition = CharacterBody.Position;
-            Vector2 tempLinVel = CharacterBody.LinearVelocity;
-            Vector2 tempLocalMid = CharacterBody.LocalCenter;
-            CharacterBody.Enabled = false;
+            CharacterBody.AngularVelocity = 0;
 
-            CharacterBody =
-                Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
-                                                            Actions[CurrentActionIndex].BodyOrigin);
-            CharacterBody.CollisionGroup = CollisionGroup;
-            //CharacterBody.ResetDynamics();
-            CharacterBody.Restitution = Restitution;
-            CharacterBody.LocalCenter = tempLocalMid;
+            InAction = !Actions[CurrentActionIndex].AnimationAtEnd();
 
-            CharacterBody.LinearVelocity = tempLinVel;
-            CharacterBody.Position = tempPosition;
-            CharacterBody.Enabled = true;
-            CharacterBody.Friction = Friction;
-            CharacterBody.Mass = Mass;
+            if (CurrentActionIndex == RunIndex ||
+                CurrentActionIndex == JumpIndex || CurrentActionIndex == IdleIndex)
+                InAction = false;
 
             if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
                 //The character is moving
 
-                //CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
-                CharacterBody.Position += (new Vector2(4, 0) * gamePadState.ThumbSticks.Left) / 60;
+                //var tempAngle = CharacterBody.AngularVelocity;
 
-                CurrentActionIndex = RunIndex;
+                CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
 
-                //NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
+                if (!InAction) 
+                    CurrentActionIndex = RunIndex;
+
+                Direction = gamePadState.ThumbSticks.Left.X;
 
 #if (DEBUG)
                 Actions[CurrentActionIndex].DrawColor = Color.Aqua;
 #endif
 
+            } else {
+                if (!InAction)
+                    CurrentActionIndex = IdleIndex;
+
             }
 
             DateTime Now = DateTime.Now;
 
-            if (Now.Ticks < NextAction.Ticks)
-                return;
-
-            CurrentActionIndex = IdleIndex;
-
-            //CharacterBody.LinearDamping = 0.1F; //Testing
 
 #if (DEBUG)
             Actions[CurrentActionIndex].DrawColor = Color.Black;
 #endif
 
-            if (Math.Abs(CharacterBody.LinearVelocity.Y) > 0.01F)
-                CurrentActionIndex = JumpIndex;
+            test = Now.Ticks > NextAction.Ticks;
 
-            if (gamePadState.IsButtonDown(Buttons.A) && (Now - LastJump).TotalMilliseconds > JumpInterval * 1000) {
-                //The character is jumping
-                LastJump = Now;
+            if (Now.Ticks > NextAction.Ticks && !InAction) {
 
-                CurrentActionIndex = JumpIndex;
+                if (gamePadState.IsButtonDown(Buttons.A) && (Now - LastJump).TotalMilliseconds > JumpInterval*1000) {
+                    //The character is jumping
+                    LastJump = Now;
 
-                CharacterBody.ApplyLinearImpulse(new Vector2(0, -50 * JumpForceMultiplier));
+                    CurrentActionIndex = JumpIndex;
 
-                NextAction = Now + new TimeSpan(0, 0, (int)JumpInterval); //Testing
+                    CharacterBody.ApplyLinearImpulse(new Vector2(0, -50*JumpForceMultiplier));
 
+                    NextAction = Now.AddSeconds(SpecialAttackInterval); // Testing
 #if (DEBUG)
-                Actions[CurrentActionIndex].DrawColor = Color.YellowGreen;
+                    Actions[CurrentActionIndex].DrawColor = Color.YellowGreen;
 #endif
 
-            }
+                }
 
-            if (gamePadState.IsButtonDown(Buttons.B)) {
+                if (gamePadState.IsButtonDown(Buttons.B)) {
 
-                CurrentActionIndex = AttackIndex;
+                    CurrentActionIndex = AttackIndex;
 
-                Moves[4](this);
+                    Moves[4](this);
 
-                NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
-
+                    NextAction = Now.AddSeconds(SpecialAttackInterval); // Testing
 #if (DEBUG)
-                Actions[CurrentActionIndex].DrawColor = Color.Violet;
+                    Actions[CurrentActionIndex].DrawColor = Color.Violet;
 #endif
 
-            } else if (gamePadState.Triggers.Right > Register &&
-                (Now - LastSpecialAttack).TotalMilliseconds > SpecialAttackInterval*1000) {
+                } else if (gamePadState.Triggers.Right > Register &&
+                           (Now - LastSpecialAttack).TotalMilliseconds > SpecialAttackInterval*1000) {
 
-                LastSpecialAttack = Now;
+                    LastSpecialAttack = Now;
 
-                Vector2 RightStickValue = gamePadState.ThumbSticks.Right;
+                    Vector2 RightStickValue = gamePadState.ThumbSticks.Right;
 
-                if (Math.Abs(RightStickValue.X) > Register && Math.Abs(RightStickValue.X) > Math.Abs(RightStickValue.Y)) {
-                    //It is a special attack to the side
-                    CurrentActionIndex = SpecialSideAttackIndex;
-
-#if (DEBUG)
-                    Actions[CurrentActionIndex].DrawColor = Color.Beige;
-#endif
-
-                    try {
-
-                        Moves[0](this);
-
-                    } catch (NotImplementedException) {
-
-                        Actions[CurrentActionIndex].DrawColor = Color.Red;
-                    }
-
-                    NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
-
-                } else if (RightStickValue.Y > Register) {
-                //This is a special attack up
-                    CurrentActionIndex = SpecialUpAttackIndex;
-
-                    NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
+                    if (Math.Abs(RightStickValue.X) > Register &&
+                        Math.Abs(RightStickValue.X) > Math.Abs(RightStickValue.Y)) {
+                        //It is a special attack to the side
+                        CurrentActionIndex = SpecialSideAttackIndex;
 
 #if (DEBUG)
-                    Actions[CurrentActionIndex].DrawColor = Color.Magenta;
+                        Actions[CurrentActionIndex].DrawColor = Color.Beige;
 #endif
 
-                    try {
+                        try {
 
-                        Moves[1](this);
+                            Moves[0](this);
 
-                    } catch (NotImplementedException) {
+                        } catch (NotImplementedException) {
 
-                        Actions[CurrentActionIndex].DrawColor = Color.Red;
-                    }
+                            Actions[CurrentActionIndex].DrawColor = Color.Red;
+                        }
 
-                } else if (RightStickValue.Y < -Register) {
-                //This is a special down attack
-                    CurrentActionIndex = SpecialDownAttackIndex;
+                        NextAction = Now.AddSeconds(SpecialAttackInterval); // Testing
+
+                    } else if (RightStickValue.Y > Register) {
+                        //This is a special attack up
+                        CurrentActionIndex = SpecialUpAttackIndex;
+
+                        NextAction = Now.AddSeconds(SpecialAttackInterval); // Testing
 
 #if (DEBUG)
-                    Actions[CurrentActionIndex].DrawColor = Color.Maroon;
+                        Actions[CurrentActionIndex].DrawColor = Color.Magenta;
 #endif
-                    try {
 
-                        Moves[2](this);
+                        try {
 
-                    } catch (NotImplementedException) {
+                            Moves[1](this);
 
-                        Actions[CurrentActionIndex].DrawColor = Color.Red;
-                    }
+                        } catch (NotImplementedException) {
 
-                } else {
-                //This is a regular special attack
-                    CurrentActionIndex = SpecialAttackIndex;
+                            Actions[CurrentActionIndex].DrawColor = Color.Red;
+                        }
+
+                    } else if (RightStickValue.Y < -Register) {
+                        //This is a special down attack
+                        CurrentActionIndex = SpecialDownAttackIndex;
 
 #if (DEBUG)
-                    Actions[CurrentActionIndex].DrawColor = Color.OliveDrab;
+                        Actions[CurrentActionIndex].DrawColor = Color.Maroon;
+#endif
+                        try {
+
+                            Moves[2](this);
+
+                        } catch (NotImplementedException) {
+
+                            Actions[CurrentActionIndex].DrawColor = Color.Red;
+                        }
+
+                    } else {
+                        //This is a regular special attack
+                        CurrentActionIndex = SpecialAttackIndex;
+
+#if (DEBUG)
+                        Actions[CurrentActionIndex].DrawColor = Color.OliveDrab;
 #endif
 
-                    try {
+                        try {
 
-                        Moves[3](this);
+                            Moves[3](this);
 
-                    } catch (NotImplementedException) {
+                        } catch (NotImplementedException) {
 
-                        Actions[CurrentActionIndex].DrawColor = Color.Red;
+                            Actions[CurrentActionIndex].DrawColor = Color.Red;
+                        }
+
                     }
 
                 }
 
             }
 
-            //CurrentActionIndex = JumpIndex; //Debugging
+            Actions[CurrentActionIndex].PrepareBody(CharacterBody,
+                CharacterBody.Position);
 
-            //CharacterBody.LinearDamping = 5;
-            //CharacterBody.
-
-            //Updates the character model and sets the character body to its new body
+            CharacterBody =
+                Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
+                                                            Actions[CurrentActionIndex].BodyOrigin * 2);
 
         }
 
@@ -426,9 +420,32 @@ namespace SuperSmashPolls.Characters {
         /// Draws the character
         /// </summary>
         /// TODO fix jump animation cause Joe hates it
-        public void DrawCharacter(ref SpriteBatch spriteBatch) {
-            
-            Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch, CharacterBody.LinearVelocity.X);
+        public void DrawCharacter(ref SpriteBatch spriteBatch, SpriteFont font = null) {
+
+#if DEBUG_INFO
+            Vector2 testing = new Vector2(3F, 1F);
+
+            if (font != null) {
+
+                spriteBatch.DrawString(font, "Angular Velocity:" + CharacterBody.AngularVelocity,
+                    ConvertUnits.ToDisplayUnits(testing), Color.Black);
+
+                spriteBatch.DrawString(font, "Linear Velocity:" + CharacterBody.LinearVelocity,
+                    ConvertUnits.ToDisplayUnits(testing + new Vector2(0, 2)), Color.Black);
+
+                spriteBatch.DrawString(font, "Able to use action: " + test,
+                    ConvertUnits.ToDisplayUnits(testing + new Vector2(0, 4)), Color.Black);
+
+                spriteBatch.DrawString(font, "In action: " + InAction,
+                    ConvertUnits.ToDisplayUnits(testing + new Vector2(0, 6)), Color.Black);
+
+                spriteBatch.DrawString(font, "Action: " + CurrentActionIndex,
+                    ConvertUnits.ToDisplayUnits(testing + new Vector2(0, 8)), Color.Black);
+
+            }
+#endif
+
+            Actions[CurrentActionIndex].DrawAnimation(ref spriteBatch, Direction);
 
         }
 

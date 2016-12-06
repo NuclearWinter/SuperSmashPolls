@@ -53,7 +53,7 @@ namespace SuperSmashPolls {
         private readonly float PixelToMeterScale;
         /* Holds levels for matching from a save and for selection */
         private readonly Dictionary<string, LevelHandler> LevelDictionary;
-        /* Holds characters for matching from a save and for selection TODO change to Dictionary*/
+        /* Holds characters for matching from a save and for selection TODO change to Dictionary */
         private readonly List<Tuple<Character, string>> CharacterStringPairs;
         /** The gamemode for this game */
         private Gamemode CurrentGamemode;
@@ -98,7 +98,7 @@ namespace SuperSmashPolls {
             }
 
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
-            ScreenSize = new Vector2(640, 360); //TODO options in file
+            ScreenSize = new Vector2(640, 360);
 
             LevelDictionary      = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
@@ -112,7 +112,7 @@ namespace SuperSmashPolls {
 
             /* This is to import pictures and sounds and stuff */
             Content.RootDirectory = "Content";
-            EmptyUnit             = new WorldUnit(ref ScreenSize, new Vector2(0, 0)); //TODO remove worldunit usage
+            EmptyUnit             = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
             PixelToMeterScale     = ScreenSize.X/25; //How many pixels are in one meter
             LastPressed           = GamePad.GetState(PlayerIndex.One);
 
@@ -201,7 +201,7 @@ namespace SuperSmashPolls {
 
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.20F)), "Temple", false,
-                                EmptyUnit, true, true, MenuCommands.PlayTemple)); //TODO add to menu from list
+                                EmptyUnit, true, true, MenuCommands.PlayTemple));
 
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
@@ -274,18 +274,6 @@ namespace SuperSmashPolls {
                     new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Main Menu", false,
                         EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
-            //const int SuperSmashText = 5;
-
-            //Menu.AccessItem(SuperSmashText).
-
-            //TODO Settings menu
-
-            //TODO gamemode menu
-
-            //TODO have all player's character selection on the same screen
-
-            //TODO menu item option type
-
             /************************************** Initialization for Players ****************************************/
 
             PlayerOne   = new PlayerClass(PlayerIndex.One,   Int16.MaxValue - 1);
@@ -303,7 +291,7 @@ namespace SuperSmashPolls {
             /************************************* Initialization for Characters **************************************/
 
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40F, 0.5F,
-                0.01F, 500, 10F, 1F, 1F, "TheDonald");
+                0.01F, 500F, 10F, 1F, 1F, "TheDonald");
 
             base.Initialize();
 
@@ -337,10 +325,8 @@ namespace SuperSmashPolls {
                 new CharacterAction(2, new Point(26, 30), Content.Load<Texture2D>("Donald\\donald_upmash")), //checked
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")),
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")));
-            //TODO finish animations for TheDonald
 
             TheDonaldsMoves TheDonaldsAttacks = new TheDonaldsMoves();
-
             AudioHandler TheDonaldEffect      = new AudioHandler(Content.Load<SoundEffect>("Donald\\SpecialAttack"));
 
             TheDonaldsAttacks.AddAudio(TheDonaldEffect, TheDonaldEffect, TheDonaldEffect, TheDonaldEffect,

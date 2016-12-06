@@ -12,9 +12,6 @@
         <member name="F:SuperSmashPolls.Characters.Character.CharacterSize">
             The size of the character (in display units) 
         </member>
-        <member name="F:SuperSmashPolls.Characters.Character.CharacterOrigin">
-            The character's origin (in display units) 
-        </member>
         <member name="F:SuperSmashPolls.Characters.Character.Mass">
             The mass of the character (kg) 
         </member>
@@ -41,6 +38,15 @@
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.NextAction">
             The DateTime to allow the character to take another action 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.Direction">
+            The direction that the character is moving 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.InAction">
+             
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.ImportantAction">
+             
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.GameWorld">
             <summary>The world that this character is in</summary>
@@ -119,12 +125,12 @@
             <param name="specialUp">The special up move to add</param>
             <param name="specialDown">The special down move to add</param>
             <param name="special">The special move (basic) to add</param>
+            <param name="basicAttack">The "punch" for this character</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.CreateBody(FarseerPhysics.Dynamics.World@,Microsoft.Xna.Framework.Vector2,System.Int16)">
             <summary>
             Creates the body for the character and adds it to the world.
             </summary>
-            <remarks>For now, character's bodies are all rectangles. TODO change this to Bayazit bodies</remarks>
             <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
         </member>
         <member name="M:SuperSmashPolls.Characters.Character.UpdateCharacter(Microsoft.Xna.Framework.Input.GamePadState)">
@@ -134,7 +140,7 @@
             <remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
             Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.DrawCharacter(Microsoft.Xna.Framework.Graphics.SpriteBatch@)">
+        <member name="M:SuperSmashPolls.Characters.Character.DrawCharacter(Microsoft.Xna.Framework.Graphics.SpriteBatch@,Microsoft.Xna.Framework.Graphics.SpriteFont)">
             <summary>
             Draws the character
             </summary>
@@ -560,6 +566,9 @@
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.Destination">
             The destination for drawing the source rectangle 
         </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.StartedAnimation">
+             
+        </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.BodiesGenerated">
             <summary>Tells if the bodies have been generated for this character</summary>
         </member>
@@ -586,18 +595,28 @@
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,FarseerPhysics.Dynamics.Body[])">
             <summary>
-            Constructor
+            Constructor from an already constructed CharacterAction
+            </summary>
+            <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+            <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
+            <param name="spriteSheet">The texture of the sheet</param>
+            <param name="bodies"></param>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            Constructor from only imported items and constants
             </summary>
             <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
             <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
             <param name="spriteSheet">The texture of the sheet</param>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.CalculateOrigin(System.Single,System.Single)">
             <summary>
-            <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
-            <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
-            <param name="spriteSheet">The texture of the sheet</param>
+            Calculates the origin of a body
             </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.GenerateBodies(FarseerPhysics.Dynamics.World)">
             <summary>
@@ -606,6 +625,27 @@
             <param name="LevelWorld">The world to create bodies in</param>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.FirstBody">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.SetCharactaristics(System.Single,System.Single,System.Single,System.Int16)">
+            <summary>
+            Sets the properties for the bodies in this object
+            </summary>
+            <param name="mass"></param>
+            <param name="friction"></param>
+            <param name="restitution"></param>
+            <param name="collisionGroup"></param>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.PrepareBody(FarseerPhysics.Dynamics.Body,Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            
+            </summary>
+            <param name="prepareFrom"></param>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.AnimationAtEnd">
             <summary>
             
             </summary>
