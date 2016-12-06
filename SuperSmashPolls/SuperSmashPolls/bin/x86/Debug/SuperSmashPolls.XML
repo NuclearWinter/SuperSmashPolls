@@ -961,6 +961,9 @@
         <member name="F:SuperSmashPolls.Game1.FinalDestination">
             Levels for the player to play on 
         </member>
+        <member name="F:SuperSmashPolls.Game1.Debate">
+            Levels for the player to play on 
+        </member>
         <member name="F:SuperSmashPolls.Game1.PlayerOne">
             The player's in this game 
         </member>

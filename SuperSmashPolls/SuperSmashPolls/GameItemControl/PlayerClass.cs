@@ -6,6 +6,8 @@
 #define DEBUG
 #undef DEBUG
 
+#define KILL_BUTTON
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -79,6 +81,15 @@ namespace SuperSmashPolls.GameItemControl {
                 JustDied = true;
             else 
                 PlayerCharacter.UpdateCharacter(GamePad.GetState(PlayerID));
+
+#if KILL_BUTTON
+
+            if (GamePad.GetState(PlayerID).IsButtonDown(Buttons.Y)) {
+                
+                PlayerCharacter.Respawn(respawnPoint);
+
+            }
+#endif
 
         }
 

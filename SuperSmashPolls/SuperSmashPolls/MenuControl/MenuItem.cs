@@ -33,7 +33,7 @@ namespace SuperSmashPolls.MenuControl {
         ExitGame,         //Exits the game
         OnePlayer, TwoPlayer, ThreePlayer, FourPlayer,
         ResumeGame,
-        PlayTemple, PlayTempleRock, PlayFinalDestination,
+        PlayTemple, PlayTempleRock, PlayFinalDestination, PlayDebate,
         SelectTrump,
         CharacterSelection,
         HelpMenu

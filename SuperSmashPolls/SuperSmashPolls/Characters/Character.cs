@@ -266,8 +266,6 @@ namespace SuperSmashPolls.Characters {
             if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
                 //The character is moving
 
-                //var tempAngle = CharacterBody.AngularVelocity;
-
                 CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
 
                 if (!InAction) 
@@ -279,11 +277,8 @@ namespace SuperSmashPolls.Characters {
                 Actions[CurrentActionIndex].DrawColor = Color.Aqua;
 #endif
 
-            } else {
-                if (!InAction)
-                    CurrentActionIndex = IdleIndex;
-
-            }
+            } else if (!InAction)
+                CurrentActionIndex = IdleIndex;
 
             DateTime Now = DateTime.Now;
 

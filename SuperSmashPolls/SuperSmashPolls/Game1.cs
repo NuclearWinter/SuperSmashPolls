@@ -62,7 +62,7 @@ namespace SuperSmashPolls {
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
         /** Levels for the player to play on */
-        private LevelHandler TempleRock, Temple, Space, FinalDestination;
+        private LevelHandler TempleRock, Temple, Space, FinalDestination, Debate;
         /* Manages graphics */
         private GraphicsDeviceManager Graphics;
         /* Used to draw multiple 2D textures at one time */
@@ -175,6 +175,9 @@ namespace SuperSmashPolls {
             FinalDestination = new LevelHandler("FinalDestination", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
                 new Vector2(8, 0), new Vector2(13.5F, 0));
 
+            Debate = new LevelHandler("Debate", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
+                new Vector2(8, 0), new Vector2(13.5F, 0));
+
             /************************************* Initialization for Menu things *************************************/
             //Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
@@ -211,8 +214,12 @@ namespace SuperSmashPolls {
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Final Destination", 
                                 false, EmptyUnit, true, true, MenuCommands.PlayFinalDestination));
 
-                    //This holds character selection for any amount of players
-                    Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(   
+                        Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
+                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.50F)), "Debate Room",
+                                false, EmptyUnit, true, true, MenuCommands.PlayDebate));
+
+            //This holds character selection for any amount of players
+            Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(   
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
                         
@@ -382,24 +389,46 @@ namespace SuperSmashPolls {
                 new Tuple<Texture2D, Vector2, Vector2>(TempleRight,  MetersV2(309, 176), MetersV2(324, 137)),
                 new Tuple<Texture2D, Vector2, Vector2>(TempleTop,    MetersV2(185, 37),  MetersV2(132, 45)));
 
-            /*************** Load Final Destional ****************/
+            /************* Load Final Destination ***************/
 
-            Texture2D FinalPlatform   = Content.Load<Texture2D>("FinalDestination\\FinalPlatform"),
-                      FinalBackground = Content.Load<Texture2D>("FinalDestination\\FinalBackground");
+            {
 
-            Vector2 ObjectScale = new Vector2(ScreenSize.X/FinalBackground.Width, ScreenSize.Y/FinalBackground.Height);
+                Texture2D FinalPlatform = Content.Load<Texture2D>("FinalDestination\\FinalPlatform"),
+                    FinalBackground = Content.Load<Texture2D>("FinalDestination\\FinalBackground");
 
-            FinalDestination.SetBackground(FinalBackground,ObjectScale);
+                Vector2 ObjectScale = new Vector2(ScreenSize.X/FinalBackground.Width,
+                    ScreenSize.Y/FinalBackground.Height);
 
+                FinalDestination.SetBackground(FinalBackground, ObjectScale);
 
-            FinalDestination.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(FinalPlatform,
-                MetersV2(218, 336)*ObjectScale, MetersV2(658, 243)*ObjectScale));
+                FinalDestination.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(FinalPlatform,
+                    MetersV2(218, 336)*ObjectScale, MetersV2(658, 243)*ObjectScale));
+
+            }
+
+            /**************** Load Debate Room ******************/
+
+            {
+
+                Texture2D DebateBackground = Content.Load<Texture2D>("Debate\\DebateBackground"),
+                    DebatePlatform         = Content.Load<Texture2D>("Debate\\DebatePlatform");
+
+                Vector2 ObjectScale = new Vector2(ScreenSize.X/ DebateBackground.Width,
+                    ScreenSize.Y/ DebateBackground.Height);
+
+                Debate.SetBackground(DebateBackground, ObjectScale);
+
+                Debate.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(DebatePlatform,
+                    MetersV2(0, 156), MetersV2(640, 204)));
+
+            }
 
             /************* Add levels to dictionary *************/
 
             LevelDictionary.Add("Temple",     Temple);
             LevelDictionary.Add("TempleRock", TempleRock);
             LevelDictionary.Add("FinalDestination", FinalDestination);
+            LevelDictionary.Add("Debate Room", Debate);
 
         }
 
@@ -475,10 +504,12 @@ namespace SuperSmashPolls {
                     switch (CurrentCommand) {
                         case MenuCommands.PlayTemple:
                             CurrentLevel = Temple;
-                            
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayTempleRock:
                             CurrentLevel = TempleRock;
+                            goto case MenuCommands.CharacterSelection;
+                        case MenuCommands.PlayDebate:
+                            CurrentLevel = Debate;
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayFinalDestination:
                             CurrentLevel = FinalDestination;
