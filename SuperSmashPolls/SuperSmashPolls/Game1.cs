@@ -124,8 +124,16 @@ namespace SuperSmashPolls {
         /// <param name="path">The path of the file to check</param>
         /// <returns>If the file exists</returns>
         private bool DoesFileExist(string path) {
-            
-            return new System.IO.FileInfo(path).Length > 0;
+
+            try {
+
+                return new System.IO.FileInfo(path).Length > 0;
+
+            } catch (Exception e) {
+
+                return false;
+
+            }
 
         }
         
@@ -394,7 +402,7 @@ namespace SuperSmashPolls {
             {
 
                 Texture2D FinalPlatform = Content.Load<Texture2D>("FinalDestination\\FinalPlatform"),
-                    FinalBackground = Content.Load<Texture2D>("FinalDestination\\FinalBackground");
+                    FinalBackground     = Content.Load<Texture2D>("FinalDestination\\FinalBackground");
 
                 Vector2 ObjectScale = new Vector2(ScreenSize.X/FinalBackground.Width,
                     ScreenSize.Y/FinalBackground.Height);

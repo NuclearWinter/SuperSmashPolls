@@ -2,9 +2,19 @@ Character Icons
 The Donald's
 	Moves
 	Animations
-Hillary's Moves
-Gary Johnson
-Harambe
+	Sounds
+Hillary's
+	Moves
+	Animations
+	Sounds
+Gary Johnson's
+	Moves
+	Animations
+	Sounds
+Harambe's
+	Moves
+	Animations
+	Sounds
 Damage sounds
 Damage multiplier (health)
 	/How light a character is
@@ -16,4 +26,4 @@ Menus
 	Game options
 	Gamemode settings
 Get rid of use of WorldUnit
-	
+make timespan system better

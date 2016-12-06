@@ -54,10 +54,10 @@ namespace SuperSmashPolls.MenuControl {
         private readonly WorldUnit TextBuffer;
         /** If the item has it's own menu that it can display if selected */
         private readonly bool HasSubmenu;
-        /** The position of characters for American Text mode */
-        private readonly List<Vector2> AmericanPositions;
         /** Whether or not to play the audio of the item above it */
         private readonly bool DeferAudio;
+        /** The position of characters for American Text mode */
+        private readonly List<Vector2> AmericanPositions;
         /** Font to use for this item */
         private SpriteFont Font;
         /** Texture to use as the thumbnail for this item */
@@ -77,6 +77,12 @@ namespace SuperSmashPolls.MenuControl {
         private AudioHandler MenuAudio;
         /** Handles looping of audio */
         private SoundEffectInstance MusicInstance;
+        /// <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
+        public readonly bool Highlightable;
+        /// <summary>Whether or not to center the item horizontally around the position.</summary>
+        public readonly bool CenterItem;
+        /// <summary>The command to use if clicked on</summary>
+        public readonly MenuCommands Command;
         /// <summary>Makes the text more american, not american't</summary>
         public bool AmericaText;
         /// <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
@@ -87,12 +93,11 @@ namespace SuperSmashPolls.MenuControl {
         public List<MenuItem> ContainedItems;
         /// <summary>Color for this item's text</summary>
         public Color TextColor { get; set; } = Color.Black;
-        /// <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
-        public readonly bool Highlightable;
-        /// <summary>Whether or not to center the item horizontally around the position.</summary>
-        public readonly bool CenterItem;
-        /// <summary>The command to use if clicked on</summary>
-        public readonly MenuCommands Command;
+        /// <summary>The options for this menu.</summary>
+        public Dictionary<string, string[]> Options;
+        /// <summary>The index of the options currently selected in Options</summary>
+        public short[] SelectedOption;
+
 
         /// <summary>
         /// Constructor
@@ -123,6 +128,28 @@ namespace SuperSmashPolls.MenuControl {
             AmericaText       = americaText;
             AmericanCounter   = 0;
             DeferAudio        = deferAudio;
+        }
+
+        /// <summary>
+        /// Adds options to a submenu. Options can only be added once, otherwise the previously added options will be 
+        /// overriden.
+        /// </summary>
+        /// <param name="options">The first string is the key to display on the menu as the title for the option, the
+        ///  second are the values to associate to that option.</param>
+        /// TODO allow ranges of numbers
+        public void AddOptions(params Tuple<string, string[]>[] options) {
+
+            
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ReadOptions() {
+            
+
+
         }
 
         /// <summary>
@@ -411,6 +438,8 @@ namespace SuperSmashPolls.MenuControl {
             }
 
         }
+
+
 
     }
 
