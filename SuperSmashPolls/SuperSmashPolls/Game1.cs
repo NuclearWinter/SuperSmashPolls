@@ -211,8 +211,8 @@ namespace SuperSmashPolls {
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Final Destination", 
                                 false, EmptyUnit, true, true, MenuCommands.PlayFinalDestination));
 
-            //This holds character selection for any amount of players
-            Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
+                    //This holds character selection for any amount of players
+                    Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(   
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
                         
@@ -303,7 +303,7 @@ namespace SuperSmashPolls {
             /************************************* Initialization for Characters **************************************/
 
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40F, 0.5F,
-                0.01F, 500, 10F, 0.8F, 0F, "TheDonald");
+                0.01F, 500, 10F, 1F, 1F, "TheDonald");
 
             base.Initialize();
 

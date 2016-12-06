@@ -39,6 +39,9 @@
         <member name="F:SuperSmashPolls.Characters.Character.Moves">
             The moves for this character. Links with Actions 
         </member>
+        <member name="F:SuperSmashPolls.Characters.Character.NextAction">
+            The DateTime to allow the character to take another action 
+        </member>
         <member name="F:SuperSmashPolls.Characters.Character.GameWorld">
             <summary>The world that this character is in</summary>
         </member>
@@ -313,18 +316,6 @@
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerFourIconScale">
             The amount needed to scale the icons to the correct size 
         </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerOneDeaths">
-            Holds the references of deaths 
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerTwoDeaths">
-            Holds the references of deaths 
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerThreeDeaths">
-            Holds the references of deaths 
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerFourDeaths">
-            Holds the references of deaths 
-        </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.GameFont">
             The font to use for drawing stuff 
         </member>
@@ -336,6 +327,18 @@
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Winner">
             The winner of the game 
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerOneDeaths">
+            <summary>Holds the references of deaths</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerTwoDeaths">
+            <summary>Holds the references of deaths</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerThreeDeaths">
+            <summary>Holds the references of deaths</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerFourDeaths">
+            <summary>Holds the references of deaths</summary>
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.GameOver">
             <summary>Whether or not the game has ended</summary>
@@ -413,7 +416,7 @@
         </member>
         <member name="M:SuperSmashPolls.GameItemControl.Gamemode.ReadGamemode(System.IO.StreamReader)">
             <summary>
-            
+            Reads the information about a previosuly started game from a file
             </summary>
             <param name="streamReader"></param>
         </member>
@@ -882,6 +885,12 @@
         <member name="T:SuperSmashPolls.Game1.GameState">
             Handles the different states that the game can be in 
         </member>
+        <member name="F:SuperSmashPolls.Game1.SettingsLocation">
+            The location to save the settings for the game 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.SaveLocation">
+            The location to save the game 
+        </member>
         <member name="F:SuperSmashPolls.Game1.CurrentGamemode">
             The gamemode for this game 
         </member>
@@ -922,6 +931,13 @@
             <summary>
             Constructs the game's class
             </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.DoesFileExist(System.String)">
+            <summary>
+            Tells if a file exists by checking if its size is greater than 0
+            </summary>
+            <param name="path">The path of the file to check</param>
+            <returns>If the file exists</returns>
         </member>
         <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
             <summary> 

@@ -31,7 +31,7 @@ namespace SuperSmashPolls.Characters {
         /// <param name="character">The character preforming the move</param>
         public override void SideSpecial(Character character) {
 
-            SimpleExplosion Explosion = new SimpleExplosion(character.GameWorld) {
+           SimpleExplosion Explosion = new SimpleExplosion(character.GameWorld) {
                 Power = 1,
                 DisabledOnGroup = character.CharacterBody.CollisionGroup
             };

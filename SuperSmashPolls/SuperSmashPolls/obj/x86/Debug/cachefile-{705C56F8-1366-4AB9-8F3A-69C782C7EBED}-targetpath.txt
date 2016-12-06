@@ -19,8 +19,6 @@ Content\TempleItems\TempleTop.xnb
 Content\TempleItems\TempleRight.xnb
 Content\TempleItems\TempleBackground.xnb
 Content\SaikyoBlack.xnb
-Content\Debate\DebatePlatform.xnb
-Content\Debate\DebateBackground.xnb
 Content\Donald\donald_stand.xnb
 Content\Donald\donald_walk.xnb
 Content\Donald\donald_upmash.xnb
@@ -28,5 +26,7 @@ Content\Donald\donald_jump.xnb
 Content\FinalDestination\FinalBackground.xnb
 Content\FinalDestination\FinalPlatform.xnb
 Content\Donald\donald_punch.xnb
+Content\Debate\DebateBackground.xnb
+Content\Debate\DebatePlatform.xnb
 Content\Music\MainSong.xnb
 Content\Donald\SpecialAttack.xnb

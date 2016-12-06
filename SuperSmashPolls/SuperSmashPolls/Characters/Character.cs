@@ -55,6 +55,8 @@ namespace SuperSmashPolls.Characters {
         private readonly List<CharacterAction> Actions;
         /** The moves for this character. Links with Actions */
         private readonly List<CharacterMove> Moves;
+        /** The DateTime to allow the character to take another action */
+        private DateTime NextAction;
         /* The last time that the character jumped */
         private DateTime LastJump;
         /* The last time that the character used their special attack */
@@ -120,6 +122,7 @@ namespace SuperSmashPolls.Characters {
             CurrentActionIndex    = IdleIndex;
             LastJump              = DateTime.Now;
             LastSpecialAttack     = DateTime.Now;
+            NextAction            = DateTime.Now;
             Actions               = new List<CharacterAction>();
             Moves                 = new List<CharacterMove>();
             Name                  = name;
@@ -146,6 +149,7 @@ namespace SuperSmashPolls.Characters {
             CurrentActionIndex        = IdleIndex;
             LastJump                  = DateTime.Now;
             LastSpecialAttack         = DateTime.Now;
+            NextAction                = DateTime.Now;
             Actions                   = new List<CharacterAction>();
             Moves                     = new List<CharacterMove>();
             GameWorld                 = gameWorld;
@@ -252,9 +256,49 @@ namespace SuperSmashPolls.Characters {
         /// Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
         public void UpdateCharacter(GamePadState gamePadState) {
 
+            Vector2 tempPosition = CharacterBody.Position;
+            Vector2 tempLinVel = CharacterBody.LinearVelocity;
+            Vector2 tempLocalMid = CharacterBody.LocalCenter;
+            CharacterBody.Enabled = false;
+
+            CharacterBody =
+                Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
+                                                            CharacterOrigin);
+            CharacterBody.CollisionGroup = CollisionGroup;
+            //CharacterBody.ResetDynamics();
+            CharacterBody.Restitution = Restitution;
+            CharacterBody.LocalCenter = tempLocalMid;
+
+            CharacterBody.LinearVelocity = tempLinVel;
+            CharacterBody.Position = tempPosition;
+            CharacterBody.Enabled = true;
+            CharacterBody.Friction = Friction;
+            CharacterBody.Mass = Mass;
+
+            if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
+                //The character is moving
+
+                //CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
+                CharacterBody.Position += (new Vector2(4, 0) * gamePadState.ThumbSticks.Left) / 60;
+
+                CurrentActionIndex = RunIndex;
+
+                //NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
+
+#if (DEBUG)
+                Actions[CurrentActionIndex].DrawColor = Color.Aqua;
+#endif
+
+            }
+
             DateTime Now = DateTime.Now;
 
+            if (Now.Ticks < NextAction.Ticks)
+                return;
+
             CurrentActionIndex = IdleIndex;
+
+            //CharacterBody.LinearDamping = 0.1F; //Testing
 
 #if (DEBUG)
             Actions[CurrentActionIndex].DrawColor = Color.Black;
@@ -271,22 +315,10 @@ namespace SuperSmashPolls.Characters {
 
                 CharacterBody.ApplyLinearImpulse(new Vector2(0, -50 * JumpForceMultiplier));
 
+                NextAction = Now + new TimeSpan(0, 0, (int)JumpInterval); //Testing
+
 #if (DEBUG)
                 Actions[CurrentActionIndex].DrawColor = Color.YellowGreen;
-#endif
-
-            }
-
-            if (Math.Abs(gamePadState.ThumbSticks.Left.X) > Register) {
-                //The character is moving
-
-                //CharacterBody.ApplyForce(new Vector2(gamePadState.ThumbSticks.Left.X, 0) * MovementMultiplier);
-                CharacterBody.Position += (new Vector2(4, 0) * gamePadState.ThumbSticks.Left)/60;
-
-                CurrentActionIndex = RunIndex;
-
-#if (DEBUG)
-                Actions[CurrentActionIndex].DrawColor = Color.Aqua;
 #endif
 
             }
@@ -296,6 +328,8 @@ namespace SuperSmashPolls.Characters {
                 CurrentActionIndex = AttackIndex;
 
                 Moves[4](this);
+
+                NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
 
 #if (DEBUG)
                 Actions[CurrentActionIndex].DrawColor = Color.Violet;
@@ -325,9 +359,13 @@ namespace SuperSmashPolls.Characters {
                         Actions[CurrentActionIndex].DrawColor = Color.Red;
                     }
 
+                    NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
+
                 } else if (RightStickValue.Y > Register) {
                 //This is a special attack up
                     CurrentActionIndex = SpecialUpAttackIndex;
+
+                    NextAction = Now + new TimeSpan(0, 0, (int)SpecialAttackInterval); // Testing
 
 #if (DEBUG)
                     Actions[CurrentActionIndex].DrawColor = Color.Magenta;
@@ -385,24 +423,6 @@ namespace SuperSmashPolls.Characters {
             //CharacterBody.
 
             //Updates the character model and sets the character body to its new body
-            Vector2 tempPosition = CharacterBody.Position;
-            Vector2 tempLinVel   = CharacterBody.LinearVelocity;
-            Vector2 tempLocalMid = CharacterBody.LocalCenter;
-            CharacterBody.Enabled = false;
-
-            CharacterBody =
-                Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
-                                                            CharacterOrigin);
-            CharacterBody.CollisionGroup = CollisionGroup;
-            //CharacterBody.ResetDynamics();
-            CharacterBody.Restitution    = Restitution;
-            CharacterBody.LocalCenter = tempLocalMid;
-
-            CharacterBody.LinearVelocity = tempLinVel;
-            CharacterBody.Position       = tempPosition;
-            CharacterBody.Enabled        = true;
-            CharacterBody.Friction       = Friction;
-            CharacterBody.Mass           = Mass;
 
         }
 

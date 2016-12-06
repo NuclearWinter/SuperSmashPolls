@@ -173,20 +173,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Debate\First Level Foreground.png">
-      <Name>First Level Foreground</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Debate\First Level Background.png">
-      <Name>First Level Background</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Music\MainSong.wav">
       <Name>MainSong</Name>
       <Importer>WavImporter</Importer>
@@ -245,6 +231,20 @@
   <ItemGroup>
     <Compile Include="Donald\donald_punch.png">
       <Name>donald_punch</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Debate\DebateBackground.png">
+      <Name>DebateBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Debate\DebatePlatform.png">
+      <Name>DebatePlatform</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -19,8 +19,6 @@ Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Tem
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleRight.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleBackground.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SaikyoBlack.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Foreground.xnb
-Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\First Level Background.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_stand.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_walk.xnb
 Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_punch.xnb
@@ -102,3 +100,5 @@ C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPoll
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.csprojResolveAssemblyReference.cache
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.exe
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\DebateBackground.xnb
+Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\DebatePlatform.xnb
