@@ -43,10 +43,7 @@
             The direction that the character is moving 
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.InAction">
-             
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.ImportantAction">
-             
+            Whether or not there is currently an action taking place 
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.GameWorld">
             <summary>The world that this character is in</summary>

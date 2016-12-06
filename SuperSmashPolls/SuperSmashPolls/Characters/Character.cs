@@ -400,6 +400,8 @@ namespace SuperSmashPolls.Characters {
 
             }
 
+            //CurrentActionIndex = IdleIndex;
+
             Actions[CurrentActionIndex].PrepareBody(CharacterBody,
                 CharacterBody.Position);
 

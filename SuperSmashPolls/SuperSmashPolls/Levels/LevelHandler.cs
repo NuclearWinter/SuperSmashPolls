@@ -86,7 +86,7 @@ namespace SuperSmashPolls.Levels {
             foreach (var i in items) {
 
                 Body TempBody     = CreatePolygonFromTexture(i.Item1, 1F, i.Item2,
-                    i.Item3.X/ConvertUnits.ToSimUnits(i.Item1.Width)); //testing
+                    i.Item3.X/ConvertUnits.ToSimUnits(i.Item1.Width), TriangulationAlgorithm.Earclip);
                 TempBody.BodyType = BodyType.Static;
                 TempBody.IsStatic = true;
 

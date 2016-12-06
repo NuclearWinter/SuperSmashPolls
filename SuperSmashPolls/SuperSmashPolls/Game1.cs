@@ -297,8 +297,8 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Characters **************************************/
 
-            TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40F, 0.5F,
-                0.01F, 500F, 10F, 1F, 1F, "TheDonald");
+            TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40, 0.5F,
+                0F, 500F, 10F, 1F, 1F, "TheDonald");
 
             base.Initialize();
 

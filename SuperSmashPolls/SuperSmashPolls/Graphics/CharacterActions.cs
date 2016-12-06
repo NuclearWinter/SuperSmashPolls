@@ -142,6 +142,7 @@ namespace SuperSmashPolls.Graphics {
                 Vertices vertices         = TextureConverter.DetectVertices(I, SpriteSheet.Width);
                 List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, TriangulationAlgorithm.Earclip); 
                 //error with bayazit and deluny
+                //Siedle doesnt wortk
                 //Earclip & flipcode results in glitches
                 //Earclip works very well
 
