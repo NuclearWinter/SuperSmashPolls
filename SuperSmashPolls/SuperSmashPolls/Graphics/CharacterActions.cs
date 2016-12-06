@@ -143,6 +143,7 @@ namespace SuperSmashPolls.Graphics {
                 List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, TriangulationAlgorithm.Earclip); 
                 //error with bayazit and deluny
                 //Earclip & flipcode results in glitches
+                //Earclip works very well
 
                 Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(Scale)); 
 
