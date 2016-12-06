@@ -6,15 +6,13 @@
  #undef DEBUG
 
 #define DEBUG_INFO
+ #undef DEBUG_INFO
 
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FarseerPhysics;
 using FarseerPhysics.Dynamics;
-using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SuperSmashPolls.Graphics;
@@ -67,8 +65,8 @@ namespace SuperSmashPolls.Characters {
         private Int16 CollisionGroup;
         /** The direction that the character is moving */
         private float Direction;
-        /**  */
-        private bool InAction, ImportantAction = false;
+        /** Whether or not there is currently an action taking place */
+        private bool InAction;
         /// <summary>The world that this character is in</summary>
         public World GameWorld;
         /// <summary>The body of the character (must be created after level selection)</summary>
