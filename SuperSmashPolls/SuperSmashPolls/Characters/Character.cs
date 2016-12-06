@@ -37,8 +37,6 @@ namespace SuperSmashPolls.Characters {
         private const float Register = 0.2F;
         /** The size of the character (in display units) */
         private readonly Vector2 CharacterSize;
-        /** The character's origin (in display units) */
-        private readonly Vector2 CharacterOrigin;
         /** The mass of the character (kg) */
         private readonly float Mass;
         /** The friction of the character */
@@ -111,7 +109,6 @@ namespace SuperSmashPolls.Characters {
             string name) {
 
             CharacterSize         = characterSize;
-            CharacterOrigin       = new Vector2((characterSize.Y)/2F, (characterSize.X)/2F);
             Mass                  = mass;
             Friction              = friction;
             Restitution           = restitution;
@@ -138,7 +135,6 @@ namespace SuperSmashPolls.Characters {
         public Character(Character otherCharacter, World gameWorld, Vector2 position) {
 
             CharacterSize             = otherCharacter.CharacterSize;
-            CharacterOrigin           = otherCharacter.CharacterOrigin;
             Mass                      = otherCharacter.Mass;
             Friction                  = otherCharacter.Friction;
             Restitution               = otherCharacter.Restitution;
@@ -263,7 +259,7 @@ namespace SuperSmashPolls.Characters {
 
             CharacterBody =
                 Actions[CurrentActionIndex].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
-                                                            CharacterOrigin);
+                                                            Actions[CurrentActionIndex].BodyOrigin);
             CharacterBody.CollisionGroup = CollisionGroup;
             //CharacterBody.ResetDynamics();
             CharacterBody.Restitution = Restitution;

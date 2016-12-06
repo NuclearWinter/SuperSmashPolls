@@ -32,6 +32,8 @@ namespace SuperSmashPolls.Graphics {
         public bool BodiesGenerated;
         /// <summary>Holds the generated bodies for this action</summary>
         public readonly Body[] Bodies;
+        /// <summary>The origin to each body</summary>
+        public readonly Vector2 BodyOrigin;
         /// <summary>The spritesheet to take a value from (can be just one image)</summary>
         public readonly Texture2D SpriteSheet;
         /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
@@ -62,13 +64,15 @@ namespace SuperSmashPolls.Graphics {
             Array.Copy(bodies, Bodies, bodies.Length);
             Scale          = 1; //TODO get scale
             BodiesGenerated = true;
+            BodyOrigin = new Vector2(spriteSheet.Width, spriteSheet.Height)/2;
 
         }
 
-        /// </summary>
+        /// <summary>
         /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
         /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
         /// <param name="spriteSheet">The texture of the sheet</param>
+        /// </summary>
         public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet) {
 
             PlayTime = playTime;
@@ -81,6 +85,7 @@ namespace SuperSmashPolls.Graphics {
             Bodies = new Body[SheetSize.X * SheetSize.Y];
             Scale = 1; //TODO get scale
             BodiesGenerated = false;
+            BodyOrigin = new Vector2(spriteSheet.Width, spriteSheet.Height) / 2;
 
         }
 
@@ -194,7 +199,7 @@ namespace SuperSmashPolls.Graphics {
 	    /// is in the opposite direction of how it is drawn. Leave blank for no effect.</param>
         public void DrawAnimation(ref SpriteBatch batch, float sidewaysVelocity = 0) {
 
-            SpriteEffects Effect = (sidewaysVelocity < -0.1) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            SpriteEffects Effect = (sidewaysVelocity > 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             batch.Draw(SpriteSheet, Destination, Source, DrawColor, 0, Vector2.Zero, Effect, 0F);
 
