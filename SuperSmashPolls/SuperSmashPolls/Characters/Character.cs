@@ -24,7 +24,7 @@ namespace SuperSmashPolls.Characters {
     /// </summary>
     public class Character {
 
-        /* These are the indicies that animations can be called with inside Actions */
+        /** These are the indicies that animations can be called with inside Actions */
         private const int IdleIndex = 0,
             JumpIndex               = 1, //A (Players can always jump)
             RunIndex                = 2, //Right Joystick (Can always run in any direction)
@@ -33,7 +33,7 @@ namespace SuperSmashPolls.Characters {
             SpecialUpAttackIndex    = 5, //X + Left joystick up
             SpecialSideAttackIndex  = 6, //X + Left joystick to the left or right
             SpecialDownAttackIndex  = 7; //X + Left joystick down
-        /* This is the amount the joystick must be over for it to register as intentional */
+        /** This is the amount the joystick must be over for it to register as intentional */
         private const float Register = 0.2F;
         /** The size of the character (in display units) */
         private readonly Vector2 CharacterSize;
@@ -55,13 +55,13 @@ namespace SuperSmashPolls.Characters {
         private readonly List<CharacterMove> Moves;
         /** The DateTime to allow the character to take another action */
         private DateTime NextAction;
-        /* The last time that the character jumped */
+        /** The last time that the character jumped */
         private DateTime LastJump;
-        /* The last time that the character used their special attack */
+        /** The last time that the character used their special attack */
         private DateTime LastSpecialAttack;
-        /* The index of a value in Actions that represents the current action of the player */
+        /** The index of a value in Actions that represents the current action of the player */
         private int CurrentActionIndex;
-        /* The group that this character's moves don't affect */
+        /** The group that this character's moves don't affect */
         private Int16 CollisionGroup;
         /** The direction that the character is moving */
         private float Direction;
@@ -118,8 +118,8 @@ namespace SuperSmashPolls.Characters {
             Actions               = new List<CharacterAction>();
             Moves                 = new List<CharacterMove>();
             Name                  = name;
-            Direction = 0;
-            InAction = false;
+            Direction             = 0;
+            InAction              = false;
 
         }
 
@@ -147,11 +147,11 @@ namespace SuperSmashPolls.Characters {
             Moves                     = new List<CharacterMove>();
             GameWorld                 = gameWorld;
             Name                      = otherCharacter.Name;
-            Direction = 0;
-            InAction = false;
+            Direction                 = 0;
+            InAction                  = false;
 
             foreach (CharacterAction i in otherCharacter.Actions)
-                Actions.Add(new CharacterAction(i.PlayTime, i.ImageSize, i.SpriteSheet, i.Bodies));
+                Actions.Add(new CharacterAction(i.PlayTime, i.ImageSize, i.SpriteSheet, i.Bodies, i.Scale));
 
             CharacterBody = Actions[0].FirstBody();
 
@@ -244,7 +244,7 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-        private bool test = false;
+        private bool CanPreformSpecial = false;
 
         /// <summary>
         /// Updates the character. This method controls movement, actions, and updates and character model.
@@ -285,9 +285,9 @@ namespace SuperSmashPolls.Characters {
             Actions[CurrentActionIndex].DrawColor = Color.Black;
 #endif
 
-            test = Now.Ticks > NextAction.Ticks;
+            CanPreformSpecial = Now.Ticks > NextAction.Ticks;
 
-            if (Now.Ticks > NextAction.Ticks && !InAction) {
+            if (CanPreformSpecial && !InAction) {
 
                 if (gamePadState.IsButtonDown(Buttons.A) && (Now - LastJump).TotalMilliseconds > JumpInterval*1000) {
                     //The character is jumping
@@ -428,7 +428,7 @@ namespace SuperSmashPolls.Characters {
                 spriteBatch.DrawString(font, "Linear Velocity:" + CharacterBody.LinearVelocity,
                     ConvertUnits.ToDisplayUnits(testing + new Vector2(0, 2)), Color.Black);
 
-                spriteBatch.DrawString(font, "Able to use action: " + test,
+                spriteBatch.DrawString(font, "Able to use action: " + CanPreformSpecial,
                     ConvertUnits.ToDisplayUnits(testing + new Vector2(0, 4)), Color.Black);
 
                 spriteBatch.DrawString(font, "In action: " + InAction,

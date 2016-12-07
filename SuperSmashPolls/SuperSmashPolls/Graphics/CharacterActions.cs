@@ -28,7 +28,7 @@ namespace SuperSmashPolls.Graphics {
         private Rectangle Source;
         /** The destination for drawing the source rectangle */
         private Rectangle Destination;
-        /**  */
+        /** The time that the animation was started */
         private DateTime StartedAnimation;
         /// <summary>Tells if the bodies have been generated for this character</summary>
         public bool BodiesGenerated;
@@ -54,7 +54,8 @@ namespace SuperSmashPolls.Graphics {
         /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
         /// <param name="spriteSheet">The texture of the sheet</param>
         /// <param name="bodies"></param>
-        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet, Body[] bodies) {
+        /// <param name="scale"></param>
+        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet, Body[] bodies, int scale) {
 
             PlayTime       = playTime;
             ImageSize      = imageSize;
@@ -65,7 +66,7 @@ namespace SuperSmashPolls.Graphics {
             LastUpdateTime = DateTime.Now;
             Bodies         = new Body[SheetSize.X * SheetSize.Y];
             Array.Copy(bodies, Bodies, bodies.Length);
-            Scale          = 1; //TODO get scale
+            Scale          = scale;
             BodiesGenerated = true;
             BodyOrigin = CalculateOrigin(imageSize.X, imageSize.Y);
             StartedAnimation = DateTime.Now;
@@ -78,20 +79,21 @@ namespace SuperSmashPolls.Graphics {
         /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
         /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
         /// <param name="spriteSheet">The texture of the sheet</param>
-        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet) {
+        /// <param name="scale"></param>
+        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet, int scale) {
 
-            PlayTime = playTime;
-            ImageSize = imageSize;
-            SheetSize = new Point(spriteSheet.Width / imageSize.X, spriteSheet.Height / imageSize.Y);
-            SpriteSheet = spriteSheet;
-            AnimatedPoint = new Point(0, 0);
-            DrawColor = Color.White;
-            LastUpdateTime = DateTime.Now;
-            Bodies = new Body[SheetSize.X * SheetSize.Y];
-            Scale = 1; //TODO get scale
-            BodiesGenerated = false;
-            BodyOrigin = CalculateOrigin(imageSize.X, imageSize.Y);
             StartedAnimation = DateTime.Now;
+            BodiesGenerated  = false;
+            LastUpdateTime   = DateTime.Now;
+            AnimatedPoint    = new Point(0, 0);
+            SpriteSheet      = spriteSheet;
+            BodyOrigin       = CalculateOrigin(imageSize.X, imageSize.Y);
+            DrawColor        = Color.White;
+            ImageSize        = imageSize;
+            SheetSize        = new Point(spriteSheet.Width / imageSize.X, spriteSheet.Height / imageSize.Y);
+            PlayTime         = playTime;
+            Bodies           = new Body[SheetSize.X * SheetSize.Y];
+            Scale            = scale;
 
         }
 

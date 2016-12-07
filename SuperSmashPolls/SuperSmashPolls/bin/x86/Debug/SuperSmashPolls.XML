@@ -9,6 +9,33 @@
             This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
             </summary>
         </member>
+        <member name="F:SuperSmashPolls.Characters.Character.IdleIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.JumpIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.RunIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.AttackIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.SpecialAttackIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.SpecialUpAttackIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.SpecialSideAttackIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.SpecialDownAttackIndex">
+            These are the indicies that animations can be called with inside Actions 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.Register">
+            This is the amount the joystick must be over for it to register as intentional 
+        </member>
         <member name="F:SuperSmashPolls.Characters.Character.CharacterSize">
             The size of the character (in display units) 
         </member>
@@ -38,6 +65,18 @@
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.NextAction">
             The DateTime to allow the character to take another action 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.LastJump">
+            The last time that the character jumped 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.LastSpecialAttack">
+            The last time that the character used their special attack 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.CurrentActionIndex">
+            The index of a value in Actions that represents the current action of the player 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Character.CollisionGroup">
+            The group that this character's moves don't affect 
         </member>
         <member name="F:SuperSmashPolls.Characters.Character.Direction">
             The direction that the character is moving 
@@ -564,7 +603,7 @@
             The destination for drawing the source rectangle 
         </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.StartedAnimation">
-             
+            The time that the animation was started 
         </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.BodiesGenerated">
             <summary>Tells if the bodies have been generated for this character</summary>
@@ -590,7 +629,7 @@
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.Scale">
             <summary>The scale to use</summary>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,FarseerPhysics.Dynamics.Body[])">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,FarseerPhysics.Dynamics.Body[],System.Int32)">
             <summary>
             Constructor from an already constructed CharacterAction
             </summary>
@@ -598,14 +637,16 @@
             <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
             <param name="spriteSheet">The texture of the sheet</param>
             <param name="bodies"></param>
+            <param name="scale"></param>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32)">
             <summary>
             Constructor from only imported items and constants
             </summary>
             <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
             <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
             <param name="spriteSheet">The texture of the sheet</param>
+            <param name="scale"></param>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.CalculateOrigin(System.Single,System.Single)">
             <summary>
@@ -713,6 +754,20 @@
             <param name="horizontalGravity">The gravity of the world on a horizontal scale</param>
             <param name="verticalGravity">The gravity on a vertical scale</param>
         </member>
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.CreatePolygonFromTexture(Microsoft.Xna.Framework.Graphics.Texture2D,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,FarseerPhysics.Common.Decomposition.TriangulationAlgorithm)">
+            <summary>
+            Creates a polygon from a texture. This is the important function here.
+            </summary>
+            <param name="texture">The texture to make a body from</param>
+            <param name="density">The density of the object (Will almost always be one</param>
+            <param name="position">The position (in meters) of the object in the world</param>
+            <param name="scale">The scale of the object (how much to change its size)</param>
+            <param name="algorithm">The decomposition algorithm to use</param>
+            <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
+            @warning In order for this to work the input must have a transparent background. I highly reccomend that you
+            only use this with PNGs as that is what I have tested and I know they work. This will only produce a bosy as
+            clean as the texture you give it, so avoid partically transparent areas and little edges.
+        </member>
         <member name="M:SuperSmashPolls.Levels.LevelHandler.SetBackground(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Vector2)">
             <summary>
             Sets a background to the level
@@ -725,27 +780,13 @@
             <summary>
             Creates the body and puts it in the world
             </summary>
-            <param name="items">All the items to add to the world (Texture, position, size (in meters))</param>
+            <param name="items">All the items to add to the world (Texture, position (meters), size (meters))</param>
         </member>
         <member name="M:SuperSmashPolls.Levels.LevelHandler.DrawLevel(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Graphics.SpriteFont)">
             <summary>
             This draws world
             </summary>
             <param name="spriteBatch">The batch to draw with</param>
-        </member>
-        <member name="M:SuperSmashPolls.Levels.LevelHandler.CreatePolygonFromTexture(Microsoft.Xna.Framework.Graphics.Texture2D,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,FarseerPhysics.Common.Decomposition.TriangulationAlgorithm)">
-            <summary>
-            Creates a polygon from a texture. This is the important function here.
-            </summary>
-            <param name="texture">The texture to make a body from</param>
-            <param name="density">The density of the object (Will almost always be one</param>
-            <param name="position">The position (in meters) of the object in the world</param>
-            <param name="scale">The scale of the object (how much to change its size)</param>
-            <param name="algorithm">The decomposition algorithm to use</param>
-            <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
-            @warning In order for this to work the input must have a transparent background. I highly reccomend that you
-            only use this with PNGs as that is what I have texted and I know they work. This will only produce a bosy as
-            clean as the texture you give it, so avoid partically transparent areas and little edges.
         </member>
         <member name="T:SuperSmashPolls.MenuControl.MenuCommands">
              <summary>
@@ -772,11 +813,11 @@
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.HasSubmenu">
             If the item has it's own menu that it can display if selected 
         </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericanPositions">
-            The position of characters for American Text mode 
-        </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.DeferAudio">
             Whether or not to play the audio of the item above it 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericanPositions">
+            The position of characters for American Text mode 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.Font">
             Font to use for this item 
@@ -800,6 +841,15 @@
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.MusicInstance">
             Handles looping of audio 
         </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
+            <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CenterItem">
+            <summary>Whether or not to center the item horizontally around the position.</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Command">
+            <summary>The command to use if clicked on</summary>
+        </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericaText">
             <summary>Makes the text more american, not american't</summary>
         </member>
@@ -815,14 +865,11 @@
         <member name="P:SuperSmashPolls.MenuControl.MenuItem.TextColor">
             <summary>Color for this item's text</summary>
         </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
-            <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Options">
+            <summary>The options for this menu.</summary>
         </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CenterItem">
-            <summary>Whether or not to center the item horizontally around the position.</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Command">
-            <summary>The command to use if clicked on</summary>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.SelectedOption">
+            <summary>The index of the options currently selected in Options</summary>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands,System.Boolean,System.Boolean)">
             <summary>
@@ -837,6 +884,20 @@
             <param name="command">The command to have this item return</param>
             <param name="americaText">Makes the text great again</param>
             <param name="deferAudio">Whther or not to play the audio of the MenuItem above this one</param>
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.AddOptions(System.Tuple{System.String,System.String[]}[])">
+            <summary>
+            Adds options to a submenu. Options can only be added once, otherwise the previously added options will be 
+            overriden.
+            </summary>
+            <param name="options">The first string is the key to display on the menu as the title for the option, the
+             second are the values to associate to that option.</param>
+            TODO allow ranges of numbers
+        </member>
+        <member name="M:SuperSmashPolls.MenuControl.MenuItem.ReadOptions">
+            <summary>
+            
+            </summary>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.AddItem(SuperSmashPolls.MenuControl.MenuItem)">
             <summary>

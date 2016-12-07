@@ -68,6 +68,7 @@
     <Compile Include="Graphics\CharacterActions.cs" />
     <Compile Include="Levels\LevelHandler.cs" />
     <Compile Include="MenuControl\MenuItem.cs" />
+    <Compile Include="MenuControl\Option.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />

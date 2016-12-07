@@ -15,15 +15,24 @@ Harambe's
 	Moves
 	Animations
 	Sounds
+	
 Damage sounds
+
 Damage multiplier (health)
-	/How light a character is
+	How light a character is
 	Aggro (based on health - higher = more damage)
+	
 Arrange declarations better
+
 Options file (for game settings like display size)
+
 Menus
 	All characters on same screen
 	Game options
 	Gamemode settings
+	
 Get rid of use of WorldUnit
-make timespan system better
+
+Make timespan system better
+
+Scalable font

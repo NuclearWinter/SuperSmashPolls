@@ -98,7 +98,8 @@ namespace SuperSmashPolls {
             }
 
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
-            ScreenSize = new Vector2(640, 360);
+            //ScreenSize = new Vector2(640, 360);
+            ScreenSize = new Vector2(1920, 1080);
 
             LevelDictionary      = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new List<Tuple<Character, string>>();
@@ -129,7 +130,7 @@ namespace SuperSmashPolls {
 
                 return new System.IO.FileInfo(path).Length > 0;
 
-            } catch (Exception e) {
+            } catch (Exception) {
 
                 return false;
 
@@ -349,17 +350,17 @@ namespace SuperSmashPolls {
 
             /************ The Donald Content Loading ************/
 
-            //Checked = image size correct | Working = Decomposition working
+            int ItemScale = (int)(ScreenSize/new Vector2(640, 360)).X;
 
             TheDonald.AddCharacterActions(
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")), //checked
-                new CharacterAction(1, new Point(19, 26), Content.Load<Texture2D>("Donald\\donald_jump")), //checked
-                new CharacterAction(1, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_walk")), //checked
-                new CharacterAction(2, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_punch")), //checked
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")),
-                new CharacterAction(2, new Point(26, 30), Content.Load<Texture2D>("Donald\\donald_upmash")), //checked
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")),
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand")));
+                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale),
+                new CharacterAction(1, new Point(19, 26), Content.Load<Texture2D>("Donald\\donald_jump"), ItemScale),
+                new CharacterAction(1, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_walk"), ItemScale),
+                new CharacterAction(2, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_punch"), ItemScale),
+                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale),
+                new CharacterAction(2, new Point(26, 30), Content.Load<Texture2D>("Donald\\donald_upmash"), ItemScale),
+                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale),
+                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale));
 
             TheDonaldsMoves TheDonaldsAttacks = new TheDonaldsMoves();
             AudioHandler TheDonaldEffect      = new AudioHandler(Content.Load<SoundEffect>("Donald\\SpecialAttack"));
@@ -430,7 +431,7 @@ namespace SuperSmashPolls {
                 FinalDestination.SetBackground(FinalBackground, ObjectScale);
 
                 FinalDestination.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(FinalPlatform,
-                    MetersV2(218, 336)*ObjectScale, MetersV2(658, 243)*ObjectScale));
+                    MetersV2(218, 336)/ObjectScale, MetersV2(658, 243)/ObjectScale));
 
             }
 
