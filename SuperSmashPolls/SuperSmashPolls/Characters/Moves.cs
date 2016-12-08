@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using FarseerPhysics;
+using FarseerPhysics.Collision;
 using FarseerPhysics.Common;
 using FarseerPhysics.Common.Decomposition;
 using FarseerPhysics.Common.PhysicsLogic;
@@ -21,7 +22,7 @@ namespace SuperSmashPolls.Characters {
     /// Parent class for creating character moves.
     /// </summary>
     /// <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
-    public abstract class Moves {
+    public abstract class Moves { //Setup contact
 
         /// <summary>The index of various moves to be used in their arrays</summary>
         protected internal const int SpecialIndex = 0,
@@ -66,12 +67,21 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        //protected internal List<Body> UseSpecial() {
+        /// <returns>A list of points in the world where bodies should be effected by the move</returns>
+        /// TODO test this
+        protected internal List<FixedArray2<ManifoldPoint>> UseSpecial() {
 
-         //   MoveColliders[SpecialIndex].
+            var Contacts = MoveColliders[SpecialIndex].ContactList;
 
-        //}
+            List<FixedArray2<ManifoldPoint>> WorldPoints = new List<FixedArray2<ManifoldPoint>>();
+
+            for (var Contact = Contacts.Contact; Contact != null; Contact = Contacts.Next.Contact) 
+                if (Contact.IsTouching && Contact.Enabled)
+                    WorldPoints.Add(Contact.Manifold.Points);
+
+            return WorldPoints;
+
+        }
 
         /// <summary>
         /// The basic attack that all characters have
