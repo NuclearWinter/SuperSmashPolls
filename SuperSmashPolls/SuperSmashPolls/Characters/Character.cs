@@ -234,6 +234,9 @@ namespace SuperSmashPolls.Characters {
             foreach (var I in Actions)
                 I.GenerateBodies(gameWorld);
 
+            foreach (var I in Moves)
+                I.
+
             CharacterBody                = Actions[IdleIndex].FirstBody();
             CollisionGroup               = collisionGroup;
             CharacterBody.CollisionGroup = CollisionGroup;

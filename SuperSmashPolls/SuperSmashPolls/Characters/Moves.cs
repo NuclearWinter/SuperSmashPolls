@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using FarseerPhysics;
 using FarseerPhysics.Collision;
 using FarseerPhysics.Common;
@@ -14,7 +12,6 @@ using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SuperSmashPolls.Graphics;
-using SuperSmashPolls.Levels;
 
 namespace SuperSmashPolls.Characters {
 
@@ -50,7 +47,7 @@ namespace SuperSmashPolls.Characters {
         /// Trys to play the sound effect for the special attack
         /// </summary>
         /// <param name="move">The move to play the sound for</param>
-        protected internal void PlaySound(int move = SpecialIndex) {
+        protected internal void PlaySound(int move) {
 
             try {
 
@@ -69,9 +66,13 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         /// <returns>A list of points in the world where bodies should be effected by the move</returns>
         /// TODO test this
-        protected internal List<FixedArray2<ManifoldPoint>> UseSpecial() {
+        protected internal List<FixedArray2<ManifoldPoint>> UseMove(short moveIndex, ref Character character) {
 
-            var Contacts = MoveColliders[SpecialIndex].ContactList;
+            MoveColliders[moveIndex].Position = character.GetPosition(); 
+            //Because we are only looking at a specific point in time, we don't need velocity or anything like that
+            MoveColliders[moveIndex].Enabled = true;
+
+            var Contacts = MoveColliders[moveIndex].ContactList;
 
             List<FixedArray2<ManifoldPoint>> WorldPoints = new List<FixedArray2<ManifoldPoint>>();
 
@@ -108,18 +109,23 @@ namespace SuperSmashPolls.Characters {
         /// Generates the bodies for use as hitboxes
         /// </summary>
         /// <param name="world"></param>
+        /// <param name="id">The ID for the character who these moves belong to</param>
         /// <param name="otherIdOne"></param>
         /// <param name="otherIdTwo"></param>
         /// <param name="otherIdThree"></param>
-        public void GenerateHitboxBodies(World world, short otherIdOne, short otherIdTwo, short otherIdThree) {
+        public void GenerateHitboxBodies(World world, short id, short otherIdOne, short otherIdTwo, short otherIdThree) {
 
             OtherIdOne    = otherIdOne;
             OtherIdTwo    = otherIdTwo;
             OtherIdThree  = otherIdThree;
             MoveColliders = new Body[5];
-            
-            for (int i = 0; i < 5; ++i)
+
+            for (int i = 0; i < 5; ++i) {
+
                 MoveColliders[i] = BodyFactory.CreateCompoundPolygon(world, MoveVertices[i], 1, Vector2.Zero);
+                //We might need to do something so that the player's body doesnt get messed up
+
+            }
 
         }
 
@@ -138,7 +144,7 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         /// <param name="scale">The scale of these textures compared to the current screen size</param>
         /// <param name="moveTextures">The five textures to use as move hitboxes. Needs to be in this order: special, 
-        /// side special, up special, down special, basic attack</param>
+        /// side special, up special, down special, basic attack. Right now we can only handle 1 hitbox per move</param>
         public void AssignColliderTextures(float scale, params Texture2D[] moveTextures) {
 
             ColliderScale = scale;

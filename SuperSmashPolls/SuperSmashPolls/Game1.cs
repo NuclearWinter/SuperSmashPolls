@@ -59,6 +59,7 @@ namespace SuperSmashPolls {
         private Gamemode CurrentGamemode;
         /** The one, the only, the Donald */
         private Character TheDonald;
+        private TheDonaldsMoves TheDonaldsAttacks;
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
         /** Levels for the player to play on */
@@ -362,11 +363,15 @@ namespace SuperSmashPolls {
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale),
                 new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale));
 
-            TheDonaldsMoves TheDonaldsAttacks = new TheDonaldsMoves();
+            TheDonaldsAttacks = new TheDonaldsMoves();
             AudioHandler TheDonaldEffect      = new AudioHandler(Content.Load<SoundEffect>("Donald\\SpecialAttack"));
 
             TheDonaldsAttacks.AddAudio(TheDonaldEffect, TheDonaldEffect, TheDonaldEffect, TheDonaldEffect,
                 TheDonaldEffect);
+
+            Texture2D TheDonaldsSpecialHitbox = null; //TODO load this in, figure our how to get collider bodies in world
+
+            TheDonaldsAttacks.AssignColliderTextures(TheDonaldsSpecialHitbox.Width/ScreenSize.X, TheDonaldsSpecialHitbox);
 
             TheDonaldsAttacks.AddMovesToCharacter(TheDonald);
 

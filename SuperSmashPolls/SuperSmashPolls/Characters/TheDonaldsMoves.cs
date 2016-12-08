@@ -17,9 +17,14 @@ namespace SuperSmashPolls.Characters {
         /// <param name="character">The character preforming the move</param>
         public override void Special(Character character) {
 
-            SideSpecial(character);
+            var DetectedPoints = UseMove(SpecialIndex, ref character);
 
-            PlaySound();
+            if (DetectedPoints.Count < 1)
+                return;
+
+            //TODO code for move
+
+            PlaySound(SpecialIndex);
 
         }
 
@@ -31,22 +36,23 @@ namespace SuperSmashPolls.Characters {
         /// <param name="character">The character preforming the move</param>
         public override void SideSpecial(Character character) {
 
-           SimpleExplosion Explosion = new SimpleExplosion(character.GameWorld) {
-                Power = 1,
-                DisabledOnGroup = character.CharacterBody.CollisionGroup
-            };
+            var DetectedPoints = UseMove(SideSpecialIndex, ref character);
 
-            Explosion.Activate(character.GetPosition(), 4, 300);
+            if (DetectedPoints.Count < 1)
+                return;
 
-            try {
+            foreach (var i in DetectedPoints) {
 
-                MoveSounds[SideSpecialIndex].PlayEffect();
+                SimpleExplosion Explosion = new SimpleExplosion(character.GameWorld) {
+                    Power = 1,
+                    DisabledOnGroup = character.CharacterBody.CollisionGroup
+                };
 
-            } catch (NullReferenceException) {
-                
-                Console.WriteLine("SideSpecialSound is null");
+                Explosion.Activate(i[0].LocalPoint, 4, 300); //Test this
 
             }
+
+            PlaySound(SideSpecialIndex);
 
         }
 
@@ -58,7 +64,7 @@ namespace SuperSmashPolls.Characters {
 
             throw new NotImplementedException();
 
-            MoveSounds[UpSpecialIndex].PlayEffect();
+            PlaySound(UpSpecialIndex);
 
         }
 
@@ -70,7 +76,7 @@ namespace SuperSmashPolls.Characters {
 
             throw new NotImplementedException();
 
-            MoveSounds[DownSpecialIndex].PlayEffect();
+            PlaySound(DownSpecialIndex);
 
         }
 
@@ -82,15 +88,7 @@ namespace SuperSmashPolls.Characters {
 
             BasicPunch(character);
 
-            try {
-
-                MoveSounds[BasicIndex].PlayEffect();
-
-            } catch (NullReferenceException) {
-                
-                Console.WriteLine("basic attack is null");
-
-            }
+            PlaySound(BasicIndex);
 
         }
 
