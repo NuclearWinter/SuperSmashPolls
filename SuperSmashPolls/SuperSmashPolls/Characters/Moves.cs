@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using FarseerPhysics;
@@ -22,55 +23,60 @@ namespace SuperSmashPolls.Characters {
     /// <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
     public abstract class Moves {
 
+        /// <summary>The index of various moves to be used in their arrays</summary>
+        protected internal const int SpecialIndex = 0,
+            SideSpecialIndex = 1,
+            UpSpecialIndex   = 2,
+            DownSpecialIndex = 3,
+            BasicIndex       = 4;
+
         /// <summary>Audio handlers to play during attacks</summary>
-        protected internal AudioHandler SpecialSound,
-            SideSpecialSound,
-            UpSpecialSound,
-            DownSpecialSound,
-            BasicAttackSound;
+        protected internal AudioHandler[] MoveSounds;
+
         /// <summary>The bodies of moves. These are used to detect collisions with characters</summary>
-        protected internal List<Vertices> SpecialCollider,
-            SideSpecialCollider,
-            UpSpecialCollider,
-            DownSpecialCollider,
-            BasicAttackCollider;
+        protected internal List<Vertices>[] MoveVertices;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="special"></param>
-        /// <param name="sideSpecial"></param>
-        /// <param name="upSpecial"></param>
-        /// <param name="downSpecial"></param>
-        /// <param name="basicAttack"></param>
-        protected internal void AssignColliderBodies(Texture2D special, Texture2D sideSpecial, Texture2D upSpecial, 
-            Texture2D downSpecial, Texture2D basicAttack) {
-            
-            
+        /// <summary>The bodies of moves. These are used to detect collisions with characters</summary>
+        protected internal Body[] MoveColliders;
 
-        }
+        /// <summary>These are the collision groups for the other players in the game</summary>
+        protected internal short OtherIdOne, OtherIdTwo, OtherIdThree;
+
+        /// <summary>The scale of collider textures</summary>
+        protected internal float ColliderScale;
 
         /// <summary>
         /// Trys to play the sound effect for the special attack
         /// </summary>
-        protected internal void PlaySpecialSound() {
+        /// <param name="move">The move to play the sound for</param>
+        protected internal void PlaySound(int move = SpecialIndex) {
 
             try {
 
-                SpecialSound.PlayEffect();
+                MoveSounds[move].PlayEffect();
 
             } catch (NullReferenceException) {
 
-                Console.WriteLine("Special attack sound not available");
+                Console.WriteLine("Attack sound not available");
 
             }
 
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        //protected internal List<Body> UseSpecial() {
+
+         //   MoveColliders[SpecialIndex].
+
+        //}
+
+        /// <summary>
         /// The basic attack that all characters have
         /// </summary>
-        /// <param name="character"></param>
+        /// <param name="character">The character preforming this move</param>
         /// TODO fix this
         protected internal void BasicPunch(Character character) {
             //If true, moving forwards (right), if negative backwards (left)
@@ -89,35 +95,67 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// Creates a polygon from a texture. This is the important function here.
+        /// Generates the bodies for use as hitboxes
         /// </summary>
-        /// <param name="texture">The texture to make a body from</param>
-        /// <param name="density">The density of the object (Will almost always be one</param>
-        /// <param name="scale">The scale of the object (how much to change its size)</param>
-        /// <param name="algorithm">The decomposition algorithm to use</param>
-        /// <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
-        /// @warning In order for this to work the input must have a transparent background. I highly reccomend that you
-        /// only use this with PNGs as that is what I have tested and I know they work. This will only produce a bosy as
-        /// clean as the texture you give it, so avoid partically transparent areas and little edges.
-        public List<Vertices> CreatePolygonFromTexture(Texture2D texture, float scale, float density = 1,
-            TriangulationAlgorithm algorithm = TriangulationAlgorithm.Earclip) {
+        /// <param name="world"></param>
+        /// <param name="otherIdOne"></param>
+        /// <param name="otherIdTwo"></param>
+        /// <param name="otherIdThree"></param>
+        public void GenerateHitboxBodies(World world, short otherIdOne, short otherIdTwo, short otherIdThree) {
 
-            uint[] TextureData = new uint[texture.Width * texture.Height]; //Array to copy texture info into
+            OtherIdOne    = otherIdOne;
+            OtherIdTwo    = otherIdTwo;
+            OtherIdThree  = otherIdThree;
+            MoveColliders = new Body[5];
+            
+            for (int i = 0; i < 5; ++i)
+                MoveColliders[i] = BodyFactory.CreateCompoundPolygon(world, MoveVertices[i], 1, Vector2.Zero);
 
-            texture.GetData<uint>(TextureData); //Gets which pixels of the texture are actually filled
+        }
 
-            Vertices vertices = TextureConverter.DetectVertices(TextureData, texture.Width);
-            List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, algorithm);
+        /// <summary>
+        /// Adds moves to a character
+        /// </summary>
+        /// <param name="addTo">The character to add moves to</param>
+        public void AddMovesToCharacter(Character addTo) {
 
-            Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(scale));
-            foreach (Vertices Vert in VertexList)
-                Vert.Scale(ref VertScale); //Scales the vertices to match the size we specified
+            addTo.AddCharacterMoves(SideSpecial, UpSpecial, DownSpecial, Special, BasicAttack);
 
-            Vector2 Centroid = -vertices.GetCentroid();
-            vertices.Translate(ref Centroid);
-            //basketOrigin = -centroid;
+        }
 
-            return VertexList;
+        /// <summary>
+        /// Assigns the vertices to their respective lists to be used for creating hitbox bodies.
+        /// </summary>
+        /// <param name="scale">The scale of these textures compared to the current screen size</param>
+        /// <param name="moveTextures">The five textures to use as move hitboxes. Needs to be in this order: special, 
+        /// side special, up special, down special, basic attack</param>
+        public void AssignColliderTextures(float scale, params Texture2D[] moveTextures) {
+
+            ColliderScale = scale;
+            MoveVertices  = new List<Vertices>[5];
+
+            if (moveTextures.Length != 5)
+                throw new InvalidDataException("Five textures were not given to the AssignColliderTextures method");
+
+            for (int i = 0; i < 5; ++i)
+                MoveVertices[i] = CreateVerticesFromTexture(moveTextures[i]);
+
+        }
+
+        /// <summary>
+        /// Adds the sounds to this class
+        /// </summary>
+        /// <param name="moveSounds">The five sounds to use for the moves. Needs to be in this order: special, 
+        /// side special, up special, down special, basic attack</param>
+        public void AddAudio(params AudioHandler[] moveSounds) {
+
+            if (moveSounds.Length != 5)
+                throw new InvalidDataException("Five sounds were not given to the AddAudio method");
+
+            MoveSounds = new AudioHandler[5];
+
+            for (int i = 0; i < 5; ++i)
+                MoveSounds[i] = moveSounds[i];
 
         }
 
@@ -152,30 +190,35 @@ namespace SuperSmashPolls.Characters {
         public abstract void BasicAttack(Character character);
 
         /// <summary>
-        /// Adds moves to a character
+        /// Creates a list of vertices from a texture.
         /// </summary>
-        /// <param name="addTo">The character to add moves to</param>
-        public void AddMovesToCharacter(Character addTo) {
-            
-            addTo.AddCharacterMoves(SideSpecial, UpSpecial, DownSpecial, Special, BasicAttack);
+        /// <param name="texture">The texture to make a body from</param>
+        /// <param name="density">The density of the object (Will almost always be one</param>
+        /// <param name="algorithm">The decomposition algorithm to use</param>
+        /// <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
+        /// @warning In order for this to work the input must have a transparent background. I highly reccomend that you
+        /// only use this with PNGs as that is what I have tested and I know they work. This will only produce a bosy as
+        /// clean as the texture you give it, so avoid partically transparent areas and little edges.
+        private List<Vertices> CreateVerticesFromTexture(Texture2D texture, float density = 1,
+            TriangulationAlgorithm algorithm = TriangulationAlgorithm.Earclip) {
 
-        }
+            uint[] TextureData = new uint[texture.Width * texture.Height]; //Array to copy texture info into
 
-        /// <summary>
-        /// Adds the sounds to this class
-        /// </summary>
-        /// <param name="sideSpecialSound">Audio manajer to handle playing during the side special</param>
-        /// <param name="upSpecialSound">Audio manajer to handle playing during the up special</param>
-        /// <param name="downSpecialSound">Audio manajer to handle playing during the down special</param>
-        /// <param name="specialSound">Audio manajer to handle playing during the special</param>
-        /// <param name="basicAttackSound">Audio manajer to handle playing during a basic attack</param>
-        public void AddAudio(AudioHandler sideSpecialSound, AudioHandler upSpecialSound, AudioHandler downSpecialSound,
-            AudioHandler specialSound, AudioHandler basicAttackSound) {
-            SideSpecialSound = sideSpecialSound;
-            UpSpecialSound   = upSpecialSound;
-            DownSpecialSound = downSpecialSound;
-            SpecialSound     = specialSound;
-            BasicAttackSound = basicAttackSound;
+            texture.GetData<uint>(TextureData); //Gets which pixels of the texture are actually filled
+
+            Vertices vertices = TextureConverter.DetectVertices(TextureData, texture.Width);
+            List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, algorithm);
+
+            Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(ColliderScale));
+            foreach (Vertices Vert in VertexList)
+                Vert.Scale(ref VertScale); //Scales the vertices to match the size we specified
+
+            Vector2 Centroid = -vertices.GetCentroid();
+            vertices.Translate(ref Centroid);
+            //basketOrigin = -centroid;
+
+            return VertexList;
+
         }
 
     }

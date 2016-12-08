@@ -19,7 +19,7 @@ namespace SuperSmashPolls.Characters {
 
             SideSpecial(character);
 
-            PlaySpecialSound();
+            PlaySound();
 
         }
 
@@ -40,7 +40,7 @@ namespace SuperSmashPolls.Characters {
 
             try {
 
-                SideSpecialSound.PlayEffect();
+                MoveSounds[SideSpecialIndex].PlayEffect();
 
             } catch (NullReferenceException) {
                 
@@ -58,7 +58,7 @@ namespace SuperSmashPolls.Characters {
 
             throw new NotImplementedException();
 
-            UpSpecialSound.PlayEffect();
+            MoveSounds[UpSpecialIndex].PlayEffect();
 
         }
 
@@ -67,9 +67,10 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         /// <param name="character">The character preforming the move</param>
         public override void DownSpecial(Character character) {
+
             throw new NotImplementedException();
 
-            DownSpecialSound.PlayEffect();
+            MoveSounds[DownSpecialIndex].PlayEffect();
 
         }
 
@@ -83,7 +84,7 @@ namespace SuperSmashPolls.Characters {
 
             try {
 
-                BasicAttackSound.PlayEffect();
+                MoveSounds[BasicIndex].PlayEffect();
 
             } catch (NullReferenceException) {
                 
