@@ -60,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\CharacterManager.cs" />
+    <Compile Include="Characters\MoveAssets.cs" />
+    <Compile Include="Characters\MoveDefinition.cs" />
     <Compile Include="Characters\Moves.cs" />
     <Compile Include="Characters\TheDonaldsMoves.cs" />
     <Compile Include="GameItemControl\Gamemode.cs" />
