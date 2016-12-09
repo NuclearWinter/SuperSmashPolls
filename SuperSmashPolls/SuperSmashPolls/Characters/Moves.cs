@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Remoting.Messaging;
 using FarseerPhysics;
 using FarseerPhysics.Collision;
 using FarseerPhysics.Common;
@@ -10,230 +11,104 @@ using FarseerPhysics.Common.TextureTools;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using SuperSmashPolls.Graphics;
 
 namespace SuperSmashPolls.Characters {
 
     /// <summary>
-    /// Parent class for creating character moves.
+    /// Class for handling character moves. The moves themself must be defined within the MoveDefinition class, than
+    /// that class passed to here, than the filled class has to be put within its corresponding character.
     /// </summary>
     /// <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
-    public abstract class Moves { //Setup contact
+    public class Moves { //Setup contact
 
         /// <summary>The index of various moves to be used in their arrays</summary>
-        protected internal const int SpecialIndex = 0,
-            SideSpecialIndex = 1,
-            UpSpecialIndex   = 2,
-            DownSpecialIndex = 3,
-            BasicIndex       = 4;
-
-        /// <summary>Audio handlers to play during attacks</summary>
-        protected internal AudioHandler[] MoveSounds;
-
-        /// <summary>The bodies of moves. These are used to detect collisions with characters</summary>
-        protected internal List<Vertices>[] MoveVertices;
-
-        /// <summary>The bodies of moves. These are used to detect collisions with characters</summary>
-        protected internal Body[] MoveColliders;
-
-        /// <summary>These are the collision groups for the other players in the game</summary>
-        protected internal short OtherIdOne, OtherIdTwo, OtherIdThree;
-
-        /// <summary>The scale of collider textures</summary>
-        protected internal float ColliderScale;
+        public const int IdleIndex = 0,
+            WalkIndex              = 1,
+            JumpIndex              = 2,
+            SpecialIndex           = 3,
+            SideSpecialIndex       = 4,
+            UpSpecialIndex         = 5,
+            DownSpecialIndex       = 6,
+            BasicIndex             = 7;
+        /** The moves for this character */
+        private readonly MoveAssets[] CharacterMoves;
+        /** The index of the current move */
+        private int CurrentMove;
+        /** The collision category of the player */
+        private readonly Category CharacterCategory;
+        /** The category for hitboxes to collide with */
+        private readonly Category HitboxCategory;
+        /** The direction that the character is facing */
+        private float Direction;
 
         /// <summary>
-        /// Trys to play the sound effect for the special attack
+        /// Constructs the class to handle moves
         /// </summary>
-        /// <param name="move">The move to play the sound for</param>
-        protected internal void PlaySound(int move) {
+        /// <param name="idle"></param>
+        /// <param name="walk"></param>
+        /// <param name="jump"></param>
+        /// <param name="special"></param>
+        /// <param name="sideSpecial"></param>
+        /// <param name="upSpecial"></param>
+        /// <param name="downSpecial"></param>
+        /// <param name="basic"></param>
+        /// <param name="characterCategory"></param>
+        /// <param name="hitboxCategory"></param>
+        public Moves(MoveAssets idle, MoveAssets walk, MoveAssets jump, MoveAssets special, MoveAssets sideSpecial,
+            MoveAssets upSpecial, MoveAssets downSpecial, MoveAssets basic, Category characterCategory, 
+            Category hitboxCategory) { 
 
-            try {
-
-                MoveSounds[move].PlayEffect();
-
-            } catch (NullReferenceException) {
-
-                Console.WriteLine("Attack sound not available");
-
-            }
+            CharacterCategory = characterCategory;
+            HitboxCategory    = hitboxCategory;
+            CurrentMove       = 0;
+            CharacterMoves    = new[] {idle, walk, jump, special, sideSpecial, upSpecial, downSpecial, basic};
 
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>A list of points in the world where bodies should be effected by the move</returns>
-        /// TODO test this
-        protected internal List<FixedArray2<ManifoldPoint>> UseMove(short moveIndex, ref Character character) {
-
-            MoveColliders[moveIndex].Position = character.GetPosition(); 
-            //Because we are only looking at a specific point in time, we don't need velocity or anything like that
-            MoveColliders[moveIndex].Enabled = true;
-
-            var Contacts = MoveColliders[moveIndex].ContactList;
-
-            List<FixedArray2<ManifoldPoint>> WorldPoints = new List<FixedArray2<ManifoldPoint>>();
-
-            for (var Contact = Contacts.Contact; Contact != null; Contact = Contacts.Next.Contact) 
-                if (Contact.IsTouching && Contact.Enabled)
-                    WorldPoints.Add(Contact.Manifold.Points);
-
-            return WorldPoints;
-
-        }
-
-        /// <summary>
-        /// The basic attack that all characters have
-        /// </summary>
-        /// <param name="character">The character preforming this move</param>
-        /// TODO fix this
-        protected internal void BasicPunch(Character character) {
-            //If true, moving forwards (right), if negative backwards (left)
-            bool Direction = character.CharacterBody.LinearVelocity.X > 0;
-
-            Vector2 AttackPosition = character.CharacterBody.Position; //16 = punch texture width
-            AttackPosition.X += (Direction) ? ConvertUnits.ToSimUnits(16) : -ConvertUnits.ToSimUnits(16);
-
-            SimpleExplosion Explosion = new SimpleExplosion(character.GameWorld) {
-                Power = 1,
-                DisabledOnGroup = character.CharacterBody.CollisionGroup
-            };
-
-            Explosion.Activate(AttackPosition, ConvertUnits.ToSimUnits(30), 700);
-
-        }
-
-        /// <summary>
-        /// Generates the bodies for use as hitboxes
+        /// Makes the hitbox and movement bodies in the world
         /// </summary>
         /// <param name="world"></param>
-        /// <param name="id">The ID for the character who these moves belong to</param>
-        /// <param name="otherIdOne"></param>
-        /// <param name="otherIdTwo"></param>
-        /// <param name="otherIdThree"></param>
-        public void GenerateHitboxBodies(World world, short id, short otherIdOne, short otherIdTwo, short otherIdThree) {
+        /// <param name="mass"></param>
+        /// <param name="friction"></param>
+        /// <param name="restitution"></param>
+        public void MakeBodies(World world, float mass, float friction, float restitution) {
 
-            OtherIdOne    = otherIdOne;
-            OtherIdTwo    = otherIdTwo;
-            OtherIdThree  = otherIdThree;
-            MoveColliders = new Body[5];
+            foreach (var I in CharacterMoves) {
 
-            for (int i = 0; i < 5; ++i) {
-
-                MoveColliders[i] = BodyFactory.CreateCompoundPolygon(world, MoveVertices[i], 1, Vector2.Zero);
-                //We might need to do something so that the player's body doesnt get messed up
-
+                I.ConstructBodies(world, CharacterCategory, HitboxCategory);
+                I.Animation.SetCharactaristics(mass, friction, restitution, CharacterCategory);
+                    
             }
 
         }
 
         /// <summary>
-        /// Adds moves to a character
+        /// Updates the running move by either continuing it, or starting the new one
         /// </summary>
-        /// <param name="addTo">The character to add moves to</param>
-        public void AddMovesToCharacter(Character addTo) {
+        /// <param name="desiredMove">The move that CharacterManager wants to use, if able</param>
+        /// <param name="direction">The direction of the character</param>
+        /// <param name="position">The position of the character in the world</param>
+        public void UpdateMove(int desiredMove, float direction, Vector2 position) {
 
-            addTo.AddCharacterMoves(SideSpecial, UpSpecial, DownSpecial, Special, BasicAttack);
+            if (!CharacterMoves[CurrentMove].UpdateMove(direction, position))
+                return;
+
+            Direction   = direction; //This keeps the direction from updating before the move is done
+            CurrentMove = desiredMove;
 
         }
 
         /// <summary>
-        /// Assigns the vertices to their respective lists to be used for creating hitbox bodies.
+        /// Draws the current move
         /// </summary>
-        /// <param name="scale">The scale of these textures compared to the current screen size</param>
-        /// <param name="moveTextures">The five textures to use as move hitboxes. Needs to be in this order: special, 
-        /// side special, up special, down special, basic attack. Right now we can only handle 1 hitbox per move</param>
-        public void AssignColliderTextures(float scale, params Texture2D[] moveTextures) {
-
-            ColliderScale = scale;
-            MoveVertices  = new List<Vertices>[5];
-
-            if (moveTextures.Length != 5)
-                throw new InvalidDataException("Five textures were not given to the AssignColliderTextures method");
-
-            for (int i = 0; i < 5; ++i)
-                MoveVertices[i] = CreateVerticesFromTexture(moveTextures[i]);
-
-        }
-
-        /// <summary>
-        /// Adds the sounds to this class
-        /// </summary>
-        /// <param name="moveSounds">The five sounds to use for the moves. Needs to be in this order: special, 
-        /// side special, up special, down special, basic attack</param>
-        public void AddAudio(params AudioHandler[] moveSounds) {
-
-            if (moveSounds.Length != 5)
-                throw new InvalidDataException("Five sounds were not given to the AddAudio method");
-
-            MoveSounds = new AudioHandler[5];
-
-            for (int i = 0; i < 5; ++i)
-                MoveSounds[i] = moveSounds[i];
-
-        }
-
-        /// <summary>
-        /// The special move for this character
-        /// </summary>
-        /// <param name="character">The character preforming the move</param>
-        public abstract void Special(Character character);
-
-        /// <summary>
-        /// The side special move for this character
-        /// </summary>
-        /// <param name="character">The character preforming the move</param>
-        public abstract void SideSpecial(Character character);
-
-        /// <summary>
-        /// The up special move for this character
-        /// </summary>
-        /// <param name="character">The character preforming the move</param>
-        public abstract void UpSpecial(Character character);
-
-        /// <summary>
-        /// The down special move for this character
-        /// </summary>
-        /// <param name="character">The character preforming the move</param>
-        public abstract void DownSpecial(Character character);
-
-        /// <summary>
-        /// The basic attack for a character.
-        /// </summary>
-        /// <param name="character">The character preforming the move</param>
-        public abstract void BasicAttack(Character character);
-
-        /// <summary>
-        /// Creates a list of vertices from a texture.
-        /// </summary>
-        /// <param name="texture">The texture to make a body from</param>
-        /// <param name="density">The density of the object (Will almost always be one</param>
-        /// <param name="algorithm">The decomposition algorithm to use</param>
-        /// <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
-        /// @warning In order for this to work the input must have a transparent background. I highly reccomend that you
-        /// only use this with PNGs as that is what I have tested and I know they work. This will only produce a bosy as
-        /// clean as the texture you give it, so avoid partically transparent areas and little edges.
-        private List<Vertices> CreateVerticesFromTexture(Texture2D texture, float density = 1,
-            TriangulationAlgorithm algorithm = TriangulationAlgorithm.Earclip) {
-
-            uint[] TextureData = new uint[texture.Width * texture.Height]; //Array to copy texture info into
-
-            texture.GetData<uint>(TextureData); //Gets which pixels of the texture are actually filled
-
-            Vertices vertices = TextureConverter.DetectVertices(TextureData, texture.Width);
-            List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, algorithm);
-
-            Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(ColliderScale));
-            foreach (Vertices Vert in VertexList)
-                Vert.Scale(ref VertScale); //Scales the vertices to match the size we specified
-
-            Vector2 Centroid = -vertices.GetCentroid();
-            vertices.Translate(ref Centroid);
-            //basketOrigin = -centroid;
-
-            return VertexList;
+        /// <param name="spriteBatch"></param>
+        public void DrawMove(SpriteBatch spriteBatch) {
+            
+            CharacterMoves[CurrentMove].Animation.DrawAnimation(ref spriteBatch, Direction);
 
         }
 

@@ -18,6 +18,22 @@ namespace SuperSmashPolls.Graphics {
     /// </summary>
     public class CharacterAction {
 
+        /// <summary>Holds the generated bodies for this action</summary>
+        public readonly Body[] Bodies;
+        /// <summary>The origin to each body</summary>
+        public readonly Vector2 BodyOrigin;
+        /// <summary>The spritesheet to take a value from (can be just one image)</summary>
+        public readonly Texture2D SpriteSheet;
+        /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
+        public readonly float PlayTime;
+        /// <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
+        public readonly Point ImageSize;
+        /// <summary>Tells if the bodies have been generated for this character</summary>
+        public bool BodiesGenerated;
+        /// <summary>The color to draw the image with, defaults to clear</summary>
+        public Color DrawColor;
+        /// <summary>The scale to use</summary>
+        public int Scale;
         /** The amount of images on the X and Y axis, calculated in the constructor */
         private readonly Point SheetSize;
         /** The piece of the sheet to draw based on PlayTime @see Update */
@@ -30,22 +46,6 @@ namespace SuperSmashPolls.Graphics {
         private Rectangle Destination;
         /** The time that the animation was started */
         private DateTime StartedAnimation;
-        /// <summary>Tells if the bodies have been generated for this character</summary>
-        public bool BodiesGenerated;
-        /// <summary>Holds the generated bodies for this action</summary>
-        public readonly Body[] Bodies;
-        /// <summary>The origin to each body</summary>
-        public readonly Vector2 BodyOrigin;
-        /// <summary>The spritesheet to take a value from (can be just one image)</summary>
-        public readonly Texture2D SpriteSheet;
-        /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
-        public readonly int PlayTime;
-        /// <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
-        public readonly Point ImageSize;
-        /// <summary>The color to draw the image with, defaults to clear</summary>
-        public Color DrawColor;
-        /// <summary>The scale to use</summary>
-        public int Scale;
 
         /// <summary>
         /// Constructor from an already constructed CharacterAction
@@ -55,7 +55,7 @@ namespace SuperSmashPolls.Graphics {
         /// <param name="spriteSheet">The texture of the sheet</param>
         /// <param name="bodies"></param>
         /// <param name="scale"></param>
-        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet, Body[] bodies, int scale) {
+        public CharacterAction(float playTime, Point imageSize, Texture2D spriteSheet, Body[] bodies, int scale) {
 
             PlayTime       = playTime;
             ImageSize      = imageSize;
@@ -76,11 +76,11 @@ namespace SuperSmashPolls.Graphics {
         /// <summary>
         /// Constructor from only imported items and constants
         /// </summary>
-        /// <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+        /// <param name="playTime">The amount of time (in mliliseconds) that it takes to loop through the entire sheet</param>
         /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
         /// <param name="spriteSheet">The texture of the sheet</param>
         /// <param name="scale"></param>
-        public CharacterAction(int playTime, Point imageSize, Texture2D spriteSheet, int scale) {
+        public CharacterAction(float playTime, Point imageSize, Texture2D spriteSheet, int scale) {
 
             StartedAnimation = DateTime.Now;
             BodiesGenerated  = false;
@@ -98,22 +98,10 @@ namespace SuperSmashPolls.Graphics {
         }
 
         /// <summary>
-        /// Calculates the origin of a body
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        private static Vector2 CalculateOrigin(float x, float y) {
-            
-            return (new Vector2(x, y))/2;
-
-        }
-
-        /// <summary>
         /// Generates the bodies for each of the pieces of the sheet.
         /// </summary>
-        /// <param name="LevelWorld">The world to create bodies in</param>
-        public void GenerateBodies(World LevelWorld) { //TODO get scale
+        /// <param name="levelWorld">The world to create bodies in</param>
+        public void GenerateBodies(World levelWorld) { //TODO get scale
 
             BodiesGenerated = true;
 
@@ -158,7 +146,7 @@ namespace SuperSmashPolls.Graphics {
                 //basketOrigin = -centroid;
 
                 //This actually creates the body
-                Bodies[BodyIndex] = BodyFactory.CreateCompoundPolygon(LevelWorld, VertexList, 1, Vector2.Zero);
+                Bodies[BodyIndex] = BodyFactory.CreateCompoundPolygon(levelWorld, VertexList, 1, Vector2.Zero);
                 Bodies[BodyIndex].BodyType = BodyType.Dynamic;
                 Bodies[BodyIndex].Enabled  = false;
                 ++BodyIndex;
@@ -167,14 +155,18 @@ namespace SuperSmashPolls.Graphics {
 
         }
 
-        private int GetBodyIndex() {
+        /// <summary>
+        /// Gets the index of the current frame of the animation
+        /// </summary>
+        /// <returns></returns>
+        public int GetCurrentIndex() {
 
             return AnimatedPoint.X*AnimatedPoint.Y;
 
         }
 
         /// <summary>
-        /// 
+        /// Gets the first frame's body
         /// </summary>
         /// <returns></returns>
         public Body FirstBody() {
@@ -189,15 +181,15 @@ namespace SuperSmashPolls.Graphics {
         /// <param name="mass"></param>
         /// <param name="friction"></param>
         /// <param name="restitution"></param>
-        /// <param name="collisionGroup"></param>
-        public void SetCharactaristics(float mass, float friction, float restitution, short collisionGroup) {
+        /// <param name="collision"></param>
+        public void SetCharactaristics(float mass, float friction, float restitution, Category collision) {
 
             foreach (Body i in Bodies) {
 
-                i.CollisionGroup = collisionGroup;
-                i.Restitution    = restitution;
-                i.Friction       = friction;
-                i.Mass           = mass;
+                i.CollisionCategories = collision;
+                i.Restitution         = restitution;
+                i.Friction            = friction;
+                i.Mass                = mass;
 
             }
 
@@ -207,12 +199,13 @@ namespace SuperSmashPolls.Graphics {
         /// 
         /// </summary>
         /// <param name="prepareFrom"></param>
+        /// <param name="position"></param>
         public void PrepareBody(Body prepareFrom, Vector2 position) {
 
             prepareFrom.Enabled = false;
-            Bodies[GetBodyIndex()].LinearVelocity = prepareFrom.LinearVelocity;
-            Bodies[GetBodyIndex()].Position       = position;
-            Bodies[GetBodyIndex()].Enabled        = true;
+            Bodies[GetCurrentIndex()].LinearVelocity = prepareFrom.LinearVelocity;
+            Bodies[GetCurrentIndex()].Position       = position;
+            Bodies[GetCurrentIndex()].Enabled        = true;
 
         }
 
@@ -222,7 +215,7 @@ namespace SuperSmashPolls.Graphics {
         /// <returns></returns>
         public bool AnimationAtEnd() {
 
-            return (DateTime.Now - StartedAnimation).TotalSeconds > PlayTime;
+            return (DateTime.Now - StartedAnimation).TotalMilliseconds > PlayTime;
 
         }
 
@@ -234,12 +227,12 @@ namespace SuperSmashPolls.Graphics {
 		/// <remarks>The body returned from here must be enabled if it is to collide with anything</remarks>
         public Body UpdateAnimation(Vector2 position) {
 
-            if ((DateTime.Now - StartedAnimation).TotalSeconds > PlayTime)
+            if ((DateTime.Now - StartedAnimation).TotalMilliseconds > PlayTime)
                 StartedAnimation = DateTime.Now;
 
             DateTime Now = DateTime.Now;
 
-            if ((Now - LastUpdateTime).Milliseconds >= (PlayTime*1000) / (SheetSize.X*SheetSize.Y)) {
+            if ((Now - LastUpdateTime).Milliseconds >= (PlayTime) / (SheetSize.X*SheetSize.Y)) {
 
                 LastUpdateTime = Now;
 
@@ -276,6 +269,18 @@ namespace SuperSmashPolls.Graphics {
             SpriteEffects Effect = (sidewaysVelocity < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             batch.Draw(SpriteSheet, Destination, Source, DrawColor, 0, Vector2.Zero, Effect, 0F);
+
+        }
+
+        /// <summary>
+        /// Calculates the origin of a body
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private static Vector2 CalculateOrigin(float x, float y) {
+
+            return (new Vector2(x, y)) / 2;
 
         }
 
