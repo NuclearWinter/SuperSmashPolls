@@ -101,7 +101,8 @@ namespace SuperSmashPolls.Graphics {
         /// Generates the bodies for each of the pieces of the sheet.
         /// </summary>
         /// <param name="levelWorld">The world to create bodies in</param>
-        public void GenerateBodies(World levelWorld) { //TODO get scale
+        /// <param name="collisionCategory">The FULL category of what these bodies should collide with</param>
+        public void GenerateBodies(World levelWorld, Category collisionCategory) { //TODO get scale
 
             BodiesGenerated = true;
 
@@ -149,6 +150,7 @@ namespace SuperSmashPolls.Graphics {
                 Bodies[BodyIndex] = BodyFactory.CreateCompoundPolygon(levelWorld, VertexList, 1, Vector2.Zero);
                 Bodies[BodyIndex].BodyType = BodyType.Dynamic;
                 Bodies[BodyIndex].Enabled  = false;
+                Bodies[BodyIndex].CollisionCategories = collisionCategory;
                 ++BodyIndex;
 
             }
@@ -269,6 +271,16 @@ namespace SuperSmashPolls.Graphics {
             SpriteEffects Effect = (sidewaysVelocity < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             batch.Draw(SpriteSheet, Destination, Source, DrawColor, 0, Vector2.Zero, Effect, 0F);
+
+        }
+
+        /// <summary>
+        /// Gets the position of the character body
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetPosition() {
+
+            return Bodies[GetCurrentIndex()].Position;
 
         }
 

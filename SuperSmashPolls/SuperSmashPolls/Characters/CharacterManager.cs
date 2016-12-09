@@ -14,15 +14,6 @@ namespace SuperSmashPolls.Characters {
     /// </summary>
     public class CharacterManager {
 
-        /** These are the indicies that animations can be called with inside Actions */
-        private const int IdleIndex = 0,
-            JumpIndex               = 1, //A (Players can always jump)
-            RunIndex                = 2, //Right Joystick (Can always run in any direction)
-            AttackIndex             = 3, //B
-            SpecialAttackIndex      = 4, //X
-            SpecialUpAttackIndex    = 5, //X + Left joystick up
-            SpecialSideAttackIndex  = 6, //X + Left joystick to the left or right
-            SpecialDownAttackIndex  = 7; //X + Left joystick down
         /** This is the amount the joystick must be over for it to register as intentional */
         private const float Register = 0.2F;
         /** The mass of the character (kg) */
@@ -33,11 +24,11 @@ namespace SuperSmashPolls.Characters {
         private readonly float Restitution;
         /** The collision category for this character's bodies */
         private readonly Category CollisionCategory;
-        /**  */
+        /** The category for hitboxes */
         private readonly Category HitboxCategory;
         /** The direction that the character is moving */
         private float Direction;
-        /**  */
+        /** The moves for this character */
         private Moves CharacterMoves;
 
         /// <summary> This characters name</summary>
@@ -52,19 +43,21 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="mass"></param>
         /// <param name="friction"></param>
         /// <param name="restitution"></param>
         /// <param name="collisionCategory"></param>
         /// <param name="hitboxCategory"></param>
-        public CharacterManager(float mass, float friction, float restitution, Category collisionCategory, Category hitboxCategory) {
+        /// <param name="name"></param>
+        public CharacterManager(float mass, float friction, float restitution, Category collisionCategory, 
+            Category hitboxCategory, string name) {
             Mass = mass;
             Friction = friction;
             Restitution = restitution;
             CollisionCategory = collisionCategory;
             HitboxCategory = hitboxCategory;
+            Name = name;
         }
 
         /// <summary>
@@ -82,8 +75,8 @@ namespace SuperSmashPolls.Characters {
         /// Set the position of the character
         /// </summary>
         public void SetPosition() {
-            
 
+            
 
         }
 
@@ -97,6 +90,16 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        public void Respawn(Vector2 position) {
+            
+            CharacterMoves.SetPosition(position);
+
+        }
+
+        /// <summary>
         /// The function to update the character
         /// </summary>
         public void UpdateCharacter(PlayerIndex player) {
@@ -104,9 +107,33 @@ namespace SuperSmashPolls.Characters {
             GamePadState CurrentState = GamePad.GetState(player);
 
             bool SideMovement  = Math.Abs(CurrentState.ThumbSticks.Left.X) >= Register;
-            bool DownMovement  = Math.Abs(CurrentState.ThumbSticks.Left.Y) >= Register;
+            bool DownMovement  = CurrentState.ThumbSticks.Left.Y <= Register;
+            bool UpMovement    = CurrentState.ThumbSticks.Left.Y >= Register;
             bool SpecialAttack = Math.Abs(CurrentState.Triggers.Left)      >= Register;
-            //bool Jump = 
+            bool Jump          = CurrentState.IsButtonDown(Buttons.A);
+            bool BasicAttack   = CurrentState.IsButtonDown(Buttons.B);
+
+            Direction = CurrentState.ThumbSticks.Left.X;
+
+            int DesiredMove = Moves.IdleIndex;
+            
+            if (SpecialAttack)
+                if (SideMovement)
+                    DesiredMove = Moves.SideSpecialIndex;
+                else if (DownMovement)
+                    DesiredMove = Moves.DownSpecialIndex;
+                else if (UpMovement)
+                    DesiredMove = Moves.UpSpecialIndex;
+                else
+                    DesiredMove = Moves.SpecialIndex;
+            else if (SideMovement)
+                DesiredMove = Moves.WalkIndex;
+            else if (Jump || UpMovement)
+                DesiredMove = Moves.JumpIndex;
+            else if (BasicAttack)
+                DesiredMove = Moves.BasicIndex;
+
+            CharacterMoves.UpdateMove(DesiredMove, Direction);
 
         }
 

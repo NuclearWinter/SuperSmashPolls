@@ -43,6 +43,8 @@ namespace SuperSmashPolls.Characters {
         private readonly Category HitboxCategory;
         /** The direction that the character is facing */
         private float Direction;
+        /** The position of this character */
+        private Vector2 Position;
 
         /// <summary>
         /// Constructs the class to handle moves
@@ -65,6 +67,7 @@ namespace SuperSmashPolls.Characters {
             HitboxCategory    = hitboxCategory;
             CurrentMove       = 0;
             CharacterMoves    = new[] {idle, walk, jump, special, sideSpecial, upSpecial, downSpecial, basic};
+            Position = new Vector2();
 
         }
 
@@ -87,14 +90,26 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
+        /// Sets the position of the character
+        /// </summary>
+        /// <param name="positon"></param>
+        public void SetPosition(Vector2 positon) {
+
+            CharacterMoves[CurrentMove].Animation.Bodies[CharacterMoves[CurrentMove].Animation.GetCurrentIndex()]
+                .Position = positon;
+
+        }
+
+        /// <summary>
         /// Updates the running move by either continuing it, or starting the new one
         /// </summary>
         /// <param name="desiredMove">The move that CharacterManager wants to use, if able</param>
         /// <param name="direction">The direction of the character</param>
-        /// <param name="position">The position of the character in the world</param>
-        public void UpdateMove(int desiredMove, float direction, Vector2 position) {
+        public void UpdateMove(int desiredMove, float direction) {
 
-            if (!CharacterMoves[CurrentMove].UpdateMove(direction, position))
+            Position = CharacterMoves[CurrentMove].GetPosition();
+
+            if (!CharacterMoves[CurrentMove].UpdateMove(direction, Position))
                 return;
 
             Direction   = direction; //This keeps the direction from updating before the move is done

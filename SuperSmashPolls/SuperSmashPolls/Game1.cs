@@ -7,10 +7,14 @@
  #define DEBUG
  #undef DEBUG
 
+ #define OLD_CHARACTER
+ #undef OLD_CHARACTER
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using FarseerPhysics;
+using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -57,9 +61,15 @@ namespace SuperSmashPolls {
         private readonly List<Tuple<Character, string>> CharacterStringPairs;
         /** The gamemode for this game */
         private Gamemode CurrentGamemode;
+        /** The moves for all character */
+        private MoveDefinition DefinedMoves;
         /** The one, the only, the Donald */
+#if OLD_CHARACTER
         private Character TheDonald;
         private TheDonaldsMoves TheDonaldsAttacks;
+#else
+        private CharacterManager TheDonald;
+#endif
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
         /** Levels for the player to play on */
@@ -327,8 +337,18 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Characters **************************************/
 
+            Category PlayerOne = Category.Cat1,
+                PlayerTwo      = Category.Cat2,
+                PlayerThree    = Category.Cat3,
+                PlayerFour     = Category.Cat4;
+
+#if OLD_CHARACTER
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40, 0.5F,
                 0F, 500F, 10F, 1F, 1F, "TheDonald");
+#else
+            TheDonald = new CharacterManager(50F, 0.5F, 0F, Xor(Category.All, PlayerTwo, PlayerThree, PlayerFour),
+                Xor(PlayerTwo, PlayerThree, PlayerFour), "TheDonald");
+#endif
 
             base.Initialize();
 
@@ -471,6 +491,17 @@ namespace SuperSmashPolls {
         /// </summary>
         protected override void UnloadContent() {
             //Unload any non ContentManager content here
+        }
+
+        private Category Xor(params Category[] categories) {
+
+            Category temp = Category.None;
+
+            foreach (Category I in categories)
+                temp = temp ^ I;
+
+            return temp;
+
         }
 
         /// <summary>

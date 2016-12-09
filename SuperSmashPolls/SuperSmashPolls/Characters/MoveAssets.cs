@@ -67,7 +67,7 @@ namespace SuperSmashPolls.Characters {
         /// <param name="hitboxCollides">The categories of objects that these moves should collide with</param>
         public void ConstructBodies(World world, Category characterCollides, params Category[] hitboxCollides) {
 
-            Animation.GenerateBodies(world);
+            Animation.GenerateBodies(world, characterCollides);
 
             Category Result = Category.None;
 
@@ -106,6 +106,16 @@ namespace SuperSmashPolls.Characters {
             Sound.PlayEffect();
 
             return Animation.AnimationAtEnd();
+
+        }
+
+        /// <summary>
+        /// Gets the position of the current body
+        /// </summary>
+        /// <returns>The position of the current action</returns>
+        public Vector2 GetPosition() {
+
+            return Animation.GetPosition();
 
         }
 
