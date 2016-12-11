@@ -37,8 +37,6 @@ namespace SuperSmashPolls.Characters {
         public delegate void MoveFunction(int currentFrame, float direction, List<Body> affectedBodies);
         /// <summary>The function to run when this move is activated</summary>
         public MoveFunction Function;
-        /**  */
-        private Texture2D HitboxTexture;
 
         /// <summary>
         /// Adds the assets needed for each move
@@ -53,23 +51,12 @@ namespace SuperSmashPolls.Characters {
         /// <param name="effect">Any effects to play when this move is used</param>
         public MoveAssets(float playTime, Point imageSize, Texture2D spriteSheet, int scale, Texture2D hitboxes,
             MoveFunction function, params SoundEffect[] effect) {
-            HitboxTexture = hitboxes;
+
             Animation      = new CharacterAction(playTime, imageSize, spriteSheet, scale);
             if (effect != null)
                 Sound      = new AudioHandler(effect);
             HitboxVertices = CreateVerticesFromTexture(hitboxes, scale, imageSize);
             Function       = function;
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public MoveAssets Clone() {
-
-            return new MoveAssets(Animation.PlayTime, Animation.ImageSize, Animation.SpriteSheet, Animation.Scale,
-                HitboxTexture, Function, Sound.GetEffects());
 
         }
 
@@ -87,8 +74,6 @@ namespace SuperSmashPolls.Characters {
 
             foreach (var I in hitboxCollides)
                 Result = Result | I;
-
-            HitboxBodies = new Body[HitboxVertices.Length];
 
             for (int I = 0; I < HitboxVertices.Length; ++I) {
                 //This actually creates the body
@@ -191,16 +176,7 @@ namespace SuperSmashPolls.Characters {
 
                 uint[] TempArray = new uint[IndividualSize];
 
-                try {
-
-                    Array.Copy(TextureData, Processed, TempArray, 0, IndividualSize);
-
-                } catch (ArgumentException) {
-                    //At the end of textures the amount of data left might be to small
-                    Array.Copy(TextureData, Processed, TempArray, 0, TextureData.Length - Processed);
-
-                }
-
+                Array.Copy(TextureData, Processed, TempArray, 0, IndividualSize);
 
                 IndividualData.Add(TempArray);
 

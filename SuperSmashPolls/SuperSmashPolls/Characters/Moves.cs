@@ -74,18 +74,6 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public Moves Clone() {
-
-            return new Moves(CharacterMoves[0], CharacterMoves[1], CharacterMoves[2], CharacterMoves[3],
-                CharacterMoves[4], CharacterMoves[5], CharacterMoves[6], CharacterMoves[7], CharacterCategory,
-                HitboxCategory);
-
-        }
-
-        /// <summary>
         /// Makes the hitbox and movement bodies in the world
         /// </summary>
         /// <param name="world"></param>

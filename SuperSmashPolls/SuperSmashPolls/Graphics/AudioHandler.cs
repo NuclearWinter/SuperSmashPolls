@@ -49,16 +49,6 @@ namespace SuperSmashPolls.Graphics {
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public SoundEffect[] GetEffects() {
-
-            return Effects.ToArray();
-
-        }
-
-        /// <summary>
         /// Add effects to this item.
         /// </summary>
         /// <param name="effects">The effects to add</param>
