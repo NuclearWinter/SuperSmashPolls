@@ -14,17 +14,9 @@ namespace SuperSmashPolls.Characters {
     /// </summary>
     public class MoveDefinition {
 
-        private World GameWorld;
-
-//        /// <summary>
-//        /// Sets the world of the game. This needs to be called whenever a new game is started
-//        /// </summary>
-//        /// <param name="gameWorld">The world that players are going to be in</param>
-//        public void SetWorld(World gameWorld) {
-//
-//            GameWorld = gameWorld;
-//
-//        }
+        private readonly Vector2 StandardJumpHeight = new Vector2(0, 10);
+        private readonly Vector2 StandardWalkSpeed  = new Vector2(10, 0);
+        private readonly Vector2 StandardPunchForce = new Vector2(10, 0);
 
         /// <summary>
         /// The function to use for idle moves
@@ -40,8 +32,69 @@ namespace SuperSmashPolls.Characters {
         /// <param name="affectedBodies">The bodies in the world to be affected</param>
         public void TheDonaldWalkFunc(int currentFrame, float direction, List<Body> affectedBodies) {
 
-            affectedBodies[0].ApplyForce(new Vector2(10, 0),
+            affectedBodies[0].ApplyForce(StandardWalkSpeed,
                 affectedBodies[0].Position - ConvertUnits.ToSimUnits(new Vector2(19/2F*(direction < 0 ? -1 : 1), 0)));
+
+        }
+
+        /// <summary>
+        /// Makes The Donald jump
+        /// </summary>
+        /// <param name="currentFrame">The current frame of the animation</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="affectedBodies">The bodies in the world to be affected</param>
+        public void TheDonaldJumpFunc(int currentFrame, float direction, List<Body> affectedBodies) {
+
+            affectedBodies[0].ApplyLinearImpulse(StandardJumpHeight,
+                affectedBodies[0].Position - ConvertUnits.ToSimUnits(new Vector2(0, 00/2F)));
+
+        }
+
+        /// <summary>
+        /// TODO Make wall here
+        /// </summary>
+        /// <param name="currentFrame">The current frame of the animation</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="affectedBodies">The bodies in the world to be affected</param>
+        public void TheDonaldSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) {
+            
+
+
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="currentFrame">The current frame of the animation</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="affectedBodies">The bodies in the world to be affected</param>
+        public void TheDonaldSideSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) {
+            
+
+
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="currentFrame">The current frame of the animation</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="affectedBodies">The bodies in the world to be affected</param>
+        public void TheDonaldUpSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) {
+            
+
+
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="currentFrame">The current frame of the animation</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="affectedBodies">The bodies in the world to be affected</param>
+        public void TheDonaldDownSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) {
+            
+
 
         }
 
@@ -51,58 +104,22 @@ namespace SuperSmashPolls.Characters {
         /// <param name="currentFrame">The current frame of the animation</param>
         /// <param name="direction">The direction that the character is facing</param>
         /// <param name="affectedBodies">The bodies in the world to be affected</param>
-        public void TheDonaldJumpFunc(int currentFrame, float direction, List<Body> affectedBodies) { }
+        public void TheDonaldBasicAttack(int currentFrame, float direction, List<Body> affectedBodies) {
+            
+            BasicPunch(currentFrame, direction, affectedBodies);
+
+        }
 
         /// <summary>
-        /// 
+        /// A basic punching function
         /// </summary>
         /// <param name="currentFrame">The current frame of the animation</param>
         /// <param name="direction">The direction that the character is facing</param>
         /// <param name="affectedBodies">The bodies in the world to be affected</param>
-        public void TheDonaldSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="currentFrame">The current frame of the animation</param>
-        /// <param name="direction">The direction that the character is facing</param>
-        /// <param name="affectedBodies">The bodies in the world to be affected</param>
-        public void TheDonaldSideSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="currentFrame">The current frame of the animation</param>
-        /// <param name="direction">The direction that the character is facing</param>
-        /// <param name="affectedBodies">The bodies in the world to be affected</param>
-        public void TheDonaldUpSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="currentFrame">The current frame of the animation</param>
-        /// <param name="direction">The direction that the character is facing</param>
-        /// <param name="affectedBodies">The bodies in the world to be affected</param>
-        public void TheDonaldDownSpecialFunc(int currentFrame, float direction, List<Body> affectedBodies) { }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="currentFrame">The current frame of the animation</param>
-        /// <param name="direction">The direction that the character is facing</param>
-        /// <param name="affectedBodies">The bodies in the world to be affected</param>
-        public void TheDonaldBasicAttack(int currentFrame, float direction, List<Body> affectedBodies) { }
-
-        /// <summary>
-        /// The basic attack that all characters have
-        /// </summary>
-        /// <param name="currentFrame">The current frame of the animation</param>
-        /// <param name="direction">The direction that the character is facing</param>
-        /// <param name="affectedBodies">The bodies in the world to be affected</param>
-        /// TODO fix this
         protected internal void BasicPunch(int currentFrame, float direction, List<Body> affectedBodies) {
             
-
+            foreach (var I in affectedBodies) 
+                I.ApplyForce(StandardPunchForce);
 
         }
 
