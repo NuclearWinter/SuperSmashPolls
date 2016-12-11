@@ -29,4 +29,4 @@ Content\Donald\donald_punch.xnb
 Content\Debate\DebateBackground.xnb
 Content\Debate\DebatePlatform.xnb
 Content\Music\MainSong.xnb
-Content\Donald\SpecialAttack.xnb
+Content\Donald\donald_basic_sound.xnb

@@ -37,28 +37,39 @@ namespace SuperSmashPolls.GameItemControl {
         /// <summary>The number of times that the player has died</summary>
         public int Deaths;
         /// <summary>The player's character</summary>
-        public Character PlayerCharacter;
+        public CharacterManager PlayerCharacter;
+
         /// <summary>The collision category for this player</summary>
-        public Int16 CollisionCategory;
+        public Category CollidesWith;
+
+        public Category HitboxCollidesWith;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public PlayerClass(PlayerIndex playerId, Int16 collisionCategory) {
+        public PlayerClass(PlayerIndex playerId, Category collidesWith, Category hitboxCollidesWith) {
             PlayerID          = playerId;
-            PlayerCharacter   = new Character();
+            PlayerCharacter   = new CharacterManager();
             PlayerHealth      = 0;
             Deaths            = 0;
-            CollisionCategory = collisionCategory;
+            CollidesWith = collidesWith;
+            HitboxCollidesWith = hitboxCollidesWith;
+            PlayerCharacter = new CharacterManager(CollidesWith, HitboxCollidesWith);
             JustDied          = false;
         }
 
         /// <summary>
         /// Sets the character
         /// </summary>
-        public void SetCharacter(Character playerCharacter) {
+        public void SetCharacter(CharacterManager playerCharacter) {
 
             PlayerCharacter = playerCharacter;
+
+        }
+
+        public void SetPosition(Vector2 position) {
+            
+            PlayerCharacter.Respawn(position);
 
         }
 
@@ -97,7 +108,7 @@ namespace SuperSmashPolls.GameItemControl {
         /// </summary>
         public void DrawPlayer(ref SpriteBatch batch, SpriteFont font = null) {
 
-            PlayerCharacter.DrawCharacter(ref batch, font);
+            PlayerCharacter.DrawCharacter(batch);
 
 #if DEBUG
             if (font != null)
@@ -128,23 +139,14 @@ namespace SuperSmashPolls.GameItemControl {
 		/// <param name="characterList"> The characters available in the game </param>
 		/// <param name="gameWorld"> The world to use for this </param>
         /// TODO make the new world system work with this loading methods
-        public void ReadInfo(ref StreamReader streamReader, List<Tuple<Character, string>> characterList, World gameWorld) {
+        public void ReadInfo(ref StreamReader streamReader, Dictionary<string, CharacterManager> characterList, World gameWorld) {
 
             string CharacterName = streamReader.ReadLine();
 
-            if (null == CharacterName)
-                Console.WriteLine("Character name is null, expect an exception here");
-
-            for (int i = 0; i < characterList.Count(); ++i) {
-
-                if (CharacterName != characterList[i].Item2) continue;
-
-                PlayerCharacter = new Character(characterList[i].Item1, gameWorld,
-                    new Vector2(float.Parse(streamReader.ReadLine()), float.Parse(streamReader.ReadLine())));
-
-                break;
-
-            }
+            if (CharacterName != null && characterList.ContainsKey(CharacterName))
+                PlayerCharacter = characterList[CharacterName];
+            else
+                throw new Exception("There was no character name loaded");
 
         }
 

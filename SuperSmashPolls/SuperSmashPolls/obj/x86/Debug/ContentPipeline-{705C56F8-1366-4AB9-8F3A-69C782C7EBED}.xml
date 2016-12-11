@@ -197,7 +197,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_stand.xnb</Output>
-      <Time>2016-12-01T23:36:55.5954459-06:00</Time>
+      <Time>2016-12-11T10:53:49.9059795-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_walk.png</Source>
@@ -206,7 +206,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_walk.xnb</Output>
-      <Time>2016-12-06T19:39:40.6911891-06:00</Time>
+      <Time>2016-12-11T10:53:49.9069795-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_upmash.png</Source>
@@ -215,7 +215,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_upmash.xnb</Output>
-      <Time>2016-12-01T23:36:55.5954459-06:00</Time>
+      <Time>2016-12-11T10:53:49.9059795-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_jump.png</Source>
@@ -251,7 +251,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_punch.xnb</Output>
-      <Time>2016-12-02T14:51:34.2683265-06:00</Time>
+      <Time>2016-12-11T10:53:49.9059795-06:00</Time>
     </Item>
     <Item>
       <Source>Debate\DebateBackground.png</Source>
@@ -281,12 +281,12 @@
       <Time>2016-12-01T23:36:55.6154471-06:00</Time>
     </Item>
     <Item>
-      <Source>Donald\SpecialAttack.wav</Source>
-      <Name>Donald\SpecialAttack</Name>
+      <Source>Donald\donald_basic_sound.wav</Source>
+      <Name>Donald\donald_basic_sound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
-      <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\SpecialAttack.xnb</Output>
+      <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_basic_sound.xnb</Output>
       <Time>2016-12-01T23:36:55.5944459-06:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>

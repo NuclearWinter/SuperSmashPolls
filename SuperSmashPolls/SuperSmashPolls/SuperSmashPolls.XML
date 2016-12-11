@@ -4,306 +4,366 @@
         <name>SuperSmashPolls</name>
     </assembly>
     <members>
-        <member name="T:SuperSmashPolls.Characters.Character">
+        <member name="T:SuperSmashPolls.Characters.CharacterManager">
             <summary>
-            This class will hold textures for characters, their moves, their effects, other characters they encounter, etc.
+            This class handles everything relating to characters.
             </summary>
         </member>
-        <member name="F:SuperSmashPolls.Characters.Character.IdleIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.JumpIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.RunIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.AttackIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.SpecialAttackIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.SpecialUpAttackIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.SpecialSideAttackIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.SpecialDownAttackIndex">
-            These are the indicies that animations can be called with inside Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Register">
-            This is the amount the joystick must be over for it to register as intentional 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.CharacterSize">
-            The size of the character (in display units) 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Mass">
-            The mass of the character (kg) 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Friction">
-            The friction of the character 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Restitution">
-            The restitution of the character 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.JumpForceMultiplier">
-            The multiplier for the character's jump force 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.MovementMultiplier">
-            The multiplier for the character's movement 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.SpecialAttackInterval">
-            The minimum time between character's special attacks 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Actions">
-            The move animations for this character 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Moves">
-            The moves for this character. Links with Actions 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.NextAction">
-            The DateTime to allow the character to take another action 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.LastJump">
-            The last time that the character jumped 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.LastSpecialAttack">
-            The last time that the character used their special attack 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.CurrentActionIndex">
-            The index of a value in Actions that represents the current action of the player 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.CollisionGroup">
-            The group that this character's moves don't affect 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Direction">
-            The direction that the character is moving 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.InAction">
-            Whether or not there is currently an action taking place 
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.GameWorld">
-            <summary>The world that this character is in</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.CharacterBody">
-            <summary>The body of the character (must be created after level selection)</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.JumpInterval">
-            <summary>The amount of time between jumps for this character (in seconds)</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Character.Name">
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.Name">
             <summary> This characters name</summary>
         </member>
-        <member name="T:SuperSmashPolls.Characters.Character.CharacterMove">
-            <summary>The type for character's moves</summary>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.Mass">
+            The mass of the character (kg) 
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.#ctor">
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.Friction">
+            The friction of the character 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.Restitution">
+            The restitution of the character (how bouncy they are) 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.CollisionCategory">
+            The collision category for this character's bodies 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.HitboxCategory">
+            The category for hitboxes 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.CharacterMoves">
+            The moves for this character 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.Register">
+            This is the amount the joystick must be over for it to register as intentional 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.Direction">
+            The direction that the character is moving 
+        </member>
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.#ctor">
             <summary>
             Default constructor for making a blank character. The name is initialized to check and to check after a game 
             has already been played (and they already selected a character so it wouldn't be null)
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.#ctor(Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.String)">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.#ctor(System.Single,System.Single,System.Single,FarseerPhysics.Dynamics.Category,FarseerPhysics.Dynamics.Category,System.String)">
             <summary>
-            Constructor for the Character class
             </summary>
-            <param name="screenSize">A reference to the size of the screen</param>
-            <param name="characterSize">Size of the in display units</param>
-            <param name="mass">The mass of the character in kilograms</param>
-            <param name="friction">The friction of the character</param>
-            <param name="restitution">The restitution of the character</param>
-            <param name="movementMultiplier">The multiplier for how much the character should move</param>
-            <param name="jumpForceMultiplier">The multiplier for how much the character should jump</param>
-            <param name="jumpInterval">The interval between allowable jumps for the player</param>
-            <param name="specialAttackInterval">The minimum time between special attacks</param>
-            <param name="name">The name of this character as refered to in the game system</param>
+            <param name="mass"></param>
+            <param name="friction"></param>
+            <param name="restitution"></param>
+            <param name="collisionCategory"></param>
+            <param name="hitboxCategory"></param>
+            <param name="name"></param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.#ctor(SuperSmashPolls.Characters.Character,FarseerPhysics.Dynamics.World,Microsoft.Xna.Framework.Vector2)">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.#ctor(FarseerPhysics.Dynamics.Category,FarseerPhysics.Dynamics.Category)">
             <summary>
-            Constructor for the Character class from another character.
+            Creates a blank character class for player class intialization
             </summary>
-            <param name="otherCharacter">The character to copy from</param>
-            <param name="gameWorld">The world to put the character into</param>
-            <param name="position">The position to place the character</param>
+            <param name="collidesWith"></param>
+            <param name="hitboxCollidesWith"></param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.AddToActions(SuperSmashPolls.Graphics.CharacterAction[])">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.DeepClone``1(``0)">
             <summary>
-            Allows for multiple items to be easily added to the list
+            Copies data from one CharacterManager to another
             </summary>
-            <param name="actions"> The actions to add to Actions</param>
+            <param name="obj">The other character to copy from</param>
+            <typeparam name="CharacterManager">The class to manage character data</typeparam>
+            <returns>A copy of obj</returns>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.AddCharacterActions(SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction,SuperSmashPolls.Graphics.CharacterAction)">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.CloneToWithoutUnique(SuperSmashPolls.Characters.CharacterManager)">
             <summary>
-            Adds adds all of the animations for moves to the character
+            Clones this objects data to another object, but keeps that object's collision and hitbox categories
             </summary>
-            <remarks> Each character should have one of every move</remarks>
-            <remarks> It is done like this so that we can avoid having to compute this all the time based off a key</remarks>
+            <param name="obj">The object to copy to</param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Character.BodiesGenerated">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.AddMoves(SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets)">
             <summary>
-            Tells if the bodies hae been generated for this character
-            </summary>
-            <returns>Whether or not bodies have been generated</returns>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Character.SetPosition(Microsoft.Xna.Framework.Vector2)">
-            <summary>
-            Sets the position of the character in the world
-            </summary>
-            <param name="position">The position to put the character at (in meters)</param>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Character.AddCharacterMoves(SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove,SuperSmashPolls.Characters.Character.CharacterMove)">
-            <summary>
-            Add moves to the character.
-            </summary>
-            <param name="specialSide">The special side move to add</param>
-            <param name="specialUp">The special up move to add</param>
-            <param name="specialDown">The special down move to add</param>
-            <param name="special">The special move (basic) to add</param>
-            <param name="basicAttack">The "punch" for this character</param>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Character.CreateBody(FarseerPhysics.Dynamics.World@,Microsoft.Xna.Framework.Vector2,System.Int16)">
-            <summary>
-            Creates the body for the character and adds it to the world.
-            </summary>
-            <remarks>This must be called from within the PlayerClass after the world has been selected</remarks>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Character.UpdateCharacter(Microsoft.Xna.Framework.Input.GamePadState)">
-            <summary>
-            Updates the character. This method controls movement, actions, and updates and character model.
-            </summary>
-            <remarks>For debugging, Black = idle | Aqua = moving | YellowGreen = jumping | Beige = side special
-            Magenta = up special | Maroon = down special | OliveDrab = regular special</remarks>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Character.DrawCharacter(Microsoft.Xna.Framework.Graphics.SpriteBatch@,Microsoft.Xna.Framework.Graphics.SpriteFont)">
-            <summary>
-            Draws the character
-            </summary>
-            TODO fix jump animation cause Joe hates it
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Character.GetPosition">
-            <summary>
-            Gets the position of the charatcer
-            </summary>
-            <returns>The position of the character</returns>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Character.Respawn(Microsoft.Xna.Framework.Vector2)">
-            <summary>
-            Respawns the character by placing them at a position and reseting their dynamics.
-            </summary>
-            <param name="position">The position to respawn the character</param>
-        </member>
-        <member name="T:SuperSmashPolls.Characters.Moves">
-            <summary>
-            Parent class for creating character moves.
-            </summary>
-            <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Moves.SpecialSound">
-            <summary>The audio handler to play during the special attack</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Moves.SideSpecialSound">
-            <summary>The audio handler to play during the side special attack</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Moves.UpSpecialSound">
-            <summary>The audio handler to play during the up special attack</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Moves.DownSpecialSound">
-            <summary>The audio handler to play during the down special attack</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Characters.Moves.BasicAttackSound">
-            <summary>The audio handler to play during a basic attack</summary>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.PlaySpecialSound">
-            <summary>
-            Trys to play the sound effect for the special attack
+            Add moves to this character
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.BasicPunch(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.GetPosition">
+            <summary>
+            Get the position of the character
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.ConstructInWorld(FarseerPhysics.Dynamics.World)">
+            <summary>
+            Creates the Farseer bodies for the character in the specified world
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.Respawn(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            
+            </summary>
+            <param name="position"></param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.UpdateCharacter(Microsoft.Xna.Framework.Input.GamePadState)">
+            <summary>
+            The function to update the character
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.DrawCharacter(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:SuperSmashPolls.Characters.MoveAssets">
+            <summary>
+            Holds and manages the assets needed for every move
+            </summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.MoveAssets.Animation">
+            <summary>The action for this move. This is the animated texture that is drawn to the screen</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.MoveAssets.Sound">
+            <summary>This is the sound played when this move is done</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.MoveAssets.HitboxVertices">
+            <summary>These are the vertices to create hitboxes from for the collision bodies. These need to be here 
+            so that we don't store the texture and need to re-decompose it every time we need a new body</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.MoveAssets.HitboxBodies">
+            <summary>These are the bodies for the hitboxes to be generated when a level is being started</summary>
+        </member>
+        <member name="T:SuperSmashPolls.Characters.MoveAssets.MoveFunction">
+            <summary>This is the type of function that needs to be used as a move</summary>
+            <param name="currentFrame">The current frame of the move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world that will be affected by this move</param>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.MoveAssets.Function">
+            <summary>The function to run when this move is activated</summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.#ctor(System.Single,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,Microsoft.Xna.Framework.Graphics.Texture2D,SuperSmashPolls.Characters.MoveAssets.MoveFunction,Microsoft.Xna.Framework.Audio.SoundEffect[])">
+            <summary>
+            Adds the assets needed for each move
+            </summary>
+            <param name="playTime">The time it takes for the animation to run</param>
+            <param name="imageSize">The size of each individual image</param>
+            <param name="spriteSheet">The spritesheet to draw as the animation for this move</param>
+            <param name="scale">The scale needed to fit the textures on the screen properly</param>
+            <param name="hitboxes">The texture of the hitboxes for moves. Must be the same image size AND scale as 
+            spriteSheet</param>
+            <param name="function">The function to run when this move is used</param>
+            <param name="effect">Any effects to play when this move is used</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.ConstructBodies(FarseerPhysics.Dynamics.World,FarseerPhysics.Dynamics.Category,FarseerPhysics.Dynamics.Category[])">
+            <summary>
+            Constructs the hitbox bodies for this move
+            </summary>
+            <param name="world">The world to put these bodies in</param>
+            <param name="characterCollides">The collision category for the player</param>
+            <param name="hitboxCollides">The categories of objects that these moves should collide with</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.UpdateMove(System.Single,Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Updates the move of the character
+            </summary>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="characterLocation">The location of the character in the world</param>
+            <param name="onCharacter">if this move should be on the character</param>
+            <returns>If the move is done or inturruptable</returns>
+            <remarks>Drawing for moves is taken care of in the Moves class</remarks>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.GetPosition">
+            <summary>
+            Gets the position of the current body
+            </summary>
+            <returns>The position of the current action</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.FindTouchingBodies">
+            <summary>
+            Finds the bodies in the world where the current hitbox is colliding with
+            </summary>
+            <returns>The bodies in the world where the hitbox is colliding with something</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.CreateVerticesFromTexture(Microsoft.Xna.Framework.Graphics.Texture2D,System.Single,Microsoft.Xna.Framework.Point,System.Single,FarseerPhysics.Common.Decomposition.TriangulationAlgorithm)">
+            <summary>
+            Creates a list of vertices from a texture.
+            </summary>
+            <param name="texture">The texture to make a body from</param>
+            <param name="scale">The scale of the texture</param>
+            <param name="imageSize">The size of each individual image in the hitbox</param>
+            <param name="density">The density of the object (Will almost always be one</param>
+            <param name="algorithm">The decomposition algorithm to use</param>
+            <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
+            @warning In order for this to work the input must have a transparent background. I highly reccomend that you
+            only use this with PNGs as that is what I have tested and I know they work. This will only produce a bosy as
+            clean as the texture you give it, so avoid partically transparent areas and little edges.
+        </member>
+        <member name="T:SuperSmashPolls.Characters.MoveDefinition">
+            <summary>
+            All character moves are declared and defined here
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.Idle(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            The function to use for idle moves
+            </summary>
+            <returns>True, as the idle animation can be canceled at any time</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldWalkFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            The walking function for The Donald
+            </summary>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldJumpFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            
+            </summary>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            
+            </summary>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldSideSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            
+            </summary>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldUpSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            
+            </summary>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldDownSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            
+            </summary>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldBasicAttack(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
+            <summary>
+            
+            </summary>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.BasicPunch(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
             <summary>
             The basic attack that all characters have
             </summary>
-            <param name="character"></param>
+            <param name="currentFrame">The current frame of the animation</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="affectedBodies">The bodies in the world to be affected</param>
             TODO fix this
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.Special(SuperSmashPolls.Characters.Character)">
+        <member name="T:SuperSmashPolls.Characters.Moves">
             <summary>
-            The special move for this character
+            Class for handling character moves. The moves themself must be defined within the MoveDefinition class, than
+            that class passed to here, than the filled class has to be put within its corresponding character.
             </summary>
-            <param name="character">The character preforming the move</param>
+            <remarks>To have audio play during a move you must run the AudioHandler.PlayEffect command</remarks>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.SideSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="F:SuperSmashPolls.Characters.Moves.IdleIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.WalkIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.JumpIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.SpecialIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.SideSpecialIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.UpSpecialIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.DownSpecialIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.BasicIndex">
+            <summary>The index of various moves to be used in their arrays</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.CharacterMoves">
+            The moves for this character 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.CurrentMove">
+            The index of the current move 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.CharacterCategory">
+            The collision category of the player 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.HitboxCategory">
+            The category for hitboxes to collide with 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.Direction">
+            The direction that the character is facing 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.Position">
+            The position of this character 
+        </member>
+        <member name="F:SuperSmashPolls.Characters.Moves.OnCharacter">
+            Whether or not the current move affects the character (rather than another character) 
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.#ctor(SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,FarseerPhysics.Dynamics.Category,FarseerPhysics.Dynamics.Category)">
             <summary>
-            The side special move for this character
+            Constructs the class to handle moves
             </summary>
-            <param name="character">The character preforming the move</param>
+            <param name="idle"></param>
+            <param name="walk"></param>
+            <param name="jump"></param>
+            <param name="special"></param>
+            <param name="sideSpecial"></param>
+            <param name="upSpecial"></param>
+            <param name="downSpecial"></param>
+            <param name="basic"></param>
+            <param name="characterCategory"></param>
+            <param name="hitboxCategory"></param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.UpSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.Characters.Moves.MakeBodies(FarseerPhysics.Dynamics.World,System.Single,System.Single,System.Single)">
             <summary>
-            The up special move for this character
+            Makes the hitbox and movement bodies in the world
             </summary>
-            <param name="character">The character preforming the move</param>
+            <param name="world"></param>
+            <param name="mass"></param>
+            <param name="friction"></param>
+            <param name="restitution"></param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.DownSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.Characters.Moves.SetPosition(Microsoft.Xna.Framework.Vector2)">
             <summary>
-            The down special move for this character
+            Sets the position of the character
             </summary>
-            <param name="character">The character preforming the move</param>
+            <param name="positon"></param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.BasicAttack(SuperSmashPolls.Characters.Character)">
-            <summary>
-            The basic attack for a character.
-            </summary>
-            <param name="character">The character preforming the move</param>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.AddMovesToCharacter(SuperSmashPolls.Characters.Character)">
-            <summary>
-            Adds moves to a character
-            </summary>
-            <param name="addTo">The character to add moves to</param>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.Moves.AddAudio(SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler,SuperSmashPolls.Graphics.AudioHandler)">
-            <summary>
-            Adds the sounds to this class
-            </summary>
-            <param name="sideSpecialSound">Audio manajer to handle playing during the side special</param>
-            <param name="upSpecialSound">Audio manajer to handle playing during the up special</param>
-            <param name="downSpecialSound">Audio manajer to handle playing during the down special</param>
-            <param name="specialSound">Audio manajer to handle playing during the special</param>
-            <param name="basicAttackSound">Audio manajer to handle playing during a basic attack</param>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.Special(SuperSmashPolls.Characters.Character)">
-            <summary>
-            Builds a wall. This handles the creation of the body and the forces of the wall.
-            </summary>
-            <param name="character">The character preforming the move</param>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.SideSpecial(SuperSmashPolls.Characters.Character)">
-            <summary>
-            Creates an explosion outward from TheDonald. This is a linear explosion from the center of TheDonald's body,
-            with a radius of 4m and a force of 300, maxforce of the max value of a float. This explosion does not affect
-            TheDonald.
-            </summary>
-            <param name="character">The character preforming the move</param>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.UpSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.Characters.Moves.GetPostion">
             <summary>
             
             </summary>
-            <param name="character">The character preforming the move</param>
+            <returns></returns>
         </member>
-        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.DownSpecial(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.Characters.Moves.UpdateMove(System.Int32,System.Single)">
             <summary>
-            
+            Updates the running move by either continuing it, or starting the new one
             </summary>
-            <param name="character">The character preforming the move</param>
+            <param name="desiredMove">The move that CharacterManager wants to use, if able</param>
+            <param name="direction">The direction of the character</param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.TheDonaldsMoves.BasicAttack(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.Characters.Moves.DrawMove(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
             <summary>
-            Impliments the basic punch
+            Draws the current move
             </summary>
-            <param name="character">The character preforming the move</param>
+            <param name="spriteBatch"></param>
         </member>
         <member name="T:SuperSmashPolls.GameItemControl.Gamemode">
             <summary>
@@ -497,15 +557,15 @@
         <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerCharacter">
             <summary>The player's character</summary>
         </member>
-        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.CollisionCategory">
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.CollidesWith">
             <summary>The collision category for this player</summary>
         </member>
-        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex,System.Int16)">
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex,FarseerPhysics.Dynamics.Category,FarseerPhysics.Dynamics.Category)">
             <summary>
             Constructor
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.SetCharacter(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.SetCharacter(SuperSmashPolls.Characters.CharacterManager)">
             <summary>
             Sets the character
             </summary>
@@ -526,7 +586,7 @@
             </summary>
             <param name="streamWriter"> What to write the file with (must already be opened)</param>
         </member>
-        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.ReadInfo(System.IO.StreamReader@,System.Collections.Generic.List{System.Tuple{SuperSmashPolls.Characters.Character,System.String}},FarseerPhysics.Dynamics.World)">
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.ReadInfo(System.IO.StreamReader@,System.Collections.Generic.Dictionary{System.String,SuperSmashPolls.Characters.CharacterManager},FarseerPhysics.Dynamics.World)">
             <summary>
             Sets up the character from saved data
             </summary>
@@ -587,6 +647,30 @@
             Class responsible for handing animations of characters.
             </summary>
         </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Bodies">
+            <summary>Holds the generated bodies for this action</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.BodyOrigin">
+            <summary>The origin to each body</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.SpriteSheet">
+            <summary>The spritesheet to take a value from (can be just one image)</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.PlayTime">
+            <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.ImageSize">
+            <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.BodiesGenerated">
+            <summary>Tells if the bodies have been generated for this character</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.DrawColor">
+            <summary>The color to draw the image with, defaults to clear</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Scale">
+            <summary>The scale to use</summary>
+        </member>
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.SheetSize">
             The amount of images on the X and Y axis, calculated in the constructor 
         </member>
@@ -605,31 +689,7 @@
         <member name="F:SuperSmashPolls.Graphics.CharacterAction.StartedAnimation">
             The time that the animation was started 
         </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.BodiesGenerated">
-            <summary>Tells if the bodies have been generated for this character</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Bodies">
-            <summary>Holds the generated bodies for this action</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.BodyOrigin">
-            <summary>The origin to each body</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.SpriteSheet">
-            <summary>The spritesheet to take a value from (can be just one image)</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.PlayTime">
-            <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.ImageSize">
-            <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.DrawColor">
-            <summary>The color to draw the image with, defaults to clear</summary>
-        </member>
-        <member name="F:SuperSmashPolls.Graphics.CharacterAction.Scale">
-            <summary>The scale to use</summary>
-        </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,FarseerPhysics.Dynamics.Body[],System.Int32)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Single,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,FarseerPhysics.Dynamics.Body[],System.Int32)">
             <summary>
             Constructor from an already constructed CharacterAction
             </summary>
@@ -639,49 +699,49 @@
             <param name="bodies"></param>
             <param name="scale"></param>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Int32,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.#ctor(System.Single,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32)">
             <summary>
             Constructor from only imported items and constants
             </summary>
-            <param name="playTime">The amount of time (in seconds) that it takes to loop through the entire sheet</param>
+            <param name="playTime">The amount of time (in mliliseconds) that it takes to loop through the entire sheet</param>
             <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
             <param name="spriteSheet">The texture of the sheet</param>
             <param name="scale"></param>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.CalculateOrigin(System.Single,System.Single)">
-            <summary>
-            Calculates the origin of a body
-            </summary>
-            <param name="x"></param>
-            <param name="y"></param>
-            <returns></returns>
-        </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.GenerateBodies(FarseerPhysics.Dynamics.World)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.GenerateBodies(FarseerPhysics.Dynamics.World,FarseerPhysics.Dynamics.Category)">
             <summary>
             Generates the bodies for each of the pieces of the sheet.
             </summary>
-            <param name="LevelWorld">The world to create bodies in</param>
+            <param name="levelWorld">The world to create bodies in</param>
+            <param name="collisionCategory">The FULL category of what these bodies should collide with</param>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.FirstBody">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.GetCurrentIndex">
             <summary>
-            
+            Gets the index of the current frame of the animation
             </summary>
             <returns></returns>
         </member>
-        <member name="M:SuperSmashPolls.Graphics.CharacterAction.SetCharactaristics(System.Single,System.Single,System.Single,System.Int16)">
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.FirstBody">
+            <summary>
+            Gets the first frame's body
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.SetCharactaristics(System.Single,System.Single,System.Single,FarseerPhysics.Dynamics.Category)">
             <summary>
             Sets the properties for the bodies in this object
             </summary>
             <param name="mass"></param>
             <param name="friction"></param>
             <param name="restitution"></param>
-            <param name="collisionGroup"></param>
+            <param name="collision"></param>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.PrepareBody(FarseerPhysics.Dynamics.Body,Microsoft.Xna.Framework.Vector2)">
             <summary>
             
             </summary>
             <param name="prepareFrom"></param>
+            <param name="position"></param>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.AnimationAtEnd">
             <summary>
@@ -704,6 +764,20 @@
             <param name="batch"> A reference to the current SpriteBatch</param>
             <param name="sidewaysVelocity">The velocity of the character sideways. Used to flip the sprite if the motion
             is in the opposite direction of how it is drawn. Leave blank for no effect.</param>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.GetPosition">
+            <summary>
+            Gets the position of the character body
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.CalculateOrigin(System.Single,System.Single)">
+            <summary>
+            Calculates the origin of a body
+            </summary>
+            <param name="x"></param>
+            <param name="y"></param>
+            <returns></returns>
         </member>
         <member name="T:SuperSmashPolls.Levels.LevelHandler">
             <summary>
@@ -1001,6 +1075,9 @@
         <member name="F:SuperSmashPolls.Game1.CurrentGamemode">
             The gamemode for this game 
         </member>
+        <member name="F:SuperSmashPolls.Game1.DefinedMoves">
+            The moves for all character 
+        </member>
         <member name="F:SuperSmashPolls.Game1.TheDonald">
             The one, the only, the Donald 
         </member>
@@ -1085,7 +1162,7 @@
             </summary>
             <returns>Whether or not each player has a character set for them</returns>
         </member>
-        <member name="M:SuperSmashPolls.Game1.SetCharacter(SuperSmashPolls.Characters.Character)">
+        <member name="M:SuperSmashPolls.Game1.SetCharacter(SuperSmashPolls.Characters.CharacterManager)">
             <summary>
             Handles setting characters
             </summary>

@@ -58,7 +58,7 @@ namespace SuperSmashPolls {
         /* Holds levels for matching from a save and for selection */
         private readonly Dictionary<string, LevelHandler> LevelDictionary;
         /* Holds characters for matching from a save and for selection TODO change to Dictionary */
-        private readonly List<Tuple<Character, string>> CharacterStringPairs;
+        private readonly Dictionary<string, CharacterManager> CharacterStringPairs;
         /** The gamemode for this game */
         private Gamemode CurrentGamemode;
         /** The moves for all character */
@@ -113,7 +113,9 @@ namespace SuperSmashPolls {
             ScreenSize = new Vector2(1920, 1080);
 
             LevelDictionary      = new Dictionary<string, LevelHandler>();
-            CharacterStringPairs = new List<Tuple<Character, string>>();
+            CharacterStringPairs = new Dictionary<string, CharacterManager>();
+
+            DefinedMoves = new MoveDefinition();
 
             /* This is the player's screen controller */
             Graphics = new GraphicsDeviceManager(this) {
@@ -321,12 +323,24 @@ namespace SuperSmashPolls {
                     new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Main Menu", false,
                         EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
+            /******************************************** Category Setup **********************************************/
+
+            Category PlayerOneCat = Category.Cat1,
+                PlayerTwoCat      = Category.Cat2,
+                PlayerThreeCat    = Category.Cat3,
+                PlayerFourCat     = Category.Cat4,
+                PlayerOneHitbox   = Xor(PlayerTwoCat, PlayerThreeCat, PlayerFourCat),
+                PlayerTwoHitbox   = Xor(PlayerOneCat, PlayerThreeCat, PlayerFourCat),
+                PlayerThreeHitbox = Xor(PlayerOneCat, PlayerTwoCat, PlayerFourCat),
+                PlayerFourHitbox  = Xor(PlayerOneCat, PlayerTwoCat, PlayerThreeCat);
+                
+
             /************************************** Initialization for Players ****************************************/
 
-            PlayerOne   = new PlayerClass(PlayerIndex.One,   Int16.MaxValue - 1);
-            PlayerTwo   = new PlayerClass(PlayerIndex.Two,   Int16.MaxValue - 2);
-            PlayerThree = new PlayerClass(PlayerIndex.Three, Int16.MaxValue - 3);
-            PlayerFour  = new PlayerClass(PlayerIndex.Four,  Int16.MaxValue - 4);
+            PlayerOne   = new PlayerClass(PlayerIndex.One, Xor(Category.All, PlayerOneCat), PlayerOneHitbox);
+            PlayerTwo   = new PlayerClass(PlayerIndex.Two, Xor(Category.All, PlayerTwoCat), PlayerTwoHitbox);
+            PlayerThree = new PlayerClass(PlayerIndex.Three, Xor(Category.All, PlayerThreeCat), PlayerThreeHitbox);
+            PlayerFour  = new PlayerClass(PlayerIndex.Four, Xor(Category.All, PlayerFourCat), PlayerFourHitbox);
 
             /************************************* Initialization for Gamemode ****************************************/
 
@@ -337,17 +351,11 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Characters **************************************/
 
-            Category PlayerOne = Category.Cat1,
-                PlayerTwo      = Category.Cat2,
-                PlayerThree    = Category.Cat3,
-                PlayerFour     = Category.Cat4;
-
 #if OLD_CHARACTER
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40, 0.5F,
                 0F, 500F, 10F, 1F, 1F, "TheDonald");
 #else
-            TheDonald = new CharacterManager(50F, 0.5F, 0F, Xor(Category.All, PlayerTwo, PlayerThree, PlayerFour),
-                Xor(PlayerTwo, PlayerThree, PlayerFour), "TheDonald");
+            TheDonald = new CharacterManager(50F, 0.5F, 0F, Category.None, Category.None, "TheDonald");
 #endif
 
             base.Initialize();
@@ -373,31 +381,42 @@ namespace SuperSmashPolls {
 
             int ItemScale = (int)(ScreenSize/new Vector2(640, 360)).X;
 
-            TheDonald.AddCharacterActions(
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale),
-                new CharacterAction(1, new Point(19, 26), Content.Load<Texture2D>("Donald\\donald_jump"), ItemScale),
-                new CharacterAction(1, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_walk"), ItemScale),
-                new CharacterAction(2, new Point(23, 26), Content.Load<Texture2D>("Donald\\donald_punch"), ItemScale),
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale),
-                new CharacterAction(2, new Point(26, 30), Content.Load<Texture2D>("Donald\\donald_upmash"), ItemScale),
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale),
-                new CharacterAction(2, new Point(21, 26), Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale));
+            MoveAssets TheDonaldIdle = new MoveAssets(1, new Point(21, 26),
+                    Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"), 
+                    DefinedMoves.Idle),
+                TheDonaldWalk = new MoveAssets(1, new Point(19, 26), 
+                    Content.Load<Texture2D>("Donald\\donald_jump"),
+                    ItemScale, Content.Load<Texture2D>("Donald\\donald_jump"), 
+                    DefinedMoves.TheDonaldWalkFunc),
+                TheDonaldJump = new MoveAssets(1, new Point(23, 26), 
+                    Content.Load<Texture2D>("Donald\\donald_walk"),
+                    ItemScale, Content.Load<Texture2D>("Donald\\donald_walk"), 
+                    DefinedMoves.TheDonaldJumpFunc),
+                TheDonaldSpecial = new MoveAssets(2, new Point(23, 26), 
+                    Content.Load<Texture2D>("Donald\\donald_punch"),
+                    ItemScale, Content.Load<Texture2D>("Donald\\donald_punch"), 
+                    DefinedMoves.TheDonaldSpecialFunc),
+                TheDonaldSideSpecial = new MoveAssets(2, new Point(21, 26),
+                    Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"),
+                    DefinedMoves.TheDonaldSideSpecialFunc),
+                TheDonaldUpSpecial = new MoveAssets(2, new Point(26, 30),
+                    Content.Load<Texture2D>("Donald\\donald_upmash"), ItemScale, Content.Load<Texture2D>("Donald\\donald_upmash"),
+                    DefinedMoves.TheDonaldUpSpecialFunc),
+                TheDonaldDownSpecial = new MoveAssets(2, new Point(21, 26),
+                    Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"),
+                    DefinedMoves.TheDonaldDownSpecialFunc),
+                TheDonaldBasicAttack = new MoveAssets(2, new Point(21, 26),
+                    Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"), 
+                    DefinedMoves.TheDonaldBasicAttack,
+                    Content.Load<SoundEffect>("Donald\\donald_basic_sound"));
 
-            TheDonaldsAttacks = new TheDonaldsMoves();
-            AudioHandler TheDonaldEffect      = new AudioHandler(Content.Load<SoundEffect>("Donald\\SpecialAttack"));
 
-            TheDonaldsAttacks.AddAudio(TheDonaldEffect, TheDonaldEffect, TheDonaldEffect, TheDonaldEffect,
-                TheDonaldEffect);
-
-            Texture2D TheDonaldsSpecialHitbox = null; //TODO load this in, figure our how to get collider bodies in world
-
-            TheDonaldsAttacks.AssignColliderTextures(TheDonaldsSpecialHitbox.Width/ScreenSize.X, TheDonaldsSpecialHitbox);
-
-            TheDonaldsAttacks.AddMovesToCharacter(TheDonald);
+            TheDonald.AddMoves(TheDonaldIdle, TheDonaldWalk, TheDonaldJump, TheDonaldSpecial,
+                TheDonaldSideSpecial, TheDonaldUpSpecial, TheDonaldDownSpecial, TheDonaldBasicAttack);
 
             /***** Add characters to character string pairs *****/
 
-            CharacterStringPairs.Add(new Tuple<Character, string>(TheDonald, "TheDonald"));
+            CharacterStringPairs.Add("TheDonald", TheDonald);
 
             /******************* Menu content *******************/
 
@@ -531,20 +550,26 @@ namespace SuperSmashPolls {
         /// Handles setting characters
         /// </summary>
         /// <returns>Whether or not a character has been set for each player in the game</returns>
-        private void SetCharacter(Character character) {
+        private void SetCharacter(CharacterManager character) {
+
+            CharacterManager TargetCharacter;
 
             if ("blank" == PlayerOne.PlayerCharacter.Name) {
-                PlayerOne.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn));
+                TargetCharacter =  (PlayerOne.PlayerCharacter);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
-                PlayerTwo.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn));
+                TargetCharacter = (PlayerTwo.PlayerCharacter);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
-                PlayerThree.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn));
+                TargetCharacter = (PlayerThree.PlayerCharacter);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
             } else {
-                PlayerFour.SetCharacter(new Character(character, CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn));
+                TargetCharacter = (PlayerFour.PlayerCharacter);
             }
+
+            character.CloneToWithoutUnique(TargetCharacter);
+
+            TargetCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
 
         }
  
@@ -607,25 +632,27 @@ namespace SuperSmashPolls {
 
                             Menu.StopAudio();
 
+                            //DefinedMoves.SetWorld(CurrentLevel.LevelWorld);
+
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
                             CurrentGamemode.GameOver        = false;
 
                             switch (NumPlayers) {
                                 case 1:
                                     PlayerOne.Deaths = 0;
-                                    PlayerOne.PlayerCharacter.SetPosition(CurrentLevel.PlayerOneSpawn);
+                                    PlayerOne.SetPosition(CurrentLevel.PlayerOneSpawn);
                                     break;
                                 case 2:
                                     PlayerTwo.Deaths = 0;
-                                    PlayerTwo.PlayerCharacter.SetPosition(CurrentLevel.PlayerTwoSpawn) ;
+                                    PlayerTwo.SetPosition(CurrentLevel.PlayerTwoSpawn) ;
                                     goto case 1;
                                 case 3:
                                     PlayerThree.Deaths = 0;
-                                    PlayerThree.PlayerCharacter.SetPosition(CurrentLevel.PlayerThreeSpawn);
+                                    PlayerThree.SetPosition(CurrentLevel.PlayerThreeSpawn);
                                     goto case 2;
                                 case 4:
                                     PlayerFour.Deaths = 0;
-                                    PlayerFour.PlayerCharacter.SetPosition(CurrentLevel.PlayerFourSpawn);
+                                    PlayerFour.SetPosition(CurrentLevel.PlayerFourSpawn);
                                     goto case 3;
 
                             }
@@ -663,8 +690,6 @@ namespace SuperSmashPolls {
                             Exit();
                             break;
                         case MenuCommands.SelectTrump:
-                            if (!TheDonald.BodiesGenerated())
-                                TheDonald.CreateBody(ref CurrentLevel.LevelWorld, new Vector2(0, 0), Int16.MinValue);
                             SetCharacter(TheDonald);
                             goto default;
                         case MenuCommands.CharacterSelection:

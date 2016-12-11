@@ -33,8 +33,8 @@ namespace SuperSmashPolls.Characters {
         /// <summary>This is the type of function that needs to be used as a move</summary>
         /// <param name="currentFrame">The current frame of the move</param>
         /// <param name="direction">The direction that the character is facing</param>
-        /// <param name="affectedPoints">The points in the world that will be affected by this move</param>
-        public delegate void MoveFunction(int currentFrame, float direction, List<Vector2> affectedPoints);
+        /// <param name="affectedBodies">The bodies in the world that will be affected by this move</param>
+        public delegate void MoveFunction(int currentFrame, float direction, List<Body> affectedBodies);
         /// <summary>The function to run when this move is activated</summary>
         public MoveFunction Function;
 
@@ -53,7 +53,8 @@ namespace SuperSmashPolls.Characters {
             MoveFunction function, params SoundEffect[] effect) {
 
             Animation      = new CharacterAction(playTime, imageSize, spriteSheet, scale);
-            Sound          = new AudioHandler(effect);
+            if (effect != null)
+                Sound      = new AudioHandler(effect);
             HitboxVertices = CreateVerticesFromTexture(hitboxes, scale, imageSize);
             Function       = function;
 
@@ -88,22 +89,28 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// Updates the move of the character
         /// </summary>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="characterLocation">The location of the character in the world</param>
+        /// <param name="onCharacter">if this move should be on the character</param>
         /// <returns>If the move is done or inturruptable</returns>
         /// <remarks>Drawing for moves is taken care of in the Moves class</remarks>
-        public bool UpdateMove(float direction, Vector2 characterLocation) {
+        public bool UpdateMove(float direction, Vector2 characterLocation, bool onCharacter) {
 
             int CurrentIndex = Animation.GetCurrentIndex();
 
             HitboxBodies[CurrentIndex].Enabled  = true;
             HitboxBodies[CurrentIndex].Position = characterLocation;
 
-            List<Vector2> AffectedPoints = FindTouchingPoints();
+            List<Body> AffectedBodies = FindTouchingBodies();
 
             HitboxBodies[CurrentIndex].Enabled = false;
 
+            if (onCharacter)
+                AffectedBodies = new List<Body>() {Animation.Bodies[CurrentIndex]};
+
             Animation.UpdateAnimation(characterLocation);
-            Function(CurrentIndex, direction, AffectedPoints);
-            Sound.PlayEffect();
+            Function(CurrentIndex, direction, AffectedBodies);
+            Sound?.PlayEffect();
 
             return Animation.AnimationAtEnd();
 
@@ -120,22 +127,21 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// Finds the points in the world where the current hitbox is colliding with something
+        /// Finds the bodies in the world where the current hitbox is colliding with
         /// </summary>
-        /// <returns>The points in the world where the hitbox is colliding with something</returns>
-        private List<Vector2> FindTouchingPoints() {
+        /// <returns>The bodies in the world where the hitbox is colliding with something</returns>
+        private List<Body> FindTouchingBodies() {
 
-            List<Vector2> ContactPoints = new List<Vector2>();
+            List<Body> ContactPoints = new List<Body>();
 
             ContactEdge Contacts = HitboxBodies[Animation.GetCurrentIndex()].ContactList;
-            Contact HitContact   = Contacts.Contact;
 
-            while (HitContact != null) {
+            while (Contacts != null) {
                 
-                if (HitContact.IsTouching)
-                    ContactPoints.Add(HitContact.Manifold.Points[0].LocalPoint); //TODO see if this is the correct way to do this
+                if (Contacts.Contact.IsTouching && Contacts.Other.Enabled)
+                    ContactPoints.Add(Contacts.Other); //TODO see if this is the correct way to do this
 
-                HitContact = Contacts.Next.Contact;
+                Contacts = Contacts.Next;
 
             }
 

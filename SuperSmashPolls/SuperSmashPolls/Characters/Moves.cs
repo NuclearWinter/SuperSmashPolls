@@ -34,7 +34,7 @@ namespace SuperSmashPolls.Characters {
             DownSpecialIndex       = 6,
             BasicIndex             = 7;
         /** The moves for this character */
-        private readonly MoveAssets[] CharacterMoves;
+        protected readonly MoveAssets[] CharacterMoves;
         /** The index of the current move */
         private int CurrentMove;
         /** The collision category of the player */
@@ -45,6 +45,8 @@ namespace SuperSmashPolls.Characters {
         private float Direction;
         /** The position of this character */
         private Vector2 Position;
+        /** Whether or not the current move affects the character (rather than another character) */
+        private bool OnCharacter;
 
         /// <summary>
         /// Constructs the class to handle moves
@@ -67,7 +69,7 @@ namespace SuperSmashPolls.Characters {
             HitboxCategory    = hitboxCategory;
             CurrentMove       = 0;
             CharacterMoves    = new[] {idle, walk, jump, special, sideSpecial, upSpecial, downSpecial, basic};
-            Position = new Vector2();
+            Position          = new Vector2();
 
         }
 
@@ -101,6 +103,16 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetPostion() {
+
+            return CharacterMoves[CurrentMove].GetPosition();
+
+        }
+
+        /// <summary>
         /// Updates the running move by either continuing it, or starting the new one
         /// </summary>
         /// <param name="desiredMove">The move that CharacterManager wants to use, if able</param>
@@ -109,11 +121,12 @@ namespace SuperSmashPolls.Characters {
 
             Position = CharacterMoves[CurrentMove].GetPosition();
 
-            if (!CharacterMoves[CurrentMove].UpdateMove(direction, Position))
+            if (!CharacterMoves[CurrentMove].UpdateMove(direction, Position, OnCharacter))
                 return;
 
             Direction   = direction; //This keeps the direction from updating before the move is done
             CurrentMove = desiredMove;
+            OnCharacter = (CurrentMove == IdleIndex) || (CurrentMove == WalkIndex) || (CurrentMove == JumpIndex);
 
         }
 

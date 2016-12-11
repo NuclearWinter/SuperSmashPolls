@@ -8,6 +8,11 @@
 #define DEBUG_INFO
  #undef DEBUG_INFO
 
+#define OLD_CHARACTER
+ #undef OLD_CHARACTER
+
+ #if OLD_CHARACTER
+
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -471,3 +476,5 @@ namespace SuperSmashPolls.Characters {
     }
 
 }
+
+#endif

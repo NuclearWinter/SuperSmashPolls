@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using FarseerPhysics.Dynamics;
 using Microsoft.Xna.Framework;
@@ -12,27 +14,26 @@ namespace SuperSmashPolls.Characters {
     /// <summary>
     /// This class handles everything relating to characters.
     /// </summary>
-    public class CharacterManager {
-
-        /** This is the amount the joystick must be over for it to register as intentional */
-        private const float Register = 0.2F;
-        /** The mass of the character (kg) */
-        private readonly float Mass;
-        /** The friction of the character */
-        private readonly float Friction;
-        /** The restitution of the character (how bouncy they are) */
-        private readonly float Restitution;
-        /** The collision category for this character's bodies */
-        private readonly Category CollisionCategory;
-        /** The category for hitboxes */
-        private readonly Category HitboxCategory;
-        /** The direction that the character is moving */
-        private float Direction;
-        /** The moves for this character */
-        private Moves CharacterMoves;
+    [Serializable]public class CharacterManager {
 
         /// <summary> This characters name</summary>
         public string Name;
+        /** The mass of the character (kg) */
+        protected readonly float Mass;
+        /** The friction of the character */
+        protected readonly float Friction;
+        /** The restitution of the character (how bouncy they are) */
+        protected readonly float Restitution;
+        /** The collision category for this character's bodies */
+        protected Category CollisionCategory;
+        /** The category for hitboxes */
+        protected Category HitboxCategory;
+        /** The moves for this character */
+        protected Moves CharacterMoves;
+        /** This is the amount the joystick must be over for it to register as intentional */
+        private const float Register = 0.2F;
+        /** The direction that the character is moving */
+        private float Direction;
 
         /// <summary>
         /// Default constructor for making a blank character. The name is initialized to check and to check after a game 
@@ -52,12 +53,61 @@ namespace SuperSmashPolls.Characters {
         /// <param name="name"></param>
         public CharacterManager(float mass, float friction, float restitution, Category collisionCategory, 
             Category hitboxCategory, string name) {
-            Mass = mass;
-            Friction = friction;
-            Restitution = restitution;
+            Mass              = mass;
+            Friction          = friction;
+            Restitution       = restitution;
             CollisionCategory = collisionCategory;
-            HitboxCategory = hitboxCategory;
-            Name = name;
+            HitboxCategory    = hitboxCategory;
+            Name              = name;
+        }
+
+
+        /// <summary>
+        /// Creates a blank character class for player class intialization
+        /// </summary>
+        /// <param name="collidesWith"></param>
+        /// <param name="hitboxCollidesWith"></param>
+        public CharacterManager(Category collidesWith, Category hitboxCollidesWith) {
+
+            Name = "blank";
+            CollisionCategory = collidesWith;
+            HitboxCategory = hitboxCollidesWith;
+
+        }
+
+        /// <summary>
+        /// Copies data from one CharacterManager to another
+        /// </summary>
+        /// <param name="obj">The other character to copy from</param>
+        /// <typeparam name="CharacterManager">The class to manage character data</typeparam>
+        /// <returns>A copy of obj</returns>
+        public static CharacterManager DeepClone<CharacterManager>(CharacterManager obj) {
+
+            using (var memStream = new MemoryStream()) {
+                
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(memStream, obj);
+                memStream.Position = 0;
+
+                return (CharacterManager) formatter.Deserialize(memStream);
+
+            }
+
+        }
+
+        /// <summary>
+        /// Clones this objects data to another object, but keeps that object's collision and hitbox categories
+        /// </summary>
+        /// <param name="obj">The object to copy to</param>
+        public void CloneToWithoutUnique(CharacterManager obj) {
+
+            Category tempCollision = obj.CollisionCategory, tempHitbox = obj.HitboxCategory;
+
+            obj = CharacterManager.DeepClone(this);
+
+            obj.CollisionCategory = tempCollision;
+            obj.HitboxCategory    = tempHitbox;
+
         }
 
         /// <summary>
@@ -72,11 +122,11 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// Set the position of the character
+        /// Get the position of the character
         /// </summary>
-        public void SetPosition() {
+        public Vector2 GetPosition() {
 
-            
+            return CharacterMoves.GetPostion();
 
         }
 
@@ -102,18 +152,16 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// The function to update the character
         /// </summary>
-        public void UpdateCharacter(PlayerIndex player) {
+        public void UpdateCharacter(GamePadState currentState) {
 
-            GamePadState CurrentState = GamePad.GetState(player);
+            bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
+            bool DownMovement  = currentState.ThumbSticks.Left.Y <= Register;
+            bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;
+            bool SpecialAttack = Math.Abs(currentState.Triggers.Left)      >= Register;
+            bool Jump          = currentState.IsButtonDown(Buttons.A);
+            bool BasicAttack   = currentState.IsButtonDown(Buttons.B);
 
-            bool SideMovement  = Math.Abs(CurrentState.ThumbSticks.Left.X) >= Register;
-            bool DownMovement  = CurrentState.ThumbSticks.Left.Y <= Register;
-            bool UpMovement    = CurrentState.ThumbSticks.Left.Y >= Register;
-            bool SpecialAttack = Math.Abs(CurrentState.Triggers.Left)      >= Register;
-            bool Jump          = CurrentState.IsButtonDown(Buttons.A);
-            bool BasicAttack   = CurrentState.IsButtonDown(Buttons.B);
-
-            Direction = CurrentState.ThumbSticks.Left.X;
+            Direction = currentState.ThumbSticks.Left.X;
 
             int DesiredMove = Moves.IdleIndex;
             

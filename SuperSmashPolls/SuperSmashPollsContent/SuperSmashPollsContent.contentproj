@@ -180,8 +180,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Donald\SpecialAttack.wav">
-      <Name>SpecialAttack</Name>
+    <Compile Include="Donald\donald_basic_sound.wav">
+      <Name>donald_basic_sound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
