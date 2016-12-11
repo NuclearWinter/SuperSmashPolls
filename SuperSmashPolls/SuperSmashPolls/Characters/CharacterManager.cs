@@ -14,7 +14,7 @@ namespace SuperSmashPolls.Characters {
     /// <summary>
     /// This class handles everything relating to characters.
     /// </summary>
-    [Serializable]public class CharacterManager {
+    public class CharacterManager {
 
         /// <summary> This characters name</summary>
         public string Name;
@@ -81,32 +81,28 @@ namespace SuperSmashPolls.Characters {
         /// <param name="obj">The other character to copy from</param>
         /// <typeparam name="CharacterManager">The class to manage character data</typeparam>
         /// <returns>A copy of obj</returns>
-        public static CharacterManager DeepClone<CharacterManager>(CharacterManager obj) {
+//        public static CharacterManager DeepClone<CharacterManager>(CharacterManager obj) {
+//
+//            using (var memStream = new MemoryStream()) {
+//                
+//                var formatter = new BinaryFormatter();
+//                formatter.Serialize(memStream, obj);
+//                memStream.Position = 0;
+//
+//                return (CharacterManager) formatter.Deserialize(memStream);
+//
+//            }
+//
+//        }
 
-            using (var memStream = new MemoryStream()) {
-                
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(memStream, obj);
-                memStream.Position = 0;
+        public CharacterManager Clone() {
 
-                return (CharacterManager) formatter.Deserialize(memStream);
+            CharacterManager Clone = new CharacterManager(Mass, Friction, Restitution, CollisionCategory, HitboxCategory,
+                Name);
 
-            }
+            Clone.CharacterMoves = CharacterMoves.Clone();
 
-        }
-
-        /// <summary>
-        /// Clones this objects data to another object, but keeps that object's collision and hitbox categories
-        /// </summary>
-        /// <param name="obj">The object to copy to</param>
-        public void CloneToWithoutUnique(CharacterManager obj) {
-
-            Category tempCollision = obj.CollisionCategory, tempHitbox = obj.HitboxCategory;
-
-            obj = CharacterManager.DeepClone(this);
-
-            obj.CollisionCategory = tempCollision;
-            obj.HitboxCategory    = tempHitbox;
+            return Clone;
 
         }
 

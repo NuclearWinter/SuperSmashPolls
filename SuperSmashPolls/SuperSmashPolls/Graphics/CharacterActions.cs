@@ -118,7 +118,15 @@ namespace SuperSmashPolls.Graphics {
 
                 uint[] TempArray = new uint[IndividualSize];
 
-                Array.Copy(TextureData, Processed, TempArray, 0, IndividualSize);
+                try {
+
+                    Array.Copy(TextureData, Processed, TempArray, 0, IndividualSize);
+
+                } catch (ArgumentException) {
+                    //At the end of textures the amount of data left might be to small
+                    Array.Copy(TextureData, Processed, TempArray, 0, TextureData.Length - Processed);
+
+                }
 
                 IndividualData.Add(TempArray);
 
@@ -130,7 +138,7 @@ namespace SuperSmashPolls.Graphics {
 
                 uint[] I = IndividualData[count];
 
-                Vertices vertices         = TextureConverter.DetectVertices(I, SpriteSheet.Width);
+                Vertices vertices         = TextureConverter.DetectVertices(I, ImageSize.X);
                 List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, TriangulationAlgorithm.Earclip); 
                 //error with bayazit and deluny
                 //Siedle doesnt wortk
