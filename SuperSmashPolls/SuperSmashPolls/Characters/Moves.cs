@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Remoting.Messaging;
+﻿#define COMPLEX_MOVES
+#undef COMPLEX_MOVES
+
 using FarseerPhysics;
 using FarseerPhysics.Collision;
 using FarseerPhysics.Common;
@@ -80,8 +79,8 @@ namespace SuperSmashPolls.Characters {
         /// <returns></returns>
         public Moves Clone() {
 
-            return new Moves(CharacterMoves[0], CharacterMoves[1], CharacterMoves[2], CharacterMoves[3],
-                CharacterMoves[4], CharacterMoves[5], CharacterMoves[6], CharacterMoves[7], CharacterCategory,
+            return new Moves(CharacterMoves[0].Clone(), CharacterMoves[1].Clone(), CharacterMoves[2].Clone(), CharacterMoves[3].Clone(),
+                CharacterMoves[4].Clone(), CharacterMoves[5].Clone(), CharacterMoves[6].Clone(), CharacterMoves[7].Clone(), CharacterCategory,
                 HitboxCategory);
 
         }
@@ -134,21 +133,32 @@ namespace SuperSmashPolls.Characters {
         /// <param name="direction">The direction of the character</param>
         public void UpdateMove(int desiredMove, float direction) {
 
+#if COMPLEX_MOVES
+
             Vector2 tempPosition = ActiveBody.Position;
             Vector2 tempVelocity = ActiveBody.LinearVelocity;
             float tempAngVelocity = ActiveBody.AngularVelocity;
             ActiveBody.Enabled = false;
-            ActiveBody = CharacterMoves[CurrentMove].Animation.UpdateAnimation(ConvertUnits.ToDisplayUnits(ActiveBody.Position) -
-                                                            CharacterMoves[CurrentMove].Animation.BodyOrigin);//
-            ActiveBody.Position = tempPosition;
-            ActiveBody.LinearVelocity = tempVelocity;
-            ActiveBody.AngularVelocity = tempAngVelocity;
-            ActiveBody.Enabled = true;
+            ActiveBody.Awake = false;
+            Body Placeholder =
+                CharacterMoves[CurrentMove].Animation.UpdateAnimation(ConvertUnits.ToDisplayUnits(ActiveBody.Position));// -
+//                                                                      new Vector2(0,
+//                                                                          CharacterMoves[CurrentMove].Animation
+//                                                                              .BodyOrigin.Y));
+            //TODO align body correctly (height differential, origin position)
+            Placeholder = CharacterMoves[CurrentMove].Animation.FirstBody();
+            //Placeholder.ResetDynamics();
+            Placeholder.Position = tempPosition;
+            Placeholder.LinearVelocity = tempVelocity;
+            Placeholder.AngularVelocity = tempAngVelocity;
+            Placeholder.Enabled = true;
+            Placeholder.Awake = true;
 
-            //Position = CharacterMoves[CurrentMove].GetPosition();
-            //CharacterMoves[CurrentMove].Animation.UpdateAnimation(ActiveBody.Position);
+            ActiveBody = Placeholder;
 
-           if (!CharacterMoves[CurrentMove].UpdateMove(direction, ActiveBody.Position, OnCharacter) && 
+#endif
+
+            if (!CharacterMoves[CurrentMove].UpdateMove(direction, ActiveBody.Position, OnCharacter) && 
                 !((CurrentMove == IdleIndex) || (CurrentMove == WalkIndex) || (CurrentMove == JumpIndex)))
                return;
 
@@ -156,6 +166,9 @@ namespace SuperSmashPolls.Characters {
                 CharacterMoves[desiredMove].StartMove();
 
             Direction   = direction; //This keeps the direction from updating before the move is done
+//            if (CurrentMove != desiredMove)
+//                ActiveBody.Position += ConvertUnits.ToSimUnits(new Vector2(0, -10));
+
             CurrentMove = desiredMove;
             OnCharacter = (CurrentMove == IdleIndex) || (CurrentMove == WalkIndex) || (CurrentMove == JumpIndex);
 

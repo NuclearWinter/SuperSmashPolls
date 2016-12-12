@@ -30,3 +30,4 @@ Content\Debate\DebateBackground.xnb
 Content\Debate\DebatePlatform.xnb
 Content\Music\MainSong.xnb
 Content\Donald\donald_basic_sound.xnb
+Content\Font.xnb

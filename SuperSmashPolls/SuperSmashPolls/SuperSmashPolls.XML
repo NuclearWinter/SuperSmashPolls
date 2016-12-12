@@ -155,6 +155,17 @@
             <param name="characterCollides">The collision category for the player</param>
             <param name="hitboxCollides">The categories of objects that these moves should collide with</param>
         </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.GetHeight">
+            <summary>
+            Gets the height of the character
+            </summary>
+            <returns>The height of the character in pixels</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.StartMove">
+            <summary>
+            Manages data for starting the move
+            </summary>
+        </member>
         <member name="M:SuperSmashPolls.Characters.MoveAssets.UpdateMove(System.Single,Microsoft.Xna.Framework.Vector2,System.Boolean)">
             <summary>
             Updates the move of the character

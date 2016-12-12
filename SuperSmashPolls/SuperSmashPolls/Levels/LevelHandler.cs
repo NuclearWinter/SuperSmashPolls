@@ -13,8 +13,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using FarseerPhysics.Common.Decomposition;
 using FarseerPhysics.Common.TextureTools;
+using FarseerPhysics.DebugView;
 using FarseerPhysics.Dynamics;
 using FarseerPhysics.Factories;
+using Microsoft.Xna.Framework.Content;
 
 namespace SuperSmashPolls.Levels {
 
@@ -36,6 +38,10 @@ namespace SuperSmashPolls.Levels {
         public Vector2 PlayerOneSpawn, PlayerTwoSpawn, PlayerThreeSpawn, PlayerFourSpawn, RespawnPoint;
         /// <summary>The Farseer world for this level</summary>
         public World LevelWorld;
+
+#if DEBUG
+        private DebugViewXNA DebugView;
+#endif
 
         //TODO music
 
@@ -64,6 +70,39 @@ namespace SuperSmashPolls.Levels {
             LevelBody  = new List<Tuple<Body, Texture2D, Vector2>>();
 
         }
+
+#if DEBUG
+        /// <summary>
+        /// Call this in LoadContent after all the level is set up
+        /// </summary>
+        public void ExtablishDebugView(GraphicsDevice graphicsDevice, ContentManager content) {
+
+            //Give your world to debugView
+            DebugView = new DebugViewXNA(LevelWorld);
+            //DebugView have many Property you can add
+            DebugView.RemoveFlags(DebugViewFlags.Shape);
+            DebugView.RemoveFlags(DebugViewFlags.Joint);
+            DebugView.DefaultShapeColor = Color.LightPink;
+            DebugView.SleepingShapeColor = Color.MediumPurple;
+            //add your GraphicsDevice & your ContentManager
+
+            DebugView.AppendFlags(DebugViewFlags.CenterOfMass);
+            DebugView.AppendFlags(DebugViewFlags.PerformanceGraph);
+            DebugView.AppendFlags(DebugViewFlags.Shape);
+            DebugView.AppendFlags(DebugViewFlags.ContactPoints);
+            DebugView.AppendFlags(DebugViewFlags.PolygonPoints);
+            DebugView.AppendFlags(DebugViewFlags.ContactNormals);
+
+            DebugView.DefaultShapeColor = Color.White;
+            DebugView.SleepingShapeColor = Color.LightGray;
+
+            DebugView.DebugPanelPosition = Vector2.Zero;
+            DebugView.PerformancePanelBounds = graphicsDevice.ScissorRectangle;
+
+            DebugView.LoadContent(graphicsDevice, content);
+
+        }
+#endif
 
         /// <summary>
         /// Creates a polygon from a texture. This is the important function here.
@@ -152,8 +191,51 @@ namespace SuperSmashPolls.Levels {
             }
 
 #if DEBUG
-            if (font != null)
-                spriteBatch.DrawString(font, "Debug mode is on", Vector2.Zero, Color.Red);
+            //if (font != null)
+            //spriteBatch.DrawString(font, "Debug mode is on", Vector2.Zero, Color.Red);
+            //Vector2 _screenCenter = new Vector2(spriteBatch.GraphicsDevice.Viewport.Width / 2F, spriteBatch.GraphicsDevice.Viewport.Height / 2F);
+            //            Matrix view = Matrix.CreateTranslation(new Vector3(fuckit, 0f)) * Matrix.CreateTranslation(new Vector3(fuckit, 0f));
+            //Matrix projection;
+            //            Vector3 fuckayougame = Vector3.Zero;
+            //            Vector3 stillfuckoff = view.Translation;
+            //            Vector3 derpawhore = Vector3.Zero;
+            //            Matrix.CreateLookAt(ref stillfuckoff, ref fuckayougame, ref derpawhore, out projection);
+            // that ready see result
+            // calculate the projection and view adjustments for the debug view
+            //            var _displayUnitsToSimUnitsRatio = 640/25;
+            //            Matrix projection = Matrix.CreateOrthographicOffCenter(0f, spriteBatch.GraphicsDevice.Viewport.Width / 640/25,
+            //                                                             spriteBatch.GraphicsDevice.Viewport.Height / 640/25, 0f, 0f,
+            //                                                             1f);
+            //            Matrix view =
+            //                Matrix.CreateTranslation(
+            //                    new Vector3(
+            //                        (_screenCenter/*camera position*//_displayUnitsToSimUnitsRatio) - (_screenCenter/_displayUnitsToSimUnitsRatio),
+            //                        0f))*Matrix.CreateTranslation(new Vector3((_screenCenter/_displayUnitsToSimUnitsRatio), 0f));
+            //            // draw the debug view
+            //            var projection = Matrix.CreatePerspectiveFieldOfView((float)Math.PI - 0.2F, spriteBatch.GraphicsDevice.Viewport.AspectRatio,
+            //                                                          spriteBatch.GraphicsDevice.Viewport.MinDepth, spriteBatch.GraphicsDevice.Viewport.MaxDepth);
+            //            //var view Matrix.CreatePerspectiveFieldOfView()
+            //            //Matrix
+            //            Matrix proj = Matrix.CreateOrthographicOffCenter(0f, spriteBatch.GraphicsDevice.Viewport.Width,
+            //                spriteBatch.GraphicsDevice.Viewport.Height, 0f, 0f, 1f);
+            //            //Matrix view = spriteBatch.GraphicsDevice.Viewport.TitleSafeArea.
+            //            DebugView.RenderDebugData(ref projection);
+            //            //DebugView
+
+            //                     var projection = Matrix.CreateOrthographicOffCenter(
+            //                         0f,
+            //                         ConvertUnits.ToSimUnits(spriteBatch.GraphicsDevice.Viewport.Width),
+            //                         ConvertUnits.ToSimUnits(spriteBatch.GraphicsDevice.Viewport.Height), 0f, 0f,
+//            //                         1f);
+//            Matrix projection = Matrix.CreateOrthographicOffCenter(0, spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height, 0, 0, 1);
+//            Matrix halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
+//
+////            basicEffect.World = Matrix.Identity;
+////            basicEffect.View = Matrix.Identity;
+////            basicEffect.Projection = halfPixelOffset * projection;
+//            //Matrix fuckmyliiiiiiiiiiiife = projection*halfPixelOffset;
+//            Matrix view = Matrix.Identity;
+//            DebugView.RenderDebugData(ref projection, ref view);
 #endif
 
         }

@@ -154,3 +154,7 @@ C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPoll
 \\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 \\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.exe
 \\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.pdb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\DebugView XNA.dll
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\DebugView XNA.pdb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\DebugView XNA.xml
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Font.xnb

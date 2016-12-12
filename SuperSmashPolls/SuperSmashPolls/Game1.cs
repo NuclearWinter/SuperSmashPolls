@@ -10,6 +10,8 @@
  #define OLD_CHARACTER
  #undef OLD_CHARACTER
 
+ #define DEBUG_LEVELS
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -390,6 +392,9 @@ namespace SuperSmashPolls {
             }
 
             /************ The Donald Content Loading ************/
+#if OLD_CHARACTER
+
+#else
 
             int ItemScale = (int)(ScreenSize/new Vector2(640, 360)).X;
 
@@ -425,6 +430,8 @@ namespace SuperSmashPolls {
 
             TheDonald.AddMoves(TheDonaldIdle, TheDonaldWalk, TheDonaldJump, TheDonaldSpecial,
                 TheDonaldSideSpecial, TheDonaldUpSpecial, TheDonaldDownSpecial, TheDonaldBasicAttack);
+
+#endif
 
             /***** Add characters to character string pairs *****/
 
@@ -565,19 +572,19 @@ namespace SuperSmashPolls {
         private void SetCharacter(CharacterManager character) {
 
             if ("blank" == PlayerOne.PlayerCharacter.Name) {
-                PlayerOne.PlayerCharacter = character;
+                PlayerOne.PlayerCharacter = character.Clone();
                 PlayerOne.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
-                PlayerTwo.PlayerCharacter = character;
+                PlayerTwo.PlayerCharacter = character.Clone();
                 PlayerTwo.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
-                PlayerThree.PlayerCharacter = character;
+                PlayerThree.PlayerCharacter = character.Clone();
                 PlayerThree.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
             } else {
-                PlayerFour.PlayerCharacter = character;
+                PlayerFour.PlayerCharacter = character.Clone();
                 PlayerFour.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
             }
 
@@ -666,6 +673,12 @@ namespace SuperSmashPolls {
                                     goto case 3;
 
                             }
+
+#if DEBUG_LEVELS
+                                    //CurrentLevel.ExtablishDebugView(GraphicsDevice, Content);
+
+
+#endif
 
                                 break;
                         case MenuCommands.BackToMainMenu:

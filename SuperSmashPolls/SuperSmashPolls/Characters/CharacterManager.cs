@@ -151,6 +151,8 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         public void UpdateCharacter(GamePadState currentState) {
 
+            //KeyboardState CurrentKeyboardState = Keyboard.GetState();
+
             bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
             bool DownMovement  = currentState.ThumbSticks.Left.Y <= Register;
             bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -196,10 +198,13 @@ namespace SuperSmashPolls.Graphics {
 
             foreach (Body i in Bodies) {
 
-                //TODO rtemovei.CollisionCategories = collision;
+                //i.CollisionCategories = collision;
                 i.Restitution         = restitution;
                 i.Friction            = friction;
                 i.Mass                = mass;
+                i.Awake = false;
+                i.Enabled = false;
+                i.AngularDamping = 1;
 
             }
 
