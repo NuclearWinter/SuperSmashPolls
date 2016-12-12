@@ -59,19 +59,13 @@
             <param name="collidesWith"></param>
             <param name="hitboxCollidesWith"></param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.CharacterManager.DeepClone``1(``0)">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.Clone">
             <summary>
             Copies data from one CharacterManager to another
             </summary>
             <param name="obj">The other character to copy from</param>
             <typeparam name="CharacterManager">The class to manage character data</typeparam>
             <returns>A copy of obj</returns>
-        </member>
-        <member name="M:SuperSmashPolls.Characters.CharacterManager.CloneToWithoutUnique(SuperSmashPolls.Characters.CharacterManager)">
-            <summary>
-            Clones this objects data to another object, but keeps that object's collision and hitbox categories
-            </summary>
-            <param name="obj">The object to copy to</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.CharacterManager.AddMoves(SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets,SuperSmashPolls.Characters.MoveAssets)">
             <summary>
@@ -131,6 +125,9 @@
         <member name="F:SuperSmashPolls.Characters.MoveAssets.Function">
             <summary>The function to run when this move is activated</summary>
         </member>
+        <member name="F:SuperSmashPolls.Characters.MoveAssets.HitboxTexture">
+             
+        </member>
         <member name="M:SuperSmashPolls.Characters.MoveAssets.#ctor(System.Single,Microsoft.Xna.Framework.Point,Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,Microsoft.Xna.Framework.Graphics.Texture2D,SuperSmashPolls.Characters.MoveAssets.MoveFunction,Microsoft.Xna.Framework.Audio.SoundEffect[])">
             <summary>
             Adds the assets needed for each move
@@ -143,6 +140,12 @@
             spriteSheet</param>
             <param name="function">The function to run when this move is used</param>
             <param name="effect">Any effects to play when this move is used</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveAssets.Clone">
+            <summary>
+            
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveAssets.ConstructBodies(FarseerPhysics.Dynamics.World,FarseerPhysics.Dynamics.Category,FarseerPhysics.Dynamics.Category[])">
             <summary>
@@ -209,7 +212,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldJumpFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
             <summary>
-            
+            Makes The Donald jump
             </summary>
             <param name="currentFrame">The current frame of the animation</param>
             <param name="direction">The direction that the character is facing</param>
@@ -217,7 +220,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
             <summary>
-            
+            TODO Make wall here
             </summary>
             <param name="currentFrame">The current frame of the animation</param>
             <param name="direction">The direction that the character is facing</param>
@@ -225,7 +228,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldSideSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
             <summary>
-            
+            TODO
             </summary>
             <param name="currentFrame">The current frame of the animation</param>
             <param name="direction">The direction that the character is facing</param>
@@ -233,7 +236,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldUpSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
             <summary>
-            
+            TODO
             </summary>
             <param name="currentFrame">The current frame of the animation</param>
             <param name="direction">The direction that the character is facing</param>
@@ -241,7 +244,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldDownSpecialFunc(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
             <summary>
-            
+            TODO
             </summary>
             <param name="currentFrame">The current frame of the animation</param>
             <param name="direction">The direction that the character is facing</param>
@@ -257,12 +260,11 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.BasicPunch(System.Int32,System.Single,System.Collections.Generic.List{FarseerPhysics.Dynamics.Body})">
             <summary>
-            The basic attack that all characters have
+            A basic punching function
             </summary>
             <param name="currentFrame">The current frame of the animation</param>
             <param name="direction">The direction that the character is facing</param>
             <param name="affectedBodies">The bodies in the world to be affected</param>
-            TODO fix this
         </member>
         <member name="T:SuperSmashPolls.Characters.Moves">
             <summary>
@@ -330,6 +332,12 @@
             <param name="basic"></param>
             <param name="characterCategory"></param>
             <param name="hitboxCategory"></param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.Moves.Clone">
+            <summary>
+            
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:SuperSmashPolls.Characters.Moves.MakeBodies(FarseerPhysics.Dynamics.World,System.Single,System.Single,System.Single)">
             <summary>
@@ -623,6 +631,12 @@
             <summary>
             The default constructor for this class.
             </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.AudioHandler.GetEffects">
+            <summary>
+            
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:SuperSmashPolls.Graphics.AudioHandler.AddAudio(Microsoft.Xna.Framework.Audio.SoundEffect[])">
             <summary>

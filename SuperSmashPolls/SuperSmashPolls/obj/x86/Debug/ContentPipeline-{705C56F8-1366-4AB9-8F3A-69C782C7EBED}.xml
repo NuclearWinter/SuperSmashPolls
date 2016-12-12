@@ -206,7 +206,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_walk.xnb</Output>
-      <Time>2016-12-11T10:53:49.9069795-06:00</Time>
+      <Time>2016-12-11T14:12:08.4785389-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_upmash.png</Source>
@@ -215,7 +215,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_upmash.xnb</Output>
-      <Time>2016-12-11T10:53:49.9059795-06:00</Time>
+      <Time>2016-12-11T14:12:08.4785389-06:00</Time>
     </Item>
     <Item>
       <Source>Donald\donald_jump.png</Source>
@@ -251,7 +251,7 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_punch.xnb</Output>
-      <Time>2016-12-11T10:53:49.9059795-06:00</Time>
+      <Time>2016-12-11T14:12:08.4775388-06:00</Time>
     </Item>
     <Item>
       <Source>Debate\DebateBackground.png</Source>
@@ -287,7 +287,7 @@
       <Processor>SoundEffectProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_basic_sound.xnb</Output>
-      <Time>2016-12-01T23:36:55.5944459-06:00</Time>
+      <Time>2016-12-11T13:44:10.0845403-06:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
