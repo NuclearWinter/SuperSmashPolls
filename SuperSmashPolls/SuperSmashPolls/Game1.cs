@@ -373,9 +373,21 @@ namespace SuperSmashPolls {
 
             /****************** Font Loading ********************/
 
-            GameFont       = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
-            TitleFont      = Content.Load<SpriteFont>("TitleFont");
-            TitleFontSmall = Content.Load<SpriteFont>("TitleFont-Small");
+            GameFont = Content.Load<SpriteFont>("SpriteFont1"); //Load the font in the game
+
+            try {
+
+                TitleFont = Content.Load<SpriteFont>("TitleFont");
+                TitleFontSmall = Content.Load<SpriteFont>("TitleFont-Small");
+
+            } catch (Exception e) {
+                
+                Console.WriteLine(e.Message);
+
+                TitleFont      = GameFont; //In case the font 8-Bit wonder isn't installed
+                TitleFontSmall = GameFont;
+
+            }
 
             /************ The Donald Content Loading ************/
 
@@ -411,7 +423,6 @@ namespace SuperSmashPolls {
                     DefinedMoves.TheDonaldBasicAttack,
                     Content.Load<SoundEffect>("Donald\\donald_basic_sound"));
 
-
             TheDonald.AddMoves(TheDonaldIdle, TheDonaldWalk, TheDonaldJump, TheDonaldSpecial,
                 TheDonaldSideSpecial, TheDonaldUpSpecial, TheDonaldDownSpecial, TheDonaldBasicAttack);
 
@@ -423,7 +434,7 @@ namespace SuperSmashPolls {
 
             Menu.SetFontForAll(TitleFont);
 
-            Menu.AccessItem(5).SetFont(TitleFontSmall);
+            Menu.AccessItem(6).SetFont(TitleFontSmall);
 
             Menu.AddAudio(new AudioHandler(Content.Load<SoundEffect>("Music\\MainSong")));
 

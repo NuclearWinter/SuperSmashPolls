@@ -102,3 +102,55 @@ Y:\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Deb
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\DebateBackground.xnb
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\DebatePlatform.xnb
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_basic_sound.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SpriteFont1.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TitleFont-Small.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerOne.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\PlayerTwo.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\sprite sheet template 32 bit.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TheDonaldWalking.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Black Floor.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-jump.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-stand.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald64-walk.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Temple.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\temple_kinda.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\space.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleRock.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleLeft.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleMiddle.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleTop.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleRight.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\TempleItems\TempleBackground.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\SaikyoBlack.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_stand.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_walk.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_upmash.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_jump.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\FinalDestination\FinalBackground.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\FinalDestination\FinalPlatform.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_punch.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\DebateBackground.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Debate\DebatePlatform.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Music\MainSong.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_basic_sound.xnb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.exe
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.pdb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\SuperSmashPolls.XML
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.dll
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.dll
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.dll
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.dll
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.dll
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.pdb
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\FarseerPhysics XNA.xml
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.xml
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Game.xml
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.GamerServices.xml
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.xml
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.csprojResolveAssemblyReference.cache
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.exe
+\\Mac\Home\git\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.pdb
