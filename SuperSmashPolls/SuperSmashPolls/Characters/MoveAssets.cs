@@ -39,6 +39,7 @@ namespace SuperSmashPolls.Characters {
         public MoveFunction Function;
         /**  */
         private Texture2D HitboxTexture;
+        public DateTime Started;
 
         /// <summary>
         /// Adds the assets needed for each move
@@ -59,7 +60,7 @@ namespace SuperSmashPolls.Characters {
                 Sound      = new AudioHandler(effect);
             HitboxVertices = CreateVerticesFromTexture(hitboxes, scale, imageSize);
             Function       = function;
-
+            Started = DateTime.Now;
         }
 
         /// <summary>
@@ -101,6 +102,13 @@ namespace SuperSmashPolls.Characters {
 
         }
 
+        public void StartMove() {
+            
+            Sound?.PlayEffect();
+            Started = DateTime.Now;;
+
+        }
+
         /// <summary>
         /// Updates the move of the character
         /// </summary>
@@ -123,11 +131,11 @@ namespace SuperSmashPolls.Characters {
             if (onCharacter)
                 AffectedBodies = new List<Body>() {Animation.Bodies[CurrentIndex]};
 
-            Animation.UpdateAnimation(characterLocation);
+            //Animation.UpdateAnimation(characterLocation);
             Function(CurrentIndex, direction, AffectedBodies);
-            Sound?.PlayEffect();
 
-            return Animation.AnimationAtEnd();
+            return (DateTime.Now - Started).Milliseconds > Animation.PlayTime || Animation.AnimationAtEnd() ||
+                   onCharacter;
 
         }
 

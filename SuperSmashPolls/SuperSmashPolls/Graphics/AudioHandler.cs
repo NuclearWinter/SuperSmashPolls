@@ -106,11 +106,15 @@ namespace SuperSmashPolls.Graphics {
 
                 try {
 
-                    EffectInstances[RNG.Next(Effects.Count)].Play();
+                    EffectInstances[RNG.Next(Effects.Count)]?.Play();
 
                 } catch (NullReferenceException) {
 
                     Console.WriteLine("The desired item cannot be accessed in Effects");
+
+                } catch (ArgumentOutOfRangeException) {
+                    
+                    Console.WriteLine("Boop");
 
                 }
 

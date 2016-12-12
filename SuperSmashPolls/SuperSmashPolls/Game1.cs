@@ -5,7 +5,7 @@
  **********************************************************************************************************************/
 
  #define DEBUG
- #undef DEBUG
+ //#undef DEBUG
 
  #define OLD_CHARACTER
  #undef OLD_CHARACTER
@@ -306,7 +306,7 @@ namespace SuperSmashPolls {
 /* 05 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)), "Super Smash Polls ", false,
                 EmptyUnit, false, true, MenuCommands.Nothing, true));
 
-                Menu.AccessItem(4).TextColor = Color.Red;
+                //Menu.AccessItem(4).TextColor = Color.Red;
 
 /* 06 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0F, 0.9F)),
                 "Use DPad up and down to navigate the menu", false, EmptyUnit, false));
@@ -381,33 +381,33 @@ namespace SuperSmashPolls {
 
             int ItemScale = (int)(ScreenSize/new Vector2(640, 360)).X;
 
-            MoveAssets TheDonaldIdle = new MoveAssets(1, new Point(21, 27),
+            MoveAssets TheDonaldIdle = new MoveAssets(1000, new Point(21, 27),
                     Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"), 
                     DefinedMoves.Idle),
-                TheDonaldWalk = new MoveAssets(1, new Point(23, 29), 
-                    Content.Load<Texture2D>("Donald\\donald_jump"),
+                TheDonaldWalk = new MoveAssets(1000, new Point(23, 29), 
+                    Content.Load<Texture2D>("Donald\\donald_walk"),
                     ItemScale, Content.Load<Texture2D>("Donald\\donald_walk"), 
                     DefinedMoves.TheDonaldWalkFunc),
-                TheDonaldJump = new MoveAssets(1, new Point(19, 26), 
-                    Content.Load<Texture2D>("Donald\\donald_walk"),
+                TheDonaldJump = new MoveAssets(1000, new Point(19, 26), 
+                    Content.Load<Texture2D>("Donald\\donald_jump"),
                     ItemScale, Content.Load<Texture2D>("Donald\\donald_jump"), 
                     DefinedMoves.TheDonaldJumpFunc),
-                TheDonaldSpecial = new MoveAssets(2, new Point(23, 29), 
+                TheDonaldSpecial = new MoveAssets(2000, new Point(23, 29), 
                     Content.Load<Texture2D>("Donald\\donald_punch"),
                     ItemScale, Content.Load<Texture2D>("Donald\\donald_punch"), 
                     DefinedMoves.TheDonaldSpecialFunc),
-                TheDonaldSideSpecial = new MoveAssets(2, new Point(21, 27),
+                TheDonaldSideSpecial = new MoveAssets(2000, new Point(21, 27),
                     Content.Load<Texture2D>("Donald\\donald_stand"), 
                     ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"),
                     DefinedMoves.TheDonaldSideSpecialFunc),
-                TheDonaldUpSpecial = new MoveAssets(2, new Point(26, 33),
+                TheDonaldUpSpecial = new MoveAssets(2000, new Point(26, 33),
                     Content.Load<Texture2D>("Donald\\donald_upmash"), ItemScale, Content.Load<Texture2D>("Donald\\donald_upmash"),
                     DefinedMoves.TheDonaldUpSpecialFunc),
-                TheDonaldDownSpecial = new MoveAssets(2, new Point(21, 27),
+                TheDonaldDownSpecial = new MoveAssets(2000, new Point(21, 27),
                     Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"),
                     DefinedMoves.TheDonaldDownSpecialFunc),
-                TheDonaldBasicAttack = new MoveAssets(2, new Point(21, 27),
-                    Content.Load<Texture2D>("Donald\\donald_stand"), ItemScale, Content.Load<Texture2D>("Donald\\donald_stand"), 
+                TheDonaldBasicAttack = new MoveAssets(2000, new Point(23, 29),
+                    Content.Load<Texture2D>("Donald\\donald_punch"), ItemScale, Content.Load<Texture2D>("Donald\\donald_punch"), 
                     DefinedMoves.TheDonaldBasicAttack,
                     Content.Load<SoundEffect>("Donald\\donald_basic_sound"));
 
@@ -553,24 +553,22 @@ namespace SuperSmashPolls {
         /// <returns>Whether or not a character has been set for each player in the game</returns>
         private void SetCharacter(CharacterManager character) {
 
-            CharacterManager TargetCharacter;
-
             if ("blank" == PlayerOne.PlayerCharacter.Name) {
-                TargetCharacter =  (PlayerOne.PlayerCharacter);
+                PlayerOne.PlayerCharacter = character;
+                PlayerOne.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
-                TargetCharacter = (PlayerTwo.PlayerCharacter);
+                PlayerTwo.PlayerCharacter = character;
+                PlayerTwo.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
-                TargetCharacter = (PlayerThree.PlayerCharacter);
+                PlayerThree.PlayerCharacter = character;
+                PlayerThree.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
             } else {
-                TargetCharacter = (PlayerFour.PlayerCharacter);
+                PlayerFour.PlayerCharacter = character;
+                PlayerFour.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
             }
-
-            TargetCharacter = character;
-
-            TargetCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
 
         }
  
@@ -657,13 +655,6 @@ namespace SuperSmashPolls {
                                     goto case 3;
 
                             }
-
-#if (DEBUG)
-                            PlayerOne.PlayerCharacter.JumpInterval   = 0.1F;
-                            PlayerTwo.PlayerCharacter.JumpInterval   = 0.1F;
-                            PlayerThree.PlayerCharacter.JumpInterval = 0.1F;
-                            PlayerFour.PlayerCharacter.JumpInterval  = 0.1F;
-#endif
 
                                 break;
                         case MenuCommands.BackToMainMenu:
@@ -864,6 +855,10 @@ namespace SuperSmashPolls {
                                 break;
 
                         }
+
+#if DEBUG
+                        Batch.DrawString(GameFont, PlayerOne.PlayerCharacter.GetPosition().ToString(), Vector2.One, Color.Black);
+#endif
 
                         CurrentGamemode.DrawGamemodeOverlay(Batch);
 

@@ -35,6 +35,7 @@ namespace SuperSmashPolls.Characters {
             BasicIndex             = 7;
         /** The moves for this character */
         protected readonly MoveAssets[] CharacterMoves;
+        public Body ActiveBody;
         /** The index of the current move */
         private int CurrentMove;
         /** The collision category of the player */
@@ -101,6 +102,9 @@ namespace SuperSmashPolls.Characters {
                     
             }
 
+            ActiveBody = CharacterMoves[CurrentMove].Animation.FirstBody();
+            ActiveBody.Enabled = true;
+
         }
 
         /// <summary>
@@ -109,8 +113,7 @@ namespace SuperSmashPolls.Characters {
         /// <param name="positon"></param>
         public void SetPosition(Vector2 positon) {
 
-            CharacterMoves[CurrentMove].Animation.Bodies[CharacterMoves[CurrentMove].Animation.GetCurrentIndex()]
-                .Position = positon;
+            ActiveBody.Position = positon;
 
         }
 
@@ -120,7 +123,7 @@ namespace SuperSmashPolls.Characters {
         /// <returns></returns>
         public Vector2 GetPostion() {
 
-            return CharacterMoves[CurrentMove].GetPosition();
+            return ActiveBody.Position;
 
         }
 
@@ -131,10 +134,26 @@ namespace SuperSmashPolls.Characters {
         /// <param name="direction">The direction of the character</param>
         public void UpdateMove(int desiredMove, float direction) {
 
-            Position = CharacterMoves[CurrentMove].GetPosition();
+            Vector2 tempPosition = ActiveBody.Position;
+            Vector2 tempVelocity = ActiveBody.LinearVelocity;
+            float tempAngVelocity = ActiveBody.AngularVelocity;
+            ActiveBody.Enabled = false;
+            ActiveBody = CharacterMoves[CurrentMove].Animation.UpdateAnimation(ConvertUnits.ToDisplayUnits(ActiveBody.Position) -
+                                                            CharacterMoves[CurrentMove].Animation.BodyOrigin);//
+            ActiveBody.Position = tempPosition;
+            ActiveBody.LinearVelocity = tempVelocity;
+            ActiveBody.AngularVelocity = tempAngVelocity;
+            ActiveBody.Enabled = true;
 
-            if (!CharacterMoves[CurrentMove].UpdateMove(direction, Position, OnCharacter))
-                return;
+            //Position = CharacterMoves[CurrentMove].GetPosition();
+            //CharacterMoves[CurrentMove].Animation.UpdateAnimation(ActiveBody.Position);
+
+           if (!CharacterMoves[CurrentMove].UpdateMove(direction, ActiveBody.Position, OnCharacter) && 
+                !((CurrentMove == IdleIndex) || (CurrentMove == WalkIndex) || (CurrentMove == JumpIndex)))
+               return;
+
+            if (CurrentMove != desiredMove)
+                CharacterMoves[desiredMove].StartMove();
 
             Direction   = direction; //This keeps the direction from updating before the move is done
             CurrentMove = desiredMove;

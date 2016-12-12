@@ -142,6 +142,7 @@ namespace SuperSmashPolls.Characters {
         public void Respawn(Vector2 position) {
             
             CharacterMoves.SetPosition(position);
+            CharacterMoves.ActiveBody.ResetDynamics();
 
         }
 
@@ -155,11 +156,9 @@ namespace SuperSmashPolls.Characters {
             bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;
             bool SpecialAttack = Math.Abs(currentState.Triggers.Left)      >= Register;
             bool Jump          = currentState.IsButtonDown(Buttons.A);
-            bool BasicAttack   = currentState.IsButtonDown(Buttons.B);
+            bool BasicAttack   = currentState.IsButtonDown(Buttons.B); 
 
-            Direction = currentState.ThumbSticks.Left.X;
-
-            int DesiredMove = Moves.IdleIndex;
+            int DesiredMove;
             
             if (SpecialAttack)
                 if (SideMovement)
@@ -176,6 +175,12 @@ namespace SuperSmashPolls.Characters {
                 DesiredMove = Moves.JumpIndex;
             else if (BasicAttack)
                 DesiredMove = Moves.BasicIndex;
+            else 
+                DesiredMove = Moves.IdleIndex;
+
+            Direction = (DesiredMove == Moves.IdleIndex || DesiredMove == Moves.JumpIndex)
+                ? Direction
+                : currentState.ThumbSticks.Left.X;
 
             CharacterMoves.UpdateMove(DesiredMove, Direction);
 

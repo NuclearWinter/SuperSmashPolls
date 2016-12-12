@@ -14,8 +14,8 @@ namespace SuperSmashPolls.Characters {
     /// </summary>
     public class MoveDefinition {
 
-        private readonly Vector2 StandardJumpHeight = new Vector2(0, 10);
-        private readonly Vector2 StandardWalkSpeed  = new Vector2(10, 0);
+        private readonly Vector2 StandardJumpHeight = new Vector2(0, 60);
+        private readonly Vector2 StandardWalkSpeed  = new Vector2(15, 0);
         private readonly Vector2 StandardPunchForce = new Vector2(10, 0);
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace SuperSmashPolls.Characters {
         /// <param name="affectedBodies">The bodies in the world to be affected</param>
         public void TheDonaldWalkFunc(int currentFrame, float direction, List<Body> affectedBodies) {
 
-            affectedBodies[0].ApplyForce(StandardWalkSpeed,
-                affectedBodies[0].Position - ConvertUnits.ToSimUnits(new Vector2(19/2F*(direction < 0 ? -1 : 1), 0)));
+            //affectedBodies[0].Position += StandardWalkSpeed*direction;
+            affectedBodies[0].ApplyLinearImpulse(StandardWalkSpeed * direction);
 
         }
 
@@ -46,7 +46,7 @@ namespace SuperSmashPolls.Characters {
         public void TheDonaldJumpFunc(int currentFrame, float direction, List<Body> affectedBodies) {
 
             affectedBodies[0].ApplyLinearImpulse(StandardJumpHeight,
-                affectedBodies[0].Position - ConvertUnits.ToSimUnits(new Vector2(0, 00/2F)));
+                affectedBodies[0].Position); // - ConvertUnits.ToSimUnits(new Vector2(0, 00/2F)));
 
         }
 

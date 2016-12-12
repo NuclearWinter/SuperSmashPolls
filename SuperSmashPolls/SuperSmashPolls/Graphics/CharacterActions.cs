@@ -114,8 +114,8 @@ namespace SuperSmashPolls.Graphics {
 
             List<uint[]> IndividualData = new List<uint[]>();
 
-            for (int Processed = 0; Processed < SpriteSheetSize; Processed += IndividualSize) {
-
+            for (int Processed = 0; Processed < SpriteSheetSize && IndividualData.Count < Bodies.Length; Processed += IndividualSize) {
+                //TODO CHECK IF THIS WORKS TESTING TO CUT OFF ARRAY ARGUMENT EXCEPTION
                 uint[] TempArray = new uint[IndividualSize];
 
                 try {
@@ -158,7 +158,7 @@ namespace SuperSmashPolls.Graphics {
                 Bodies[BodyIndex] = BodyFactory.CreateCompoundPolygon(levelWorld, VertexList, 1, Vector2.Zero);
                 Bodies[BodyIndex].BodyType = BodyType.Dynamic;
                 Bodies[BodyIndex].Enabled  = false;
-                Bodies[BodyIndex].CollisionCategories = collisionCategory;
+                //Bodies[BodyIndex].CollisionCategories = collisionCategory;
                 ++BodyIndex;
 
             }
@@ -196,7 +196,7 @@ namespace SuperSmashPolls.Graphics {
 
             foreach (Body i in Bodies) {
 
-                i.CollisionCategories = collision;
+                //TODO rtemovei.CollisionCategories = collision;
                 i.Restitution         = restitution;
                 i.Friction            = friction;
                 i.Mass                = mass;

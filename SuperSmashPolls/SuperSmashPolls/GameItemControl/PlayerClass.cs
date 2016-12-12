@@ -4,7 +4,7 @@
  **********************************************************************************************************************/
 
 #define DEBUG
-#undef DEBUG
+//#undef DEBUG
 
 #define KILL_BUTTON
 
@@ -84,7 +84,9 @@ namespace SuperSmashPolls.GameItemControl {
             if (JustDied) {
 
                 PlayerCharacter.Respawn(respawnPoint);
+#if !DEBUG
                 ++Deaths;
+#endif
                 JustDied = false;
 
             } else if (Math.Abs(PlayerCharacter.GetPosition().X) > 40 || Math.Abs(PlayerCharacter.GetPosition().Y) > 30)
