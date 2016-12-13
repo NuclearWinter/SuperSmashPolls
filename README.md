@@ -1,6 +1,6 @@
 # SuperSmashPolls
 
-#### In order to build this program and have the result look as intended, please install the font 8 Bit Wonder located here http://www.dafont.com/8bit-wonder.font
+#### In order to build this program and have the result look as intended, please install the font 8 Bit Wonder located [here]( http://www.dafont.com/8bit-wonder.font)
 
 
 ####Note:
