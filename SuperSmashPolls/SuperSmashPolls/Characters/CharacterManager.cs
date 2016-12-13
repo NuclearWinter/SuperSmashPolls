@@ -72,6 +72,8 @@ namespace SuperSmashPolls.Characters {
         private bool CanMove;
         /**  */
         private int CurrentMove;
+        /**  */
+        private GamePadState PreviousState;
 
         private Vector2 CharacterOrigin;
 #endif
@@ -136,6 +138,7 @@ namespace SuperSmashPolls.Characters {
             Restitution = restitution;
             Name = name;
             CanMove = false;
+            PreviousState = new GamePadState();
         }
 #endif
 
@@ -256,13 +259,13 @@ namespace SuperSmashPolls.Characters {
 
             CharacterVertices = CreateVerticesFromTexture(bodyTexture, scale);
             ImplimentedMoves  = moveData.Length;
-            BodyTexture = bodyTexture;
-            MoveData = moveData;
+            BodyTexture       = bodyTexture;
+            MoveData          = moveData;
             MoveFunctions     = new SimpleMove[ImplimentedMoves];
             MoveTextures      = new CharacterAction[ImplimentedMoves];
             MoveAudio         = new AudioHandler[ImplimentedMoves];
-            Scale = scale;
-            CharacterOrigin = new Vector2(0, bodyTexture.Height);
+            Scale             = scale;
+            CharacterOrigin   = new Vector2(0, bodyTexture.Height);
 
             for (int i = 0; i < ImplimentedMoves; ++i) {
                 MoveFunctions[i] = moveData[i].Item5;
@@ -294,15 +297,14 @@ namespace SuperSmashPolls.Characters {
         /// <param name="position">The position to put the character in</param>
         public void SetupCharacter(World gameWorld, Vector2 position) {
 
-            CharacterBody = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
-            CharacterBody.Mass = Mass;
-            CharacterBody.Friction = Friction;
+            CharacterBody             = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
+            CharacterBody.Mass        = Mass;
+            CharacterBody.Friction    = Friction;
             CharacterBody.Restitution = Restitution;
-            CharacterBody.BodyType = BodyType.Dynamic;
-            CharacterBody.Enabled = true;
-            CharacterBody.Awake = true;
-            //CharacterBody.AngularDamping = 20;
-            CurrentMove = 0;
+            CharacterBody.BodyType    = BodyType.Dynamic;
+            CharacterBody.Enabled     = true;
+            CharacterBody.Awake       = true;
+            CurrentMove               = 0;
 
         }
 
@@ -343,8 +345,8 @@ namespace SuperSmashPolls.Characters {
             bool DownMovement  = currentState.ThumbSticks.Left.Y <= Register;
             bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;
             bool SpecialAttack = Math.Abs(currentState.Triggers.Left) >= Register;
-            bool Jump          = currentState.IsButtonDown(Buttons.A);
-            bool BasicAttack   = currentState.IsButtonDown(Buttons.B);
+            bool Jump          = currentState.IsButtonDown(Buttons.A) && PreviousState.IsButtonUp(Buttons.A);
+            bool BasicAttack   = currentState.IsButtonDown(Buttons.B) && PreviousState.IsButtonUp(Buttons.B);
 
             int DesiredMove = -1;//= IdleIndex;
 
@@ -406,7 +408,8 @@ namespace SuperSmashPolls.Characters {
             }
 
             MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) - CharacterOrigin);
-            //CharacterBody.AngularVelocity = 0;
+
+            PreviousState = currentState;
 
         }
 

@@ -12,9 +12,11 @@ namespace SuperSmashPolls.Characters {
     /// <summary>
     /// All character moves are declared and defined here
     /// </summary>
+    /// <remarks>TODO make this into an abstract class and make one of the paramaters to the character class that 
+    /// abstract and define each character's moves in a separate file all nice and pretty</remarks>
     public class MoveDefinition {
 
-        private readonly Vector2 StandardJumpHeight = new Vector2(0, 6);
+        private readonly Vector2 StandardJumpHeight = new Vector2(0, -5F);
         private readonly Vector2 StandardWalkSpeed  = new Vector2(3, 0);
         private readonly Vector2 StandardPunchForce = new Vector2(10, 0);
 #if COMPLEX_BODIES
@@ -124,12 +126,20 @@ namespace SuperSmashPolls.Characters {
         }
 
 #else
-        public void Idle(Body characterBody, float direction, bool onCharacter) {
-            
+        /// <summary>
+        /// The function for any character in their idle state...nothing happens here
+        /// </summary>
+        /// <param name="characterBody"></param>
+        /// <param name="direction"></param>
+        /// <param name="onCharacter"></param>
+        public void Idle(Body characterBody, float direction, bool onCharacter) { }
 
-
-        }
-
+        /// <summary>
+        /// The function for having The Donald walk
+        /// </summary>
+        /// <param name="characterBody"></param>
+        /// <param name="direction"></param>
+        /// <param name="onCharacter"></param>
         public void TheDonaldWalk(Body characterBody, float direction, bool onCharacter) {
 
             Vector2 WalkForce = StandardWalkSpeed*new Vector2(direction >= 0 ? 1 : -1, 0);
@@ -143,7 +153,7 @@ namespace SuperSmashPolls.Characters {
 
         public void TheDonaldJump(Body characterBody, float direction, bool onCharacter) {
 
-            characterBody.ApplyLinearImpulse(StandardJumpHeight, new Vector2(0, -1));
+            characterBody.ApplyLinearImpulse(StandardJumpHeight);
 
         }
 

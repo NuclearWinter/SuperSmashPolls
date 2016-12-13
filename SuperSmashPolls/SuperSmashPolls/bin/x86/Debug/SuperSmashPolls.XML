@@ -81,6 +81,9 @@
         <member name="F:SuperSmashPolls.Characters.CharacterManager.CurrentMove">
              
         </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.PreviousState">
+             
+        </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.Register">
             This is the amount the joystick must be over for it to register as intentional 
         </member>
@@ -173,6 +176,24 @@
             <summary>
             All character moves are declared and defined here
             </summary>
+            <remarks>TODO make this into an abstract class and make one of the paramaters to the character class that 
+            abstract and define each character's moves in a separate file all nice and pretty</remarks>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.Idle(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean)">
+            <summary>
+            The function for any character in their idle state...nothing happens here
+            </summary>
+            <param name="characterBody"></param>
+            <param name="direction"></param>
+            <param name="onCharacter"></param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldWalk(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean)">
+            <summary>
+            The function for having The Donald walk
+            </summary>
+            <param name="characterBody"></param>
+            <param name="direction"></param>
+            <param name="onCharacter"></param>
         </member>
         <member name="T:SuperSmashPolls.Characters.Moves">
             <summary>
