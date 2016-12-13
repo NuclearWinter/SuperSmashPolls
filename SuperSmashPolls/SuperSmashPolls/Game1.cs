@@ -304,6 +304,10 @@ namespace SuperSmashPolls {
                 Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
                     new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Main Menu", false,
                         EmptyUnit, true, true, MenuCommands.BackToMainMenu));
+
+/* 07 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.8F)),
+                "William Kluge & Joe Brooksbank", false, EmptyUnit, false, false, MenuCommands.Nothing, true));
+
 #if COMPLEX_BODIES
             /******************************************** Category Setup **********************************************/
 
@@ -502,8 +506,8 @@ namespace SuperSmashPolls {
             /******************* Menu content *******************/
 
             Menu.SetFontForAll(TitleFont);
-
             Menu.AccessItem(6).SetFont(TitleFontSmall);
+            Menu.AccessItem(7).SetFont(TitleFontSmall);
 
             Menu.AddAudio(new AudioHandler(Content.Load<SoundEffect>("Music\\MainSong")));
 

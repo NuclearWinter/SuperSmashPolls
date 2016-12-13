@@ -1071,8 +1071,23 @@
         <member name="F:SuperSmashPolls.Game1.DebateSystemName">
             The name used for the debate level with system events (live saving and loading) 
         </member>
+        <member name="F:SuperSmashPolls.Game1.ScreenSize">
+            The total size of the screen 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.EmptyUnit">
+            The most basic Functioning WorldUnit 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.PixelToMeterScale">
+            The scale of how many pixels are equal to one meter 
+        </member>
         <member name="F:SuperSmashPolls.Game1.DefinedMoves">
             The moves for all character 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.LevelDictionary">
+            Holds levels for matching from a save and for selection 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.CharacterStringPairs">
+            Holds characters for matching from a save and for selection TODO change to Dictionary 
         </member>
         <member name="F:SuperSmashPolls.Game1.CurrentGamemode">
             The gamemode for this game 
@@ -1098,6 +1113,30 @@
         <member name="F:SuperSmashPolls.Game1.WhiteHouse">
             Levels for the player to play on 
         </member>
+        <member name="F:SuperSmashPolls.Game1.Graphics">
+            Manages graphics 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.Batch">
+            Used to draw multiple 2D textures at one time 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.GameFont">
+            A basic font to use for essentially everything in the game 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.TitleFont">
+            The font used for the title 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.TitleFontSmall">
+            A smaller version of the titlefont 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.ScreenCenter">
+            The center of the screen 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.Menu">
+            Menu system for the game to use 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.LastPressed">
+            The last button pressed during menu updates 
+        </member>
         <member name="F:SuperSmashPolls.Game1.PlayerOne">
             The player's in this game 
         </member>
@@ -1109,6 +1148,9 @@
         </member>
         <member name="F:SuperSmashPolls.Game1.PlayerFour">
             The player's in this game 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.NumPlayers">
+            The number of players in the game 
         </member>
         <member name="F:SuperSmashPolls.Game1.State">
             Variable to hold the state of the game 
@@ -1150,8 +1192,8 @@
             <summary>
             Exclusive or for Farseer categories
             </summary>
-            <param name="categories"></param>
-            <returns></returns>
+            <param name="categories">The categories to preform the XOR function to</param>
+            <returns>The result of XOR from categories</returns>
         </member>
         <member name="M:SuperSmashPolls.Game1.MetersV2(System.Single,System.Single)">
             <summary>
@@ -1159,19 +1201,15 @@
             </summary>
             <param name="x">The x value to convert</param>
             <param name="y">The y value to convert</param>
+            <returns>The size of x and y as a Vector2 converted to meters assuming that x and y were from a 640x360
+            native resolution</returns>
+            <remarks>x and y don't need to be 640x360, they just need to be drawn in that scale</remarks>
         </member>
         <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
             <summary> 
             Get's the meters of something drawn in a 640x360 scale
             </summary>
             <param name="pixels">The amount of pixels to convert</param>
-        </member>
-        <member name="M:SuperSmashPolls.Game1.DoesFileExist(System.String)">
-            <summary>
-            Tells if a file exists by checking if its size is greater than 0
-            </summary>
-            <param name="path">The path of the file to check</param>
-            <returns>If the file exists</returns>
         </member>
         <member name="M:SuperSmashPolls.Game1.SetCharacter(SuperSmashPolls.Characters.CharacterManager)">
             <summary>
