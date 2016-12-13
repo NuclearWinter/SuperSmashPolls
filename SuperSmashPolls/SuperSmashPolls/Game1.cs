@@ -54,14 +54,14 @@ namespace SuperSmashPolls {
         private readonly WorldUnit EmptyUnit;
         /* The scale of how many pixels are equal to one meter */
         private readonly float PixelToMeterScale;
+        /** The moves for all character */
+        private readonly MoveDefinition DefinedMoves;
         /* Holds levels for matching from a save and for selection */
         private readonly Dictionary<string, LevelHandler> LevelDictionary;
         /* Holds characters for matching from a save and for selection TODO change to Dictionary */
         private readonly Dictionary<string, CharacterManager> CharacterStringPairs;
         /** The gamemode for this game */
         private Gamemode CurrentGamemode;
-        /** The moves for all character */
-        private MoveDefinition DefinedMoves;
         /** The one, the only, the Donald */
 #if OLD_CHARACTER
         private Character TheDonald;
@@ -128,46 +128,6 @@ namespace SuperSmashPolls {
             EmptyUnit             = new WorldUnit(ref ScreenSize, new Vector2(0, 0));
             PixelToMeterScale     = ScreenSize.X/25; //How many pixels are in one meter
             LastPressed           = GamePad.GetState(PlayerIndex.One);
-
-        }
-
-        /// <summary>
-        /// Tells if a file exists by checking if its size is greater than 0
-        /// </summary>
-        /// <param name="path">The path of the file to check</param>
-        /// <returns>If the file exists</returns>
-        private bool DoesFileExist(string path) {
-
-            try {
-
-                return new System.IO.FileInfo(path).Length > 0;
-
-            } catch (Exception) {
-
-                return false;
-
-            }
-
-        }
-        
-        /// <summary> 
-        /// Get's the meters of something drawn in a 640x360 scale
-        /// </summary>
-        /// <param name="pixels">The amount of pixels to convert</param>
-        private static float InMeters(float pixels) {
-
-            return (pixels/640)*25;
-
-        }
-
-        /// <summary>
-        /// Get's the meters of something drawn in a 640x360 scale in a vector 2
-        /// </summary>
-        /// <param name="x">The x value to convert</param>
-        /// <param name="y">The y value to convert</param>
-        private Vector2 MetersV2(float x, float y) {
-            
-            return new Vector2(InMeters(x), InMeters(y));
 
         }
 
@@ -266,7 +226,8 @@ namespace SuperSmashPolls {
                 EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
 
                 Menu.ContainedItems[1].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.2F)), 
-                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
+                    "There is no multiplayer in America!\nYou play by yourself!", false, EmptyUnit, true, true,
+                    MenuCommands.BackToMainMenu));
 
 /* 02 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Help", true, EmptyUnit,
                 true, true));
@@ -331,7 +292,7 @@ namespace SuperSmashPolls {
                         EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
             /******************************************** Category Setup **********************************************/
-
+#if COMPLEX_BODIES
             Category PlayerOneCat = Category.Cat1,
                 PlayerTwoCat      = Category.Cat2,
                 PlayerThreeCat    = Category.Cat3,
@@ -340,14 +301,20 @@ namespace SuperSmashPolls {
                 PlayerTwoHitbox   = Xor(PlayerOneCat, PlayerThreeCat, PlayerFourCat),
                 PlayerThreeHitbox = Xor(PlayerOneCat, PlayerTwoCat, PlayerFourCat),
                 PlayerFourHitbox  = Xor(PlayerOneCat, PlayerTwoCat, PlayerThreeCat);
-                
+#endif
 
             /************************************** Initialization for Players ****************************************/
-
+#if COMPLEX_BODIES
             PlayerOne   = new PlayerClass(PlayerIndex.One, Xor(Category.All, PlayerOneCat), PlayerOneHitbox);
             PlayerTwo   = new PlayerClass(PlayerIndex.Two, Xor(Category.All, PlayerTwoCat), PlayerTwoHitbox);
             PlayerThree = new PlayerClass(PlayerIndex.Three, Xor(Category.All, PlayerThreeCat), PlayerThreeHitbox);
             PlayerFour  = new PlayerClass(PlayerIndex.Four, Xor(Category.All, PlayerFourCat), PlayerFourHitbox);
+#else
+            PlayerOne   = new PlayerClass(PlayerIndex.One);
+            PlayerTwo   = new PlayerClass(PlayerIndex.Two);
+            PlayerThree = new PlayerClass(PlayerIndex.Three);
+            PlayerFour  = new PlayerClass(PlayerIndex.Four);
+#endif
 
             /************************************* Initialization for Gamemode ****************************************/
 
@@ -544,85 +511,6 @@ namespace SuperSmashPolls {
         protected override void UnloadContent() {
             //Unload any non ContentManager content here
         }
-
-        private Category Xor(params Category[] categories) {
-
-            Category temp = Category.None;
-
-            foreach (Category I in categories)
-                temp = temp ^ I;
-
-            return temp;
-
-        }
-
-        /// <summary>
-        /// This helps to determine if all of the player characters have been set.
-        /// </summary>
-        /// <returns>Whether or not each player has a character set for them</returns>
-        private bool AllCharactersSet() {
-
-            switch (NumPlayers) {
-
-                case 4:
-                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank" &&
-                            PlayerThree.PlayerCharacter.Name != "blank" && PlayerFour.PlayerCharacter.Name != "blank");
-                case 3:
-                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank" &&
-                            PlayerThree.PlayerCharacter.Name != "blank");
-                case 2:
-                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank");
-                default:
-                    return PlayerOne.PlayerCharacter.Name != "blank";
-
-            }
-
-        }
-
-        /// <summary>
-        /// Handles setting characters
-        /// </summary>
-        /// <returns>Whether or not a character has been set for each player in the game</returns>
-        private void SetCharacter(CharacterManager character) {
-
-            if ("blank" == PlayerOne.PlayerCharacter.Name) {
-                PlayerOne.PlayerCharacter = character.Clone();
-#if COMPLEX_BODIES
-                PlayerOne.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
-#else
-                PlayerOne.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn);
-#endif
-                PlayerOne.Deaths = 0;
-                Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
-            } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
-                PlayerTwo.PlayerCharacter = character.Clone();
-#if COMPLEX_BODIES
-                PlayerTwo.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
-#else
-                PlayerTwo.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn);
-#endif
-                PlayerTwo.Deaths = 0;
-                Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
-            } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
-                PlayerThree.PlayerCharacter = character.Clone();
-#if COMPLEX_BODIES
-                PlayerThree.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
-#else
-                PlayerThree.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn);
-#endif
-                PlayerThree.Deaths = 0;
-                Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
-            } else {
-                PlayerFour.PlayerCharacter = character.Clone();
-#if COMPLEX_BODIES
-                PlayerFour.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
-#else
-                PlayerFour.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn);
-#endif
-                PlayerFour.Deaths = 0;
-            }
-
-        }
  
         /// <summary>
         /// Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
@@ -683,8 +571,6 @@ namespace SuperSmashPolls {
 
                             Menu.StopAudio();
 
-                            //DefinedMoves.SetWorld(CurrentLevel.LevelWorld);
-
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
                             CurrentGamemode.GameOver        = false;
 
@@ -693,6 +579,7 @@ namespace SuperSmashPolls {
 #endif
                                 break;
                         case MenuCommands.BackToMainMenu:
+                            ResetPlayerStats();
                             Menu.DrawDown = -1;
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = -1;
                             break;
@@ -916,6 +803,142 @@ namespace SuperSmashPolls {
             Batch.End();
 
             base.Draw(gameTime);
+
+        }
+
+        /// <summary>
+        /// Exclusive or for Farseer categories
+        /// </summary>
+        /// <param name="categories"></param>
+        /// <returns></returns>
+        private Category Xor(params Category[] categories) {
+
+            Category temp = Category.None;
+
+            foreach (Category I in categories)
+                temp = temp ^ I;
+
+            return temp;
+
+        }
+
+        /// <summary>
+        /// Get's the meters of something drawn in a 640x360 scale in a vector 2
+        /// </summary>
+        /// <param name="x">The x value to convert</param>
+        /// <param name="y">The y value to convert</param>
+        private Vector2 MetersV2(float x, float y) {
+
+            return new Vector2(InMeters(x), InMeters(y));
+
+        }
+
+        /// <summary> 
+        /// Get's the meters of something drawn in a 640x360 scale
+        /// </summary>
+        /// <param name="pixels">The amount of pixels to convert</param>
+        private static float InMeters(float pixels) {
+
+            return (pixels / 640) * 25;
+
+        }
+
+        /// <summary>
+        /// Tells if a file exists by checking if its size is greater than 0
+        /// </summary>
+        /// <param name="path">The path of the file to check</param>
+        /// <returns>If the file exists</returns>
+        private bool DoesFileExist(string path) {
+
+            try {
+
+                return new System.IO.FileInfo(path).Length > 0;
+
+            } catch (Exception) {
+
+                return false;
+
+            }
+
+        }
+
+        /// <summary>
+        /// Handles setting characters
+        /// </summary>
+        /// <returns>Whether or not a character has been set for each player in the game</returns>
+        private void SetCharacter(CharacterManager character) {
+
+            if ("blank" == PlayerOne.PlayerCharacter.Name) {
+                PlayerOne.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
+                PlayerOne.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerOne.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn);
+#endif
+                PlayerOne.Deaths = 0;
+                Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
+            } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
+                PlayerTwo.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
+                PlayerTwo.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerTwo.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn);
+#endif
+                PlayerTwo.Deaths = 0;
+                Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
+            } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
+                PlayerThree.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
+                PlayerThree.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerThree.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn);
+#endif
+                PlayerThree.Deaths = 0;
+                Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
+            } else {
+                PlayerFour.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
+                PlayerFour.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerFour.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn);
+#endif
+                PlayerFour.Deaths = 0;
+            }
+
+        }
+
+        /// <summary>
+        /// This helps to determine if all of the player characters have been set.
+        /// </summary>
+        /// <returns>Whether or not each player has a character set for them</returns>
+        private bool AllCharactersSet() {
+
+            switch (NumPlayers) {
+
+                case 4:
+                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank" &&
+                            PlayerThree.PlayerCharacter.Name != "blank" && PlayerFour.PlayerCharacter.Name != "blank");
+                case 3:
+                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank" &&
+                            PlayerThree.PlayerCharacter.Name != "blank");
+                case 2:
+                    return (PlayerOne.PlayerCharacter.Name != "blank" && PlayerTwo.PlayerCharacter.Name != "blank");
+                default:
+                    return PlayerOne.PlayerCharacter.Name != "blank";
+
+            }
+
+        }
+
+        /// <summary>
+        /// Resets players to their basic state
+        /// </summary>
+        private void ResetPlayerStats() {
+
+            PlayerOne   = new PlayerClass(PlayerIndex.One);
+            PlayerTwo   = new PlayerClass(PlayerIndex.Two);
+            PlayerThree = new PlayerClass(PlayerIndex.Three);
+            PlayerFour  = new PlayerClass(PlayerIndex.Four);
 
         }
 

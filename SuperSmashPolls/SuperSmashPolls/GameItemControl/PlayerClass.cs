@@ -38,24 +38,29 @@ namespace SuperSmashPolls.GameItemControl {
         public int Deaths;
         /// <summary>The player's character</summary>
         public CharacterManager PlayerCharacter;
-
+#if COMPLEX_BODIES
         /// <summary>The collision category for this player</summary>
         public Category CollidesWith;
 
         public Category HitboxCollidesWith;
-
+#endif
         /// <summary>
         /// Constructor
         /// </summary>
-        public PlayerClass(PlayerIndex playerId, Category collidesWith, Category hitboxCollidesWith) {
+        public PlayerClass(PlayerIndex playerId
+#if COMPLEX_BODIES
+            , Category collidesWith, Category hitboxCollidesWith
+#endif
+            ) {
             PlayerID          = playerId;
-            PlayerCharacter   = new CharacterManager();
             PlayerHealth      = 0;
             Deaths            = 0;
+#if COMPLEX_BODIES
             CollidesWith = collidesWith;
             HitboxCollidesWith = hitboxCollidesWith;
-#if COMPLEX_BODIES
             PlayerCharacter = new CharacterManager(CollidesWith, HitboxCollidesWith);
+#else
+            PlayerCharacter = new CharacterManager();
 #endif
             JustDied          = false;
         }

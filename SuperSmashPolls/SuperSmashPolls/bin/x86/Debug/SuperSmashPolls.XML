@@ -395,10 +395,7 @@
         <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerCharacter">
             <summary>The player's character</summary>
         </member>
-        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.CollidesWith">
-            <summary>The collision category for this player</summary>
-        </member>
-        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex,FarseerPhysics.Dynamics.Category,FarseerPhysics.Dynamics.Category)">
+        <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex)">
             <summary>
             Constructor
             </summary>
@@ -854,11 +851,11 @@
         <member name="F:SuperSmashPolls.Game1.SaveLocation">
             The location to save the game 
         </member>
-        <member name="F:SuperSmashPolls.Game1.CurrentGamemode">
-            The gamemode for this game 
-        </member>
         <member name="F:SuperSmashPolls.Game1.DefinedMoves">
             The moves for all character 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.CurrentGamemode">
+            The gamemode for this game 
         </member>
         <member name="F:SuperSmashPolls.Game1.TheDonald">
             The one, the only, the Donald 
@@ -901,26 +898,6 @@
             Constructs the game's class
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Game1.DoesFileExist(System.String)">
-            <summary>
-            Tells if a file exists by checking if its size is greater than 0
-            </summary>
-            <param name="path">The path of the file to check</param>
-            <returns>If the file exists</returns>
-        </member>
-        <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
-            <summary> 
-            Get's the meters of something drawn in a 640x360 scale
-            </summary>
-            <param name="pixels">The amount of pixels to convert</param>
-        </member>
-        <member name="M:SuperSmashPolls.Game1.MetersV2(System.Single,System.Single)">
-            <summary>
-            Get's the meters of something drawn in a 640x360 scale in a vector 2
-            </summary>
-            <param name="x">The x value to convert</param>
-            <param name="y">The y value to convert</param>
-        </member>
         <member name="M:SuperSmashPolls.Game1.Initialize">
             <summary>
             Allows the game to perform any initialization it needs to before starting to run. 
@@ -938,18 +915,6 @@
             UnloadContent will be called once per game and is the place to unload all content.
             </summary>
         </member>
-        <member name="M:SuperSmashPolls.Game1.AllCharactersSet">
-            <summary>
-            This helps to determine if all of the player characters have been set.
-            </summary>
-            <returns>Whether or not each player has a character set for them</returns>
-        </member>
-        <member name="M:SuperSmashPolls.Game1.SetCharacter(SuperSmashPolls.Characters.CharacterManager)">
-            <summary>
-            Handles setting characters
-            </summary>
-            <returns>Whether or not a character has been set for each player in the game</returns>
-        </member>
         <member name="M:SuperSmashPolls.Game1.Update(Microsoft.Xna.Framework.GameTime)">
             <summary>
             Allows the game to run logic such as updating the world, checking for collisions, gathering input, and 
@@ -959,6 +924,50 @@
         <member name="M:SuperSmashPolls.Game1.Draw(Microsoft.Xna.Framework.GameTime)">
             <summary>
             This is where the game draw's the screen.
+            </summary>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.Xor(FarseerPhysics.Dynamics.Category[])">
+            <summary>
+            Exclusive or for Farseer categories
+            </summary>
+            <param name="categories"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.MetersV2(System.Single,System.Single)">
+            <summary>
+            Get's the meters of something drawn in a 640x360 scale in a vector 2
+            </summary>
+            <param name="x">The x value to convert</param>
+            <param name="y">The y value to convert</param>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.InMeters(System.Single)">
+            <summary> 
+            Get's the meters of something drawn in a 640x360 scale
+            </summary>
+            <param name="pixels">The amount of pixels to convert</param>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.DoesFileExist(System.String)">
+            <summary>
+            Tells if a file exists by checking if its size is greater than 0
+            </summary>
+            <param name="path">The path of the file to check</param>
+            <returns>If the file exists</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.SetCharacter(SuperSmashPolls.Characters.CharacterManager)">
+            <summary>
+            Handles setting characters
+            </summary>
+            <returns>Whether or not a character has been set for each player in the game</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.AllCharactersSet">
+            <summary>
+            This helps to determine if all of the player characters have been set.
+            </summary>
+            <returns>Whether or not each player has a character set for them</returns>
+        </member>
+        <member name="M:SuperSmashPolls.Game1.ResetPlayerStats">
+            <summary>
+            Resets players to their basic state
             </summary>
         </member>
         <member name="T:SuperSmashPolls.World_Control.WorldUnit">

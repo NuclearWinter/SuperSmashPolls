@@ -14,7 +14,7 @@ namespace SuperSmashPolls.Characters {
     /// </summary>
     public class MoveDefinition {
 
-        private readonly Vector2 StandardJumpHeight = new Vector2(0, 60);
+        private readonly Vector2 StandardJumpHeight = new Vector2(0, 6);
         private readonly Vector2 StandardWalkSpeed  = new Vector2(3, 0);
         private readonly Vector2 StandardPunchForce = new Vector2(10, 0);
 #if COMPLEX_BODIES
@@ -138,8 +138,7 @@ namespace SuperSmashPolls.Characters {
 
         public void TheDonaldJump(Body characterBody, float direction, bool onCharacter) {
 
-            characterBody.ApplyForce(StandardJumpHeight, new Vector2(0, -1));
-            characterBody.AngularVelocity = 0;
+            characterBody.ApplyLinearImpulse(StandardJumpHeight, new Vector2(0, -1));
 
         }
 

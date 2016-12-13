@@ -116,28 +116,28 @@ namespace SuperSmashPolls.GameItemControl {
             if (PlayerIcons[0] != null) {
 
                 PlayerOneIconScale = new Vector2();
-                PlayerOneIconScale = FullIconSize/new Vector2(PlayerIcons[0].Width, PlayerIcons[0].Height);
+                PlayerOneIconScale = FullIconSize / new Vector2(PlayerIcons[0].Width, PlayerIcons[0].Height);
 
             }
 
             if (PlayerIcons[1] != null) {
 
                 PlayerTwoIconScale = new Vector2();
-                PlayerTwoIconScale = new Vector2(PlayerIcons[1].Width, PlayerIcons[1].Height) / FullIconSize;
+                PlayerTwoIconScale = FullIconSize / new Vector2(PlayerIcons[1].Width, PlayerIcons[1].Height);
 
             }
 
             if (PlayerIcons[2] != null) {
 
                 PlayerThreeIconScale = new Vector2();
-                PlayerThreeIconScale = new Vector2(PlayerIcons[2].Width, PlayerIcons[2].Height)/FullIconSize;
+                PlayerThreeIconScale = FullIconSize / new Vector2(PlayerIcons[2].Width, PlayerIcons[2].Height);
 
             }
 
             if (PlayerIcons[3] != null) {
 
                 PlayerFourIconScale = new Vector2();
-                PlayerFourIconScale = new Vector2(PlayerIcons[3].Width, PlayerIcons[3].Height)/FullIconSize;
+                PlayerFourIconScale = FullIconSize / new Vector2(PlayerIcons[3].Width, PlayerIcons[3].Height);
 
             }
 

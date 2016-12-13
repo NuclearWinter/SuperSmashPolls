@@ -299,6 +299,7 @@ namespace SuperSmashPolls.Characters {
             CharacterBody.BodyType = BodyType.Dynamic;
             CharacterBody.Enabled = true;
             CharacterBody.Awake = true;
+            //CharacterBody.AngularDamping = 20;
             CurrentMove = 0;
 
         }
@@ -330,11 +331,11 @@ namespace SuperSmashPolls.Characters {
         /// <param name="currentState"></param>
         public void UpdateCharacter(GamePadState currentState) {
 
-            //bool CanMove = MoveTextures[CurrentMove].AnimationAtEnd() || CurrentMove == WalkIndex ||
-            //               CurrentMove == IdleIndex;
+            CanMove = MoveTextures[CurrentMove].AnimationAtEnd() || CurrentMove == WalkIndex ||
+                           CurrentMove == IdleIndex;
 
-            //if (!CanMove)
-            //    return;
+            if (!CanMove)
+                return;
 
             bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
             bool DownMovement  = currentState.ThumbSticks.Left.Y <= Register;
@@ -403,6 +404,7 @@ namespace SuperSmashPolls.Characters {
             }
 
             MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) - CharacterOrigin);
+            //CharacterBody.AngularVelocity = 0;
 
         }
 
