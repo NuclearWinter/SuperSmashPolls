@@ -330,8 +330,6 @@ namespace SuperSmashPolls.Characters {
         /// <param name="currentState"></param>
         public void UpdateCharacter(GamePadState currentState) {
 
-            MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) - CharacterOrigin);
-
             //bool CanMove = MoveTextures[CurrentMove].AnimationAtEnd() || CurrentMove == WalkIndex ||
             //               CurrentMove == IdleIndex;
 
@@ -403,6 +401,8 @@ namespace SuperSmashPolls.Characters {
                     MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
                     break;
             }
+
+            MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) - CharacterOrigin);
 
         }
 

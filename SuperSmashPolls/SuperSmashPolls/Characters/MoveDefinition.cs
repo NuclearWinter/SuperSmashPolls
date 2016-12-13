@@ -138,7 +138,8 @@ namespace SuperSmashPolls.Characters {
 
         public void TheDonaldJump(Body characterBody, float direction, bool onCharacter) {
 
-
+            characterBody.ApplyForce(StandardJumpHeight, new Vector2(0, -1));
+            characterBody.AngularVelocity = 0;
 
         }
 
