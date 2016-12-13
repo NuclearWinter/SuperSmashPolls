@@ -342,10 +342,11 @@ namespace SuperSmashPolls.Characters {
                 return;
 
             bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
-            bool DownMovement  = currentState.ThumbSticks.Left.Y <= Register;
+            bool DownMovement  = currentState.ThumbSticks.Left.Y <= -Register;
             bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;
             bool SpecialAttack = Math.Abs(currentState.Triggers.Left) >= Register;
-            bool Jump          = currentState.IsButtonDown(Buttons.A) && PreviousState.IsButtonUp(Buttons.A);
+            bool Jump          = currentState.IsButtonDown(Buttons.A) && PreviousState.IsButtonUp(Buttons.A) 
+                || UpMovement && PreviousState.ThumbSticks.Left.Y < Register;
             bool BasicAttack   = currentState.IsButtonDown(Buttons.B) && PreviousState.IsButtonUp(Buttons.B);
 
             int DesiredMove = -1;//= IdleIndex;
@@ -362,7 +363,7 @@ namespace SuperSmashPolls.Characters {
                 }
             } else if (SideMovement && IsImplimented(WalkIndex)) {
                 DesiredMove = Moves.WalkIndex;
-            } else if (Jump || UpMovement && IsImplimented(JumpIndex)) {
+            } else if (Jump && IsImplimented(JumpIndex)) {
                 DesiredMove = Moves.JumpIndex;
             } else if (BasicAttack && IsImplimented(BasicIndex)) {
                 DesiredMove = Moves.BasicIndex;

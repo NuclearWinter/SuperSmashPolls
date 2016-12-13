@@ -132,7 +132,11 @@ namespace SuperSmashPolls.Characters {
         /// <param name="characterBody"></param>
         /// <param name="direction"></param>
         /// <param name="onCharacter"></param>
-        public void Idle(Body characterBody, float direction, bool onCharacter) { }
+        public void Idle(Body characterBody, float direction, bool onCharacter) {
+
+            characterBody.AngularVelocity = 0;
+
+        }
 
         /// <summary>
         /// The function for having The Donald walk
@@ -145,7 +149,9 @@ namespace SuperSmashPolls.Characters {
             Vector2 WalkForce = StandardWalkSpeed*new Vector2(direction >= 0 ? 1 : -1, 0);
 
             if ((WalkForce.X < 0 ? -1 : 1) != (characterBody.LinearVelocity.X < 0 ? -1 : 1))
-                characterBody.LinearVelocity = Vector2.Zero;
+                characterBody.LinearVelocity = new Vector2(0, characterBody.LinearVelocity.Y);
+
+            characterBody.AngularVelocity = 0;
 
             characterBody.ApplyForce(WalkForce);
 
@@ -163,21 +169,21 @@ namespace SuperSmashPolls.Characters {
 
         }
 
+        public void TheDonaldSideSpecial(Body characterBody, float direction, bool onCharacter) {
+
+
+
+        }
+
         public void TheDonaldUpSpecial(Body characterBody, float direction, bool onCharacter) {
             
 
 
         }
 
-        public void TheDonaldSideSpecial(Body characterBody, float direction, bool onCharacter) {
-            
-
-
-        }
-
         public void TheDonaldDownSpecial(Body characterBody, float direction, bool onCharacter) {
-            
 
+            characterBody.ApplyLinearImpulse(-StandardJumpHeight);
 
         }
 
