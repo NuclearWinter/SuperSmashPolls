@@ -1073,6 +1073,9 @@
         <member name="F:SuperSmashPolls.Game1.SaveLocation">
             The location to save the game 
         </member>
+        <member name="F:SuperSmashPolls.Game1.DebateSystemName">
+            The name used for the debate level with system events (live saving and loading) 
+        </member>
         <member name="F:SuperSmashPolls.Game1.DefinedMoves">
             The moves for all character 
         </member>

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using FarseerPhysics;
@@ -136,8 +137,14 @@ namespace SuperSmashPolls.GameItemControl {
         public void WriteInfo(ref StreamWriter streamWriter) {
             
             streamWriter.WriteLine(PlayerCharacter.Name);
-            streamWriter.WriteLine(PlayerCharacter.GetPosition().X);
-            streamWriter.WriteLine(PlayerCharacter.GetPosition().Y);
+
+            if (PlayerCharacter.Name != "blank") {
+
+                streamWriter.WriteLine(ConvertUnits.ToDisplayUnits(PlayerCharacter.GetPosition().X));
+                streamWriter.WriteLine(ConvertUnits.ToDisplayUnits(PlayerCharacter.GetPosition().Y));
+                streamWriter.WriteLine(PlayerCharacter.GetCollisionGroup());
+
+            }
 
         }
 
@@ -152,10 +159,18 @@ namespace SuperSmashPolls.GameItemControl {
 
             string CharacterName = streamReader.ReadLine();
 
+            if (CharacterName == "blank")
+                return;
+
             if (CharacterName != null && characterList.ContainsKey(CharacterName))
                 PlayerCharacter = characterList[CharacterName];
-            else
-                throw new Exception("There was no character name loaded");
+            //else
+                //throw new Exception("There was no character name loaded");
+
+            Vector2 Position = new Vector2(ConvertUnits.ToSimUnits(float.Parse(streamReader.ReadLine())),
+                    ConvertUnits.ToSimUnits(float.Parse(streamReader.ReadLine())));
+
+            PlayerCharacter.SetupCharacter(gameWorld, Position, short.Parse(streamReader.ReadLine()));
 
         }
 

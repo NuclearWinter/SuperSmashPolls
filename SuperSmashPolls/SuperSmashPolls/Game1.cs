@@ -48,6 +48,8 @@ namespace SuperSmashPolls {
         private const string SettingsLocation = "C:\\Users\\Public\\SmashPollsSettings.txt";
         /** The location to save the game */
         private const string SaveLocation     = "C:\\Users\\Public\\SmashPollsSave.txt";
+        /** The name used for the debate level with system events (live saving and loading) */
+        private const string DebateSystemName = "DebateRoom";
         /* The total size of the screen */
         private static Vector2 ScreenSize;
         /* The most basic Functioning WorldUnit */
@@ -160,7 +162,7 @@ namespace SuperSmashPolls {
             FinalDestination = new LevelHandler("FinalDestination", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
                 new Vector2(8, 0), new Vector2(13.5F, 0));
 
-            Debate = new LevelHandler("Debate", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
+            Debate = new LevelHandler(DebateSystemName, Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
                 new Vector2(8, 0), new Vector2(13.5F, 0));
 
             WhiteHouse = new LevelHandler("Debate", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
@@ -499,6 +501,7 @@ namespace SuperSmashPolls {
             /***** Add characters to character string pairs *****/
 
             CharacterStringPairs.Add("TheDonald", TheDonald);
+            CharacterStringPairs.Add("Hillary", Hillary);
 
             /******************* Menu content *******************/
 
@@ -597,7 +600,7 @@ namespace SuperSmashPolls {
             LevelDictionary.Add("Temple",     Temple);
             LevelDictionary.Add("TempleRock", TempleRock);
             LevelDictionary.Add("FinalDestination", FinalDestination);
-            LevelDictionary.Add("Debate Room", Debate);
+            LevelDictionary.Add(DebateSystemName, Debate);
             LevelDictionary.Add("White House", WhiteHouse);
 
             /************* Load in game music  *************/
@@ -766,23 +769,28 @@ namespace SuperSmashPolls {
 
                         FileWriter.WriteLine(NumPlayers);
 
-                        switch (NumPlayers) {
+//                        switch (NumPlayers) {
+//
+//                            case 4: {
+//                                PlayerFour.WriteInfo(ref FileWriter);
+//                                goto case 3;
+//                            } case 3: {
+//                                PlayerThree.WriteInfo(ref FileWriter);
+//                                goto case 2;
+//                            } case 2: { 
+//                                PlayerTwo.WriteInfo(ref FileWriter);
+//                                goto default;
+//                            } default: {
+//                                PlayerOne.WriteInfo(ref FileWriter);
+//                                break;
+//                            }
+//
+//                        }
 
-                            case 4: {
-                                PlayerFour.WriteInfo(ref FileWriter);
-                                goto case 3;
-                            } case 3: {
-                                PlayerThree.WriteInfo(ref FileWriter);
-                                goto case 2;
-                            } case 2: { 
-                                PlayerTwo.WriteInfo(ref FileWriter);
-                                goto default;
-                            } default: {
-                                PlayerOne.WriteInfo(ref FileWriter);
-                                break;
-                            }
-
-                        }
+                        PlayerOne.WriteInfo(ref FileWriter);
+                        PlayerTwo.WriteInfo(ref FileWriter);
+                        PlayerThree.WriteInfo(ref FileWriter);
+                        PlayerFour.WriteInfo(ref FileWriter);
 
                         CurrentGamemode.WriteGamemode(FileWriter);
 
@@ -800,33 +808,38 @@ namespace SuperSmashPolls {
 
                         StreamReader FileReader = new StreamReader(SaveLocation);
 
-                        LevelDictionary.TryGetValue(FileReader.ReadLine(), out CurrentLevel);                        
+                        string LevelNameRead = FileReader.ReadLine();
 
-                        NumPlayers = int.Parse(FileReader.ReadLine());
+                        try {
 
-                        switch (NumPlayers) {
+                            LevelDictionary.TryGetValue(LevelNameRead, out CurrentLevel);
 
-                            case 4: {
-                                PlayerFour.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
-                                goto case 3;
-                            } case 3: {
-                                PlayerThree.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
-                                goto case 2;
-                            } case 2: {
-                                PlayerTwo.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
-                                goto default;
-                            } default: {
-                                PlayerOne.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
-                                break;
-                            }
+                        } catch (Exception e) {
+
+                            State = GameState.Menu;
+
+                            goto case GameState.Menu;
 
                         }
 
+                        NumPlayers = int.Parse(FileReader.ReadLine());
+
+                        PlayerOne.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
+                        PlayerTwo.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
+                        PlayerThree.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
+                        PlayerFour.ReadInfo(ref FileReader, CharacterStringPairs, CurrentLevel.LevelWorld);
+
                         CurrentGamemode.ReadGamemode(FileReader);
+                        CurrentGamemode.NumberOfPlayers = NumPlayers;
+                        PlayerOne.Deaths   = CurrentGamemode.PlayerOneDeaths;
+                        PlayerTwo.Deaths   = CurrentGamemode.PlayerTwoDeaths;
+                        PlayerThree.Deaths = CurrentGamemode.PlayerThreeDeaths;
+                        PlayerFour.Deaths  = CurrentGamemode.PlayerFourDeaths;
 
                         FileReader.Close();
 
                         State = GameState.GameLevel;
+                        Menu.StopAudio();
 
                     } catch (Exception E) {
 
@@ -884,10 +897,6 @@ namespace SuperSmashPolls {
                                 break;
 
                         }
-
-#if DEBUG
-                        Batch.DrawString(GameFont, PlayerOne.PlayerCharacter.GetPosition().ToString(), Vector2.One, Color.Black);
-#endif
 
                         CurrentGamemode.DrawGamemodeOverlay(Batch);
 

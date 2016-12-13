@@ -312,7 +312,7 @@ namespace SuperSmashPolls.Characters {
         public void SetupCharacter(World gameWorld, Vector2 position, short playerGroup) {
 #if RECTANGLE_BODY
             CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterOrigin.X*2),
-                ConvertUnits.ToSimUnits(CharacterOrigin.Y*2), 1);
+                ConvertUnits.ToSimUnits(CharacterOrigin.Y*2), 1, position);
 #else
             CharacterBody                = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
 #endif
@@ -346,6 +346,12 @@ namespace SuperSmashPolls.Characters {
 
             CharacterBody.Position = position;
             CharacterBody.ResetDynamics();
+
+        }
+
+        public short GetCollisionGroup() {
+
+            return CharacterBody.CollisionGroup;
 
         }
 
