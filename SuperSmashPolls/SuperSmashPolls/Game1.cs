@@ -460,7 +460,7 @@ namespace SuperSmashPolls {
 
             /************** Hillary Content Loading *************/
 
-            Hillary.LoadCharacterContent(Content.Load<Texture2D>("Donald\\donald_hitbox"), 1,
+            Hillary.LoadCharacterContent(Content.Load<Texture2D>("Hillary\\hill_hitbox"), 1,
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(17, 25),
                     Content.Load<Texture2D>("Hillary\\hill_stand"),
                     PlaceholdderAudio,
