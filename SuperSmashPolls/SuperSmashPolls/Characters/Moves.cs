@@ -1,7 +1,4 @@
-﻿#define COMPLEX_MOVES
-#undef COMPLEX_MOVES
-
-using FarseerPhysics;
+﻿using FarseerPhysics;
 using FarseerPhysics.Collision;
 using FarseerPhysics.Common;
 using FarseerPhysics.Common.Decomposition;
@@ -32,8 +29,10 @@ namespace SuperSmashPolls.Characters {
             UpSpecialIndex         = 5,
             DownSpecialIndex       = 6,
             BasicIndex             = 7;
+#if COMPLEX_BODIES
         /** The moves for this character */
         protected readonly MoveAssets[] CharacterMoves;
+
         public Body ActiveBody;
         /** The index of the current move */
         private int CurrentMove;
@@ -84,7 +83,7 @@ namespace SuperSmashPolls.Characters {
                 HitboxCategory);
 
         }
-
+#if COMPLEX_BODIES
         /// <summary>
         /// Makes the hitbox and movement bodies in the world
         /// </summary>
@@ -105,7 +104,7 @@ namespace SuperSmashPolls.Characters {
             ActiveBody.Enabled = true;
 
         }
-
+#endif
         /// <summary>
         /// Sets the position of the character
         /// </summary>
@@ -184,6 +183,7 @@ namespace SuperSmashPolls.Characters {
 
         }
 
+#endif
     }
 
 }

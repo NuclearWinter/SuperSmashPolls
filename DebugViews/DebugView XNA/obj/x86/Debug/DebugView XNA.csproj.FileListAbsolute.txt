@@ -1,0 +1,14 @@
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\DebugView XNA.xml
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\DebugView XNA.dll
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\DebugView XNA.pdb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\FarseerPhysics XNA.dll
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\Microsoft.Xna.Framework.dll
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.dll
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\FarseerPhysics XNA.pdb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\FarseerPhysics XNA.xml
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\Microsoft.Xna.Framework.xml
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\bin\x86\Debug\Microsoft.Xna.Framework.Graphics.xml
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\obj\x86\Debug\DebugView XNA.csprojResolveAssemblyReference.cache
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\obj\x86\Debug\DebugView XNA.dll
+C:\Users\william\Documents\GitHub\SuperSmashPolls\DebugViews\DebugView XNA\obj\x86\Debug\DebugView XNA.pdb

@@ -49,7 +49,7 @@ namespace SuperSmashPolls.Characters {
         protected Moves CharacterMoves;
 #else
         /// <summary>The function signiture for moves</summary>
-        public delegate void SimpleMove(Body characterBody, bool onCharacter);
+        public delegate void SimpleMove(Body characterBody, float direction, bool onCharacter);
         /// <summary></summary>
         protected Body CharacterBody;
         /** The vertices created from the hitbox texture that are used to construct the body of the character */
@@ -65,11 +65,15 @@ namespace SuperSmashPolls.Characters {
         /** The scale of textures */
         private int Scale;
         /** The data so that a new class can be constructed from this one (easily) */
-        private Tuple<Texture2D, float, Point, SoundEffect, SimpleMove>[] MoveData;
+        private Tuple<float, Point, Texture2D, SoundEffect, SimpleMove>[] MoveData;
         /** The texture of the body */
         private Texture2D BodyTexture;
         /** Whether or not the character is allow to do another move */
         private bool CanMove;
+        /**  */
+        private int CurrentMove;
+
+        private Vector2 CharacterOrigin;
 #endif
         /** This is the amount the joystick must be over for it to register as intentional */
         private const float Register = 0.2F;
@@ -246,19 +250,23 @@ namespace SuperSmashPolls.Characters {
         /// <param name="scale"></param>
         /// <param name="moveData"></param>
         public void LoadCharacterContent(Texture2D bodyTexture, int scale, 
-            params Tuple<Texture2D, float, Point, SoundEffect, SimpleMove>[] moveData) {
+            params Tuple<float, Point, Texture2D, SoundEffect, SimpleMove>[] moveData) {
 
             CharacterVertices = CreateVerticesFromTexture(bodyTexture, scale);
             ImplimentedMoves  = moveData.Length;
+            BodyTexture = bodyTexture;
+            MoveData = moveData;
             MoveFunctions     = new SimpleMove[ImplimentedMoves];
             MoveTextures      = new CharacterAction[ImplimentedMoves];
             MoveAudio         = new AudioHandler[ImplimentedMoves];
             Scale = scale;
+            CharacterOrigin = new Vector2(0, bodyTexture.Height);
 
             for (int i = 0; i < ImplimentedMoves; ++i) {
                 MoveFunctions[i] = moveData[i].Item5;
-                MoveTextures[i]  = new CharacterAction(moveData[i].Item2, moveData[i].Item3, moveData[i].Item1, Scale);
-                MoveAudio[i]     = new AudioHandler(moveData[i].Item4);
+                MoveTextures[i]  = new CharacterAction(moveData[i].Item1, moveData[i].Item2, moveData[i].Item3, Scale);
+                if (moveData[i].Item4 != null)
+                    MoveAudio[i] = new AudioHandler(moveData[i].Item4);
             }
 
         }
@@ -285,6 +293,13 @@ namespace SuperSmashPolls.Characters {
         public void SetupCharacter(World gameWorld, Vector2 position) {
 
             CharacterBody = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
+            CharacterBody.Mass = Mass;
+            CharacterBody.Friction = Friction;
+            CharacterBody.Restitution = Restitution;
+            CharacterBody.BodyType = BodyType.Dynamic;
+            CharacterBody.Enabled = true;
+            CharacterBody.Awake = true;
+            CurrentMove = 0;
 
         }
 
@@ -315,40 +330,89 @@ namespace SuperSmashPolls.Characters {
         /// <param name="currentState"></param>
         public void UpdateCharacter(GamePadState currentState) {
 
-            bool SideMovement = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
-            bool DownMovement = currentState.ThumbSticks.Left.Y <= Register;
-            bool UpMovement = currentState.ThumbSticks.Left.Y >= Register;
+            MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) - CharacterOrigin);
+
+            //bool CanMove = MoveTextures[CurrentMove].AnimationAtEnd() || CurrentMove == WalkIndex ||
+            //               CurrentMove == IdleIndex;
+
+            //if (!CanMove)
+            //    return;
+
+            bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
+            bool DownMovement  = currentState.ThumbSticks.Left.Y <= Register;
+            bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;
             bool SpecialAttack = Math.Abs(currentState.Triggers.Left) >= Register;
-            bool Jump = currentState.IsButtonDown(Buttons.A);
-            bool BasicAttack = currentState.IsButtonDown(Buttons.B);
+            bool Jump          = currentState.IsButtonDown(Buttons.A);
+            bool BasicAttack   = currentState.IsButtonDown(Buttons.B);
 
-            int DesiredMove = IdleIndex;
+            int DesiredMove = -1;//= IdleIndex;
 
-            if (SpecialAttack)
-                if (SideMovement && IsImplimented(SpecialIndex))
+            if (SpecialAttack) {
+                if (SideMovement && IsImplimented(SpecialIndex)) {
                     DesiredMove = Moves.SideSpecialIndex;
-                else if (DownMovement && IsImplimented(DownSpecialIndex))
+                } else if (DownMovement && IsImplimented(DownSpecialIndex)) {
                     DesiredMove = Moves.DownSpecialIndex;
-                else if (UpMovement && IsImplimented(UpSpecialIndex))
+                } else if (UpMovement && IsImplimented(UpSpecialIndex)) {
                     DesiredMove = Moves.UpSpecialIndex;
-                else if (IsImplimented(SpecialIndex))
+                } else if (IsImplimented(SpecialIndex)) {
                     DesiredMove = Moves.SpecialIndex;
-            else if (SideMovement && IsImplimented(WalkIndex))
+                }
+            } else if (SideMovement && IsImplimented(WalkIndex)) {
                 DesiredMove = Moves.WalkIndex;
-            else if (Jump || UpMovement && IsImplimented(JumpIndex))
+            } else if (Jump || UpMovement && IsImplimented(JumpIndex)) {
                 DesiredMove = Moves.JumpIndex;
-            else if (BasicAttack && IsImplimented(BasicIndex))
+            } else if (BasicAttack && IsImplimented(BasicIndex)) {
                 DesiredMove = Moves.BasicIndex;
+            } else {
+                DesiredMove = IdleIndex;
+            }
 
             Direction = (DesiredMove == Moves.IdleIndex || DesiredMove == Moves.JumpIndex)
                 ? Direction : currentState.ThumbSticks.Left.X;
 
-            if (!CanMove)
-                return;
-
             switch (DesiredMove) {
-                
+                case IdleIndex:
+                    CurrentMove = IdleIndex;
+                    break;
+                case WalkIndex:
+                    CurrentMove = WalkIndex;
+                    MoveFunctions[WalkIndex](CharacterBody, Direction, true);
+                    break;
+                case JumpIndex:
+                    CurrentMove = JumpIndex;
+                    MoveFunctions[JumpIndex](CharacterBody, Direction, true);
+                    break;
+                case BasicIndex:
+                    CurrentMove = BasicIndex;
+                    MoveFunctions[BasicIndex](CharacterBody, Direction, false);
+                    break;
+                case SpecialIndex:
+                    CurrentMove = SpecialIndex;
+                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    break;
+                case SideSpecialIndex:
+                    CurrentMove = SideSpecialIndex;
+                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    break;
+                case UpSpecialIndex:
+                    CurrentMove = UpSpecialIndex;
+                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    break;
+                case DownSpecialIndex:
+                    CurrentMove = DownSpecialIndex;
+                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    break;
             }
+
+        }
+
+        /// <summary>
+        /// Draws the character on the screen
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void DrawCharacter(SpriteBatch spriteBatch) {
+            
+            MoveTextures[CurrentMove].DrawAnimation(ref spriteBatch, Direction);
 
         }
 
@@ -385,6 +449,11 @@ namespace SuperSmashPolls.Characters {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="move"></param>
+        /// <returns></returns>
         private bool IsImplimented(int move) {
 
             return ImplimentedMoves > move;

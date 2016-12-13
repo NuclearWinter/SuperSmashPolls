@@ -97,6 +97,7 @@ namespace SuperSmashPolls.Graphics {
             AnimatedPoint    = new Point(0, 0);
             DrawColor        = Color.White;
             ImageSize        = imageSize;
+            SpriteSheet = spriteSheet;
             SheetSize        = new Point(spriteSheet.Width / imageSize.X, spriteSheet.Height / imageSize.Y);
             PlayTime         = playTime;
             Scale            = scale;
@@ -276,8 +277,8 @@ namespace SuperSmashPolls.Graphics {
 #endif
             UpdateAnimation(Vector2 position) {
 
-            if ((DateTime.Now - StartedAnimation).TotalMilliseconds > PlayTime)
-                StartedAnimation = DateTime.Now;
+            //if (AnimationAtEnd())
+            //    return;
 
             DateTime Now = DateTime.Now;
 

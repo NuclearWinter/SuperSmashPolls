@@ -438,7 +438,13 @@ namespace SuperSmashPolls {
             TheDonald.AddMoves(TheDonaldIdle, TheDonaldWalk, TheDonaldJump, TheDonaldSpecial,
                 TheDonaldSideSpecial, TheDonaldUpSpecial, TheDonaldDownSpecial, TheDonaldBasicAttack);
 #else
-    
+            TheDonald.LoadCharacterContent(Content.Load<Texture2D>("Donald\\donald_hitbox"), 1, 
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(21, 27),
+                    Content.Load<Texture2D>("Donald\\donald_stand"), null, DefinedMoves.Idle), 
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(23, 29),
+                    Content.Load<Texture2D>("Donald\\donald_walk"), null, DefinedMoves.TheDonaldWalk),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(19, 26),
+                    Content.Load<Texture2D>("Donald\\donald_jump"), null, DefinedMoves.TheDonaldJump));
 #endif
 
             /***** Add characters to character string pairs *****/
@@ -581,19 +587,39 @@ namespace SuperSmashPolls {
 
             if ("blank" == PlayerOne.PlayerCharacter.Name) {
                 PlayerOne.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
                 PlayerOne.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerOne.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn);
+#endif
+                PlayerOne.Deaths = 0;
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
                 PlayerTwo.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
                 PlayerTwo.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerTwo.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn);
+#endif
+                PlayerTwo.Deaths = 0;
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
                 PlayerThree.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
                 PlayerThree.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerThree.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn);
+#endif
+                PlayerThree.Deaths = 0;
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
             } else {
                 PlayerFour.PlayerCharacter = character.Clone();
+#if COMPLEX_BODIES
                 PlayerFour.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
+#else
+                PlayerFour.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn);
+#endif
+                PlayerFour.Deaths = 0;
             }
 
         }
@@ -662,32 +688,9 @@ namespace SuperSmashPolls {
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
                             CurrentGamemode.GameOver        = false;
 
-                            switch (NumPlayers) {
-                                case 1:
-                                    PlayerOne.Deaths = 0;
-                                    PlayerOne.SetPosition(CurrentLevel.PlayerOneSpawn);
-                                    break;
-                                case 2:
-                                    PlayerTwo.Deaths = 0;
-                                    PlayerTwo.SetPosition(CurrentLevel.PlayerTwoSpawn) ;
-                                    goto case 1;
-                                case 3:
-                                    PlayerThree.Deaths = 0;
-                                    PlayerThree.SetPosition(CurrentLevel.PlayerThreeSpawn);
-                                    goto case 2;
-                                case 4:
-                                    PlayerFour.Deaths = 0;
-                                    PlayerFour.SetPosition(CurrentLevel.PlayerFourSpawn);
-                                    goto case 3;
-
-                            }
-
 #if DEBUG_LEVELS
-                                    //CurrentLevel.ExtablishDebugView(GraphicsDevice, Content);
-
-
+                            //CurrentLevel.ExtablishDebugView(GraphicsDevice, Content);
 #endif
-
                                 break;
                         case MenuCommands.BackToMainMenu:
                             Menu.DrawDown = -1;

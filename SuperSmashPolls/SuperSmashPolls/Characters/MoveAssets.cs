@@ -1,10 +1,4 @@
-﻿#define DRAW_DEBUG
-
-#define PANIC_MODE
-#undef PANIC_MODE
-
-#define USE_HITBOXES
-
+﻿#if COMPLEX_BODIES
 using System;
 using System.Collections.Generic;
 using FarseerPhysics;
@@ -266,3 +260,4 @@ namespace SuperSmashPolls.Characters {
     }
 
 }
+#endif

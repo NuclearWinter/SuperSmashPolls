@@ -15,7 +15,7 @@ namespace SuperSmashPolls.Characters {
     public class MoveDefinition {
 
         private readonly Vector2 StandardJumpHeight = new Vector2(0, 60);
-        private readonly Vector2 StandardWalkSpeed  = new Vector2(15, 0);
+        private readonly Vector2 StandardWalkSpeed  = new Vector2(3, 0);
         private readonly Vector2 StandardPunchForce = new Vector2(10, 0);
 #if COMPLEX_BODIES
         /// <summary>
@@ -124,7 +124,29 @@ namespace SuperSmashPolls.Characters {
         }
 
 #else
+        public void Idle(Body characterBody, float direction, bool onCharacter) {
+            
 
+
+        }
+
+        public void TheDonaldWalk(Body characterBody, float direction, bool onCharacter) {
+
+            characterBody.ApplyForce(StandardWalkSpeed * new Vector2(direction >= 0 ? 1 : -1, 0));
+
+        }
+
+        public void TheDonaldJump(Body characterBody, float direction, bool onCharacter) {
+
+
+
+        }
+
+        public void TheDonaldSpecial(Body characterBody, float direction, bool onCharacter) {
+
+
+
+        }
 #endif
 
     }

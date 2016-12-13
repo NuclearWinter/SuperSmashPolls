@@ -1,6 +1,7 @@
 Content\SpriteFont1.xnb
 Content\TitleFont.xnb
 Content\TitleFont-Small.xnb
+Content\Font.xnb
 Content\PlayerOne.xnb
 Content\PlayerTwo.xnb
 Content\sprite sheet template 32 bit.xnb
@@ -28,6 +29,6 @@ Content\FinalDestination\FinalPlatform.xnb
 Content\Donald\donald_punch.xnb
 Content\Debate\DebateBackground.xnb
 Content\Debate\DebatePlatform.xnb
+Content\Donald\donald_hitbox.xnb
 Content\Music\MainSong.xnb
 Content\Donald\donald_basic_sound.xnb
-Content\Font.xnb
