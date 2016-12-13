@@ -1,11 +1,4 @@
-﻿/*******************************************************************************************************************//**
- * /doc:SuperSmashPolls.XML
- **********************************************************************************************************************/
-
- #define DEBUG
- #undef DEBUG
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using FarseerPhysics;
 using FarseerPhysics.Common;
@@ -175,6 +168,7 @@ namespace SuperSmashPolls.Levels {
         /// This draws world
         /// </summary>
         /// <param name="spriteBatch">The batch to draw with</param>
+        /// <param name="font">The font to use for debugging (optional)</param>
         public void DrawLevel(SpriteBatch spriteBatch, SpriteFont font = null) {
 
             if (LevelBackground != null)

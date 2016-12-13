@@ -18,9 +18,10 @@ namespace SuperSmashPolls.World_Control {
     ///<remarks>1.0F of GodForce = ScreenSize * 10 | 0.1 of GodForce = ScreenSize</remarks>
     ///<remarks>To use this class to determine the size of something use the position functions</remarks>
     public class WorldUnit {
-        /* The size of the screen (in pixels) */
+
+        /// <summary>The size of the currently used screen</summary>
         public Vector2 ScreenSize;
-        /* The position used by this WorldUnit class <remarks> This can be used as a size too */
+        /// <summary>The position of this object on the screen</summary>
         public Vector2 Position;
 
         ///<summary>

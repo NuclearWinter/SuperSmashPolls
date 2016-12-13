@@ -36,6 +36,9 @@
         <member name="F:SuperSmashPolls.Characters.CharacterManager.Name">
             <summary> This characters name</summary>
         </member>
+        <member name="T:SuperSmashPolls.Characters.CharacterManager.SimpleMove">
+            <summary>The function signiture for moves</summary>
+        </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.Mass">
             The mass of the character (kg) 
         </member>
@@ -45,11 +48,11 @@
         <member name="F:SuperSmashPolls.Characters.CharacterManager.Restitution">
             The restitution of the character (how bouncy they are) 
         </member>
-        <member name="T:SuperSmashPolls.Characters.CharacterManager.SimpleMove">
-            <summary>The function signiture for moves</summary>
-        </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.CharacterBody">
-            <summary></summary>
+            <summary>The body of this character</summary>
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.Register">
+            This is the amount the joystick must be over for it to register as intentional 
         </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.CharacterVertices">
             The vertices created from the hitbox texture that are used to construct the body of the character 
@@ -75,26 +78,17 @@
         <member name="F:SuperSmashPolls.Characters.CharacterManager.BodyTexture">
             The texture of the body 
         </member>
-        <member name="F:SuperSmashPolls.Characters.CharacterManager.CanMove">
-            Whether or not the character is allow to do another move 
-        </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.CurrentMove">
-             
-        </member>
-        <member name="F:SuperSmashPolls.Characters.CharacterManager.WorkingMove">
-            The move that the character is working on doing 
+            The index of the move that the character is currently preforming 
         </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.PreviousState">
-             
+            The previous state of this players gamepad 
         </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.CharacterOrigin">
-             
+            The origin of this character body 
         </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.GameWorld">
-             
-        </member>
-        <member name="F:SuperSmashPolls.Characters.CharacterManager.Register">
-            This is the amount the joystick must be over for it to register as intentional 
+            The world that this character is currently playing in 
         </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.Direction">
             The direction that the character is moving 
@@ -428,6 +422,33 @@
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Mode.TimeStockCombo">
             <summary>A combination of time limit and life limit</summary>
         </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerOneDeaths">
+            <summary>Holds the references of deaths</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerTwoDeaths">
+            <summary>Holds the references of deaths</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerThreeDeaths">
+            <summary>Holds the references of deaths</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerFourDeaths">
+            <summary>Holds the references of deaths</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.GameOver">
+            <summary>Whether or not the game has ended</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.NumberOfPlayers">
+            <summary>The number of players in the game</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Stock">
+            <summary>The lives available to players</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.ElimStatus">
+            <summary>Holds which players have been eliminated</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.CurrentMode">
+            <summary>The mode the game currently is</summary>
+        </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.FullIconSize">
             The size of the full icon for players 
         </member>
@@ -467,56 +488,19 @@
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerIcons">
             The icons for players 
         </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Places">
-            The places of players for winning and loosing TODO 
-        </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Winner">
             The winner of the game 
         </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.endMusic">
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.EndMusic">
             Music to play for Winner 
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.MusicInstance">
             Handles Loopping and stuff 
         </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerOneDeaths">
-            <summary>Holds the references of deaths</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerTwoDeaths">
-            <summary>Holds the references of deaths</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerThreeDeaths">
-            <summary>Holds the references of deaths</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerFourDeaths">
-            <summary>Holds the references of deaths</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.GameOver">
-            <summary>Whether or not the game has ended</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.NumberOfPlayers">
-            <summary>The number of players in the game</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Stock">
-            <summary>The lives available to players</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.ElimStatus">
-            <summary>Holds which players have been eliminated</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.CurrentMode">
-            <summary>The mode the game currently is</summary>
-        </member>
         <member name="M:SuperSmashPolls.GameItemControl.Gamemode.#ctor">
             <summary>
             Initializes this class to control the game
             </summary>
-        </member>
-        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.FillStockIconPositions(Microsoft.Xna.Framework.Vector2[])">
-            <summary>
-            Calculates the smaller icons used to display individual stocks for players
-            </summary>
-            <param name="iconPosition">The Vector2 array being used to hold the positions</param>
-            Only five stock icons cans can be displayed, than it must go to text
         </member>
         <member name="M:SuperSmashPolls.GameItemControl.Gamemode.AssignIcons(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Graphics.SpriteFont)">
             <summary>
@@ -528,11 +512,49 @@
             <param name="playerFourIcon">The icon for player four</param>
             <param name="gameFont">The font to use for game mode displays</param>
         </member>
+        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.WriteGamemode(System.IO.StreamWriter)">
+            <summary>
+            Writes the information from this class to a streamWriter
+            </summary>
+            <param name="streamWriter">A constructed StreamWriter for the Gamemode to store it's information</param>
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.ReadGamemode(System.IO.StreamReader)">
+            <summary>
+            Reads the information about a previosuly started game from a file
+            </summary>
+            <param name="streamReader">A constructed StreamReader where the data for the Gamemode is located</param>
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.AddAudio(SuperSmashPolls.Graphics.AudioHandler)">
+            <summary>
+            Adds music to this object
+            </summary>
+            <param name="audioHandler"></param>
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.UpdateGamemodeState(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Determines if the game is over. Should be called during update.
+            </summary>
+            <returns>Returns the number of a player eliminated, if none were eliminated it returns 0</returns>
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.DrawGamemodeOverlay(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Responsible for displaying two things. The stock of each player during the game, and the win/loss screen.
+            Should be called during draw.
+            </summary>
+            <param name="batch">The spritebatch to draw with</param>
+        </member>
         <member name="M:SuperSmashPolls.GameItemControl.Gamemode.TimeLimit">
             <summary>
             TODO impliment a time limit mode
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.FillStockIconPositions(Microsoft.Xna.Framework.Vector2[])">
+            <summary>
+            Calculates the smaller icons used to display individual stocks for players
+            </summary>
+            <param name="iconPosition">The Vector2 array being used to hold the positions</param>
+            Only five stock icons cans can be displayed, than it must go to text
         </member>
         <member name="M:SuperSmashPolls.GameItemControl.Gamemode.CheckPlayerStatus(System.Boolean@,System.Int32)">
             <summary>
@@ -557,38 +579,6 @@
             <param name="stock">The stock of the player (if time based 0)</param>
             <param name="eliminated">Whether or not they have been eliminated</param>
             <param name="spriteBatch">The batch to draw with</param>
-            TODO get small stock icon to scale correctly (using the scale of each player's icon)
-        </member>
-        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.WriteGamemode(System.IO.StreamWriter)">
-            <summary>
-            
-            </summary>
-            <param name="streamWriter"></param>
-        </member>
-        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.ReadGamemode(System.IO.StreamReader)">
-            <summary>
-            Reads the information about a previosuly started game from a file
-            </summary>
-            <param name="streamReader"></param>
-        </member>
-        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.AddAudio(SuperSmashPolls.Graphics.AudioHandler)">
-            <summary>
-            Adds music to this object
-            </summary>
-            <param name="audioHandler"></param>
-        </member>
-        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.UpdateGamemodeState(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Determines if the game is over. Should be called during update.
-            </summary>
-            <returns>Returns the number of a player eliminated, if none were eliminated it returns 0</returns>
-        </member>
-        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.DrawGamemodeOverlay(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
-            <summary>
-            Responsible for displaying two things. The stock of each player during the game, and the win/loss screen.
-            Should be called during draw.
-            </summary>
-            <param name="batch">The spritebatch to draw with</param>
         </member>
         <member name="T:SuperSmashPolls.GameItemControl.PlayerClass">
              <summary>
@@ -596,6 +586,12 @@
              </summary>
              <remarks> This class should inlcude an instance of the character class, and should not repeat any affects of that
             class.</remarks>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.Deaths">
+            <summary>The number of times that the player has died</summary>
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerCharacter">
+            <summary>The player's character</summary>
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerID">
             The ID of the character 
@@ -605,12 +601,6 @@
         </member>
         <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.JustDied">
             Whether or not the player died in the last update cycle 
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.Deaths">
-            <summary>The number of times that the player has died</summary>
-        </member>
-        <member name="F:SuperSmashPolls.GameItemControl.PlayerClass.PlayerCharacter">
-            <summary>The player's character</summary>
         </member>
         <member name="M:SuperSmashPolls.GameItemControl.PlayerClass.#ctor(Microsoft.Xna.Framework.PlayerIndex)">
             <summary>
@@ -645,7 +635,6 @@
             <param name="streamReader"> The stream to read data from (must already be opened)</param>
             <param name="characterList"> The characters available in the game </param>
             <param name="gameWorld"> The world to use for this </param>
-            TODO make the new world system work with this loading methods
         </member>
         <member name="T:SuperSmashPolls.Graphics.AudioHandler">
             <summary>
@@ -829,6 +818,11 @@
             <param name="horizontalGravity">The gravity of the world on a horizontal scale</param>
             <param name="verticalGravity">The gravity on a vertical scale</param>
         </member>
+        <member name="M:SuperSmashPolls.Levels.LevelHandler.ExtablishDebugView(Microsoft.Xna.Framework.Graphics.GraphicsDevice,Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Call this in LoadContent after all the level is set up
+            </summary>
+        </member>
         <member name="M:SuperSmashPolls.Levels.LevelHandler.CreatePolygonFromTexture(Microsoft.Xna.Framework.Graphics.Texture2D,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,FarseerPhysics.Common.Decomposition.TriangulationAlgorithm)">
             <summary>
             Creates a polygon from a texture. This is the important function here.
@@ -862,6 +856,7 @@
             This draws world
             </summary>
             <param name="spriteBatch">The batch to draw with</param>
+            <param name="font">The font to use for debugging (optional)</param>
         </member>
         <member name="T:SuperSmashPolls.MenuControl.MenuCommands">
              <summary>
@@ -878,6 +873,30 @@
             to be declared and defined elsewhere, and when the item is constructed it must be passed as an argument.
             </summary>
             <remarks>To create multi-leveled menus you must construct items from bottom to top.</remarks>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
+            <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CenterItem">
+            <summary>Whether or not to center the item horizontally around the position.</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Command">
+            <summary>The command to use if clicked on</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericaText">
+            <summary>Makes the text more american, not american't</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.DrawDown">
+            <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Text">
+            <summary>Text for this item (drawn on top of the screen if displaying the item's menu</summary>
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.ContainedItems">
+            <summary>The item's to display on this page</summary>
+        </member>
+        <member name="P:SuperSmashPolls.MenuControl.MenuItem.TextColor">
+            <summary>Color for this item's text</summary>
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.Position">
             Position of this item on the screen 
@@ -910,41 +929,17 @@
         <member name="P:SuperSmashPolls.MenuControl.MenuItem.SubOverlay">
             Overlay this item's sub-menu on top of the current menu TODO impliment 
         </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CurrentHighlightedItem">
+            The item on screen that is currently highlighted 
+        </member>
+        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericanCounter">
+            Counts how many cycles the text has been a color for American text 
+        </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.MenuAudio">
             The music for this menu 
         </member>
         <member name="F:SuperSmashPolls.MenuControl.MenuItem.MusicInstance">
             Handles looping of audio 
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Highlightable">
-            <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.CenterItem">
-            <summary>Whether or not to center the item horizontally around the position.</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Command">
-            <summary>The command to use if clicked on</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.AmericaText">
-            <summary>Makes the text more american, not american't</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.DrawDown">
-            <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Text">
-            <summary>Text for this item (drawn on top of the screen if displaying the item's menu</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.ContainedItems">
-            <summary>The item's to display on this page</summary>
-        </member>
-        <member name="P:SuperSmashPolls.MenuControl.MenuItem.TextColor">
-            <summary>Color for this item's text</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.Options">
-            <summary>The options for this menu.</summary>
-        </member>
-        <member name="F:SuperSmashPolls.MenuControl.MenuItem.SelectedOption">
-            <summary>The index of the options currently selected in Options</summary>
         </member>
         <member name="M:SuperSmashPolls.MenuControl.MenuItem.#ctor(SuperSmashPolls.World_Control.WorldUnit,System.String,System.Boolean,SuperSmashPolls.World_Control.WorldUnit,System.Boolean,System.Boolean,SuperSmashPolls.MenuControl.MenuCommands,System.Boolean,System.Boolean)">
             <summary>
@@ -1097,12 +1092,6 @@
         <member name="F:SuperSmashPolls.Game1.Temple">
             Levels for the player to play on 
         </member>
-        <member name="F:SuperSmashPolls.Game1.Space">
-            Levels for the player to play on 
-        </member>
-        <member name="F:SuperSmashPolls.Game1.FinalDestination">
-            Levels for the player to play on 
-        </member>
         <member name="F:SuperSmashPolls.Game1.Debate">
             Levels for the player to play on 
         </member>
@@ -1209,6 +1198,12 @@
             <remarks>0.01F unit of position is equal to 1% of the screen.</remarks>
             <remarks>1.0F of GodForce = ScreenSize * 10 | 0.1 of GodForce = ScreenSize</remarks>
             <remarks>To use this class to determine the size of something use the position functions</remarks>
+        </member>
+        <member name="F:SuperSmashPolls.World_Control.WorldUnit.ScreenSize">
+            <summary>The size of the currently used screen</summary>
+        </member>
+        <member name="F:SuperSmashPolls.World_Control.WorldUnit.Position">
+            <summary>The position of this object on the screen</summary>
         </member>
         <member name="M:SuperSmashPolls.World_Control.WorldUnit.#ctor(Microsoft.Xna.Framework.Vector2@,Microsoft.Xna.Framework.Vector2)">
             <summary>

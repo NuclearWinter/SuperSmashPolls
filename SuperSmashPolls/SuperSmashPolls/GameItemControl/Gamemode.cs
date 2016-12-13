@@ -56,12 +56,10 @@ namespace SuperSmashPolls.GameItemControl {
         private SpriteFont GameFont;
         /** The icons for players */
         private Texture2D[] PlayerIcons;
-        /** The places of players for winning and loosing TODO */
-        private string[] Places;
         /** The winner of the game */
         private string Winner;
         /** Music to play for Winner */
-        private AudioHandler endMusic;
+        private AudioHandler EndMusic;
         /** Handles Loopping and stuff */
         private SoundEffectInstance MusicInstance;
 
@@ -88,22 +86,6 @@ namespace SuperSmashPolls.GameItemControl {
             FillStockIconPositions(PlayerTwoStockPos);
             FillStockIconPositions(PlayerThreeStockPos);
             FillStockIconPositions(PlayerFourStockPos);
-
-        }
-
-        /// <summary>
-        /// Calculates the smaller icons used to display individual stocks for players
-        /// </summary>
-        /// <param name="iconPosition">The Vector2 array being used to hold the positions</param>
-        /// Only five stock icons cans can be displayed, than it must go to text
-        private void FillStockIconPositions(Vector2[] iconPosition) {
-
-            Vector2 SmallIconSize = FullIconSize * SmallStockScale;
-
-            iconPosition[1] = iconPosition[0] - new Vector2(0, IconBuffer + SmallIconSize.Y);
-
-            for (int i = 2; i <= 5; ++i)
-                iconPosition[i] = iconPosition[i-1] + new Vector2(IconBuffer + SmallIconSize.X, 0);
 
         }
 
@@ -153,68 +135,9 @@ namespace SuperSmashPolls.GameItemControl {
         }
 
         /// <summary>
-        /// TODO impliment a time limit mode
+        /// Writes the information from this class to a streamWriter
         /// </summary>
-        /// <returns></returns>
-        private bool TimeLimit() {
-
-            return true; //Placeholder
-
-        }
-
-        /// <summary>
-        /// Used in LifeLimit to check if a player has used all their lives
-        /// </summary>
-        /// <param name="set">Reference to the bool to set (whether or not the player is dead)</param>
-        /// <param name="deaths">The amount of times that the player has died</param>
-        private void CheckPlayerStatus(ref bool set, int deaths) {
-
-            set = (deaths >= Stock);
-
-        }
-
-        /// <summary>
-        /// Determines if players have reached their life limit.
-        /// </summary>
-        /// <returns>Whether or not all but one player have reached their life limit</returns>
-        private void LifeLimit() {
-
-            CheckPlayerStatus(ref ElimStatus[0], PlayerOneDeaths);
-            CheckPlayerStatus(ref ElimStatus[1], PlayerTwoDeaths);
-            CheckPlayerStatus(ref ElimStatus[2], PlayerThreeDeaths);
-            CheckPlayerStatus(ref ElimStatus[3], PlayerFourDeaths);
-
-        }
-
-        /// <summary>
-        /// Draws the indicator for a player's stock
-        /// </summary>
-        /// <param name="icon">The icon for the player</param>
-        /// <param name="position">The position to draw the stock indicator</param>
-        /// <param name="largeScale">The scale of the player's large icon</param>
-        /// <param name="stock">The stock of the player (if time based 0)</param>
-        /// <param name="eliminated">Whether or not they have been eliminated</param>
-        /// <param name="spriteBatch">The batch to draw with</param>
-        /// TODO get small stock icon to scale correctly (using the scale of each player's icon)
-        private void DrawStock(Texture2D icon, Vector2[] position, Vector2 largeScale, int stock, bool eliminated, 
-            SpriteBatch spriteBatch) {
-
-            spriteBatch.Draw(icon, position[0], null, !eliminated ? Color.White : Color.Red, 0, Vector2.Zero,
-                PlayerOneIconScale, SpriteEffects.None, 0);
-
-            if (stock < 5)
-                for (int i = stock; i > 0; --i)
-                    spriteBatch.Draw(icon, position[i], null, Color.White, 0, Vector2.Zero, largeScale * SmallStockScale,
-                        SpriteEffects.None, 0);
-            else
-                spriteBatch.DrawString(GameFont, stock.ToString(), position[1], Color.Black);
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="streamWriter"></param>
+        /// <param name="streamWriter">A constructed StreamWriter for the Gamemode to store it's information</param>
         public void WriteGamemode(StreamWriter streamWriter) {
             
             streamWriter.WriteLine(CurrentMode);
@@ -228,7 +151,7 @@ namespace SuperSmashPolls.GameItemControl {
         /// <summary>
         /// Reads the information about a previosuly started game from a file
         /// </summary>
-        /// <param name="streamReader"></param>
+        /// <param name="streamReader">A constructed StreamReader where the data for the Gamemode is located</param>
         public void ReadGamemode(StreamReader streamReader) {
 
             CurrentMode       = (Mode)Enum.Parse(typeof(Mode), streamReader.ReadLine());
@@ -238,20 +161,18 @@ namespace SuperSmashPolls.GameItemControl {
             PlayerFourDeaths  = int.Parse(streamReader.ReadLine());
 
         }
+
         /// <summary>
         /// Adds music to this object
         /// </summary>
         /// <param name="audioHandler"></param>
-        public void AddAudio(AudioHandler audioHandler)
-        {
+        public void AddAudio(AudioHandler audioHandler) {
 
-            endMusic = audioHandler;
-            MusicInstance = endMusic.GetRandomAudio().CreateInstance();
+            EndMusic = audioHandler;
+            MusicInstance = EndMusic.GetRandomAudio().CreateInstance();
             MusicInstance.IsLooped = false;
           
         }
-
-
 
         /// <summary>
         /// Determines if the game is over. Should be called during update.
@@ -354,6 +275,80 @@ namespace SuperSmashPolls.GameItemControl {
                 //TODO just make this screen into a menuitem so it is navigatable
 
             }
+
+        }
+
+        /// <summary>
+        /// TODO impliment a time limit mode
+        /// </summary>
+        /// <returns></returns>
+        private bool TimeLimit() {
+
+            return true; //Placeholder
+
+        }
+
+        /// <summary>
+        /// Calculates the smaller icons used to display individual stocks for players
+        /// </summary>
+        /// <param name="iconPosition">The Vector2 array being used to hold the positions</param>
+        /// Only five stock icons cans can be displayed, than it must go to text
+        private void FillStockIconPositions(Vector2[] iconPosition) {
+
+            Vector2 SmallIconSize = FullIconSize * SmallStockScale;
+
+            iconPosition[1] = iconPosition[0] - new Vector2(0, IconBuffer + SmallIconSize.Y);
+
+            for (int i = 2; i <= 5; ++i)
+                iconPosition[i] = iconPosition[i - 1] + new Vector2(IconBuffer + SmallIconSize.X, 0);
+
+        }
+
+        /// <summary>
+        /// Used in LifeLimit to check if a player has used all their lives
+        /// </summary>
+        /// <param name="set">Reference to the bool to set (whether or not the player is dead)</param>
+        /// <param name="deaths">The amount of times that the player has died</param>
+        private void CheckPlayerStatus(ref bool set, int deaths) {
+
+            set = (deaths >= Stock);
+
+        }
+
+        /// <summary>
+        /// Determines if players have reached their life limit.
+        /// </summary>
+        /// <returns>Whether or not all but one player have reached their life limit</returns>
+        private void LifeLimit() {
+
+            CheckPlayerStatus(ref ElimStatus[0], PlayerOneDeaths);
+            CheckPlayerStatus(ref ElimStatus[1], PlayerTwoDeaths);
+            CheckPlayerStatus(ref ElimStatus[2], PlayerThreeDeaths);
+            CheckPlayerStatus(ref ElimStatus[3], PlayerFourDeaths);
+
+        }
+
+        /// <summary>
+        /// Draws the indicator for a player's stock
+        /// </summary>
+        /// <param name="icon">The icon for the player</param>
+        /// <param name="position">The position to draw the stock indicator</param>
+        /// <param name="largeScale">The scale of the player's large icon</param>
+        /// <param name="stock">The stock of the player (if time based 0)</param>
+        /// <param name="eliminated">Whether or not they have been eliminated</param>
+        /// <param name="spriteBatch">The batch to draw with</param>
+        private void DrawStock(Texture2D icon, Vector2[] position, Vector2 largeScale, int stock, bool eliminated,
+            SpriteBatch spriteBatch) {
+
+            spriteBatch.Draw(icon, position[0], null, !eliminated ? Color.White : Color.Red, 0, Vector2.Zero,
+                PlayerOneIconScale, SpriteEffects.None, 0);
+
+            if (stock < 5)
+                for (int i = stock; i > 0; --i)
+                    spriteBatch.Draw(icon, position[i], null, Color.White, 0, Vector2.Zero, largeScale * SmallStockScale,
+                        SpriteEffects.None, 0);
+            else
+                spriteBatch.DrawString(GameFont, stock.ToString(), position[1], Color.Black);
 
         }
 

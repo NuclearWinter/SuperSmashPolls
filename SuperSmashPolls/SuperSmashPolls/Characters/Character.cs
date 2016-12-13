@@ -2,15 +2,6 @@
  * @author William Kluge
  **********************************************************************************************************************/
 
-#define DEBUG
- #undef DEBUG
-
-#define DEBUG_INFO
- #undef DEBUG_INFO
-
-#define OLD_CHARACTER
- #undef OLD_CHARACTER
-
  #if OLD_CHARACTER
 
 using Microsoft.Xna.Framework.Graphics;

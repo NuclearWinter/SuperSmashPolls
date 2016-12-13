@@ -31,7 +31,7 @@ namespace SuperSmashPolls.MenuControl {
         SaveGame,         //Saves the game
         BackToMainMenu,   //Go back to the previous menu
         ExitGame,         //Exits the game
-        OnePlayer, TwoPlayer, ThreePlayer, TheFourPlayer,
+        OnePlayer, TwoPlayer, ThreePlayer, FourPlayer,
         ResumeGame,
         PlayTemple, PlayTempleRock, PlayFinalDestination, PlayDebate, PlayWhiteHouse,
         SelectTrump, SelectHillary,
@@ -64,10 +64,6 @@ namespace SuperSmashPolls.MenuControl {
         public List<MenuItem> ContainedItems;
         /// <summary>Color for this item's text</summary>
         public Color TextColor { get; set; } = Color.Black;
-        /// <summary>The options for this menu.</summary>
-        public Dictionary<string, string[]> Options;
-        /// <summary>The index of the options currently selected in Options</summary>
-        public short[] SelectedOption;
         /** Position of this item on the screen */
         private readonly WorldUnit Position;
         /** Buffer to move text over from Position */

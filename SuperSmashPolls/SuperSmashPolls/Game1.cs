@@ -1,6 +1,6 @@
 /*******************************************************************************************************************//**
- * <remarks> This game is now dependent on the Farseer Physics Engine.
- * For information see http://farseerphysics.codeplex.com/ </remarks>
+ * This game is now dependent on the Farseer Physics Engine.
+ * For information see http://farseerphysics.codeplex.com/
  * @author (For all textures) Joe Brooksbank
  **********************************************************************************************************************/
 
@@ -64,8 +64,8 @@ namespace SuperSmashPolls {
         private readonly Dictionary<string, CharacterManager> CharacterStringPairs;
         /** The gamemode for this game */
         private Gamemode CurrentGamemode;
-        /** The one, the only, the Donald */
 #if OLD_CHARACTER
+        /** The one, the only, the Donald */
         private Character TheDonald;
         private TheDonaldsMoves TheDonaldsAttacks;
 #else
@@ -77,7 +77,7 @@ namespace SuperSmashPolls {
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
         /** Levels for the player to play on */
-        private LevelHandler TempleRock, Temple, Space,
+        private LevelHandler TempleRock, Temple,
 #if MEMES
             FinalDestination,
 #endif
@@ -110,12 +110,6 @@ namespace SuperSmashPolls {
         /// Constructs the game's class
         /// </summary>
         public Game1() {
-
-            if (!DoesFileExist(SaveLocation)) {
-                
-
-
-            }
 
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360);
@@ -210,11 +204,11 @@ namespace SuperSmashPolls {
 #endif
 
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
-                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.50F)), "Debate Room",
+                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Debate Room",
                                 false, EmptyUnit, true, true, MenuCommands.PlayDebate));
 
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
-                           new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.60F)), "White House",
+                           new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.50F)), "White House",
                                false, EmptyUnit, true, true, MenuCommands.PlayWhiteHouse));
 
 
@@ -824,7 +818,7 @@ namespace SuperSmashPolls {
 
                             LevelDictionary.TryGetValue(LevelNameRead, out CurrentLevel);
 
-                        } catch (Exception e) {
+                        } catch (Exception) {
 
                             State = GameState.Menu;
 
