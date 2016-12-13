@@ -30,6 +30,18 @@ namespace SuperSmashPolls.GameItemControl {
             TimeStockCombo = 2
         }
 
+        /// <summary>Holds the references of deaths</summary>
+        public int PlayerOneDeaths, PlayerTwoDeaths, PlayerThreeDeaths, PlayerFourDeaths;
+        /// <summary>Whether or not the game has ended</summary>
+        public bool GameOver;
+        /// <summary>The number of players in the game</summary>
+        public int NumberOfPlayers;
+        /// <summary>The lives available to players</summary>
+        public int Stock;
+        /// <summary>Holds which players have been eliminated</summary>
+        public bool[] ElimStatus;
+        /// <summary>The mode the game currently is</summary>
+        public Mode CurrentMode;
         /** The size of the full icon for players */
         private readonly Vector2 FullIconSize;
         /** The position to put the player's stock indicators, indices 1+ are for the small stock icons/text */
@@ -52,18 +64,6 @@ namespace SuperSmashPolls.GameItemControl {
         private AudioHandler endMusic;
         /** Handles Loopping and stuff */
         private SoundEffectInstance MusicInstance;
-        /// <summary>Holds the references of deaths</summary>
-        public int PlayerOneDeaths, PlayerTwoDeaths, PlayerThreeDeaths, PlayerFourDeaths;
-        /// <summary>Whether or not the game has ended</summary>
-        public bool GameOver;
-        /// <summary>The number of players in the game</summary>
-        public int NumberOfPlayers;
-        /// <summary>The lives available to players</summary>
-        public int Stock;
-        /// <summary>Holds which players have been eliminated</summary>
-        public bool[] ElimStatus;
-        /// <summary>The mode the game currently is</summary>
-        public Mode CurrentMode;
 
         /// <summary>
         /// Initializes this class to control the game

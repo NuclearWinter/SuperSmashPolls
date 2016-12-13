@@ -38,6 +38,8 @@ namespace SuperSmashPolls.Characters {
             BasicIndex             = 7;
         /// <summary> This characters name</summary>
         public string Name;
+        /// <summary>The function signiture for moves</summary>
+        public delegate void SimpleMove(Body characterBody, float direction, bool onCharacter, World world);
         /** The mass of the character (kg) */
         protected readonly float Mass;
         /** The friction of the character */
@@ -52,10 +54,10 @@ namespace SuperSmashPolls.Characters {
         /** The moves for this character */
         protected Moves CharacterMoves;
 #else
-        /// <summary>The function signiture for moves</summary>
-        public delegate void SimpleMove(Body characterBody, float direction, bool onCharacter, World world);
-        /// <summary></summary>
+        /// <summary>The body of this character</summary>
         protected Body CharacterBody;
+        /** This is the amount the joystick must be over for it to register as intentional */
+        private const float Register = 0.4F;
         /** The vertices created from the hitbox texture that are used to construct the body of the character */
         private List<Vertices> CharacterVertices;
         /** The CharacterAction (texture handler) for each of the character moves */
@@ -72,22 +74,16 @@ namespace SuperSmashPolls.Characters {
         private Tuple<float, Point, Texture2D, SoundEffect, SimpleMove>[] MoveData;
         /** The texture of the body */
         private Texture2D BodyTexture;
-        /** Whether or not the character is allow to do another move */
-        private bool CanMove;
-        /**  */
+        /** The index of the move that the character is currently preforming */
         private int CurrentMove;
-        /** The move that the character is working on doing */
-        private int WorkingMove;
-        /**  */
+        /** The previous state of this players gamepad */
         private GamePadState PreviousState;
-        /**  */
+        /** The origin of this character body */
         private Vector2 CharacterOrigin;
-        /**  */
+        /** The world that this character is currently playing in */
         private World GameWorld;
 
 #endif
-        /** This is the amount the joystick must be over for it to register as intentional */
-        private const float Register = 0.4F;
         /** The direction that the character is moving */
         private float Direction;
 
@@ -146,7 +142,6 @@ namespace SuperSmashPolls.Characters {
             Friction = friction;
             Restitution = restitution;
             Name = name;
-            CanMove = false;
             PreviousState = new GamePadState();
         }
 #endif

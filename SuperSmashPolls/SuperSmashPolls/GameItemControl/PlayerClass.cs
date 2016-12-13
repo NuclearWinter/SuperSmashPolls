@@ -29,41 +29,48 @@ namespace SuperSmashPolls.GameItemControl {
     ///class.</remarks>
     class PlayerClass {
 
+#if COMPLEX_BODIES
+        /// <summary>The collision category for this player</summary>
+        public Category CollidesWith;
+        /// <summary>The collision category for this player's hitboxes</summary>
+        public Category HitboxCollidesWith;
+#endif
+        /// <summary>The number of times that the player has died</summary>
+        public int Deaths;
+        /// <summary>The player's character</summary>
+        public CharacterManager PlayerCharacter;
         /** The ID of the character */
         private readonly PlayerIndex PlayerID;
         /** The health that the character has */
         private float PlayerHealth;
         /** Whether or not the player died in the last update cycle */
         private bool JustDied;
-        /// <summary>The number of times that the player has died</summary>
-        public int Deaths;
-        /// <summary>The player's character</summary>
-        public CharacterManager PlayerCharacter;
-#if COMPLEX_BODIES
-        /// <summary>The collision category for this player</summary>
-        public Category CollidesWith;
 
-        public Category HitboxCollidesWith;
-#endif
+#if COMPLEX_BODIES
         /// <summary>
         /// Constructor
         /// </summary>
-        public PlayerClass(PlayerIndex playerId
-#if COMPLEX_BODIES
-            , Category collidesWith, Category hitboxCollidesWith
-#endif
-            ) {
+        public PlayerClass(PlayerIndex playerId, Category collidesWith, Category hitboxCollidesWith) {
             PlayerID          = playerId;
             PlayerHealth      = 0;
             Deaths            = 0;
-#if COMPLEX_BODIES
             CollidesWith = collidesWith;
             HitboxCollidesWith = hitboxCollidesWith;
             PlayerCharacter = new CharacterManager(CollidesWith, HitboxCollidesWith);
-#else
             PlayerCharacter = new CharacterManager();
-#endif
             JustDied          = false;
+        }
+#endif
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public PlayerClass(PlayerIndex playerId) {
+            PlayerID = playerId;
+            PlayerHealth = 0;
+            Deaths = 0;
+            PlayerCharacter = new CharacterManager();
+            JustDied = false;
         }
 
         /// <summary>
@@ -154,7 +161,6 @@ namespace SuperSmashPolls.GameItemControl {
 		/// <param name="streamReader"> The stream to read data from (must already be opened)</param>
 		/// <param name="characterList"> The characters available in the game </param>
 		/// <param name="gameWorld"> The world to use for this </param>
-        /// TODO make the new world system work with this loading methods
         public void ReadInfo(ref StreamReader streamReader, Dictionary<string, CharacterManager> characterList, World gameWorld) {
 
             string CharacterName = streamReader.ReadLine();

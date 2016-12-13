@@ -31,7 +31,7 @@ namespace SuperSmashPolls.MenuControl {
         SaveGame,         //Saves the game
         BackToMainMenu,   //Go back to the previous menu
         ExitGame,         //Exits the game
-        OnePlayer, TwoPlayer, ThreePlayer, FourPlayer,
+        OnePlayer, TwoPlayer, ThreePlayer, TheFourPlayer,
         ResumeGame,
         PlayTemple, PlayTempleRock, PlayFinalDestination, PlayDebate, PlayWhiteHouse,
         SelectTrump, SelectHillary,
@@ -48,6 +48,26 @@ namespace SuperSmashPolls.MenuControl {
     /// <remarks>To create multi-leveled menus you must construct items from bottom to top.</remarks>
     class MenuItem {
 
+        /// <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
+        public readonly bool Highlightable;
+        /// <summary>Whether or not to center the item horizontally around the position.</summary>
+        public readonly bool CenterItem;
+        /// <summary>The command to use if clicked on</summary>
+        public readonly MenuCommands Command;
+        /// <summary>Makes the text more american, not american't</summary>
+        public bool AmericaText;
+        /// <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
+        public int DrawDown;
+        /// <summary>Text for this item (drawn on top of the screen if displaying the item's menu</summary>
+        public string Text;
+        /// <summary>The item's to display on this page</summary>
+        public List<MenuItem> ContainedItems;
+        /// <summary>Color for this item's text</summary>
+        public Color TextColor { get; set; } = Color.Black;
+        /// <summary>The options for this menu.</summary>
+        public Dictionary<string, string[]> Options;
+        /// <summary>The index of the options currently selected in Options</summary>
+        public short[] SelectedOption;
         /** Position of this item on the screen */
         private readonly WorldUnit Position;
         /** Buffer to move text over from Position */
@@ -69,35 +89,14 @@ namespace SuperSmashPolls.MenuControl {
         private Texture2D Background { get; set; } = null;
         /** Overlay this item's sub-menu on top of the current menu TODO impliment */
         private bool SubOverlay { get; set; } = false;
-        /* The item on screen that is currently highlighted */
+        /** The item on screen that is currently highlighted */
         private int CurrentHighlightedItem;
-        /* Counts how many cycles the text has been a color for American text */
+        /** Counts how many cycles the text has been a color for American text */
         private int AmericanCounter;
         /** The music for this menu */
         private AudioHandler MenuAudio;
         /** Handles looping of audio */
         private SoundEffectInstance MusicInstance;
-        /// <summary>Determines if the item is highlihtable or not. Highlightable items can be selected</summary>
-        public readonly bool Highlightable;
-        /// <summary>Whether or not to center the item horizontally around the position.</summary>
-        public readonly bool CenterItem;
-        /// <summary>The command to use if clicked on</summary>
-        public readonly MenuCommands Command;
-        /// <summary>Makes the text more american, not american't</summary>
-        public bool AmericaText;
-        /// <summary>The item within ContainedItems to draw instead of this one (-1 means draw this one)</summary>
-        public int DrawDown;
-        /// <summary>Text for this item (drawn on top of the screen if displaying the item's menu</summary>
-        public string Text;
-        /// <summary>The item's to display on this page</summary>
-        public List<MenuItem> ContainedItems;
-        /// <summary>Color for this item's text</summary>
-        public Color TextColor { get; set; } = Color.Black;
-        /// <summary>The options for this menu.</summary>
-        public Dictionary<string, string[]> Options;
-        /// <summary>The index of the options currently selected in Options</summary>
-        public short[] SelectedOption;
-
 
         /// <summary>
         /// Constructor
