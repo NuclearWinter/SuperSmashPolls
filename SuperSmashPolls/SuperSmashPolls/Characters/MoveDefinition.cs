@@ -16,7 +16,7 @@ namespace SuperSmashPolls.Characters {
     /// abstract and define each character's moves in a separate file all nice and pretty</remarks>
     public class MoveDefinition {
 
-        private const float StandardSpecialRadius = 3F;
+        private const float StandardSpecialRadius = 1.25F;
         private const float LargeHit = 300;
         private readonly Vector2 StandardJumpHeight = new Vector2(0, -5F);
         private readonly Vector2 StandardWalkSpeed  = new Vector2(3, 0);
@@ -193,7 +193,7 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// 
+        /// Creates an explosion in front of The Donald
         /// </summary>
         /// <param name="characterBody">The body of the character preforming this move</param>
         /// <param name="direction">The direction that the character is facing</param>
@@ -208,7 +208,7 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// 
+        /// Creates and explosion in front of The Donald and above him
         /// </summary>
         /// <param name="characterBody">The body of the character preforming this move</param>
         /// <param name="direction">The direction that the character is facing</param>
@@ -218,9 +218,8 @@ namespace SuperSmashPolls.Characters {
         public void TheDonaldUpSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
             CreateAndActivateExplosion(world, characterBody, LargeHit/4, StandardSpecialRadius,
-                OffsetFromCharacter(characterBody, new Vector2(-10, 0)),
-                OffsetFromCharacter(characterBody, new Vector2(10, 0)),
-                OffsetFromCharacter(characterBody, new Vector2(0, -12)));
+                OffsetFromCharacter(characterBody, new Vector2(15, 0), direction),
+                OffsetFromCharacter(characterBody, new Vector2(5, -5), direction));
 
         }
 
@@ -301,14 +300,15 @@ namespace SuperSmashPolls.Characters {
         /// <param name="pixelAmount">The amount of pixels to offset</param>
         /// <param name="direction">If the offset needs to go to a specific side, set this to the direction float
         /// of the character so that instead of using the raw number in pixelAmount it changed the direction based on
-        ///  this</param>
+        ///  this. DIRECTION ONLY AFFECTS SIDEWAYS, NOT UP AND DOWN</param>
         /// <returns></returns>
         private Vector2 OffsetFromCharacter(Body characterBody, Vector2 pixelAmount, float direction = -2) {
 
             if (direction == -2)
                 return characterBody.Position + ConvertUnits.ToSimUnits(pixelAmount);
 
-            return characterBody.Position + ConvertUnits.ToSimUnits(pixelAmount) * (direction < 0 ? -1 : 1);
+            return characterBody.Position + ConvertUnits.ToSimUnits(pixelAmount) * 
+                new Vector2(direction < 0 ? -1 : 1, 0);
 
         }
 

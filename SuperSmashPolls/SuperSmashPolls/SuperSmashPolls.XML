@@ -231,7 +231,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldSideSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
             <summary>
-            
+            Creates an explosion in front of The Donald
             </summary>
             <param name="characterBody">The body of the character preforming this move</param>
             <param name="direction">The direction that the character is facing</param>
@@ -241,7 +241,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldUpSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
             <summary>
-            
+            Creates and explosion in front of The Donald and above him
             </summary>
             <param name="characterBody">The body of the character preforming this move</param>
             <param name="direction">The direction that the character is facing</param>
@@ -298,7 +298,7 @@
             <param name="pixelAmount">The amount of pixels to offset</param>
             <param name="direction">If the offset needs to go to a specific side, set this to the direction float
             of the character so that instead of using the raw number in pixelAmount it changed the direction based on
-             this</param>
+             this. DIRECTION ONLY AFFECTS SIDEWAYS, NOT UP AND DOWN</param>
             <returns></returns>
         </member>
         <member name="T:SuperSmashPolls.Characters.Moves">

@@ -383,8 +383,13 @@ namespace SuperSmashPolls.Characters {
                 DesiredMove = IdleIndex;
             }
 
-            Direction = (DesiredMove == Moves.IdleIndex || DesiredMove == Moves.JumpIndex)
-                ? Direction : currentState.ThumbSticks.Left.X;
+            Direction = (DesiredMove == Moves.JumpIndex ||
+                         DesiredMove == Moves.WalkIndex) && CurrentMove != Moves.IdleIndex &&
+                         CurrentMove != Moves.SpecialIndex &&
+                        CurrentMove != Moves.DownSpecialIndex && CurrentMove != Moves.BasicIndex &&
+                        CurrentMove != Moves.SideSpecialIndex && CurrentMove != Moves.UpSpecialIndex
+                ? currentState.ThumbSticks.Left.X
+                : Direction;
 
             switch (DesiredMove) {
                 case IdleIndex:
