@@ -200,6 +200,8 @@
             <param name="world">The world that the move is taking place in</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldWalk(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+             Moves for The Donald
+            ************************************************************************************************************
             <summary>
             The function for having The Donald walk
             </summary>
@@ -251,7 +253,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldDownSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
             <summary>
-            
+            A fast fall for The Donald
             </summary>
             <param name="characterBody">The body of the character preforming this move</param>
             <param name="direction">The direction that the character is facing</param>
@@ -261,6 +263,38 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldBasic(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
             <summary>
+            A basic punch for The Donald
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.HillaryWalk(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+             Moves for Hillary
+            ************************************************************************************************************
+            <summary>
+            The function for having Hillary walk
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.HillaryJump(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            The jump function for Hillary
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.HillarySpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
             
             </summary>
             <param name="characterBody">The body of the character preforming this move</param>
@@ -269,7 +303,49 @@
             where sometimes it should go to the player and sometimes to an enemy)</param>
             <param name="world">The world that the move is taking place in</param>
         </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.HillarySideSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            Creates an explosion in front of Hillary
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.HillaryUpSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            Creates and explosion in front of Hillary and above her
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.HillaryDownSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            A fast fall for Hillary
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.HillaryBasic(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            A basic punch for Hillary
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.CreateAndActivateExplosion(FarseerPhysics.Dynamics.World,FarseerPhysics.Dynamics.Body,Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+             Utility Functions
+            ************************************************************************************************************
             <summary>
             Creates and activates an explosion with the given parameters
             </summary>
@@ -1004,7 +1080,10 @@
             The gamemode for this game 
         </member>
         <member name="F:SuperSmashPolls.Game1.TheDonald">
-            The one, the only, the Donald 
+            Character based off of Donald Trump 
+        </member>
+        <member name="F:SuperSmashPolls.Game1.Hillary">
+            Character based off of Hillary Clinton 
         </member>
         <member name="F:SuperSmashPolls.Game1.CurrentLevel">
             This is the level currently being played on 

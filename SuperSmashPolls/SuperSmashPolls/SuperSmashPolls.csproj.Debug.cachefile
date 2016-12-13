@@ -7,9 +7,6 @@ Content\PlayerTwo.xnb
 Content\sprite sheet template 32 bit.xnb
 Content\TheDonaldWalking.xnb
 Content\Black Floor.xnb
-Content\Donald\donald64-jump.xnb
-Content\Donald\donald64-stand.xnb
-Content\Donald\donald64-walk.xnb
 Content\Temple.xnb
 Content\temple_kinda.xnb
 Content\space.xnb
@@ -38,3 +35,4 @@ Content\Donald\donald_up_special_sound.xnb
 Content\Music\Hail to the Chief.xnb
 Content\WhiteHouse\WhiteHouseBackground.xnb
 Content\WhiteHouse\WhiteHouseForeground.xnb
+Content\Donald\donald_side_smash.xnb
