@@ -192,7 +192,9 @@ namespace SuperSmashPolls.Characters {
         /// <param name="world">The world that the move is taking place in</param>
         public void TheDonaldSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
-            
+            CreateAndActivateExplosion(world, characterBody, 
+                OffsetFromCharacter(characterBody, 
+                new Vector2(15, 0), direction), LargeHit, StandardSpecialRadius * 1.5F);
 
         }
 
@@ -238,6 +240,8 @@ namespace SuperSmashPolls.Characters {
         public void TheDonaldDownSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
             characterBody.ApplyLinearImpulse(-StandardJumpHeight);
+            CreateAndActivateExplosion(world, characterBody, 
+                OffsetFromCharacter(characterBody, new Vector2(0, 13)), LargeHit*3, StandardSpecialRadius*3);
 
         }
 
