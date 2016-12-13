@@ -84,6 +84,12 @@
         <member name="F:SuperSmashPolls.Characters.CharacterManager.PreviousState">
              
         </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.CharacterOrigin">
+             
+        </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.GameWorld">
+             
+        </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.Register">
             This is the amount the joystick must be over for it to register as intentional 
         </member>
@@ -121,13 +127,14 @@
             </summary>
             <returns>A CharacterManager with the same attributes as this one</returns>
         </member>
-        <member name="M:SuperSmashPolls.Characters.CharacterManager.SetupCharacter(FarseerPhysics.Dynamics.World,Microsoft.Xna.Framework.Vector2)">
+        <member name="M:SuperSmashPolls.Characters.CharacterManager.SetupCharacter(FarseerPhysics.Dynamics.World,Microsoft.Xna.Framework.Vector2,System.Int16)">
             <summary>
             Creates the body of the character in the game's world for use during a match. This must be called before the
             character is updates.
             </summary>
             <param name="gameWorld">The world to put the character in</param>
             <param name="position">The position to put the character in</param>
+            <param name="playerGroup">The collision group for this player to be placed in</param>
         </member>
         <member name="M:SuperSmashPolls.Characters.CharacterManager.GetPosition">
             <summary>
@@ -179,21 +186,85 @@
             <remarks>TODO make this into an abstract class and make one of the paramaters to the character class that 
             abstract and define each character's moves in a separate file all nice and pretty</remarks>
         </member>
-        <member name="M:SuperSmashPolls.Characters.MoveDefinition.Idle(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean)">
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.Idle(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
             <summary>
             The function for any character in their idle state...nothing happens here
             </summary>
-            <param name="characterBody"></param>
-            <param name="direction"></param>
-            <param name="onCharacter"></param>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
         </member>
-        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldWalk(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean)">
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldWalk(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
             <summary>
             The function for having The Donald walk
             </summary>
-            <param name="characterBody"></param>
-            <param name="direction"></param>
-            <param name="onCharacter"></param>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldJump(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldSideSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldUpSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldDownSpecial(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldBasic(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
+            <summary>
+            
+            </summary>
+            <param name="characterBody">The body of the character preforming this move</param>
+            <param name="direction">The direction that the character is facing</param>
+            <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+            where sometimes it should go to the player and sometimes to an enemy)</param>
+            <param name="world">The world that the move is taking place in</param>
         </member>
         <member name="T:SuperSmashPolls.Characters.Moves">
             <summary>
