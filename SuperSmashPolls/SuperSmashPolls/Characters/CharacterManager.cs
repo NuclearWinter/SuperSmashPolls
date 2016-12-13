@@ -432,6 +432,9 @@ namespace SuperSmashPolls.Characters {
 
             PreviousState = currentState;
 
+            MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
+                CharacterOrigin);
+
         }
 
         /// <summary>
