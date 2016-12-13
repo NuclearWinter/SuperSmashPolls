@@ -219,9 +219,7 @@ namespace SuperSmashPolls {
                 Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
                     "Load Game", false, EmptyUnit, true, true, MenuCommands.LoadSave));
 
-                Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
-                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
-
+ 
 /* 01 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
                 EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
 
@@ -263,9 +261,6 @@ namespace SuperSmashPolls {
                          "America. With a \nstrong background in technology \nand internet security, Clinton \nvows to " +
                          "improve personal \nfreedoms and bring America back \ntogether again. Will she become \nthe first "+
                          " woman president, or \nwill she need to wait for a third \nattempt?", false, EmptyUnit, false, false));
-
-                Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.7F)),
-                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
             /* 04 */
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.6F)), "Exit", false,
