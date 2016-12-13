@@ -54,7 +54,9 @@ namespace SuperSmashPolls.GameItemControl {
             Deaths            = 0;
             CollidesWith = collidesWith;
             HitboxCollidesWith = hitboxCollidesWith;
+#if COMPLEX_BODIES
             PlayerCharacter = new CharacterManager(CollidesWith, HitboxCollidesWith);
+#endif
             JustDied          = false;
         }
 

@@ -17,7 +17,7 @@ namespace SuperSmashPolls.Characters {
         private readonly Vector2 StandardJumpHeight = new Vector2(0, 60);
         private readonly Vector2 StandardWalkSpeed  = new Vector2(15, 0);
         private readonly Vector2 StandardPunchForce = new Vector2(10, 0);
-
+#if COMPLEX_BODIES
         /// <summary>
         /// The function to use for idle moves
         /// </summary>
@@ -122,6 +122,10 @@ namespace SuperSmashPolls.Characters {
                 I.ApplyForce(StandardPunchForce);
 
         }
+
+#else
+
+#endif
 
     }
 

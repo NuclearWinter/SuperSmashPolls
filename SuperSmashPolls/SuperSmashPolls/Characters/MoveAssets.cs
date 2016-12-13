@@ -87,16 +87,13 @@ namespace SuperSmashPolls.Characters {
         /// <param name="hitboxCollides">The categories of objects that these moves should collide with</param>
         public void ConstructBodies(World world, Category characterCollides, params Category[] hitboxCollides) {
 
-#if !PANIC_MODE
+#if COMPLEX_BODIES
             Animation.GenerateBodies(world, characterCollides);
 
             Category Result = Category.None;
 
             foreach (var I in hitboxCollides)
                 Result = Result | I;
-
-
-#if USE_HITBOXES
 
             HitboxBodies = new Body[HitboxVertices.Length];
 
@@ -108,12 +105,9 @@ namespace SuperSmashPolls.Characters {
                 HitboxBodies[I].CollidesWith = Result; //TODO test this
 
             }
-#endif
 
-#else   
+#else
             HitboxBodies = new Body[HitboxVertices.Length];
-
-
 #endif
 
         }
@@ -150,7 +144,6 @@ namespace SuperSmashPolls.Characters {
 
             int CurrentIndex = Animation.GetCurrentIndex();
 
-#if USE_HITBOXES
             HitboxBodies[CurrentIndex].Enabled  = true;
             HitboxBodies[CurrentIndex].Position = characterLocation;
 
@@ -159,7 +152,6 @@ namespace SuperSmashPolls.Characters {
             HitboxBodies[CurrentIndex].Enabled = false;
 
             if (onCharacter)
-#endif
                 AffectedBodies = new List<Body>() {Animation.Bodies[CurrentIndex]};
 
             //Animation.UpdateAnimation(characterLocation);

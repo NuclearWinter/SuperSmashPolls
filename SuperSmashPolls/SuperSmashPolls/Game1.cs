@@ -7,9 +7,6 @@
  #define DEBUG
  //#undef DEBUG
 
- #define OLD_CHARACTER
- #undef OLD_CHARACTER
-
  #define DEBUG_LEVELS
 
 using System;
@@ -364,8 +361,10 @@ namespace SuperSmashPolls {
 #if OLD_CHARACTER
             TheDonald = new Character(ref ScreenSize, ConvertUnits.ToDisplayUnits(new Vector2(1.88F, 0.6F)), 40, 0.5F,
                 0F, 500F, 10F, 1F, 1F, "TheDonald");
-#else
+#elif COMPLEX_BODIES
             TheDonald = new CharacterManager(50F, 0.5F, 0F, Category.None, Category.None, "TheDonald");
+#else
+            TheDonald = new CharacterManager(50, 0.5F, 0, "TheDonald");
 #endif
 
             base.Initialize();
@@ -401,8 +400,8 @@ namespace SuperSmashPolls {
 
             /************ The Donald Content Loading ************/
 #if OLD_CHARACTER
-
-#else
+    
+#elif COMPLEX_BODIES
 
             int ItemScale = (int)(ScreenSize/new Vector2(640, 360)).X;
 
@@ -438,7 +437,8 @@ namespace SuperSmashPolls {
 
             TheDonald.AddMoves(TheDonaldIdle, TheDonaldWalk, TheDonaldJump, TheDonaldSpecial,
                 TheDonaldSideSpecial, TheDonaldUpSpecial, TheDonaldDownSpecial, TheDonaldBasicAttack);
-
+#else
+    
 #endif
 
             /***** Add characters to character string pairs *****/
