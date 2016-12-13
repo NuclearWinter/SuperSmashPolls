@@ -72,7 +72,7 @@ namespace SuperSmashPolls {
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
         /** Levels for the player to play on */
-        private LevelHandler TempleRock, Temple, Space, FinalDestination, Debate;
+        private LevelHandler TempleRock, Temple, Space, FinalDestination, Debate, WhiteHouse;
         /* Manages graphics */
         private GraphicsDeviceManager Graphics;
         /* Used to draw multiple 2D textures at one time */
@@ -160,6 +160,9 @@ namespace SuperSmashPolls {
             Debate = new LevelHandler("Debate", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
                 new Vector2(8, 0), new Vector2(13.5F, 0));
 
+            WhiteHouse = new LevelHandler("Debate", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
+                new Vector2(8, 0), new Vector2(13.5F, 0));
+
             /************************************* Initialization for Menu things *************************************/
             //Some menus hold items for other things to make the menu system more compact, don't worry about it.
 
@@ -200,6 +203,11 @@ namespace SuperSmashPolls {
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.50F)), "Debate Room",
                                 false, EmptyUnit, true, true, MenuCommands.PlayDebate));
+
+                        Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
+                           new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.60F)), "White House",
+                               false, EmptyUnit, true, true, MenuCommands.PlayWhiteHouse));
+
 
             //This holds character selection for any amount of players
             Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(   
@@ -524,6 +532,20 @@ namespace SuperSmashPolls {
                     MetersV2(0, 156), MetersV2(640, 204)));
 
             }
+            /**************** Load White House ******************/
+            {
+                Texture2D WhiteHouseBackground = Content.Load<Texture2D>("WhiteHouse\\WhiteHouseBackground"),
+                          WhiteHousePlatform = Content.Load<Texture2D>("WhiteHouse\\WhiteHouseForeground");
+
+                Vector2 ObjectScale = new Vector2(ScreenSize.X / WhiteHouseBackground.Width,
+                    ScreenSize.Y / WhiteHouseBackground.Height);
+
+                WhiteHouse.SetBackground(WhiteHouseBackground, ObjectScale);
+
+                WhiteHouse.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(WhiteHousePlatform,
+                    MetersV2(0, 156), MetersV2(640, 204)));
+
+            }
 
             /************* Add levels to dictionary *************/
 
@@ -531,6 +553,7 @@ namespace SuperSmashPolls {
             LevelDictionary.Add("TempleRock", TempleRock);
             LevelDictionary.Add("FinalDestination", FinalDestination);
             LevelDictionary.Add("Debate Room", Debate);
+            LevelDictionary.Add("White House", WhiteHouse);
 
             /************* Load in game music  *************/
             CurrentGamemode.AddAudio(new AudioHandler(Content.Load<SoundEffect>("Music\\Hail to the Chief")));
@@ -571,6 +594,10 @@ namespace SuperSmashPolls {
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayDebate:
                             CurrentLevel = Debate;
+                            goto case MenuCommands.CharacterSelection;
+                        case MenuCommands.PlayWhiteHouse:
+                             CurrentLevel = WhiteHouse;
+                            goto case MenuCommands.CharacterSelection;
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayFinalDestination:
                             CurrentLevel = FinalDestination;
