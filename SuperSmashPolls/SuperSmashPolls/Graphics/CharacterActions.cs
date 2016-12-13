@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,19 +17,20 @@ namespace SuperSmashPolls.Graphics {
     /// Class responsible for handing animations of characters.
     /// </summary>
     public class CharacterAction {
-
+#if COMPLEX_BODIES
         /// <summary>Holds the generated bodies for this action</summary>
         public readonly Body[] Bodies;
         /// <summary>The origin to each body</summary>
         public readonly Vector2 BodyOrigin;
+                /// <summary>Tells if the bodies have been generated for this character</summary>
+        public bool BodiesGenerated;
+#endif
         /// <summary>The spritesheet to take a value from (can be just one image)</summary>
         public readonly Texture2D SpriteSheet;
         /// <summary>The amount of time (in seconds) that it takes to cycle through the sheet</summary>
         public readonly float PlayTime;
         /// <summary>The size of each item in the sheet (ie. 32-bit spritesheet is (32, 32)</summary>
         public readonly Point ImageSize;
-        /// <summary>Tells if the bodies have been generated for this character</summary>
-        public bool BodiesGenerated;
         /// <summary>The color to draw the image with, defaults to clear</summary>
         public Color DrawColor;
         /// <summary>The scale to use</summary>
@@ -49,6 +48,7 @@ namespace SuperSmashPolls.Graphics {
         /** The time that the animation was started */
         private DateTime StartedAnimation;
 
+#if COMPLEX_BODIES
         /// <summary>
         /// Constructor from an already constructed CharacterAction
         /// </summary>
@@ -61,44 +61,48 @@ namespace SuperSmashPolls.Graphics {
 
             PlayTime       = playTime;
             ImageSize      = imageSize;
+            Scale          = scale;
             SheetSize      = new Point(spriteSheet.Width / imageSize.X, spriteSheet.Height / imageSize.Y);
             SpriteSheet    = spriteSheet;
             AnimatedPoint  = new Point(0, 0);
             DrawColor      = Color.White;
             LastUpdateTime = DateTime.Now;
+
             Bodies         = new Body[SheetSize.X * SheetSize.Y];
             Array.Copy(bodies, Bodies, bodies.Length);
-            Scale          = scale;
             BodiesGenerated = true;
             BodyOrigin = CalculateOrigin(imageSize.X, imageSize.Y);
             StartedAnimation = DateTime.Now;
 
         }
+#endif
 
         /// <summary>
         /// Constructor from only imported items and constants
         /// </summary>
-        /// <param name="playTime">The amount of time (in mliliseconds) that it takes to loop through the entire sheet</param>
+        /// <param name="playTime">The amount of time (in milliseconds) that it takes to loop through the entire sheet</param>
         /// <param name="imageSize">The size of one image on the sheet (i.e. 32 bit sheet is 32 x 32)</param>
         /// <param name="spriteSheet">The texture of the sheet</param>
         /// <param name="scale"></param>
         public CharacterAction(float playTime, Point imageSize, Texture2D spriteSheet, int scale) {
-
-            StartedAnimation = DateTime.Now;
+#if COMPLEX_BODIES
             BodiesGenerated  = false;
-            LastUpdateTime   = DateTime.Now;
-            AnimatedPoint    = new Point(0, 0);
             SpriteSheet      = spriteSheet;
             BodyOrigin       = CalculateOrigin(imageSize.X, imageSize.Y);
+            Bodies           = new Body[SheetSize.X * SheetSize.Y];
+
+#endif
+            StartedAnimation = DateTime.Now;
+            LastUpdateTime   = DateTime.Now;
+            AnimatedPoint    = new Point(0, 0);
             DrawColor        = Color.White;
             ImageSize        = imageSize;
             SheetSize        = new Point(spriteSheet.Width / imageSize.X, spriteSheet.Height / imageSize.Y);
             PlayTime         = playTime;
-            Bodies           = new Body[SheetSize.X * SheetSize.Y];
             Scale            = scale;
-
         }
 
+#if COMPLEX_BODIES
         /// <summary>
         /// Generates the bodies for each of the pieces of the sheet.
         /// </summary>
@@ -167,17 +171,7 @@ namespace SuperSmashPolls.Graphics {
 
         }
 
-        /// <summary>
-        /// Gets the index of the current frame of the animation
-        /// </summary>
-        /// <returns></returns>
-        public int GetCurrentIndex() {
-
-            return AnimatedPoint.X*AnimatedPoint.Y;
-
-        }
-
-        /// <summary>
+                /// <summary>
         /// Gets the first frame's body
         /// </summary>
         /// <returns></returns>
@@ -225,6 +219,40 @@ namespace SuperSmashPolls.Graphics {
         }
 
         /// <summary>
+        /// Gets the position of the character body
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetPosition() {
+
+            return Bodies[GetCurrentIndex()].Position;
+
+        }
+
+        /// <summary>
+        /// Calculates the origin of a body
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private static Vector2 CalculateOrigin(float x, float y) {
+
+            return (new Vector2(x, y)) / 2;
+
+        }
+
+#endif
+
+        /// <summary>
+        /// Gets the index of the current frame of the animation
+        /// </summary>
+        /// <returns></returns>
+        public int GetCurrentIndex() {
+
+            return AnimatedPoint.X*AnimatedPoint.Y;
+
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -238,9 +266,15 @@ namespace SuperSmashPolls.Graphics {
         /// Updates the animation
         /// </summary>
 	    /// <param name="position">The position on screen to draw the image</param>
-		/// <returns>The body related to the current action</returns>
+		/// <returns>The body related to the current action (if bodies are enabled)</returns>
 		/// <remarks>The body returned from here must be enabled if it is to collide with anything</remarks>
-        public Body UpdateAnimation(Vector2 position) {
+        public
+#if COMPLEX_BODIES
+            Body
+#else
+            void
+#endif
+            UpdateAnimation(Vector2 position) {
 
             if ((DateTime.Now - StartedAnimation).TotalMilliseconds > PlayTime)
                 StartedAnimation = DateTime.Now;
@@ -268,8 +302,9 @@ namespace SuperSmashPolls.Graphics {
             Source      = new Rectangle(ImageSize.X * AnimatedPoint.X, ImageSize.Y * AnimatedPoint.Y, ImageSize.X,
                 ImageSize.Y);
             Destination = new Rectangle((int)position.X, (int)position.Y, ImageSize.X * Scale, ImageSize.Y * Scale);
-
+#if COMPLEX_BODIES
             return Bodies[AnimatedPoint.X*AnimatedPoint.Y];
+#endif
 
         }
 
@@ -284,28 +319,6 @@ namespace SuperSmashPolls.Graphics {
             SpriteEffects Effect = (sidewaysVelocity < 0) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
             batch.Draw(SpriteSheet, Destination, Source, DrawColor, 0, Vector2.Zero, Effect, 0F);
-
-        }
-
-        /// <summary>
-        /// Gets the position of the character body
-        /// </summary>
-        /// <returns></returns>
-        public Vector2 GetPosition() {
-
-            return Bodies[GetCurrentIndex()].Position;
-
-        }
-
-        /// <summary>
-        /// Calculates the origin of a body
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        private static Vector2 CalculateOrigin(float x, float y) {
-
-            return (new Vector2(x, y)) / 2;
 
         }
 

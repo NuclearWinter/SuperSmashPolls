@@ -25,7 +25,6 @@ namespace SuperSmashPolls.Levels {
     /// This class is responsible for handling the storage and creation of static bodies to use in the game world.
     /// </summary>
     public class LevelHandler {
-
         /** The bodies of this level (Body, texture, size (in meters)) */
         private readonly List<Tuple<Body, Texture2D, Vector2>> LevelBody;
         /** The background for this level */

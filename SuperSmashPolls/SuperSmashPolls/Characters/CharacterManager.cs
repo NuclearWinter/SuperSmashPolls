@@ -4,10 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using FarseerPhysics;
+using FarseerPhysics.Common;
+using FarseerPhysics.Common.Decomposition;
+using FarseerPhysics.Common.TextureTools;
 using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SuperSmashPolls.Graphics;
 
 namespace SuperSmashPolls.Characters {
 
@@ -16,6 +23,15 @@ namespace SuperSmashPolls.Characters {
     /// </summary>
     public class CharacterManager {
 
+        /// <summary>The index of various moves to be used in their arrays</summary>
+        public const int IdleIndex = 0,
+            WalkIndex              = 1,
+            JumpIndex              = 2,
+            SpecialIndex           = 3,
+            SideSpecialIndex       = 4,
+            UpSpecialIndex         = 5,
+            DownSpecialIndex       = 6,
+            BasicIndex             = 7;
         /// <summary> This characters name</summary>
         public string Name;
         /** The mass of the character (kg) */
@@ -24,12 +40,37 @@ namespace SuperSmashPolls.Characters {
         protected readonly float Friction;
         /** The restitution of the character (how bouncy they are) */
         protected readonly float Restitution;
+#if COMPLEX_BODIES
         /** The collision category for this character's bodies */
         protected Category CollisionCategory;
         /** The category for hitboxes */
         protected Category HitboxCategory;
         /** The moves for this character */
         protected Moves CharacterMoves;
+#else
+        /// <summary>The function signiture for moves</summary>
+        public delegate void SimpleMove(Body characterBody, bool onCharacter);
+        /// <summary></summary>
+        protected Body CharacterBody;
+        /** The vertices created from the hitbox texture that are used to construct the body of the character */
+        private List<Vertices> CharacterVertices;
+        /** The CharacterAction (texture handler) for each of the character moves */
+        private CharacterAction[] MoveTextures;
+        /** The audio for each of the characters moves */
+        private AudioHandler[] MoveAudio;
+        /** The functions to run when a move is done */
+        private SimpleMove[] MoveFunctions;
+        /** The number of moves that have been implimented for this character */
+        private int ImplimentedMoves;
+        /** The scale of textures */
+        private int Scale;
+        /** The data so that a new class can be constructed from this one (easily) */
+        private Tuple<Texture2D, float, Point, SoundEffect, SimpleMove>[] MoveData;
+        /** The texture of the body */
+        private Texture2D BodyTexture;
+        /** Whether or not the character is allow to do another move */
+        private bool CanMove;
+#endif
         /** This is the amount the joystick must be over for it to register as intentional */
         private const float Register = 0.2F;
         /** The direction that the character is moving */
@@ -42,6 +83,8 @@ namespace SuperSmashPolls.Characters {
         public CharacterManager() {
             Name = "blank";
         }
+
+#if COMPLEX_BODIES
 
         /// <summary>
         /// </summary>
@@ -75,25 +118,24 @@ namespace SuperSmashPolls.Characters {
 
         }
 
+#else
         /// <summary>
-        /// Copies data from one CharacterManager to another
+        /// This is a constructor
         /// </summary>
-        /// <param name="obj">The other character to copy from</param>
-        /// <typeparam name="CharacterManager">The class to manage character data</typeparam>
-        /// <returns>A copy of obj</returns>
-//        public static CharacterManager DeepClone<CharacterManager>(CharacterManager obj) {
-//
-//            using (var memStream = new MemoryStream()) {
-//                
-//                var formatter = new BinaryFormatter();
-//                formatter.Serialize(memStream, obj);
-//                memStream.Position = 0;
-//
-//                return (CharacterManager) formatter.Deserialize(memStream);
-//
-//            }
-//
-//        }
+        /// <param name="mass"></param>
+        /// <param name="friction"></param>
+        /// <param name="restitution"></param>
+        /// <param name="name"></param>
+        public CharacterManager(float mass, float friction, float restitution, string name) {
+            Mass = mass;
+            Friction = friction;
+            Restitution = restitution;
+            Name = name;
+            CanMove = false;
+        }
+#endif
+
+#if COMPLEX_BODIES
 
         public CharacterManager Clone() {
 
@@ -196,7 +238,160 @@ namespace SuperSmashPolls.Characters {
             CharacterMoves.DrawMove(spriteBatch);
 
         }
+#else
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bodyTexture"></param>
+        /// <param name="scale"></param>
+        /// <param name="moveData"></param>
+        public void LoadCharacterContent(Texture2D bodyTexture, int scale, 
+            params Tuple<Texture2D, float, Point, SoundEffect, SimpleMove>[] moveData) {
 
+            CharacterVertices = CreateVerticesFromTexture(bodyTexture, scale);
+            ImplimentedMoves  = moveData.Length;
+            MoveFunctions     = new SimpleMove[ImplimentedMoves];
+            MoveTextures      = new CharacterAction[ImplimentedMoves];
+            MoveAudio         = new AudioHandler[ImplimentedMoves];
+            Scale = scale;
+
+            for (int i = 0; i < ImplimentedMoves; ++i) {
+                MoveFunctions[i] = moveData[i].Item5;
+                MoveTextures[i]  = new CharacterAction(moveData[i].Item2, moveData[i].Item3, moveData[i].Item1, Scale);
+                MoveAudio[i]     = new AudioHandler(moveData[i].Item4);
+            }
+
+        }
+
+        /// <summary>
+        /// Makes a new CharacterManager from this one so that we can store information in one, and play in another
+        /// </summary>
+        /// <returns>A CharacterManager with the same attributes as this one</returns>
+        public CharacterManager Clone() {
+            
+            CharacterManager Clone = new CharacterManager(Mass, Friction, Restitution, Name);
+            Clone.LoadCharacterContent(BodyTexture, Scale, MoveData);
+
+            return Clone;
+
+        }
+
+        /// <summary>
+        /// Creates the body of the character in the game's world for use during a match. This must be called before the
+        /// character is updates.
+        /// </summary>
+        /// <param name="gameWorld">The world to put the character in</param>
+        /// <param name="position">The position to put the character in</param>
+        public void SetupCharacter(World gameWorld, Vector2 position) {
+
+            CharacterBody = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
+
+        }
+
+        /// <summary>
+        /// Gets the position of the character in meters
+        /// </summary>
+        /// <returns></returns>
+        public Vector2 GetPosition() {
+
+            return CharacterBody.Position;
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        public void Respawn(Vector2 position) {
+
+            CharacterBody.Position = position;
+            CharacterBody.ResetDynamics();
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="currentState"></param>
+        public void UpdateCharacter(GamePadState currentState) {
+
+            bool SideMovement = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
+            bool DownMovement = currentState.ThumbSticks.Left.Y <= Register;
+            bool UpMovement = currentState.ThumbSticks.Left.Y >= Register;
+            bool SpecialAttack = Math.Abs(currentState.Triggers.Left) >= Register;
+            bool Jump = currentState.IsButtonDown(Buttons.A);
+            bool BasicAttack = currentState.IsButtonDown(Buttons.B);
+
+            int DesiredMove = IdleIndex;
+
+            if (SpecialAttack)
+                if (SideMovement && IsImplimented(SpecialIndex))
+                    DesiredMove = Moves.SideSpecialIndex;
+                else if (DownMovement && IsImplimented(DownSpecialIndex))
+                    DesiredMove = Moves.DownSpecialIndex;
+                else if (UpMovement && IsImplimented(UpSpecialIndex))
+                    DesiredMove = Moves.UpSpecialIndex;
+                else if (IsImplimented(SpecialIndex))
+                    DesiredMove = Moves.SpecialIndex;
+            else if (SideMovement && IsImplimented(WalkIndex))
+                DesiredMove = Moves.WalkIndex;
+            else if (Jump || UpMovement && IsImplimented(JumpIndex))
+                DesiredMove = Moves.JumpIndex;
+            else if (BasicAttack && IsImplimented(BasicIndex))
+                DesiredMove = Moves.BasicIndex;
+
+            Direction = (DesiredMove == Moves.IdleIndex || DesiredMove == Moves.JumpIndex)
+                ? Direction : currentState.ThumbSticks.Left.X;
+
+            if (!CanMove)
+                return;
+
+            switch (DesiredMove) {
+                
+            }
+
+        }
+
+        /// <summary>
+        /// Creates a list of vertices from a texture.
+        /// </summary>
+        /// <param name="texture">The texture to make a body from</param>
+        /// <param name="scale">The scale of the texture</param>
+        /// <param name="algorithm">The decomposition algorithm to use</param>
+        /// <remarks> Available algorithms to use are Bayazit, Dealuny, Earclip, Flipcode, Seidel, SeidelTrapazoid</remarks>
+        /// @warning In order for this to work the input must have a transparent background. I highly reccomend that you
+        /// only use this with PNGs as that is what I have tested and I know they work. This will only produce a bosy as
+        /// clean as the texture you give it, so avoid partically transparent areas and little edges.
+        private List<Vertices> CreateVerticesFromTexture(Texture2D texture, float scale, 
+            TriangulationAlgorithm algorithm = TriangulationAlgorithm.Earclip) {
+
+            int SpriteSheetSize = texture.Width * texture.Height;
+            uint[] TextureData  = new uint[SpriteSheetSize]; //Array to copy texture info into
+            texture.GetData(TextureData); //Gets which pixels of the texture are actually filled
+
+            Vertices vertices         = TextureConverter.DetectVertices(TextureData, texture.Width);
+            List<Vertices> VertexList = Triangulate.ConvexPartition(vertices, algorithm);
+
+            Vector2 VertScale = new Vector2(ConvertUnits.ToSimUnits(scale));
+
+            foreach (Vertices vert in VertexList)
+                vert.Scale(ref VertScale); //Scales the vertices to match the size we specified
+
+            Vector2 Centroid = -vertices.GetCentroid();
+            vertices.Translate(ref Centroid);
+            //basketOrigin = -centroid;
+
+            return VertexList;
+
+        }
+
+        private bool IsImplimented(int move) {
+
+            return ImplimentedMoves > move;
+
+        }
+
+#endif
     }
 
 }
