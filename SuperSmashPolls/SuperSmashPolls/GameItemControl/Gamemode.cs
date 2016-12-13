@@ -146,7 +146,7 @@ namespace SuperSmashPolls.GameItemControl {
         }
 
         /// <summary>
-        /// 
+        /// TODO impliment a time limit mode
         /// </summary>
         /// <returns></returns>
         private bool TimeLimit() {

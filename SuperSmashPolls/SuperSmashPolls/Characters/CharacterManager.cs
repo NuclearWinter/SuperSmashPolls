@@ -249,6 +249,8 @@ namespace SuperSmashPolls.Characters {
         /// <param name="bodyTexture"></param>
         /// <param name="scale"></param>
         /// <param name="moveData"></param>
+        /// <remarks>Load moves in this order: IdleIndex, WalkIndex, JumpIndex, SpecialIndex, SideSpecialIndex, 
+        /// UpSpecialIndex, DownSpecialIndex, BasicIndex</remarks>
         public void LoadCharacterContent(Texture2D bodyTexture, int scale, 
             params Tuple<float, Point, Texture2D, SoundEffect, SimpleMove>[] moveData) {
 

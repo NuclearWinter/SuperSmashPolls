@@ -109,6 +109,8 @@
             <param name="bodyTexture"></param>
             <param name="scale"></param>
             <param name="moveData"></param>
+            <remarks>Load moves in this order: IdleIndex, WalkIndex, JumpIndex, SpecialIndex, SideSpecialIndex, 
+            UpSpecialIndex, DownSpecialIndex, BasicIndex</remarks>
         </member>
         <member name="M:SuperSmashPolls.Characters.CharacterManager.Clone">
             <summary>
@@ -319,7 +321,7 @@
         </member>
         <member name="M:SuperSmashPolls.GameItemControl.Gamemode.TimeLimit">
             <summary>
-            
+            TODO impliment a time limit mode
             </summary>
             <returns></returns>
         </member>

@@ -56,3 +56,5 @@ C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPoll
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Microsoft.Xna.Framework.Input.Touch.xml
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\obj\x86\Debug\SuperSmashPolls.pdb
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_icon.xnb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_special_sound.xnb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_up_special_sound.xnb

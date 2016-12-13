@@ -132,7 +132,12 @@ namespace SuperSmashPolls.Characters {
 
         public void TheDonaldWalk(Body characterBody, float direction, bool onCharacter) {
 
-            characterBody.ApplyForce(StandardWalkSpeed * new Vector2(direction >= 0 ? 1 : -1, 0));
+            Vector2 WalkForce = StandardWalkSpeed*new Vector2(direction >= 0 ? 1 : -1, 0);
+
+            if ((WalkForce.X < 0 ? -1 : 1) != (characterBody.LinearVelocity.X < 0 ? -1 : 1))
+                characterBody.LinearVelocity = Vector2.Zero;
+
+            characterBody.ApplyForce(WalkForce);
 
         }
 
@@ -147,6 +152,31 @@ namespace SuperSmashPolls.Characters {
 
 
         }
+
+        public void TheDonaldUpSpecial(Body characterBody, float direction, bool onCharacter) {
+            
+
+
+        }
+
+        public void TheDonaldSideSpecial(Body characterBody, float direction, bool onCharacter) {
+            
+
+
+        }
+
+        public void TheDonaldDownSpecial(Body characterBody, float direction, bool onCharacter) {
+            
+
+
+        }
+
+        public void TheDonaldBasic(Body characterBody, float direction, bool onCharacter) {
+            
+
+
+        }
+
 #endif
 
     }
