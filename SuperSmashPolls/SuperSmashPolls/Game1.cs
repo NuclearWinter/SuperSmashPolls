@@ -450,6 +450,7 @@ namespace SuperSmashPolls {
                     Content.Load<Texture2D>("Donald\\donald_upmash"), 
                     Content.Load<SoundEffect>("Donald\\donald_up_special_sound"), 
                     DefinedMoves.TheDonaldUpSpecial),
+
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1500, new Point(22, 30),
                     Content.Load<Texture2D>("Donald\\donald_down_smash"),
                     null, 
@@ -582,7 +583,7 @@ namespace SuperSmashPolls {
             /**************** Load White House ******************/
             {
                 Texture2D WhiteHouseBackground = Content.Load<Texture2D>("WhiteHouse\\WhiteHouseBackground"),
-                          WhiteHousePlatform = Content.Load<Texture2D>("WhiteHouse\\WhiteHouseForeground");
+                          WhiteHousePlatform   = Content.Load<Texture2D>("WhiteHouse\\WhiteHouseForeground");
 
                 Vector2 ObjectScale = new Vector2(ScreenSize.X / WhiteHouseBackground.Width,
                     ScreenSize.Y / WhiteHouseBackground.Height);
@@ -590,7 +591,7 @@ namespace SuperSmashPolls {
                 WhiteHouse.SetBackground(WhiteHouseBackground, ObjectScale);
 
                 WhiteHouse.AssignToWorld(new Tuple<Texture2D, Vector2, Vector2>(WhiteHousePlatform,
-                    MetersV2(0, 156), MetersV2(640, 204)));
+                    MetersV2(0, 312), MetersV2(640, 204)));
 
             }
 
@@ -602,7 +603,7 @@ namespace SuperSmashPolls {
             LevelDictionary.Add("FinalDestination", FinalDestination);
 #endif
             LevelDictionary.Add(DebateSystemName, Debate);
-            LevelDictionary.Add("White House", WhiteHouse);
+            LevelDictionary.Add("WhiteHouse", WhiteHouse);
 
             /************* Load in game music  *************/
             CurrentGamemode.AddAudio(new AudioHandler(Content.Load<SoundEffect>("Music\\Hail to the Chief")));
