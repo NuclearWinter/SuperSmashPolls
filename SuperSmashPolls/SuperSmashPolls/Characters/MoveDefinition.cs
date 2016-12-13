@@ -309,7 +309,7 @@ namespace SuperSmashPolls.Characters {
         /// <param name="world">The world that the move is taking place in</param>
         public void HillarySpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
-            
+            TheDonaldSpecial(characterBody, direction, onCharacter, world);
 
         }
 

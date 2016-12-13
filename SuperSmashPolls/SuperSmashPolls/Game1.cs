@@ -424,20 +424,19 @@ namespace SuperSmashPolls {
             TheDonald.AddMoves(TheDonaldIdle, TheDonaldWalk, TheDonaldJump, TheDonaldSpecial,
                 TheDonaldSideSpecial, TheDonaldUpSpecial, TheDonaldDownSpecial, TheDonaldBasicAttack);
 #else
-            var PlaceholdderAudio = Content.Load<SoundEffect>("Donald\\donald_basic_sound");
 
             TheDonald.LoadCharacterContent(Content.Load<Texture2D>("Donald\\donald_hitbox"), 1, 
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(21, 27),
                     Content.Load<Texture2D>("Donald\\donald_stand"),
-                    null, 
+                    null, //Don't need sound for standing
                     DefinedMoves.Idle), 
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(23, 29),
                     Content.Load<Texture2D>("Donald\\donald_walk"),
-                    null, 
+                    null, //Don't need sound for walking
                     DefinedMoves.TheDonaldWalk),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(19, 26),
                     Content.Load<Texture2D>("Donald\\donald_jump"),
-                    PlaceholdderAudio, 
+                    null, //Don't need sound for jumping
                     DefinedMoves.TheDonaldJump),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(26, 26),
                     Content.Load<Texture2D>("Donald\\donald_punch"),
@@ -445,15 +444,21 @@ namespace SuperSmashPolls {
                     DefinedMoves.TheDonaldSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(23, 29),
                     Content.Load<Texture2D>("Donald\\donald_side_smash"),
-                    PlaceholdderAudio, 
+                    null, 
                     DefinedMoves.TheDonaldSideSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(26, 33),
                     Content.Load<Texture2D>("Donald\\donald_upmash"), 
                     Content.Load<SoundEffect>("Donald\\donald_up_special_sound"), 
                     DefinedMoves.TheDonaldUpSpecial),
+<<<<<<< HEAD
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1500, new Point(22, 30),
                     Content.Load<Texture2D>("Donald\\donald_down_smash"),
                     PlaceholdderAudio, 
+=======
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(21, 27),
+                    Content.Load<Texture2D>("Donald\\donald_stand"),
+                    null, 
+>>>>>>> origin/master
                     DefinedMoves.TheDonaldDownSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(26, 26),
                     Content.Load<Texture2D>("Donald\\donald_punch"), 
@@ -465,35 +470,35 @@ namespace SuperSmashPolls {
             Hillary.LoadCharacterContent(Content.Load<Texture2D>("Hillary\\hill_hitbox"), 1,
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(17, 25),
                     Content.Load<Texture2D>("Hillary\\hill_stand"),
-                    PlaceholdderAudio,
+                    null, //Don't need sound for standing
                     DefinedMoves.Idle),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(17, 26),
                     Content.Load<Texture2D>("Hillary\\hill_walk"),
-                    PlaceholdderAudio,
+                    null, //Don't need sound for walking
                     DefinedMoves.HillaryWalk),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(17, 29),
                     Content.Load<Texture2D>("Hillary\\hill_jump"),
-                    PlaceholdderAudio,
+                    null, //Don't need sound for jumping
                     DefinedMoves.HillaryJump),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(17, 25),
                     Content.Load<Texture2D>("Hillary\\hill_special"),
-                    Content.Load<SoundEffect>("Donald\\donald_special_sound"),
+                    null,
                     DefinedMoves.HillarySpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(26, 25),
                     Content.Load<Texture2D>("Hillary\\hill_side_smash"),
-                    PlaceholdderAudio,
+                    null,
                     DefinedMoves.HillarySideSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(24, 30),
                     Content.Load<Texture2D>("Hillary\\hill_up_smash"),
-                    Content.Load<SoundEffect>("Donald\\donald_up_special_sound"),
+                    null,
                     DefinedMoves.HillaryUpSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(17, 29),
                     Content.Load<Texture2D>("Hillary\\hill_jump"),
-                    PlaceholdderAudio,
+                    null,
                     DefinedMoves.HillaryDownSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(24, 200/8),
                     Content.Load<Texture2D>("Hillary\\hill_punch"),
-                    Content.Load<SoundEffect>("Donald\\donald_basic_sound"),
+                    null,
                     DefinedMoves.HillaryBasic));
 
 #endif
@@ -685,6 +690,7 @@ namespace SuperSmashPolls {
 
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
                             CurrentGamemode.GameOver        = false;
+                            CurrentGamemode.MusicPlayed     = false;
                             break;
                         case MenuCommands.BackToMainMenu:
                             ResetPlayerStats();
