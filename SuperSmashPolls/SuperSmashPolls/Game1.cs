@@ -77,7 +77,11 @@ namespace SuperSmashPolls {
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
         /** Levels for the player to play on */
-        private LevelHandler TempleRock, Temple, Space, FinalDestination, Debate, WhiteHouse;
+        private LevelHandler TempleRock, Temple, Space,
+#if MEMES
+            FinalDestination,
+#endif
+            Debate, WhiteHouse;
         /* Manages graphics */
         private GraphicsDeviceManager Graphics;
         /* Used to draw multiple 2D textures at one time */
@@ -158,10 +162,10 @@ namespace SuperSmashPolls {
 
             Temple = new LevelHandler("Temple", new Vector2(2.5F, 7.21F), new Vector2(9.2F, 5.3F),
                 new Vector2(16.5F, 7.21F), new Vector2(20.8F, 7.6F), new Vector2(21.5F, 8.1F));
-
+#if MEMES
             FinalDestination = new LevelHandler("FinalDestination", Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
                 new Vector2(8, 0), new Vector2(13.5F, 0));
-
+#endif
             Debate = new LevelHandler(DebateSystemName, Vector2.Zero, new Vector2(4, 0), new Vector2(6, 0),
                 new Vector2(8, 0), new Vector2(13.5F, 0));
 
@@ -199,11 +203,11 @@ namespace SuperSmashPolls {
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)), "Temple Rock", false,
                                 EmptyUnit, true, true, MenuCommands.PlayTempleRock));
-
-                        Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
+#if MEMES
+            Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Final Destination", 
                                 false, EmptyUnit, true, true, MenuCommands.PlayFinalDestination));
-           
+#endif
 
                         Menu.ContainedItems[LocalGameMenu].ContainedItems[0].ContainedItems[1].AddItem(
                             new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.50F)), "Debate Room",
@@ -548,7 +552,7 @@ namespace SuperSmashPolls {
                 new Tuple<Texture2D, Vector2, Vector2>(TempleTop,    MetersV2(185, 37),  MetersV2(132, 45)));
 
             /************* Load Final Destination ***************/
-
+#if MEMES
             {
 
                 Texture2D FinalPlatform = Content.Load<Texture2D>("FinalDestination\\FinalPlatform"),
@@ -563,7 +567,7 @@ namespace SuperSmashPolls {
                     MetersV2(218, 336)/ObjectScale, MetersV2(658, 243)/ObjectScale));
 
             }
-
+#endif
             /**************** Load Debate Room ******************/
 
             {
@@ -599,7 +603,9 @@ namespace SuperSmashPolls {
 
             LevelDictionary.Add("Temple",     Temple);
             LevelDictionary.Add("TempleRock", TempleRock);
+#if MEMES
             LevelDictionary.Add("FinalDestination", FinalDestination);
+#endif
             LevelDictionary.Add(DebateSystemName, Debate);
             LevelDictionary.Add("White House", WhiteHouse);
 
@@ -647,9 +653,13 @@ namespace SuperSmashPolls {
                              CurrentLevel = WhiteHouse;
                             goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayFinalDestination:
+#if MEMES
                             CurrentLevel = FinalDestination;
                             goto case MenuCommands.CharacterSelection;
-                        case MenuCommands.OnePlayer:
+#else
+                            goto case MenuCommands.PlayDebate;
+#endif
+                            case MenuCommands.OnePlayer:
                             NumPlayers = 1;
                             Menu.ContainedItems[0].ContainedItems[0].DrawDown = 1;
                             break;
