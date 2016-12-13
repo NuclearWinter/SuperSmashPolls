@@ -347,7 +347,7 @@ namespace SuperSmashPolls.Characters {
             MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
                                           CharacterOrigin);
 
-            if (CurrentMove != IdleIndex && CurrentMove != WalkIndex && CurrentMove != JumpIndex)
+            if (CurrentMove != IdleIndex && CurrentMove != WalkIndex)
                 if (!MoveTextures[CurrentMove].AnimationAtEnd())
                     return;
 
@@ -383,13 +383,7 @@ namespace SuperSmashPolls.Characters {
                 DesiredMove = IdleIndex;
             }
 
-            Direction = (DesiredMove == Moves.JumpIndex ||
-                         DesiredMove == Moves.WalkIndex) && CurrentMove != Moves.IdleIndex &&
-                         CurrentMove != Moves.SpecialIndex &&
-                        CurrentMove != Moves.DownSpecialIndex && CurrentMove != Moves.BasicIndex &&
-                        CurrentMove != Moves.SideSpecialIndex && CurrentMove != Moves.UpSpecialIndex
-                ? currentState.ThumbSticks.Left.X
-                : Direction;
+            Direction = DesiredMove == Moves.WalkIndex ? currentState.ThumbSticks.Left.X : Direction;
 
             switch (DesiredMove) {
                 case IdleIndex:
