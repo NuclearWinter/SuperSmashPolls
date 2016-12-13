@@ -2,13 +2,14 @@
  * This game is now dependent on the Farseer Physics Engine.
  * For information see http://farseerphysics.codeplex.com/
  * @author (For all textures) Joe Brooksbank
+ * @note The DEBUG preprocessor enables various debugging views
+ * @note The DEBUG_LEVELS preprocessor enables debugging specific to levels
+ * @note The OLD_CHARACTER preprocessor enables use of the old (and very deprecated) Character class
+ * @note The COMPLEX_BODIES preprocessor enables an experimental (and very slow) system for hitboxes and bodies where 
+ * each texture in a spritesheet has its own body (for it getting hit) and hitbox body (for it hitting stuff). Don't
+ * expect more than 2 FPS with this
+ * @note The MEMES preprocessor enables the map Final Destination, c4u53 m3m35 m8
  **********************************************************************************************************************/
-
- #define DEBUG
- //#undef DEBUG
-
- #define DEBUG_LEVELS
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +41,6 @@ namespace SuperSmashPolls {
             ScoreScreen,
             LoadSave,
             SaveGame,
-            EndgameScreen //Shows rankings of the match (win/loss)
 
         };
 
@@ -50,17 +50,17 @@ namespace SuperSmashPolls {
         private const string SaveLocation     = "C:\\Users\\Public\\SmashPollsSave.txt";
         /** The name used for the debate level with system events (live saving and loading) */
         private const string DebateSystemName = "DebateRoom";
-        /* The total size of the screen */
+        /** The total size of the screen */
         private static Vector2 ScreenSize;
-        /* The most basic Functioning WorldUnit */
+        /** The most basic Functioning WorldUnit */
         private readonly WorldUnit EmptyUnit;
-        /* The scale of how many pixels are equal to one meter */
+        /** The scale of how many pixels are equal to one meter */
         private readonly float PixelToMeterScale;
         /** The moves for all character */
         private readonly MoveDefinition DefinedMoves;
-        /* Holds levels for matching from a save and for selection */
+        /** Holds levels for matching from a save and for selection */
         private readonly Dictionary<string, LevelHandler> LevelDictionary;
-        /* Holds characters for matching from a save and for selection TODO change to Dictionary */
+        /** Holds characters for matching from a save and for selection TODO change to Dictionary */
         private readonly Dictionary<string, CharacterManager> CharacterStringPairs;
         /** The gamemode for this game */
         private Gamemode CurrentGamemode;
@@ -82,25 +82,25 @@ namespace SuperSmashPolls {
             FinalDestination,
 #endif
             Debate, WhiteHouse;
-        /* Manages graphics */
+        /** Manages graphics */
         private GraphicsDeviceManager Graphics;
-        /* Used to draw multiple 2D textures at one time */
+        /** Used to draw multiple 2D textures at one time */
         private SpriteBatch Batch;
-        /* A basic font to use for essentially everything in the game */
+        /** A basic font to use for essentially everything in the game */
         private SpriteFont GameFont;
-        /* The font used for the title */
+        /** The font used for the title */
         private SpriteFont TitleFont;
-        /* A smaller version of the titlefont */
+        /** A smaller version of the titlefont */
         private SpriteFont TitleFontSmall;
-        /* The center of the screen */
+        /** The center of the screen */
         private Vector2 ScreenCenter;
-        /* Menu system for the game to use */
+        /** Menu system for the game to use */
         private MenuItem Menu;
-        /* The last button pressed during menu updates */
+        /** The last button pressed during menu updates */
         private GamePadState LastPressed;
         /** The player's in this game */
         private PlayerClass PlayerOne, PlayerTwo, PlayerThree, PlayerFour;
-        /* The number of players in the game */
+        /** The number of players in the game */
         private int NumPlayers;
         /** Variable to hold the state of the game */
         private GameState State = GameState.Menu;
@@ -113,7 +113,6 @@ namespace SuperSmashPolls {
 
             /* !!! The size of the screen for the game !!! (this should be saved in options) */
             ScreenSize = new Vector2(640, 360);
-            //ScreenSize = new Vector2(1920, 1080);
 
             LevelDictionary      = new Dictionary<string, LevelHandler>();
             CharacterStringPairs = new Dictionary<string, CharacterManager>();
@@ -211,7 +210,6 @@ namespace SuperSmashPolls {
                            new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.50F)), "White House",
                                false, EmptyUnit, true, true, MenuCommands.PlayWhiteHouse));
 
-
             //This holds character selection for any amount of players
             Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(   
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
@@ -306,9 +304,9 @@ namespace SuperSmashPolls {
                 Menu.ContainedItems[0].ContainedItems[0].ContainedItems[0].AddItem(
                     new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.40F)), "Main Menu", false,
                         EmptyUnit, true, true, MenuCommands.BackToMainMenu));
-
-            /******************************************** Category Setup **********************************************/
 #if COMPLEX_BODIES
+            /******************************************** Category Setup **********************************************/
+
             Category PlayerOneCat = Category.Cat1,
                 PlayerTwoCat      = Category.Cat2,
                 PlayerThreeCat    = Category.Cat3,
@@ -318,7 +316,6 @@ namespace SuperSmashPolls {
                 PlayerThreeHitbox = Xor(PlayerOneCat, PlayerTwoCat, PlayerFourCat),
                 PlayerFourHitbox  = Xor(PlayerOneCat, PlayerTwoCat, PlayerThreeCat);
 #endif
-
             /************************************** Initialization for Players ****************************************/
 #if COMPLEX_BODIES
             PlayerOne   = new PlayerClass(PlayerIndex.One, Xor(Category.All, PlayerOneCat), PlayerOneHitbox);
@@ -326,7 +323,7 @@ namespace SuperSmashPolls {
             PlayerThree = new PlayerClass(PlayerIndex.Three, Xor(Category.All, PlayerThreeCat), PlayerThreeHitbox);
             PlayerFour  = new PlayerClass(PlayerIndex.Four, Xor(Category.All, PlayerFourCat), PlayerFourHitbox);
 #else
-            PlayerOne   = new PlayerClass(PlayerIndex.One);
+            PlayerOne = new PlayerClass(PlayerIndex.One);
             PlayerTwo   = new PlayerClass(PlayerIndex.Two);
             PlayerThree = new PlayerClass(PlayerIndex.Three);
             PlayerFour  = new PlayerClass(PlayerIndex.Four);
@@ -334,10 +331,10 @@ namespace SuperSmashPolls {
 
             /************************************* Initialization for Gamemode ****************************************/
 
-            CurrentGamemode = new Gamemode();
-
-            CurrentGamemode.CurrentMode = Gamemode.Mode.Stock; //Used for debugging before menu is implimented
-            CurrentGamemode.Stock = 5;
+            CurrentGamemode = new Gamemode {
+                CurrentMode = Gamemode.Mode.Stock,
+                Stock = 5
+            };
 
             /************************************* Initialization for Characters **************************************/
 
@@ -376,6 +373,7 @@ namespace SuperSmashPolls {
             } catch (Exception e) {
                 
                 Console.WriteLine(e.Message);
+                Console.WriteLine("Please install the font 8-BIT WONDER for the full Super Smash Polls experience");
 
                 TitleFont      = GameFont; //In case the font 8-Bit wonder isn't installed
                 TitleFontSmall = GameFont;
@@ -544,9 +542,9 @@ namespace SuperSmashPolls {
                 new Tuple<Texture2D, Vector2, Vector2>(TempleMiddle, MetersV2(181, 140), MetersV2(146, 74)),
                 new Tuple<Texture2D, Vector2, Vector2>(TempleRight,  MetersV2(309, 176), MetersV2(324, 137)),
                 new Tuple<Texture2D, Vector2, Vector2>(TempleTop,    MetersV2(185, 37),  MetersV2(132, 45)));
-
-            /************* Load Final Destination ***************/
 #if MEMES
+            /************* Load Final Destination ***************/
+
             {
 
                 Texture2D FinalPlatform = Content.Load<Texture2D>("FinalDestination\\FinalPlatform"),
@@ -683,11 +681,7 @@ namespace SuperSmashPolls {
 
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
                             CurrentGamemode.GameOver        = false;
-
-#if DEBUG_LEVELS
-                            //CurrentLevel.ExtablishDebugView(GraphicsDevice, Content);
-#endif
-                                break;
+                            break;
                         case MenuCommands.BackToMainMenu:
                             ResetPlayerStats();
                             Menu.DrawDown = -1;
@@ -773,24 +767,6 @@ namespace SuperSmashPolls {
 
                         FileWriter.WriteLine(NumPlayers);
 
-//                        switch (NumPlayers) {
-//
-//                            case 4: {
-//                                PlayerFour.WriteInfo(ref FileWriter);
-//                                goto case 3;
-//                            } case 3: {
-//                                PlayerThree.WriteInfo(ref FileWriter);
-//                                goto case 2;
-//                            } case 2: { 
-//                                PlayerTwo.WriteInfo(ref FileWriter);
-//                                goto default;
-//                            } default: {
-//                                PlayerOne.WriteInfo(ref FileWriter);
-//                                break;
-//                            }
-//
-//                        }
-
                         PlayerOne.WriteInfo(ref FileWriter);
                         PlayerTwo.WriteInfo(ref FileWriter);
                         PlayerThree.WriteInfo(ref FileWriter);
@@ -821,7 +797,6 @@ namespace SuperSmashPolls {
                         } catch (Exception) {
 
                             State = GameState.Menu;
-
                             goto case GameState.Menu;
 
                         }
@@ -929,16 +904,16 @@ namespace SuperSmashPolls {
         /// <summary>
         /// Exclusive or for Farseer categories
         /// </summary>
-        /// <param name="categories"></param>
-        /// <returns></returns>
+        /// <param name="categories">The categories to preform the XOR function to</param>
+        /// <returns>The result of XOR from categories</returns>
         private Category Xor(params Category[] categories) {
 
-            Category temp = Category.None;
+            Category Temp = Category.None;
 
             foreach (Category I in categories)
-                temp = temp ^ I;
+                Temp = Temp ^ I;
 
-            return temp;
+            return Temp;
 
         }
 
@@ -947,6 +922,9 @@ namespace SuperSmashPolls {
         /// </summary>
         /// <param name="x">The x value to convert</param>
         /// <param name="y">The y value to convert</param>
+        /// <returns>The size of x and y as a Vector2 converted to meters assuming that x and y were from a 640x360
+        /// native resolution</returns>
+        /// <remarks>x and y don't need to be 640x360, they just need to be drawn in that scale</remarks>
         private Vector2 MetersV2(float x, float y) {
 
             return new Vector2(InMeters(x), InMeters(y));
@@ -960,25 +938,6 @@ namespace SuperSmashPolls {
         private static float InMeters(float pixels) {
 
             return (pixels / 640) * 25;
-
-        }
-
-        /// <summary>
-        /// Tells if a file exists by checking if its size is greater than 0
-        /// </summary>
-        /// <param name="path">The path of the file to check</param>
-        /// <returns>If the file exists</returns>
-        private bool DoesFileExist(string path) {
-
-            try {
-
-                return new System.IO.FileInfo(path).Length > 0;
-
-            } catch (Exception) {
-
-                return false;
-
-            }
 
         }
 
