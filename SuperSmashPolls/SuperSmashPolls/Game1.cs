@@ -455,7 +455,7 @@ namespace SuperSmashPolls {
 
             /******** TODO remove DEBUG Gamemode content ********/
 
-            Texture2D Icon = Content.Load<Texture2D>("PlayerOne");
+            Texture2D Icon = Content.Load<Texture2D>("Donald\\donald_icon");
 
             CurrentGamemode.AssignIcons(Icon, Icon, Icon, Icon, TitleFontSmall);
 
