@@ -423,7 +423,7 @@ namespace SuperSmashPolls {
                     DefinedMoves.TheDonaldJump),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
                     Content.Load<Texture2D>("Donald\\donald_punch"),
-                    PlaceholdderAudio, 
+                    Content.Load<SoundEffect>("Donald\\donald_special_sound"), 
                     DefinedMoves.TheDonaldSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
                     Content.Load<Texture2D>("Donald\\donald_punch"),
