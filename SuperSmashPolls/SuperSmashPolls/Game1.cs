@@ -465,7 +465,7 @@ namespace SuperSmashPolls {
                     Content.Load<Texture2D>("Hillary\\hill_stand"),
                     PlaceholdderAudio,
                     DefinedMoves.Idle),
-                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(17, 130/17),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(17, 26),
                     Content.Load<Texture2D>("Hillary\\hill_walk"),
                     PlaceholdderAudio,
                     DefinedMoves.HillaryWalk),
