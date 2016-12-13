@@ -29,9 +29,10 @@ Content\FinalDestination\FinalPlatform.xnb
 Content\Donald\donald_punch.xnb
 Content\Debate\DebateBackground.xnb
 Content\Debate\DebatePlatform.xnb
-Content\Donald\donald_hitbox.xnb
 Content\Music\MainSong.xnb
 Content\Donald\donald_basic_sound.xnb
+Content\Donald\donald_hitbox.xnb
 Content\Donald\donald_icon.xnb
 Content\Donald\donald_special_sound.xnb
 Content\Donald\donald_up_special_sound.xnb
+Content\Music\Hail to the Chief.xnb

@@ -291,6 +291,12 @@
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.Winner">
             The winner of the game 
         </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.endMusic">
+            Music to play for Winner 
+        </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.MusicInstance">
+            Handles Loopping and stuff 
+        </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.PlayerOneDeaths">
             <summary>Holds the references of deaths</summary>
         </member>
@@ -382,6 +388,12 @@
             Reads the information about a previosuly started game from a file
             </summary>
             <param name="streamReader"></param>
+        </member>
+        <member name="M:SuperSmashPolls.GameItemControl.Gamemode.AddAudio(SuperSmashPolls.Graphics.AudioHandler)">
+            <summary>
+            Adds music to this object
+            </summary>
+            <param name="audioHandler"></param>
         </member>
         <member name="M:SuperSmashPolls.GameItemControl.Gamemode.UpdateGamemodeState(System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
