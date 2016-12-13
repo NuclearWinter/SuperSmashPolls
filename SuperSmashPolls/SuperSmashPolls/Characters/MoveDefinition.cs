@@ -224,7 +224,7 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// 
+        /// A fast fall for The Donald
         /// </summary>
         /// <param name="characterBody">The body of the character preforming this move</param>
         /// <param name="direction">The direction that the character is facing</param>
@@ -238,7 +238,7 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// 
+        /// A basic punch for The Donald
         /// </summary>
         /// <param name="characterBody">The body of the character preforming this move</param>
         /// <param name="direction">The direction that the character is facing</param>
@@ -246,8 +246,9 @@ namespace SuperSmashPolls.Characters {
         /// where sometimes it should go to the player and sometimes to an enemy)</param>
         /// <param name="world">The world that the move is taking place in</param>
         public void TheDonaldBasic(Body characterBody, float direction, bool onCharacter, World world) {
-            
 
+            CreateAndActivateExplosion(world, characterBody,
+                OffsetFromCharacter(characterBody, new Vector2(15, 0), direction), LargeHit/3);
 
         }
 
