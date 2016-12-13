@@ -81,6 +81,9 @@
         <member name="F:SuperSmashPolls.Characters.CharacterManager.CurrentMove">
              
         </member>
+        <member name="F:SuperSmashPolls.Characters.CharacterManager.WorkingMove">
+            The move that the character is working on doing 
+        </member>
         <member name="F:SuperSmashPolls.Characters.CharacterManager.PreviousState">
              
         </member>
@@ -673,6 +676,11 @@
             Gets the index of the current frame of the animation
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:SuperSmashPolls.Graphics.CharacterAction.StartAnimation">
+            <summary>
+            Sets the data needed to restart the animation
+            </summary>
         </member>
         <member name="M:SuperSmashPolls.Graphics.CharacterAction.AnimationAtEnd">
             <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using FarseerPhysics;
@@ -72,6 +73,8 @@ namespace SuperSmashPolls.Characters {
         private bool CanMove;
         /**  */
         private int CurrentMove;
+        /** The move that the character is working on doing */
+        private int WorkingMove;
         /**  */
         private GamePadState PreviousState;
         /**  */
@@ -341,11 +344,12 @@ namespace SuperSmashPolls.Characters {
         /// <param name="currentState"></param>
         public void UpdateCharacter(GamePadState currentState) {
 
-            CanMove = MoveTextures[CurrentMove].AnimationAtEnd() || CurrentMove == WalkIndex ||
-                           CurrentMove == IdleIndex;
+            MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) -
+                                          CharacterOrigin);
 
-            if (!CanMove)
-                return;
+            if (CurrentMove != IdleIndex && CurrentMove != WalkIndex && CurrentMove != JumpIndex)
+                if (!MoveTextures[CurrentMove].AnimationAtEnd())
+                    return;
 
             bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
             bool DownMovement  = currentState.ThumbSticks.Left.Y <= -Register;
@@ -396,32 +400,35 @@ namespace SuperSmashPolls.Characters {
                     break;
                 case BasicIndex:
                     CurrentMove = BasicIndex;
+                    MoveTextures[BasicIndex].StartAnimation();
                     MoveFunctions[BasicIndex](CharacterBody, Direction, false, GameWorld);
                     MoveAudio[BasicIndex]?.PlayEffect();
                     break;
                 case SpecialIndex:
                     CurrentMove = SpecialIndex;
+                    MoveTextures[SpecialIndex].StartAnimation();
                     MoveFunctions[SpecialIndex](CharacterBody, Direction, false, GameWorld);
                     MoveAudio[SpecialIndex]?.PlayEffect();
                     break;
                 case SideSpecialIndex:
                     CurrentMove = SideSpecialIndex;
+                    MoveTextures[SideSpecialIndex].StartAnimation();
                     MoveFunctions[SideSpecialIndex](CharacterBody, Direction, false, GameWorld);
                     MoveAudio[SideSpecialIndex]?.PlayEffect();
                     break;
                 case UpSpecialIndex:
                     CurrentMove = UpSpecialIndex;
+                    MoveTextures[UpSpecialIndex].StartAnimation();
                     MoveFunctions[UpSpecialIndex](CharacterBody, Direction, false, GameWorld);
                     MoveAudio[UpSpecialIndex]?.PlayEffect();
                     break;
                 case DownSpecialIndex:
                     CurrentMove = DownSpecialIndex;
+                    MoveTextures[DownSpecialIndex].StartAnimation();
                     MoveFunctions[DownSpecialIndex](CharacterBody, Direction, false, GameWorld);
                     MoveAudio[DownSpecialIndex]?.PlayEffect();
                     break;
             }
-
-            MoveTextures[CurrentMove].UpdateAnimation(ConvertUnits.ToDisplayUnits(CharacterBody.Position) - CharacterOrigin);
 
             PreviousState = currentState;
 

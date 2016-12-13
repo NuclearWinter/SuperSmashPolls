@@ -631,6 +631,7 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.ResumeGame:
                             State = GameState.GameLevel;
+                            Menu.StopAudio();
                             break;
                         case MenuCommands.ExitGame:
                             Exit();

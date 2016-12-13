@@ -254,6 +254,16 @@ namespace SuperSmashPolls.Graphics {
         }
 
         /// <summary>
+        /// Sets the data needed to restart the animation
+        /// </summary>
+        public void StartAnimation() {
+            
+            StartedAnimation = DateTime.Now;
+            AnimatedPoint = Point.Zero;
+
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -276,9 +286,6 @@ namespace SuperSmashPolls.Graphics {
             void
 #endif
             UpdateAnimation(Vector2 position) {
-
-            //if (AnimationAtEnd())
-            //    return;
 
             DateTime Now = DateTime.Now;
 
