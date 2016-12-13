@@ -162,6 +162,7 @@ namespace SuperSmashPolls.Levels {
                     i.Item3.X/ConvertUnits.ToSimUnits(i.Item1.Width), TriangulationAlgorithm.Earclip);
                 TempBody.BodyType = BodyType.Static;
                 TempBody.IsStatic = true;
+                //TempBody.Restitution = 0;
                 //TempBody.CollisionCategories = Category.All;
 
                 LevelBody.Add(new Tuple<Body, Texture2D, Vector2>(TempBody, i.Item1, i.Item3));

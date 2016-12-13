@@ -984,7 +984,7 @@ namespace SuperSmashPolls {
                     short.MaxValue - 1);
 #endif
                 PlayerOne.Deaths = 0;
-                Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
+                Menu.AccessItem(0, 0, 2, 1).Text = "Player Two Character";
             } else if ("blank" == PlayerTwo.PlayerCharacter.Name) {
                 PlayerTwo.PlayerCharacter = character.Clone();
 #if COMPLEX_BODIES
@@ -994,7 +994,7 @@ namespace SuperSmashPolls {
                     short.MaxValue - 2);
 #endif
                 PlayerTwo.Deaths = 0;
-                Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
+                Menu.AccessItem(0, 0, 2, 1).Text = "Player Three Character";
             } else if ("blank" == PlayerThree.PlayerCharacter.Name) {
                 PlayerThree.PlayerCharacter = character.Clone();
 #if COMPLEX_BODIES
@@ -1004,7 +1004,7 @@ namespace SuperSmashPolls {
                     short.MaxValue - 3);
 #endif
                 PlayerThree.Deaths = 0;
-                Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
+                Menu.AccessItem(0, 0, 2, 1).Text = "Player Four Character";
             } else {
                 PlayerFour.PlayerCharacter = character.Clone();
 #if COMPLEX_BODIES
