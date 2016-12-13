@@ -220,7 +220,9 @@ namespace SuperSmashPolls {
                 Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.30F)),
                     "Load Game", false, EmptyUnit, true, true, MenuCommands.LoadSave));
 
- 
+                Menu.ContainedItems[LocalGameMenu].AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
+                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
+
 /* 01 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.50F, 0.30F)), "Multi Player", false,
                 EmptyUnit, true, true, MenuCommands.MultiplayerMenu));
 
@@ -238,7 +240,7 @@ namespace SuperSmashPolls {
                     "Move - Left stick", false, EmptyUnit, false, true));
 
                 Menu.AccessItem(2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
-                    "Special Attack - RT (Right Trigger)", false, EmptyUnit, false, true));
+                    "Special Attack - RT (Right Trigger)\n                 OR X", false, EmptyUnit, false, true));
 
 /* 03 */    Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "BIO", true,
                 EmptyUnit, true, true, MenuCommands.ExitGame));
@@ -262,6 +264,9 @@ namespace SuperSmashPolls {
                          "America. With a \nstrong background in technology \nand internet security, Clinton \nvows to " +
                          "improve personal \nfreedoms and bring America back \ntogether again. Will she become \nthe first "+
                          " woman president, or \nwill she need to wait for a third \nattempt?", false, EmptyUnit, false, false));
+
+                Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.7F)),
+                    "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
 
             /* 04 */
             Menu.AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.6F)), "Exit", false,
@@ -401,34 +406,36 @@ namespace SuperSmashPolls {
             TheDonald.AddMoves(TheDonaldIdle, TheDonaldWalk, TheDonaldJump, TheDonaldSpecial,
                 TheDonaldSideSpecial, TheDonaldUpSpecial, TheDonaldDownSpecial, TheDonaldBasicAttack);
 #else
+            var PlaceholdderAudio = Content.Load<SoundEffect>("Donald\\donald_basic_sound");
+
             TheDonald.LoadCharacterContent(Content.Load<Texture2D>("Donald\\donald_hitbox"), 1, 
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(21, 27),
-                    Content.Load<Texture2D>("Donald\\donald_stand"), 
-                    null, 
+                    Content.Load<Texture2D>("Donald\\donald_stand"),
+                    PlaceholdderAudio, 
                     DefinedMoves.Idle), 
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(23, 29),
-                    Content.Load<Texture2D>("Donald\\donald_walk"), 
-                    null, 
+                    Content.Load<Texture2D>("Donald\\donald_walk"),
+                    PlaceholdderAudio, 
                     DefinedMoves.TheDonaldWalk),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(19, 26),
-                    Content.Load<Texture2D>("Donald\\donald_jump"), 
-                    null, 
+                    Content.Load<Texture2D>("Donald\\donald_jump"),
+                    PlaceholdderAudio, 
                     DefinedMoves.TheDonaldJump),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
-                    Content.Load<Texture2D>("Donald\\donald_punch"), 
-                    null, 
+                    Content.Load<Texture2D>("Donald\\donald_punch"),
+                    PlaceholdderAudio, 
                     DefinedMoves.TheDonaldSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
-                    Content.Load<Texture2D>("Donald\\donald_punch"), 
-                    null, 
+                    Content.Load<Texture2D>("Donald\\donald_punch"),
+                    PlaceholdderAudio, 
                     DefinedMoves.TheDonaldSideSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(26, 33),
                     Content.Load<Texture2D>("Donald\\donald_upmash"), 
                     Content.Load<SoundEffect>("Donald\\donald_up_special_sound"), 
                     DefinedMoves.TheDonaldUpSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(21, 27),
-                    Content.Load<Texture2D>("Donald\\donald_stand"), 
-                    null, 
+                    Content.Load<Texture2D>("Donald\\donald_stand"),
+                    PlaceholdderAudio, 
                     DefinedMoves.TheDonaldDownSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
                     Content.Load<Texture2D>("Donald\\donald_punch"), 
@@ -898,7 +905,8 @@ namespace SuperSmashPolls {
 #if COMPLEX_BODIES
                 PlayerOne.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
 #else
-                PlayerOne.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn);
+                PlayerOne.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerOneSpawn,
+                    short.MaxValue - 1);
 #endif
                 PlayerOne.Deaths = 0;
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Two Character";
@@ -907,7 +915,8 @@ namespace SuperSmashPolls {
 #if COMPLEX_BODIES
                 PlayerTwo.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
 #else
-                PlayerTwo.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn);
+                PlayerTwo.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerTwoSpawn,
+                    short.MaxValue - 2);
 #endif
                 PlayerTwo.Deaths = 0;
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Three Character";
@@ -916,7 +925,8 @@ namespace SuperSmashPolls {
 #if COMPLEX_BODIES
                 PlayerThree.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
 #else
-                PlayerThree.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn);
+                PlayerThree.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerThreeSpawn,
+                    short.MaxValue - 3);
 #endif
                 PlayerThree.Deaths = 0;
                 Menu.AccessItem(0, 0, 2, 0).Text = "Player Four Character";
@@ -925,7 +935,8 @@ namespace SuperSmashPolls {
 #if COMPLEX_BODIES
                 PlayerFour.PlayerCharacter.ConstructInWorld(CurrentLevel.LevelWorld);
 #else
-                PlayerFour.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn);
+                PlayerFour.PlayerCharacter.SetupCharacter(CurrentLevel.LevelWorld, CurrentLevel.PlayerFourSpawn,
+                    short.MaxValue - 4);
 #endif
                 PlayerFour.Deaths = 0;
             }

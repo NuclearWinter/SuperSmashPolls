@@ -16,9 +16,12 @@ namespace SuperSmashPolls.Characters {
     /// abstract and define each character's moves in a separate file all nice and pretty</remarks>
     public class MoveDefinition {
 
+        private const float StandardSpecialRadius = 3F;
+        private const float LargeHit = 300;
         private readonly Vector2 StandardJumpHeight = new Vector2(0, -5F);
         private readonly Vector2 StandardWalkSpeed  = new Vector2(3, 0);
         private readonly Vector2 StandardPunchForce = new Vector2(10, 0);
+
 #if COMPLEX_BODIES
         /// <summary>
         /// The function to use for idle moves
@@ -129,10 +132,12 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// The function for any character in their idle state...nothing happens here
         /// </summary>
-        /// <param name="characterBody"></param>
-        /// <param name="direction"></param>
-        /// <param name="onCharacter"></param>
-        public void Idle(Body characterBody, float direction, bool onCharacter) {
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void Idle(Body characterBody, float direction, bool onCharacter, World world) {
 
             characterBody.AngularVelocity = 0;
 
@@ -141,10 +146,12 @@ namespace SuperSmashPolls.Characters {
         /// <summary>
         /// The function for having The Donald walk
         /// </summary>
-        /// <param name="characterBody"></param>
-        /// <param name="direction"></param>
-        /// <param name="onCharacter"></param>
-        public void TheDonaldWalk(Body characterBody, float direction, bool onCharacter) {
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void TheDonaldWalk(Body characterBody, float direction, bool onCharacter, World world) {
 
             Vector2 WalkForce = StandardWalkSpeed*new Vector2(direction >= 0 ? 1 : -1, 0);
 
@@ -157,37 +164,93 @@ namespace SuperSmashPolls.Characters {
 
         }
 
-        public void TheDonaldJump(Body characterBody, float direction, bool onCharacter) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void TheDonaldJump(Body characterBody, float direction, bool onCharacter, World world) {
 
             characterBody.ApplyLinearImpulse(StandardJumpHeight);
 
         }
 
-        public void TheDonaldSpecial(Body characterBody, float direction, bool onCharacter) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void TheDonaldSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
 
 
         }
 
-        public void TheDonaldSideSpecial(Body characterBody, float direction, bool onCharacter) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void TheDonaldSideSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
+            SimpleExplosion Explosion = new SimpleExplosion(world) {
+                Power = 1,
+                DisabledOnGroup = characterBody.CollisionGroup
+            };
 
+            Explosion.Activate(
+                    characterBody.Position + ConvertUnits.ToSimUnits(new Vector2(10*direction >= 0 ? 1 : -1, 0)),
+                    StandardSpecialRadius,
+                    LargeHit/2);
 
         }
 
-        public void TheDonaldUpSpecial(Body characterBody, float direction, bool onCharacter) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void TheDonaldUpSpecial(Body characterBody, float direction, bool onCharacter, World world) {
             
 
 
         }
 
-        public void TheDonaldDownSpecial(Body characterBody, float direction, bool onCharacter) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void TheDonaldDownSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
             characterBody.ApplyLinearImpulse(-StandardJumpHeight);
 
         }
 
-        public void TheDonaldBasic(Body characterBody, float direction, bool onCharacter) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void TheDonaldBasic(Body characterBody, float direction, bool onCharacter, World world) {
             
 
 

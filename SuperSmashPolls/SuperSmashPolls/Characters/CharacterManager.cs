@@ -49,7 +49,7 @@ namespace SuperSmashPolls.Characters {
         protected Moves CharacterMoves;
 #else
         /// <summary>The function signiture for moves</summary>
-        public delegate void SimpleMove(Body characterBody, float direction, bool onCharacter);
+        public delegate void SimpleMove(Body characterBody, float direction, bool onCharacter, World world);
         /// <summary></summary>
         protected Body CharacterBody;
         /** The vertices created from the hitbox texture that are used to construct the body of the character */
@@ -74,8 +74,11 @@ namespace SuperSmashPolls.Characters {
         private int CurrentMove;
         /**  */
         private GamePadState PreviousState;
-
+        /**  */
         private Vector2 CharacterOrigin;
+        /**  */
+        private World GameWorld;
+
 #endif
         /** This is the amount the joystick must be over for it to register as intentional */
         private const float Register = 0.2F;
@@ -295,16 +298,19 @@ namespace SuperSmashPolls.Characters {
         /// </summary>
         /// <param name="gameWorld">The world to put the character in</param>
         /// <param name="position">The position to put the character in</param>
-        public void SetupCharacter(World gameWorld, Vector2 position) {
+        /// <param name="playerGroup">The collision group for this player to be placed in</param>
+        public void SetupCharacter(World gameWorld, Vector2 position, short playerGroup) {
 
-            CharacterBody             = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
-            CharacterBody.Mass        = Mass;
-            CharacterBody.Friction    = Friction;
-            CharacterBody.Restitution = Restitution;
-            CharacterBody.BodyType    = BodyType.Dynamic;
-            CharacterBody.Enabled     = true;
-            CharacterBody.Awake       = true;
-            CurrentMove               = 0;
+            CharacterBody                = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
+            CharacterBody.CollisionGroup = playerGroup;
+            CharacterBody.Mass           = Mass;
+            CharacterBody.Friction       = Friction;
+            CharacterBody.Restitution    = Restitution;
+            CharacterBody.BodyType       = BodyType.Dynamic;
+            CharacterBody.Enabled        = true;
+            CharacterBody.Awake          = true;
+            GameWorld                    = gameWorld;
+            CurrentMove                  = 0;
 
         }
 
@@ -344,12 +350,13 @@ namespace SuperSmashPolls.Characters {
             bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
             bool DownMovement  = currentState.ThumbSticks.Left.Y <= -Register;
             bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;
-            bool SpecialAttack = Math.Abs(currentState.Triggers.Left) >= Register;
+            bool SpecialAttack = Math.Abs(currentState.Triggers.Left) >= Register 
+                || currentState.IsButtonDown(Buttons.X) && PreviousState.IsButtonUp(Buttons.X);
             bool Jump          = currentState.IsButtonDown(Buttons.A) && PreviousState.IsButtonUp(Buttons.A) 
                 || UpMovement && PreviousState.ThumbSticks.Left.Y < Register;
             bool BasicAttack   = currentState.IsButtonDown(Buttons.B) && PreviousState.IsButtonUp(Buttons.B);
 
-            int DesiredMove = -1;//= IdleIndex;
+            int DesiredMove = -1;
 
             if (SpecialAttack) {
                 if (SideMovement && IsImplimented(SpecialIndex)) {
@@ -380,31 +387,36 @@ namespace SuperSmashPolls.Characters {
                     break;
                 case WalkIndex:
                     CurrentMove = WalkIndex;
-                    MoveFunctions[WalkIndex](CharacterBody, Direction, true);
+                    MoveFunctions[WalkIndex](CharacterBody, Direction, true, GameWorld);
                     break;
                 case JumpIndex:
                     CurrentMove = JumpIndex;
-                    MoveFunctions[JumpIndex](CharacterBody, Direction, true);
+                    MoveFunctions[JumpIndex](CharacterBody, Direction, true, GameWorld);
                     break;
                 case BasicIndex:
                     CurrentMove = BasicIndex;
-                    MoveFunctions[BasicIndex](CharacterBody, Direction, false);
+                    MoveFunctions[BasicIndex](CharacterBody, Direction, false, GameWorld);
+                    MoveAudio[BasicIndex]?.PlayEffect();
                     break;
                 case SpecialIndex:
                     CurrentMove = SpecialIndex;
-                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false, GameWorld);
+                    MoveAudio[SpecialIndex]?.PlayEffect();
                     break;
                 case SideSpecialIndex:
                     CurrentMove = SideSpecialIndex;
-                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    MoveFunctions[SideSpecialIndex](CharacterBody, Direction, false, GameWorld);
+                    MoveAudio[SideSpecialIndex]?.PlayEffect();
                     break;
                 case UpSpecialIndex:
                     CurrentMove = UpSpecialIndex;
-                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    MoveFunctions[UpSpecialIndex](CharacterBody, Direction, false, GameWorld);
+                    MoveAudio[UpSpecialIndex]?.PlayEffect();
                     break;
                 case DownSpecialIndex:
                     CurrentMove = DownSpecialIndex;
-                    MoveFunctions[SpecialIndex](CharacterBody, Direction, false);
+                    MoveFunctions[DownSpecialIndex](CharacterBody, Direction, false, GameWorld);
+                    MoveAudio[DownSpecialIndex]?.PlayEffect();
                     break;
             }
 
