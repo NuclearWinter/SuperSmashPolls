@@ -42,6 +42,8 @@ namespace SuperSmashPolls.GameItemControl {
         public bool[] ElimStatus;
         /// <summary>The mode the game currently is</summary>
         public Mode CurrentMode;
+        /// <summary>If the winning music has been played</summary>
+        public bool MusicPlayed;
         /** The size of the full icon for players */
         private readonly Vector2 FullIconSize;
         /** The position to put the player's stock indicators, indices 1+ are for the small stock icons/text */
@@ -219,13 +221,14 @@ namespace SuperSmashPolls.GameItemControl {
                 else if (PlayerFourDeaths < Stock)
                     Winner = "Player four";
 
-                if (NumberOfPlayers == 1) {              
+                if (NumberOfPlayers == 1)         
                     Winner = "none";
+
+                if (!MusicPlayed) {
                     MusicInstance.Play();
+                    MusicPlayed = true;
                 }
-                else {
-                    MusicInstance.Play();
-                }
+
             }
 
         }

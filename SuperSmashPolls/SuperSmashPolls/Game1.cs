@@ -484,7 +484,7 @@ namespace SuperSmashPolls {
                     DefinedMoves.HillarySideSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(24, 30),
                     Content.Load<Texture2D>("Hillary\\hill_up_smash"),
-                    Content.Load<SoundEffect>("Hillary\\"),
+                    null,
                     DefinedMoves.HillaryUpSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(17, 29),
                     Content.Load<Texture2D>("Hillary\\hill_jump"),
@@ -684,6 +684,7 @@ namespace SuperSmashPolls {
 
                             CurrentGamemode.NumberOfPlayers = NumPlayers;
                             CurrentGamemode.GameOver        = false;
+                            CurrentGamemode.MusicPlayed     = false;
                             break;
                         case MenuCommands.BackToMainMenu:
                             ResetPlayerStats();
