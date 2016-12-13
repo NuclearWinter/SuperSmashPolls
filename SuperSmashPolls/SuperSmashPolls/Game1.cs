@@ -450,15 +450,9 @@ namespace SuperSmashPolls {
                     Content.Load<Texture2D>("Donald\\donald_upmash"), 
                     Content.Load<SoundEffect>("Donald\\donald_up_special_sound"), 
                     DefinedMoves.TheDonaldUpSpecial),
-<<<<<<< HEAD
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1500, new Point(22, 30),
                     Content.Load<Texture2D>("Donald\\donald_down_smash"),
-                    PlaceholdderAudio, 
-=======
-                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(21, 27),
-                    Content.Load<Texture2D>("Donald\\donald_stand"),
                     null, 
->>>>>>> origin/master
                     DefinedMoves.TheDonaldDownSpecial),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(26, 26),
                     Content.Load<Texture2D>("Donald\\donald_punch"), 
