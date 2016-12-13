@@ -208,7 +208,7 @@
         </member>
         <member name="M:SuperSmashPolls.Characters.MoveDefinition.TheDonaldJump(FarseerPhysics.Dynamics.Body,System.Single,System.Boolean,FarseerPhysics.Dynamics.World)">
             <summary>
-            
+            The jump function for The Donald
             </summary>
             <param name="characterBody">The body of the character preforming this move</param>
             <param name="direction">The direction that the character is facing</param>
@@ -265,6 +265,38 @@
             <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
             where sometimes it should go to the player and sometimes to an enemy)</param>
             <param name="world">The world that the move is taking place in</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.CreateAndActivateExplosion(FarseerPhysics.Dynamics.World,FarseerPhysics.Dynamics.Body,Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+            <summary>
+            Creates and activates an explosion with the given parameters
+            </summary>
+            <param name="world">The world to activate the exploision in</param>
+            <param name="characterBody">The body of the character creating the explosion</param>
+            <param name="position">The position of the explosion in the world</param>
+            <param name="force">The force of the explosion (by default it is Trump's side special)</param>
+            <param name="radius">The radius of the explosion in meters</param>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.CreateAndActivateExplosion(FarseerPhysics.Dynamics.World,FarseerPhysics.Dynamics.Body,System.Single,System.Single,Microsoft.Xna.Framework.Vector2[])">
+            <summary>
+            Creates and activates an explosion with the given parameters in multiple positions in the world
+            </summary>
+            <param name="world">The world to activate the exploision in</param>
+            <param name="characterBody">The body of the character creating the explosion</param>
+            <param name="position">The position(s) of the explosion in the world</param>
+            <param name="force">The force of the explosion (by default it is Trump's side special)</param>
+            <param name="radius">The radius of the explosion in meters</param>
+            <remarks>If you only need one position in the world, use the other function</remarks>
+        </member>
+        <member name="M:SuperSmashPolls.Characters.MoveDefinition.OffsetFromCharacter(FarseerPhysics.Dynamics.Body,Microsoft.Xna.Framework.Vector2,System.Single)">
+            <summary>
+            Offsets a value in pixels from the character position
+            </summary>
+            <param name="characterBody">The body of the character to offset from</param>
+            <param name="pixelAmount">The amount of pixels to offset</param>
+            <param name="direction">If the offset needs to go to a specific side, set this to the direction float
+            of the character so that instead of using the raw number in pixelAmount it changed the direction based on
+             this</param>
+            <returns></returns>
         </member>
         <member name="T:SuperSmashPolls.Characters.Moves">
             <summary>

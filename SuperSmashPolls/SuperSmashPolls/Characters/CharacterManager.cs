@@ -81,7 +81,7 @@ namespace SuperSmashPolls.Characters {
 
 #endif
         /** This is the amount the joystick must be over for it to register as intentional */
-        private const float Register = 0.2F;
+        private const float Register = 0.4F;
         /** The direction that the character is moving */
         private float Direction;
 
@@ -350,6 +350,7 @@ namespace SuperSmashPolls.Characters {
             bool SideMovement  = Math.Abs(currentState.ThumbSticks.Left.X) >= Register;
             bool DownMovement  = currentState.ThumbSticks.Left.Y <= -Register;
             bool UpMovement    = currentState.ThumbSticks.Left.Y >= Register;
+            bool UpTilt = currentState.ThumbSticks.Left.Y > 0 && !UpMovement;
             bool SpecialAttack = Math.Abs(currentState.Triggers.Left) >= Register 
                 || currentState.IsButtonDown(Buttons.X) && PreviousState.IsButtonUp(Buttons.X);
             bool Jump          = currentState.IsButtonDown(Buttons.A) && PreviousState.IsButtonUp(Buttons.A) 
@@ -363,7 +364,7 @@ namespace SuperSmashPolls.Characters {
                     DesiredMove = Moves.SideSpecialIndex;
                 } else if (DownMovement && IsImplimented(DownSpecialIndex)) {
                     DesiredMove = Moves.DownSpecialIndex;
-                } else if (UpMovement && IsImplimented(UpSpecialIndex)) {
+                } else if (UpTilt && IsImplimented(UpSpecialIndex)) {
                     DesiredMove = Moves.UpSpecialIndex;
                 } else if (IsImplimented(SpecialIndex)) {
                     DesiredMove = Moves.SpecialIndex;

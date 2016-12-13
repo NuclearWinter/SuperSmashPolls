@@ -165,7 +165,7 @@ namespace SuperSmashPolls.Characters {
         }
 
         /// <summary>
-        /// 
+        /// The jump function for The Donald
         /// </summary>
         /// <param name="characterBody">The body of the character preforming this move</param>
         /// <param name="direction">The direction that the character is facing</param>
@@ -188,7 +188,7 @@ namespace SuperSmashPolls.Characters {
         /// <param name="world">The world that the move is taking place in</param>
         public void TheDonaldSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
-
+            
 
         }
 
@@ -202,15 +202,8 @@ namespace SuperSmashPolls.Characters {
         /// <param name="world">The world that the move is taking place in</param>
         public void TheDonaldSideSpecial(Body characterBody, float direction, bool onCharacter, World world) {
 
-            SimpleExplosion Explosion = new SimpleExplosion(world) {
-                Power = 1,
-                DisabledOnGroup = characterBody.CollisionGroup
-            };
-
-            Explosion.Activate(
-                    characterBody.Position + ConvertUnits.ToSimUnits(new Vector2(10*direction >= 0 ? 1 : -1, 0)),
-                    StandardSpecialRadius,
-                    LargeHit/2);
+            CreateAndActivateExplosion(world, characterBody,
+                OffsetFromCharacter(characterBody, new Vector2(10, 0), direction));
 
         }
 
@@ -223,8 +216,11 @@ namespace SuperSmashPolls.Characters {
         /// where sometimes it should go to the player and sometimes to an enemy)</param>
         /// <param name="world">The world that the move is taking place in</param>
         public void TheDonaldUpSpecial(Body characterBody, float direction, bool onCharacter, World world) {
-            
 
+            CreateAndActivateExplosion(world, characterBody, LargeHit/4, StandardSpecialRadius,
+                OffsetFromCharacter(characterBody, new Vector2(-10, 0)),
+                OffsetFromCharacter(characterBody, new Vector2(10, 0)),
+                OffsetFromCharacter(characterBody, new Vector2(0, -12)));
 
         }
 
@@ -253,6 +249,66 @@ namespace SuperSmashPolls.Characters {
         public void TheDonaldBasic(Body characterBody, float direction, bool onCharacter, World world) {
             
 
+
+        }
+
+        /// <summary>
+        /// Creates and activates an explosion with the given parameters
+        /// </summary>
+        /// <param name="world">The world to activate the exploision in</param>
+        /// <param name="characterBody">The body of the character creating the explosion</param>
+        /// <param name="position">The position of the explosion in the world</param>
+        /// <param name="force">The force of the explosion (by default it is Trump's side special)</param>
+        /// <param name="radius">The radius of the explosion in meters</param>
+        private void CreateAndActivateExplosion(World world, Body characterBody, Vector2 position, 
+            float force = LargeHit / 2, float radius = StandardSpecialRadius) {
+
+            SimpleExplosion Explosion = new SimpleExplosion(world) {
+                Power = 1,
+                DisabledOnGroup = characterBody.CollisionGroup
+            };
+
+            Explosion.Activate(position, radius, force);
+
+        }
+
+        /// <summary>
+        /// Creates and activates an explosion with the given parameters in multiple positions in the world
+        /// </summary>
+        /// <param name="world">The world to activate the exploision in</param>
+        /// <param name="characterBody">The body of the character creating the explosion</param>
+        /// <param name="position">The position(s) of the explosion in the world</param>
+        /// <param name="force">The force of the explosion (by default it is Trump's side special)</param>
+        /// <param name="radius">The radius of the explosion in meters</param>
+        /// <remarks>If you only need one position in the world, use the other function</remarks>
+        private void CreateAndActivateExplosion(World world, Body characterBody, float force, float radius, 
+            params Vector2[] position) {
+
+            SimpleExplosion Explosion = new SimpleExplosion(world) {
+                Power = 1,
+                DisabledOnGroup = characterBody.CollisionGroup
+            };
+
+            foreach (var I in position)
+                Explosion.Activate(I, radius, force);
+
+        }
+
+        /// <summary>
+        /// Offsets a value in pixels from the character position
+        /// </summary>
+        /// <param name="characterBody">The body of the character to offset from</param>
+        /// <param name="pixelAmount">The amount of pixels to offset</param>
+        /// <param name="direction">If the offset needs to go to a specific side, set this to the direction float
+        /// of the character so that instead of using the raw number in pixelAmount it changed the direction based on
+        ///  this</param>
+        /// <returns></returns>
+        private Vector2 OffsetFromCharacter(Body characterBody, Vector2 pixelAmount, float direction = -2) {
+
+            if (direction == -2)
+                return characterBody.Position + ConvertUnits.ToSimUnits(pixelAmount);
+
+            return characterBody.Position + ConvertUnits.ToSimUnits(pixelAmount) * (direction < 0 ? -1 : 1);
 
         }
 
