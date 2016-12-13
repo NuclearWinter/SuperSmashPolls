@@ -67,7 +67,10 @@ namespace SuperSmashPolls {
         private Character TheDonald;
         private TheDonaldsMoves TheDonaldsAttacks;
 #else
+        /** Character based off of Donald Trump */
         private CharacterManager TheDonald;
+        /** Character based off of Hillary Clinton */
+        private CharacterManager Hillary;
 #endif
         /** This is the level currently being played on */
         private LevelHandler CurrentLevel;
@@ -341,6 +344,7 @@ namespace SuperSmashPolls {
             TheDonald = new CharacterManager(50F, 0.5F, 0F, Category.None, Category.None, "TheDonald");
 #else
             TheDonald = new CharacterManager(50, 0.5F, 0, "TheDonald");
+            Hillary   = new CharacterManager(40, 0.5F, 0, "Hillary");
 #endif
 
             base.Initialize();
@@ -433,7 +437,7 @@ namespace SuperSmashPolls {
                     Content.Load<Texture2D>("Donald\\donald_punch"),
                     Content.Load<SoundEffect>("Donald\\donald_special_sound"), 
                     DefinedMoves.TheDonaldSpecial),
-                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(23, 29),
                     Content.Load<Texture2D>("Donald\\donald_punch"),
                     PlaceholdderAudio, 
                     DefinedMoves.TheDonaldSideSpecial),
@@ -445,10 +449,47 @@ namespace SuperSmashPolls {
                     Content.Load<Texture2D>("Donald\\donald_stand"),
                     PlaceholdderAudio, 
                     DefinedMoves.TheDonaldDownSpecial),
-                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(500, new Point(23, 29),
                     Content.Load<Texture2D>("Donald\\donald_punch"), 
                     Content.Load<SoundEffect>("Donald\\donald_basic_sound"), 
                     DefinedMoves.TheDonaldBasic));
+
+            /************** Hillary Content Loading *************/
+
+            Hillary.LoadCharacterContent(Content.Load<Texture2D>("Donald\\donald_hitbox"), 1,
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(21, 27),
+                    Content.Load<Texture2D>("Donald\\donald_stand"),
+                    PlaceholdderAudio,
+                    DefinedMoves.Idle),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(23, 29),
+                    Content.Load<Texture2D>("Donald\\donald_walk"),
+                    PlaceholdderAudio,
+                    DefinedMoves.HillaryWalk),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(19, 26),
+                    Content.Load<Texture2D>("Donald\\donald_jump"),
+                    PlaceholdderAudio,
+                    DefinedMoves.HillaryJump),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
+                    Content.Load<Texture2D>("Donald\\donald_punch"),
+                    Content.Load<SoundEffect>("Donald\\donald_special_sound"),
+                    DefinedMoves.HillarySpecial),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
+                    Content.Load<Texture2D>("Donald\\donald_punch"),
+                    PlaceholdderAudio,
+                    DefinedMoves.HillarySideSpecial),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(26, 33),
+                    Content.Load<Texture2D>("Donald\\donald_upmash"),
+                    Content.Load<SoundEffect>("Donald\\donald_up_special_sound"),
+                    DefinedMoves.HillaryUpSpecial),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(21, 27),
+                    Content.Load<Texture2D>("Donald\\donald_stand"),
+                    PlaceholdderAudio,
+                    DefinedMoves.HillaryDownSpecial),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
+                    Content.Load<Texture2D>("Donald\\donald_punch"),
+                    Content.Load<SoundEffect>("Donald\\donald_basic_sound"),
+                    DefinedMoves.HillaryBasic));
+
 #endif
 
             /***** Add characters to character string pairs *****/

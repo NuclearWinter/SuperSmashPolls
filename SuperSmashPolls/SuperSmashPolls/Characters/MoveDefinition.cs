@@ -143,6 +143,10 @@ namespace SuperSmashPolls.Characters {
 
         }
 
+        /***********************************************************************************************************//**
+         * Moves for The Donald
+         **************************************************************************************************************/
+
         /// <summary>
         /// The function for having The Donald walk
         /// </summary>
@@ -251,6 +255,123 @@ namespace SuperSmashPolls.Characters {
                 OffsetFromCharacter(characterBody, new Vector2(15, 0), direction), LargeHit/3);
 
         }
+
+        /***********************************************************************************************************//**
+         * Moves for Hillary
+         **************************************************************************************************************/
+
+        /// <summary>
+        /// The function for having Hillary walk
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void HillaryWalk(Body characterBody, float direction, bool onCharacter, World world) {
+
+            Vector2 WalkForce = StandardWalkSpeed*new Vector2(direction >= 0 ? 1 : -1, 0);
+
+            if ((WalkForce.X < 0 ? -1 : 1) != (characterBody.LinearVelocity.X < 0 ? -1 : 1))
+                characterBody.LinearVelocity = new Vector2(0, characterBody.LinearVelocity.Y);
+
+            characterBody.AngularVelocity = 0;
+
+            characterBody.ApplyForce(WalkForce);
+
+        }
+
+        /// <summary>
+        /// The jump function for Hillary
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void HillaryJump(Body characterBody, float direction, bool onCharacter, World world) {
+
+            characterBody.ApplyLinearImpulse(StandardJumpHeight);
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void HillarySpecial(Body characterBody, float direction, bool onCharacter, World world) {
+
+            
+
+        }
+
+        /// <summary>
+        /// Creates an explosion in front of Hillary
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void HillarySideSpecial(Body characterBody, float direction, bool onCharacter, World world) {
+
+            CreateAndActivateExplosion(world, characterBody,
+                OffsetFromCharacter(characterBody, new Vector2(10, 0), direction));
+
+        }
+
+        /// <summary>
+        /// Creates and explosion in front of Hillary and above her
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void HillaryUpSpecial(Body characterBody, float direction, bool onCharacter, World world) {
+
+            CreateAndActivateExplosion(world, characterBody, LargeHit/4, StandardSpecialRadius,
+                OffsetFromCharacter(characterBody, new Vector2(15, 0), direction),
+                OffsetFromCharacter(characterBody, new Vector2(5, -5), direction));
+
+        }
+
+        /// <summary>
+        /// A fast fall for Hillary
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void HillaryDownSpecial(Body characterBody, float direction, bool onCharacter, World world) {
+
+            characterBody.ApplyLinearImpulse(-StandardJumpHeight);
+
+        }
+
+        /// <summary>
+        /// A basic punch for Hillary
+        /// </summary>
+        /// <param name="characterBody">The body of the character preforming this move</param>
+        /// <param name="direction">The direction that the character is facing</param>
+        /// <param name="onCharacter">Whether or not this should be applied to the character (only matters for moves
+        /// where sometimes it should go to the player and sometimes to an enemy)</param>
+        /// <param name="world">The world that the move is taking place in</param>
+        public void HillaryBasic(Body characterBody, float direction, bool onCharacter, World world) {
+
+            CreateAndActivateExplosion(world, characterBody,
+                OffsetFromCharacter(characterBody, new Vector2(15, 0), direction), LargeHit/3);
+
+        }
+
+        /***********************************************************************************************************//**
+         * Utility Functions
+         **************************************************************************************************************/
 
         /// <summary>
         /// Creates and activates an explosion with the given parameters
