@@ -40,3 +40,4 @@ SuperSmashPolls/SuperSmashPolls/obj/x86/Debug/ContentPipeline-{705C56F8-1366-4AB
 
 SuperSmashPolls/SuperSmashPolls/obj/x86/Debug/ContentPipeline-{705C56F8-1366-4AB9-8F3A-69C782C7EBED}.xml
 *.TMP
+*.cachefile

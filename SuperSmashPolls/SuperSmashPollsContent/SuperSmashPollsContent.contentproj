@@ -68,27 +68,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Donald\donald64-jump.png">
-      <Name>donald64-jump</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Donald\donald64-stand.png">
-      <Name>donald64-stand</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Donald\donald64-walk.png">
-      <Name>donald64-walk</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Temple.png">
       <Name>Temple</Name>
       <Importer>TextureImporter</Importer>
@@ -292,13 +271,33 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WhiteHouse\WhiteHouseBackground.png">
-      <Name>WhiteHouseBackground</Name>
+    <Compile Include="Hillary\hill_icon.png">
+      <Name>hill_icon</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Hillary\hill_punch.png">
+      <Name>hill_punch</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Hillary\hill_stand.png">
+      <Name>hill_stand</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Hillary\hill_walk.png">
+      <Name>hill_walk</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WhiteHouse\WhiteHouseBackground.png">
+      <Name>WhiteHouseBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="WhiteHouse\WhiteHouseForeground.png">
       <Name>WhiteHouseForeground</Name>
       <Importer>TextureImporter</Importer>

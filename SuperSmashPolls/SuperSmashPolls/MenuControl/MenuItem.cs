@@ -34,7 +34,7 @@ namespace SuperSmashPolls.MenuControl {
         OnePlayer, TwoPlayer, ThreePlayer, FourPlayer,
         ResumeGame,
         PlayTemple, PlayTempleRock, PlayFinalDestination, PlayDebate, PlayWhiteHouse,
-        SelectTrump,
+        SelectTrump, SelectHillary,
         CharacterSelection,
         HelpMenu
 

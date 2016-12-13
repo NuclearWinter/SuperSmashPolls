@@ -216,13 +216,17 @@ namespace SuperSmashPolls {
             Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(   
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)), "Three Player", false, 
                             EmptyUnit, true, true, MenuCommands.ThreePlayer));
-                        
+
+                        Menu.AccessItem(LocalGameMenu, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize,
+                            new Vector2(0.5F, 0.2F)), "The Donald", false, EmptyUnit, true, true,
+                            MenuCommands.SelectTrump));
+
                         Menu.AccessItem(LocalGameMenu, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
                             new Vector2(0.5F, 0.1F)), "Player One Character", false, EmptyUnit, false, true));
 
                         Menu.AccessItem(LocalGameMenu, 0, 2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, 
-                            new Vector2(0.5F, 0.2F)), "The Donald", false, EmptyUnit, true, true, 
-                            MenuCommands.SelectTrump));
+                            new Vector2(0.5F, 0.3F)), "Hillary", false, EmptyUnit, true, true, 
+                            MenuCommands.SelectHillary));
 
                     Menu.ContainedItems[LocalGameMenu].ContainedItems[0].AddItem(
                         new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.5F)), "Four Player", false, 
@@ -457,12 +461,12 @@ namespace SuperSmashPolls {
             /************** Hillary Content Loading *************/
 
             Hillary.LoadCharacterContent(Content.Load<Texture2D>("Donald\\donald_hitbox"), 1,
-                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(21, 27),
-                    Content.Load<Texture2D>("Donald\\donald_stand"),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(17, 25),
+                    Content.Load<Texture2D>("Hillary\\hill_stand"),
                     PlaceholdderAudio,
                     DefinedMoves.Idle),
-                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(23, 29),
-                    Content.Load<Texture2D>("Donald\\donald_walk"),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(17, 130/17),
+                    Content.Load<Texture2D>("Hillary\\hill_walk"),
                     PlaceholdderAudio,
                     DefinedMoves.HillaryWalk),
                 new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(1000, new Point(19, 26),
@@ -485,8 +489,8 @@ namespace SuperSmashPolls {
                     Content.Load<Texture2D>("Donald\\donald_stand"),
                     PlaceholdderAudio,
                     DefinedMoves.HillaryDownSpecial),
-                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(23, 29),
-                    Content.Load<Texture2D>("Donald\\donald_punch"),
+                new Tuple<float, Point, Texture2D, SoundEffect, CharacterManager.SimpleMove>(2000, new Point(24, 200/8),
+                    Content.Load<Texture2D>("Hillary\\hill_punch"),
                     Content.Load<SoundEffect>("Donald\\donald_basic_sound"),
                     DefinedMoves.HillaryBasic));
 
@@ -639,7 +643,6 @@ namespace SuperSmashPolls {
                         case MenuCommands.PlayWhiteHouse:
                              CurrentLevel = WhiteHouse;
                             goto case MenuCommands.CharacterSelection;
-                            goto case MenuCommands.CharacterSelection;
                         case MenuCommands.PlayFinalDestination:
                             CurrentLevel = FinalDestination;
                             goto case MenuCommands.CharacterSelection;
@@ -706,6 +709,9 @@ namespace SuperSmashPolls {
                             break;
                         case MenuCommands.SelectTrump:
                             SetCharacter(TheDonald);
+                            goto default;
+                        case MenuCommands.SelectHillary:
+                            SetCharacter(Hillary);
                             goto default;
                         case MenuCommands.CharacterSelection:
                             Menu.SetDrawDown(0, 0, 2);
