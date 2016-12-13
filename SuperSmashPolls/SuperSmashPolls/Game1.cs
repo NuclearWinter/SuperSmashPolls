@@ -95,6 +95,7 @@ namespace SuperSmashPolls {
         private int NumPlayers;
         /** Variable to hold the state of the game */
         private GameState State = GameState.Menu;
+        
 
         /// <summary>
         /// Constructs the game's class
@@ -524,7 +525,10 @@ namespace SuperSmashPolls {
             LevelDictionary.Add("FinalDestination", FinalDestination);
             LevelDictionary.Add("Debate Room", Debate);
 
+            /************* Load in game music  *************/
+            CurrentGamemode.AddAudio(new AudioHandler(Content.Load<SoundEffect>("Music\\Hail to the Chief")));
         }
+           
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload all content.
@@ -644,8 +648,8 @@ namespace SuperSmashPolls {
                     State = (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed) ? 
                             GameState.Menu : State;
 
-                    CurrentGamemode.UpdateGamemodeState(PlayerOne.Deaths, PlayerTwo.Deaths, PlayerThree.Deaths,
-                        PlayerFour.Deaths);
+                        CurrentGamemode.UpdateGamemodeState(PlayerOne.Deaths, PlayerTwo.Deaths, PlayerThree.Deaths,
+                            PlayerFour.Deaths);
 
                     switch (NumPlayers) {
 

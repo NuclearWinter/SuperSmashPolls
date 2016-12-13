@@ -6,6 +6,9 @@ using System.Text;
 using FarseerPhysics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using SuperSmashPolls.World_Control;
+using SuperSmashPolls.Graphics;
 
 namespace SuperSmashPolls.GameItemControl {
 
@@ -45,6 +48,10 @@ namespace SuperSmashPolls.GameItemControl {
         private string[] Places;
         /** The winner of the game */
         private string Winner;
+        /** Music to play for Winner */
+        private AudioHandler endMusic;
+        /** Handles Loopping and stuff */
+        private SoundEffectInstance MusicInstance;
         /// <summary>Holds the references of deaths</summary>
         public int PlayerOneDeaths, PlayerTwoDeaths, PlayerThreeDeaths, PlayerFourDeaths;
         /// <summary>Whether or not the game has ended</summary>
@@ -231,7 +238,18 @@ namespace SuperSmashPolls.GameItemControl {
             PlayerFourDeaths  = int.Parse(streamReader.ReadLine());
 
         }
+        /// <summary>
+        /// Adds music to this object
+        /// </summary>
+        /// <param name="audioHandler"></param>
+        public void AddAudio(AudioHandler audioHandler)
+        {
 
+            endMusic = audioHandler;
+            MusicInstance = endMusic.GetRandomAudio().CreateInstance();
+            MusicInstance.IsLooped = false;
+          
+        }
         /// <summary>
         /// Determines if the game is over. Should be called during update.
         /// </summary>
@@ -244,7 +262,7 @@ namespace SuperSmashPolls.GameItemControl {
                 PlayerOneDeaths   = playerOneDeaths;
                 PlayerTwoDeaths   = playerTwoDeaths;
                 PlayerThreeDeaths = playerThreeDeaths;
-                PlayerFourDeaths  = playerFourDeaths; //TODO replace this shitty system with pointers
+                PlayerFourDeaths  = playerFourDeaths; //TODO replace this shitty system with pointer
 
                 switch (CurrentMode) {
                     case Mode.Time:
@@ -277,13 +295,17 @@ namespace SuperSmashPolls.GameItemControl {
                 else if (PlayerFourDeaths < Stock)
                     Winner = "Player four";
 
-                if (NumberOfPlayers == 1)
+                if (NumberOfPlayers == 1) {              
                     Winner = "none";
-
+                    MusicInstance.Play();
+                }
+                else {
+                    MusicInstance.Play();
+                }
             }
 
         }
-
+       
         /// <summary>
         /// Responsible for displaying two things. The stock of each player during the game, and the win/loss screen.
         /// Should be called during draw.
@@ -321,6 +343,7 @@ namespace SuperSmashPolls.GameItemControl {
                 if (Winner != "none")
                     batch.DrawString(GameFont, Winner + " is the next president!",
                         ConvertUnits.ToDisplayUnits(new Vector2(25/2 - 6, 6)), Color.Maroon);
+
                 else
                     batch.DrawString(GameFont, "Everyone was terrible...no next president",
                         ConvertUnits.ToDisplayUnits(new Vector2(25/2 - 7, 6)), Color.Maroon);
