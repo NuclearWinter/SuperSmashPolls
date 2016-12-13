@@ -291,7 +291,7 @@ namespace SuperSmashPolls {
 
                 Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.3F)),
                      "Donald Trump", true, EmptyUnit, true, true));
-                     Menu.AccessItem(3, 1).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.1F, 0.1F)),
+                     Menu.AccessItem(3, 1).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.1F)),
                        "Coming from humble beginnings in \nNew York City, Donald Trump \nrealized that only he has the " +
                        "\nability to truly make America \nGreat Again. With a small loan of \none million dollars and the " +
                        "\nfriendship of neighboring \ncountries, Donald Trump has begun \nhis journey to take the throne of " +
@@ -300,8 +300,11 @@ namespace SuperSmashPolls {
 
                 Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.4F)),
                      "Hillary Clinton", true, EmptyUnit, true, true));
-                     Menu.AccessItem(3,2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.1F)),
-                         "", false, EmptyUnit, false, true));
+                     Menu.AccessItem(3,2).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.05F, 0.1F)),
+                         "Hillary \"Roddy\" Clinton is back for \nher second attempt at ruling the \nUnited States of " +
+                         "America. With a \nstrong background in technology \nand internet security, Clinton \nvows to " +
+                         "improve personal \nfreedoms and bring America back \ntogether again. Will she become \nthe first "+
+                         " woman president, or \nwill she need to wait for a third \nattempt?", false, EmptyUnit, false, false));
 
                 Menu.AccessItem(3).AddItem(new MenuItem(new WorldUnit(ref ScreenSize, new Vector2(0.5F, 0.7F)),
                     "Back", false, EmptyUnit, true, true, MenuCommands.BackToMainMenu));
