@@ -449,6 +449,9 @@
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.CurrentMode">
             <summary>The mode the game currently is</summary>
         </member>
+        <member name="F:SuperSmashPolls.GameItemControl.Gamemode.MusicPlayed">
+            <summary>If the winning music has been played</summary>
+        </member>
         <member name="F:SuperSmashPolls.GameItemControl.Gamemode.FullIconSize">
             The size of the full icon for players 
         </member>
