@@ -65,3 +65,7 @@ C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPoll
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Hillary\hill_hitbox.xnb
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_down_smash.xnb
 C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Donald\donald_side_smash.xnb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Hillary\hill_jump.xnb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Hillary\hill_up_smash.xnb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Hillary\hill_side_smash.xnb
+C:\Users\william\Documents\GitHub\SuperSmashPolls\SuperSmashPolls\SuperSmashPolls\bin\x86\Debug\Content\Hillary\hill_special.xnb

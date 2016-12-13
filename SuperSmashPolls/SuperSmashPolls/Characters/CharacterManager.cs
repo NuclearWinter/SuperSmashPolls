@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define RECTANGLE_BODY
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +12,7 @@ using FarseerPhysics.Common;
 using FarseerPhysics.Common.Decomposition;
 using FarseerPhysics.Common.TextureTools;
 using FarseerPhysics.Dynamics;
+using FarseerPhysics.Dynamics.Contacts;
 using FarseerPhysics.Factories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -271,7 +274,11 @@ namespace SuperSmashPolls.Characters {
             MoveTextures      = new CharacterAction[ImplimentedMoves];
             MoveAudio         = new AudioHandler[ImplimentedMoves];
             Scale             = scale;
+#if RECTANGLE_BODY
+            CharacterOrigin = new Vector2(bodyTexture.Width/2F, bodyTexture.Height/2F);
+#else
             CharacterOrigin   = new Vector2(0, bodyTexture.Height);
+#endif
 
             for (int i = 0; i < ImplimentedMoves; ++i) {
                 MoveFunctions[i] = moveData[i].Item5;
@@ -303,8 +310,12 @@ namespace SuperSmashPolls.Characters {
         /// <param name="position">The position to put the character in</param>
         /// <param name="playerGroup">The collision group for this player to be placed in</param>
         public void SetupCharacter(World gameWorld, Vector2 position, short playerGroup) {
-
+#if RECTANGLE_BODY
+            CharacterBody = BodyFactory.CreateRectangle(gameWorld, ConvertUnits.ToSimUnits(CharacterOrigin.X*2),
+                ConvertUnits.ToSimUnits(CharacterOrigin.Y*2), 1);
+#else
             CharacterBody                = BodyFactory.CreateCompoundPolygon(gameWorld, CharacterVertices, 1F, position);
+#endif
             CharacterBody.CollisionGroup = playerGroup;
             CharacterBody.Mass           = Mass;
             CharacterBody.Friction       = Friction;
@@ -491,6 +502,6 @@ namespace SuperSmashPolls.Characters {
         }
 
 #endif
-    }
+        }
 
 }
